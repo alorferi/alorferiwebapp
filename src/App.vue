@@ -1,7 +1,30 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <welcome msg="Welcome to Your Vue.js App"/>
+
+  <nav class="navbar navbar-default navbar-fixed-top" style="background:#F5BA14">
+            <div class="container">
+
+                  <a class="navbar-brand" href="">
+                     <img src="" height="24px" alt="Alor Feri logo">
+                </a>
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+ 
+    </div> 
+
+  </div>
+</nav>
+
+<div class="container" style="margin-top:100px;">
+ <welcome msg="Welcome to Your Vue.js App"/> 
+  </div>
+
   </div>
 </template>
 
@@ -17,12 +40,5 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
