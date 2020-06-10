@@ -13,7 +13,7 @@
         <div class="col-sm-4 text-center">
 
             <!-- <img src="" width="250" alt="Alor Feri logo"> -->
-            <img alt="Alor Feri logo" src="../assets/logo.png">
+            <img alt="Alor Feri logo" src="../assets/logo_large.png" width="200">
 
 
             <h3 style="color:#0000A0;text-shadow: 1px 1px #ffffff;"><br/> এসো বই পড়ি <br/> আলোকিত সমাজ গড়ি।</h3>
