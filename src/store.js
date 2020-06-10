@@ -5,7 +5,8 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 // let base_url = "http://localhost:3000"
-let base_url = "http://cpanel.alorferi.com/api/v0"
+// let base_url = "http://cpanel.alorferi.com/api/v0"
+let base_url = "http://alorfericpanelsrv.test/api/v0"
 
 export default new Vuex.Store({
 	state: {
@@ -33,9 +34,13 @@ export default new Vuex.Store({
 	actions: {
 	  	login({commit}, user){
 	        return new Promise((resolve, reject) => {
-	            commit('auth_request')
-	            axios({url: base_url + "/auth/login", data: user, method: 'POST' })
+				commit('auth_request')
+				console.log(user)
+				let login_url = base_url + "/auth/login";
+				console.log(login_url)
+	            axios({url: login_url, data: user, method: 'POST', headers: {'Content-Type': 'application/json'} })
 	            .then(resp => {
+					console.log(resp.data)
 	                const token = resp.data.token
 	                const user = resp.data.user
 	                localStorage.setItem('token', token)
