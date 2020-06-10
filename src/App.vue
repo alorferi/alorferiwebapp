@@ -5,7 +5,7 @@
             <div class="container">
 
 
-     <router-link to="/" class="navbar-brand"> <img src="./assets/alorferi_logo_white.png" height="24px" alt="Alor Feri logo"></router-link> 
+     <router-link to="/" class="navbar-brand"> <img src="./assets/alorferi_logo_brand.png" height="24px" alt="Alor Feri logo"></router-link> 
      
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
