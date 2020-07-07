@@ -31,7 +31,9 @@
 
 
         <div class="col-sm-4">
-           <login/>
+
+                <login/>
+
         </div>
 
     </div>
@@ -45,6 +47,13 @@ export default {
   components:{
       Login
   },
+    mounted:function(){
+
+
+  },
+       computed : {
+
+    },
   props: {
     msg: String
   }

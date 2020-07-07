@@ -1,9 +1,9 @@
 <template>
 
    <div class="panel panel-default">
-       <div class="panel-heading">  Login </div> 
+       <div class="panel-heading">  Login </div>
          <div class="panel-body">
-              
+
             <form class="login form-horizontal" @submit.prevent="login">
                          <div class="col-md-12">
                              <div class="form-group">
@@ -25,7 +25,7 @@
 
 
                              <div class="form-group">
-                            
+
                                 <button type="submit" class="btn btn-primary"  style="width:100%">
                                     Login
                                 </button>
@@ -46,7 +46,14 @@ export default {
   name: 'Login',
   props: {
     msg: String
-  },    
+  },
+  mounted:function(){
+
+      if(this.$store.getters.isLoggedIn){
+             this.$router.push('/feeds')
+      }
+
+  },
   data(){
       return {
         username : "",
@@ -55,10 +62,12 @@ export default {
     },
         methods: {
       login: function () {
-        let username = this.username 
+        let username = this.username
         let password = this.password
         this.$store.dispatch('login', { username, password })
-       .then(() => this.$router.push('/'))
+       .then(() => {
+           this.$router.push('/feeds')
+           })
        .catch(err => console.log(err))
       }
     }

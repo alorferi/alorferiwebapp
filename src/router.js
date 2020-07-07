@@ -1,58 +1,71 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import store from './store.js'
-import Home from './views/Home.vue'
-import About from './views/About.vue'
-import Login from './components/Login.vue'
-import Secure from './components/Secure.vue'
-import Register from './components/Register.vue'
+import Vue from "vue";
+import Router from "vue-router";
+import store from "./store.js";
+import Home from "./views/Home.vue";
+import About from "./views/About.vue";
+import Login from "./components/Login.vue";
+import Secure from "./components/Secure.vue";
+import Register from "./components/Register.vue";
+import Feeds from "./components/Feeds.vue";
+import MyLibraries from "./components/MyLibraries.vue";
 
-Vue.use(Router)
+Vue.use(Router);
 
 let router = new Router({
-  mode: 'history',
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register
-    },
-    {
-      path: '/secure',
-      name: 'secure',
-      component: Secure,
-      meta: { 
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: About
-    }
-  ]
-})
+    mode: "history",
+    routes: [
+        {
+            path: "/",
+            name: "home",
+            component: Home
+        },
+        {
+            path: "/login",
+            name: "login",
+            component: Login
+        },
+        {
+            path: "/register",
+            name: "register",
+            component: Register
+        },
+        {
+            path: "/secure",
+            name: "secure",
+            component: Secure,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/about",
+            name: "about",
+            component: About
+        },
+
+        {
+            path: "/feeds",
+            name: "feeds",
+            component: Feeds
+        },
+        {
+            path: "/my-libraries",
+            name: "MyLibraries",
+            component: MyLibraries
+        }
+    ]
+});
 
 router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.getters.isLoggedIn) {
-      next()
-      return
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (store.getters.isLoggedIn) {
+            next();
+            return;
+        }
+        next("/login");
+    } else {
+        next();
     }
-    next('/login') 
-  } else {
-    next() 
-  }
-})
+});
 
-export default router
+export default router;
