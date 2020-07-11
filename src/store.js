@@ -5,8 +5,8 @@ import axios from "axios";
 Vue.use(Vuex);
 
 // let base_url = "http://localhost:3000"
-// let base_url = "http://cpanel.alorferi.com/api/v0"
-let base_url = "http://alorfericpanelsrv.test/api/v0";
+let base_url = "http://testpanel.alorferi.com/api/v0";
+// let base_url = "http://alorfericpanelsrv.test/api/v0";
 
 export default new Vuex.Store({
     state: {
@@ -32,25 +32,31 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        login({ commit }, user) {
+        login({ commit }, userCredential) {
             return new Promise((resolve, reject) => {
                 commit("auth_request");
-                console.log(user);
-                let login_url = base_url + "/auth/login";
+
+                userCredential.client_id = 3;
+                userCredential.client_secret =
+                    "PkkKhDJLjukY15REt16yu35bL34xYov5SiEqJ10Q";
+
+                console.log(userCredential);
+
+                let login_url = base_url + "/oauth/token";
                 console.log(login_url);
                 axios({
                     url: login_url,
-                    data: user,
+                    data: userCredential,
                     method: "POST",
                     headers: { "Content-Type": "application/json" }
                 })
                     .then(resp => {
                         console.log(resp.data);
 
-                        if(resp.data.status=="OK"){
-                            alert('login')
-                        }else{
-                            alert("failed")
+                        if (resp.data.status == "OK") {
+                            alert("login");
+                        } else {
+                            alert("failed");
                         }
 
                         const token = resp.data.token;
@@ -62,6 +68,7 @@ export default new Vuex.Store({
                         resolve(resp);
                     })
                     .catch(err => {
+                        console.log(err);
                         commit("auth_error");
                         localStorage.removeItem("token");
                         reject(err);
@@ -93,7 +100,7 @@ export default new Vuex.Store({
             });
         },
         logout({ commit }) {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 commit("logout");
                 localStorage.removeItem("token");
                 delete axios.defaults.headers.common["Authorization"];

@@ -35,3 +35,4 @@ Homestead.json
 .rocketeer/
 .DS_Store
 .DS_Store
+dist/
