@@ -6,8 +6,8 @@
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
-                            <i class="fa fa-mobile" aria-hidden="true"></i
-                        ></span>
+                            <i class="fas fa-mobile-alt"></i>
+                        </span>
 
                         <select class="form-control" id="sel1">
                             <option>+880</option>
