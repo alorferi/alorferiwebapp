@@ -31,9 +31,15 @@
             data-toggle="dropdown"
           >Babul Mirdha</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Link 1</a>
+            <a class="dropdown-item" href="#">Profile</a>
             <a class="dropdown-item" href="#">Link 2</a>
-            <a class="dropdown-item" href="#">Link 3</a>
+            <div class="dropdown-divider"></div>
+            <a
+              class="dropdown-item"
+              href="#"
+              @click="logoutMe"
+              v-if="this.$store.getters.isLoggedIn"
+            >Logout</a>
           </div>
         </li>
       </ul>
