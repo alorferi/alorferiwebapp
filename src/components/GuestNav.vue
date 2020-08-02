@@ -1,46 +1,54 @@
 <template>
-             <div class="container">
+    <div class="container">
+        <router-link to="/" class="navbar-brand">
+            <img
+                src="../assets/alorferi_logo_brand.png"
+                style="width:40px;"
+                alt="Alor Feri logo"
+            />
+        </router-link>
 
+        <!-- Toggler/collapsibe Button -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsibleNavbar"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-     <router-link to="/" class="navbar-brand"> <img src="../assets/alorferi_logo_brand.png" height="24px" alt="Alor Feri logo"></router-link>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav  mr-auto">
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/about"
+                        >About</router-link
+                    >
+                </li>
+            </ul>
 
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-
+            <ul class="navbar-nav  ml-auto">
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/about"
+                        >About</router-link
+                    >
+                </li>
+            </ul>
+        </div>
     </div>
-
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="nav navbar-nav navbar-left">
-
-                    <li>
-                       <router-link to="/about">About</router-link>
-                    </li>
-
-                </ul>
-            </div>
-
-
-  </div>
 </template>
 
 <script>
-  export default {
-    name: 'GuestNav',
+export default {
+    name: "GuestNav",
     data() {
-      return {}
+        return {};
     },
     computed: {},
     mounted() {},
     methods: {}
-  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-
-</style>
+<style></style>
