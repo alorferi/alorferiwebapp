@@ -5,8 +5,8 @@ import axios from "axios";
 Vue.use(Vuex);
 
 // let base_url = "http://localhost:3000"
-let base_url = "http://testpanel.alorferi.com/api/v0";
-// let base_url = "http://alorfericpanelsrv.test/api/v0";
+// let base_url = "http://testpanel.alorferi.com";
+let base_url = "http://alorfericpanelsrv.test";
 
 export default new Vuex.Store({
     state: {
@@ -36,9 +36,11 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 commit("auth_request");
 
-                userCredential.client_id = 3;
+                userCredential.client_id =
+                    "91309ef1-f5dc-4b0e-b311-1b19f94dbe16";
                 userCredential.client_secret =
-                    "PkkKhDJLjukY15REt16yu35bL34xYov5SiEqJ10Q";
+                    "n0Kywq6QTvTBFjNmvEtqJacxmiKtfLHGpA0czcQG";
+                userCredential.grant_type = "password";
 
                 console.log(userCredential);
 
