@@ -1,7 +1,7 @@
 <template>
-    <div class>
+    <div>
         <Loading v-if="show_loading"></Loading>
-        <div v-else>
+        <div v-else class="bg-primary">
             <div v-if="libraries.length === 0">
                 <p>
                     No libraries yet
@@ -11,21 +11,21 @@
                     >
                 </p>
             </div>
-
-            <div v-else>
+            <div v-else class="bg-secondary">
                 <div v-for="library in libraries" v-bind:key="library">
-                    <router-link
-                        :to="'/library/' + library.id"
-                        class="flex items-center w-full border-b border-gray-400 p-2 hover:bg-gray-300"
-                    >
-                        <NameCircle :name="library.name"></NameCircle>
+                    <NameCircle :name="library.name"></NameCircle>
 
-                        <div class="pl-2">
-                            <p>{{ library.name }}</p>
-                            <p>{{ library.address }}</p>
-                            <p>{{ library.mobile }}</p>
-                        </div>
-                    </router-link>
+                    <div class="card">
+                        <p>{{ library.name }}</p>
+                        <p>{{ library.address }}</p>
+                        <p>{{ library.mobile }}</p>
+
+                        <router-link
+                            :to="'/library/' + library.id"
+                            class="stretched-link"
+                        >
+                        </router-link>
+                    </div>
                 </div>
             </div>
         </div>
