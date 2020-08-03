@@ -38,7 +38,9 @@
                         >Babul Mirdha</a
                     >
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="/user/profile"
+                            >Profile</a
+                        >
                         <a class="dropdown-item" href="#">Link 2</a>
                         <div class="dropdown-divider"></div>
                         <a

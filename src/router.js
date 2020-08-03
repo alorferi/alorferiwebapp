@@ -11,6 +11,7 @@ import MyLibraryList from "./views/library/MyLibraryList.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";
 import LibraryShow from "./views/library/LibraryShow.vue";
+import UserProfile from "./views/user/UserProfile";
 
 Vue.use(Router);
 
@@ -50,6 +51,16 @@ let router = new Router({
             path: "/feeds",
             name: "feeds",
             component: Feeds
+        },
+        {
+            path: "/user/profile",
+            name: "user-profile",
+            component: UserProfile
+        },
+        {
+            path: "/user/profile/edit",
+            name: "user-profile-edit",
+            component: UserProfile
         },
         // {
         //     path: "/my-libraries",
