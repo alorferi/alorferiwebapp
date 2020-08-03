@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import NameCircle from "./NameCircle";
-import Loading from "./Loading";
+import NameCircle from "../../components/NameCircle";
+import Loading from "../../components/Loading";
 import axios from "axios";
 
 export default {
-    name: "MyLibrares",
+    name: "MyLibraryList",
     components: {
         NameCircle,
         Loading
