@@ -1,5 +1,5 @@
 <template>
-    <div class="relative pb-4">
+    <div class="form-group pb-1">
         <label
             :for="name"
             class="text-blue-500 pt-2 uppercase text-xs font-bold absolute"
@@ -8,7 +8,7 @@
         <input
             :type="type"
             :id="name"
-            class="pt-8 w-full text-gray-900 border-b pb-2 focus:outline-none focus:border-blue-400"
+            class="form-control pt-2 w-full text-gray-900 border-b pb-2 focus:outline-none focus:border-blue-400"
             v-model="value"
             :placeholder="placeholder"
             :class="errorClassObject()"
