@@ -28,9 +28,10 @@ Vue.use(IconsPlugin);
 
 Vue.prototype.$http = Axios;
 
-const token = localStorage.getItem("user-token");
-if (token) {
-    Vue.prototype.$http.defaults.headers.common["Authorization"] = token;
+const access_token = localStorage.getItem("access_token");
+if (access_token) {
+    Vue.prototype.$http.defaults.headers.common["Authorization"] =
+        "Bearer " + access_token;
 }
 
 Vue.config.productionTip = false;

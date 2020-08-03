@@ -11,16 +11,16 @@ let base_url = "http://alorfericpanelsrv.test";
 export default new Vuex.Store({
     state: {
         status: "",
-        token: localStorage.getItem("token") || "",
+        access_token: localStorage.getItem("access_token") || "",
         user: {}
     },
     mutations: {
         auth_request(state) {
             state.status = "loading";
         },
-        auth_success(state, token, user) {
+        auth_success(state, access_token, user) {
             state.status = "success";
-            state.token = token;
+            state.access_token = access_token;
             state.user = user;
         },
         auth_error(state) {
@@ -28,7 +28,7 @@ export default new Vuex.Store({
         },
         logout(state) {
             state.status = "";
-            state.token = "";
+            state.access_token = "";
         }
     },
     actions: {
@@ -55,24 +55,20 @@ export default new Vuex.Store({
                     .then(resp => {
                         console.log(resp.data);
 
-                        if (resp.data.status == "OK") {
-                            alert("login");
-                        } else {
-                            alert("failed");
-                        }
-
-                        const token = resp.data.token;
+                        const access_token = resp.data.access_token;
                         const user = resp.data.user;
-                        localStorage.setItem("token", token);
+                        localStorage.setItem("access_token", access_token);
                         // Add the following line:
-                        axios.defaults.headers.common["Authorization"] = token;
-                        commit("auth_success", token, user);
+                        axios.defaults.headers.common[
+                            "Authorization"
+                        ] = access_token;
+                        commit("auth_success", access_token, user);
                         resolve(resp);
                     })
                     .catch(err => {
                         console.log(err);
                         commit("auth_error");
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("access_token");
                         reject(err);
                     });
             });
@@ -86,17 +82,19 @@ export default new Vuex.Store({
                     method: "POST"
                 })
                     .then(resp => {
-                        const token = resp.data.token;
+                        const access_token = resp.data.access_token;
                         const user = resp.data.user;
-                        localStorage.setItem("token", token);
+                        localStorage.setItem("access_token", access_token);
                         // Add the following line:
-                        axios.defaults.headers.common["Authorization"] = token;
-                        commit("auth_success", token, user);
+                        axios.defaults.headers.common[
+                            "Authorization"
+                        ] = access_token;
+                        commit("auth_success", access_token, user);
                         resolve(resp);
                     })
                     .catch(err => {
                         commit("auth_error", err);
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("access_token");
                         reject(err);
                     });
             });
@@ -104,14 +102,14 @@ export default new Vuex.Store({
         logout({ commit }) {
             return new Promise(resolve => {
                 commit("logout");
-                localStorage.removeItem("token");
+                localStorage.removeItem("access_token");
                 delete axios.defaults.headers.common["Authorization"];
                 resolve();
             });
         }
     },
     getters: {
-        isLoggedIn: state => !!state.token,
+        isLoggedIn: state => !!state.access_token,
         authStatus: state => state.status
     }
 });
