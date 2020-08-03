@@ -4,7 +4,7 @@
             >Create Library
         </router-link>
         <Loading v-if="show_loading"></Loading>
-        <div v-else class="bg-primary">
+        <div v-else>
             <div v-if="libraries.length === 0">
                 <p>
                     No libraries yet
@@ -14,12 +14,13 @@
                     >
                 </p>
             </div>
-            <div v-else class="bg-secondary">
+            <div v-else>
                 <div v-for="library in libraries" v-bind:key="library">
-                    <NameCircle :name="library.name"></NameCircle>
-
-                    <div class="card">
-                        <p>{{ library.name }}</p>
+                    <div class="card my-3 p-3">
+                        <div>
+                            <NameCircle :name="library.name"></NameCircle>
+                            <h4>{{ library.name }}</h4>
+                        </div>
                         <p>{{ library.address }}</p>
                         <p>{{ library.mobile }}</p>
 

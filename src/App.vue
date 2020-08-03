@@ -6,14 +6,14 @@
         />
 
         <nav
-            class="navbar navbar-expand-sm navbar-dark navbar-fixed-top"
+            class="navbar navbar-expand-sm navbar-dark fixed-top"
             style="background:#F5BA14"
         >
             <MyNav v-if="isLoggedIn"></MyNav>
             <GuestNav v-else></GuestNav>
         </nav>
 
-        <div class="container" style="margin-top:100px;">
+        <div class="container" style="margin-top:80px;">
             <router-view />
         </div>
     </div>
