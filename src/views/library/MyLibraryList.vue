@@ -1,5 +1,8 @@
 <template>
     <div>
+        <router-link to="/library/create" class="btn btn-primary"
+            >Create Library
+        </router-link>
         <Loading v-if="show_loading"></Loading>
         <div v-else class="bg-primary">
             <div v-if="libraries.length === 0">
