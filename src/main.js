@@ -2,7 +2,10 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import Axios from "axios";
+import axios from "axios";
+import VueAxios from "vue-axios";
+
+Vue.use(VueAxios, axios);
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
 import PortalVue from "portal-vue";
@@ -26,7 +29,7 @@ Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
 
-Vue.prototype.$http = Axios;
+// Vue.prototype.$http = axios;
 
 const access_token = localStorage.getItem("access_token");
 if (access_token) {
