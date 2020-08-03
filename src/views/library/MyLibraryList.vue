@@ -1,22 +1,19 @@
 <template>
     <div>
-        <router-link to="/library/create" class="btn btn-primary"
-            >Create Library
-        </router-link>
         <Loading v-if="show_loading"></Loading>
         <div v-else>
             <div v-if="libraries.length === 0">
                 <p>
                     No libraries yet
                     <!-- <a href="/library/create" class="text-blue-500">Create one</a> -->
-                    <router-link class="text-blue-500" to="/library/create"
+                    <router-link class="text-blue" to="/library/create"
                         >Create one</router-link
                     >
                 </p>
             </div>
-            <div v-else>
-                <div v-for="library in libraries" v-bind:key="library">
-                    <div class="card my-3 p-3">
+            <div v-else class="h-100">
+                <div v-for="library in libraries" v-bind:key="library" class="">
+                    <div class="card mb-3 p-3">
                         <div>
                             <NameCircle :name="library.name"></NameCircle>
                             <h4>{{ library.name }}</h4>

@@ -1,9 +1,9 @@
 <template>
-    <div class>
+    <div class="">
         <Loading v-if="loading" />
         <div v-else>
             <div class="d-flex justify-content-between">
-                <div class="text-blue-400">
+                <div>
                     <a href="#" @click="$router.back()">&lt; Back</a>
                 </div>
                 <div class="relative">

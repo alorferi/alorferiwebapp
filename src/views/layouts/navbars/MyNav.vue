@@ -18,12 +18,21 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
+        <form class="form-inline" action="/action_page.php">
+            <input
+                class="form-control mr-sm-2"
+                type="text"
+                placeholder="Search"
+            />
+            <button class="btn btn-success" type="submit">Search</button>
+        </form>
+
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="nav navbar-nav mr-auto">
                 <li>
-                    <router-link class="nav-link" to="/library/my-libraries"
+                    <!-- <router-link class="nav-link" to="/library/my-libraries"
                         >My Libraries</router-link
-                    >
+                    > -->
                 </li>
             </ul>
 
