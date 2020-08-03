@@ -2,7 +2,7 @@
     <div class>
         <Loading v-if="loading" />
         <div v-else>
-            <div class="flex justify-between">
+            <div class="d-flex justify-content-between">
                 <div class="text-blue-400">
                     <a href="#" @click="$router.back()">&lt; Back</a>
                 </div>
@@ -80,10 +80,7 @@ export default {
     },
     mounted() {
         axios
-            .get(
-                "http://alorfericpanelsrv.test/api/v0/library/" +
-                    this.$route.params.id
-            )
+            .get(this.getApiUrl("/api/v0/library/" + this.$route.params.id))
             .then(response => {
                 this.library = response.data.data;
                 console.info(response);
@@ -108,8 +105,7 @@ export default {
         destroy: function() {
             axios
                 .delete(
-                    "http://alorfericpanelsrv.test/api/v0/library/" +
-                        this.$route.params.id
+                    this.getApiUrl("/api/v0/library/" + this.$route.params.id)
                 )
                 .then(response => {
                     this.$router.push("/library/my-libraries");

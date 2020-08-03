@@ -1,13 +1,12 @@
 import Vue from "vue";
 import Router from "vue-router";
 import store from "./store.js";
-import Home from "./views/Home.vue";
-import About from "./views/About.vue";
+import Home from "./views/home/Home.vue";
+import About from "./views/about/About.vue";
 import Login from "./views/auth/Login.vue";
 import Secure from "./views/auth/Secure.vue";
 import Register from "./views/auth/Register.vue";
 import Feeds from "./views/home/Feeds.vue";
-// import MyLibraries from "./components/MyLibraries.vue";
 import MyLibraryList from "./views/library/MyLibraryList.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";

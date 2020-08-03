@@ -63,7 +63,7 @@
                         Canel
                     </button>
                     <button
-                        class="bg-blue-500 py-2 px-4 text-white rounded hover:bg-blue-400"
+                        class="bg-blue py-2 px-4 text-white rounded hover:bg-blue"
                     >
                         Save
                     </button>
@@ -100,10 +100,7 @@ export default {
     computed: {},
     mounted() {
         axios
-            .get(
-                "http://alorfericpanelsrv.test/api/v0/library/" +
-                    this.$route.params.id
-            )
+            .get(this.getApiUrl("/api/v0/library/" + this.$route.params.id))
             .then(response => {
                 this.form = response.data.data;
 
@@ -121,8 +118,7 @@ export default {
         submitForm: function() {
             axios
                 .put(
-                    "http://alorfericpanelsrv.test/api/v0/library/" +
-                        this.$route.params.id,
+                    this.getApiUrl("/api/v0/library/" + this.$route.params.id),
                     this.form
                 )
                 .then(response => {

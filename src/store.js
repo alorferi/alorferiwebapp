@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 // let base_url = "http://localhost:3000"
 // let base_url = "http://testpanel.alorferi.com";
-let base_url = "http://alorfericpanelsrv.test";
+// let base_url = "http://alorfericpanelsrv.test";
 
 export default new Vuex.Store({
     state: {
@@ -44,8 +44,10 @@ export default new Vuex.Store({
 
                 console.log(userCredential);
 
-                let login_url = base_url + "/oauth/token";
-                console.log(login_url);
+                let login_url =
+                    Vue.prototype.$apiServerBaseUrl + "/oauth/token";
+                // alert(login_url);
+                console.log("url", login_url);
                 axios({
                     url: login_url,
                     data: userCredential,
@@ -77,7 +79,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 commit("auth_request");
                 axios({
-                    url: base_url + "/register",
+                    url: Vue.prototype.$apiServerBaseUrl + "/register",
                     data: user,
                     method: "POST"
                 })

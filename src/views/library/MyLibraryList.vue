@@ -45,18 +45,13 @@ export default {
     },
     methods: {
         editUrl: function(library) {
-            return "/api/v0/library/" + library.id + "/edit";
+            return this.getApiUrl("/api/v0/library/" + library.id + "/edit");
         }
     },
 
     mounted() {
         axios
-            .get("http://alorfericpanelsrv.test/api/v0/library/my-libraries", {
-                headers: {
-                    Authorization:
-                        "Bearer " + localStorage.getItem("access_token") //the token is a variable which holds the token
-                }
-            })
+            .get(this.getApiUrl("/api/v0/library/my-libraries"))
             .then(response => {
                 this.show_loading = false;
                 this.libraries = response.data.data;
