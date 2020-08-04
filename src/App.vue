@@ -15,33 +15,8 @@
                 <div class="col-sm-2">
                     <UserBadge></UserBadge>
 
-                    <div class="list-group mt-2">
-                        <router-link
-                            class="list-group-item list-group-item-action"
-                            to="{ name: 'feeds'}"
-                            >Feeds</router-link
-                        >
-                        <router-link
-                            class="list-group-item list-group-item-action"
-                            to="{ name: 'my-libraries'}"
-                            >My Libraries</router-link
-                        >
-                        <router-link
-                            to="{ name: 'library-create'}"
-                            class="list-group-item list-group-item-action"
-                            >Create Library kjkj kjk mnj jjj kkk kkk
-                        </router-link>
-
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action"
-                            >Messages</a
-                        >
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action"
-                            >{{ currentRouteName }}
-                        </a>
+                    <div>
+                        <component :is="leftMenu"></component>
                     </div>
                 </div>
 
@@ -58,6 +33,8 @@ import GuestNav from "./views/layouts/navbars/GuestNav";
 import MyNav from "./views/layouts/navbars/MyNav.vue";
 import VueHeadful from "vue-headful";
 import UserBadge from "./views/badges/UserBadge";
+import HomeLeftMenu from "./views/menus/HomeLeftMenu";
+import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
 
 export default {
     name: "App",
@@ -65,23 +42,37 @@ export default {
         GuestNav,
         MyNav,
         VueHeadful,
-        UserBadge
+        UserBadge,
+        HomeLeftMenu,
+        LibraryLeftMenu
     },
     computed: {
         isLoggedIn: function() {
             return this.$store.getters.isLoggedIn;
         },
-        currentRouteName() {
-            var name = this.$route.name;
-
-            // this.$router.options.routes.forEach(route => {
-            //     console.log(route.name);
-            //     if (route.name == name) {
-            //         return route.layout;
-            //     }
+        currentRoute() {
+            // var name = this.$route.name;
+            // var routes = this.$router.options.routes.filter(function(route) {
+            //     return route.name == name;
             // });
+            // if (routes.length == 1) {
+            //     return routes[0].layout;
+            // } else {
+            //     return name;
+            // }
 
-            return name;
+            return this.$route;
+        },
+        leftMenu() {
+            var name = this.$route.name;
+            var routes = this.$router.options.routes.filter(function(route) {
+                return route.name == name;
+            });
+            if (routes.length == 1) {
+                return routes[0].leftMenu;
+            }
+
+            return null;
         }
     },
     methods: {

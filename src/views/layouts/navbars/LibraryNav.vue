@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <router-link to="{ name: 'home'}" class="navbar-brand">
+        <router-link :to="{ name: 'home' }" class="navbar-brand">
             <img
                 src="./assets/alorferi_logo_brand.png"
                 height="24px"
@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav navbar-left">
                 <li>
-                    <router-link to="{ name: 'about'}">Library</router-link>
+                    <router-link :to="{ name: 'about' }">Library</router-link>
                 </li>
 
                 <li v-if="isLoggedIn">

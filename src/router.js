@@ -12,6 +12,8 @@ import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";
 import LibraryShow from "./views/library/LibraryShow.vue";
 import UserProfile from "./views/user/UserProfile";
+import HomeLeftMenu from "./views/menus/HomeLeftMenu";
+import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
 
 Vue.use(Router);
 
@@ -22,15 +24,15 @@ let router = new Router({
             path: "/",
             name: "home",
             component: Home,
-            layout: "main"
+            leftMenu: HomeLeftMenu
         },
         {
-            path: "user/login",
+            path: "/user/login",
             name: "login",
             component: Login
         },
         {
-            path: "user/register",
+            path: "/user/register",
             name: "register",
             component: Register
         },
@@ -51,7 +53,8 @@ let router = new Router({
         {
             path: "/feeds",
             name: "feeds",
-            component: Feeds
+            component: Feeds,
+            leftMenu: HomeLeftMenu
         },
         {
             path: "/user/profile",
@@ -66,22 +69,26 @@ let router = new Router({
         {
             path: "/library/my-libraries",
             name: "my-libraries",
-            component: MyLibraryList
+            component: MyLibraryList,
+            leftMenu: HomeLeftMenu
         },
         {
             path: "/library/create",
             name: "library-create",
-            component: LibraryCreate
+            component: LibraryCreate,
+            leftMenu: HomeLeftMenu
         },
         {
             path: "/library/:id",
             name: "library-show",
-            component: LibraryShow
+            component: LibraryShow,
+            leftMenu: LibraryLeftMenu
         },
         {
             path: "/library/:id/edit",
             name: "library-edit",
-            component: LibraryEdit
+            component: LibraryEdit,
+            leftMenu: LibraryLeftMenu
         }
     ]
 });

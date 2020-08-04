@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <router-link to=" name:'feeds'" class="navbar-brand">
+        <router-link :to="{ name: 'home' }" class="navbar-brand">
             <img
                 src="@/assets/alorferi_logo_brand.png"
                 height="24px"

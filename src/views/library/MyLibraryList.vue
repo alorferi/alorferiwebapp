@@ -8,13 +8,17 @@
                     <!-- <a href="/library/create" class="text-blue-500">Create one</a> -->
                     <router-link
                         class="text-blue"
-                        to="{ name: 'library-create' }"
+                        :to="{ name: 'library-create' }"
                         >Create one</router-link
                     >
                 </p>
             </div>
             <div v-else class="h-100">
-                <div v-for="library in libraries" v-bind:key="library" class="">
+                <div
+                    v-for="library in libraries"
+                    v-bind:key="library.id"
+                    class=""
+                >
                     <div class="card mb-3 p-3">
                         <div>
                             <NameCircle :name="library.name"></NameCircle>
