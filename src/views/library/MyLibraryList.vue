@@ -6,7 +6,9 @@
                 <p>
                     No libraries yet
                     <!-- <a href="/library/create" class="text-blue-500">Create one</a> -->
-                    <router-link class="text-blue" to="/library/create"
+                    <router-link
+                        class="text-blue"
+                        to="{ name: 'library-create' }"
                         >Create one</router-link
                     >
                 </p>
@@ -22,7 +24,10 @@
                         <p>{{ library.mobile }}</p>
 
                         <router-link
-                            :to="'/library/' + library.id"
+                            :to="{
+                                name: 'library-edit',
+                                params: { id: library.id }
+                            }"
                             class="stretched-link"
                         >
                         </router-link>

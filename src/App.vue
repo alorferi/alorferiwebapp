@@ -5,10 +5,7 @@
             description="Description from vue-headful"
         />
 
-        <nav
-            class="navbar navbar-expand-sm navbar-dark"
-            style="background:#F5BA14"
-        >
+        <nav class="navbar navbar-expand-sm bg-warning navbar-dark">
             <MyNav v-if="isLoggedIn"></MyNav>
             <GuestNav v-else></GuestNav>
         </nav>
@@ -16,39 +13,21 @@
         <div class="container h-100 mt-3 ">
             <div class="row h-100">
                 <div class="col-sm-2">
-                    <div class="card">
-                        <div class="card-body p-2 text-center">
-                            <i
-                                class="far fa-user-circle"
-                                style="width:100px;height:100px"
-                            ></i>
-
-                            <a href="/user/profile" class="stretched-link"> </a>
-                        </div>
-                        <!-- <img
-                            src="@/assets/logo.png"
-                            class="rounded m-2"
-                            alt="Alor Feri Logo"
-                        /> -->
-
-                        <div class="card-footer text-center">
-                            <span>Babul Mirdha</span>
-                        </div>
-                    </div>
+                    <UserBadge></UserBadge>
 
                     <div class="list-group mt-2">
                         <router-link
                             class="list-group-item list-group-item-action"
-                            to="/feeds"
+                            to="{ name: 'feeds'}"
                             >Feeds</router-link
                         >
                         <router-link
                             class="list-group-item list-group-item-action"
-                            to="/library/my-libraries"
+                            to="{ name: 'my-libraries'}"
                             >My Libraries</router-link
                         >
                         <router-link
-                            to="/library/create"
+                            to="{ name: 'library-create'}"
                             class="list-group-item list-group-item-action"
                             >Create Library kjkj kjk mnj jjj kkk kkk
                         </router-link>
@@ -61,7 +40,7 @@
                         <a
                             href="#"
                             class="list-group-item list-group-item-action"
-                            >Create</a
+                            >{{ currentRouteName }}</a
                         >
                     </div>
                 </div>
@@ -78,17 +57,22 @@
 import GuestNav from "./views/layouts/navbars/GuestNav";
 import MyNav from "./views/layouts/navbars/MyNav.vue";
 import VueHeadful from "vue-headful";
+import UserBadge from "./views/badges/UserBadge";
 
 export default {
     name: "App",
     components: {
         GuestNav,
         MyNav,
-        VueHeadful
+        VueHeadful,
+        UserBadge
     },
     computed: {
         isLoggedIn: function() {
             return this.$store.getters.isLoggedIn;
+        },
+        currentRouteName() {
+            return this.$route.name;
         }
     },
     methods: {
@@ -97,6 +81,11 @@ export default {
                 this.$router.push("/login");
             });
         }
+    },
+    goBack() {
+        window.history.length > 1
+            ? this.$router.go(-1)
+            : this.$router.push("/");
     }
 };
 </script>

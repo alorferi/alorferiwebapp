@@ -1,18 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-3">
-            <div class="card card-body">
-                {% include 'user/my_profile_photo_with_full_name.html' %}
-                <hr />
-                <a
-                    class="btn btn-warning"
-                    href="{% url 'user_edit_my_profile' %}"
-                >
-                    Edit Profile</a
-                >
-            </div>
-        </div>
-        <div class="col-md-9">
+        <div class="col">
             <div class="card card-body">
                 <h5>
                     Career Objectives

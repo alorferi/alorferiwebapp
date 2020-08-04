@@ -24,12 +24,12 @@ let router = new Router({
             component: Home
         },
         {
-            path: "/login",
+            path: "user/login",
             name: "login",
             component: Login
         },
         {
-            path: "/register",
+            path: "user/register",
             name: "register",
             component: Register
         },
@@ -62,15 +62,26 @@ let router = new Router({
             name: "user-profile-edit",
             component: UserProfile
         },
-        // {
-        //     path: "/my-libraries",
-        //     name: "MyLibraries",
-        //     component: MyLibraries
-        // },
-        { path: "/library/my-libraries", component: MyLibraryList },
-        { path: "/library/create", component: LibraryCreate },
-        { path: "/library/:id", component: LibraryShow },
-        { path: "/library/:id/edit", component: LibraryEdit }
+        {
+            path: "/library/my-libraries",
+            name: "my-libraries",
+            component: MyLibraryList
+        },
+        {
+            path: "/library/create",
+            name: "library-create",
+            component: LibraryCreate
+        },
+        {
+            path: "/library/:id",
+            name: "library-show",
+            component: LibraryShow
+        },
+        {
+            path: "/library/:id/edit",
+            name: "library-edit",
+            component: LibraryEdit
+        }
     ]
 });
 

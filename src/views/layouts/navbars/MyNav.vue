@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <router-link to="/feeds" class="navbar-brand">
+        <router-link to=" name:'feeds'" class="navbar-brand">
             <img
                 src="@/assets/alorferi_logo_brand.png"
                 height="24px"
@@ -49,7 +49,7 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="nav navbar-nav mr-auto">
                 <li>
-                    <!-- <router-link class="nav-link" to="/library/my-libraries"
+                    <!-- <router-link class="nav-link" to=" name:'my-libraries'"
                         >My Libraries</router-link
                     > -->
                 </li>

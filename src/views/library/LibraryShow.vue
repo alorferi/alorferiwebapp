@@ -8,7 +8,10 @@
                 </div>
                 <div class="relative">
                     <router-link
-                        :to="'/library/' + library.id + '/edit'"
+                        :to="{
+                            name: 'library-edit',
+                            params: { id: library.id }
+                        }"
                         class="px-4 py-2 rounded text-sm font-bold text-green-500 border border-green-500 mr-2"
                         >Edit</router-link
                     >
