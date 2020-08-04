@@ -5,6 +5,7 @@
                 <img
                     src="@/assets/logo.png"
                     class="rounded m-2"
+                    style="width:100px;height:100px"
                     alt="Alor Feri Logo"
                 />
                 <a href="/user/profile" class="stretched-link"> </a>

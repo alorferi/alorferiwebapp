@@ -28,15 +28,6 @@
                     <i class="fas fa-star text-secondary"></i>
                 </div>
             </div>
-
-            <div class="card-footer text-center">
-                <a
-                    class="btn btn-warning"
-                    href="{% url 'user_edit_my_profile' %}"
-                >
-                    Edit Profile</a
-                >
-            </div>
         </div>
     </div>
 </template>

@@ -13,7 +13,9 @@
         <div class="container h-100 mt-3 ">
             <div class="row h-100">
                 <div class="col-sm-2">
-                    <UserBadge></UserBadge>
+                    <!-- <UserBadge></UserBadge> -->
+
+                    <component :is="leftBadge"></component>
 
                     <div>
                         <component :is="leftMenu"></component>
@@ -50,18 +52,16 @@ export default {
         isLoggedIn: function() {
             return this.$store.getters.isLoggedIn;
         },
-        currentRoute() {
-            // var name = this.$route.name;
-            // var routes = this.$router.options.routes.filter(function(route) {
-            //     return route.name == name;
-            // });
-            // if (routes.length == 1) {
-            //     return routes[0].layout;
-            // } else {
-            //     return name;
-            // }
+        leftBadge() {
+            var name = this.$route.name;
+            var routes = this.$router.options.routes.filter(function(route) {
+                return route.name == name;
+            });
+            if (routes.length == 1) {
+                return routes[0].leftBadge;
+            }
 
-            return this.$route;
+            return null;
         },
         leftMenu() {
             var name = this.$route.name;

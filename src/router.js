@@ -14,6 +14,8 @@ import LibraryShow from "./views/library/LibraryShow.vue";
 import UserProfile from "./views/user/UserProfile";
 import HomeLeftMenu from "./views/menus/HomeLeftMenu";
 import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
+import LibraryBadge from "./views/badges/LibraryBadge";
+import UserBadge from "./views/badges/UserBadge";
 
 Vue.use(Router);
 
@@ -24,7 +26,8 @@ let router = new Router({
             path: "/",
             name: "home",
             component: Home,
-            leftMenu: HomeLeftMenu
+            leftMenu: HomeLeftMenu,
+            leftBadge: UserBadge
         },
         {
             path: "/user/login",
@@ -54,41 +57,48 @@ let router = new Router({
             path: "/feeds",
             name: "feeds",
             component: Feeds,
-            leftMenu: HomeLeftMenu
+            leftMenu: HomeLeftMenu,
+            leftBadge: UserBadge
         },
         {
             path: "/user/profile",
             name: "user-profile",
-            component: UserProfile
+            component: UserProfile,
+            leftBadge: UserBadge
         },
         {
             path: "/user/profile/edit",
             name: "user-profile-edit",
-            component: UserProfile
+            component: UserProfile,
+            leftBadge: UserBadge
         },
         {
             path: "/library/my-libraries",
             name: "my-libraries",
             component: MyLibraryList,
-            leftMenu: HomeLeftMenu
+            leftMenu: HomeLeftMenu,
+            leftBadge: UserBadge
         },
         {
             path: "/library/create",
             name: "library-create",
             component: LibraryCreate,
-            leftMenu: HomeLeftMenu
+            leftMenu: HomeLeftMenu,
+            leftBadge: UserBadge
         },
         {
             path: "/library/:id",
             name: "library-show",
             component: LibraryShow,
-            leftMenu: LibraryLeftMenu
+            leftMenu: LibraryLeftMenu,
+            leftBadge: LibraryBadge
         },
         {
             path: "/library/:id/edit",
             name: "library-edit",
             component: LibraryEdit,
-            leftMenu: LibraryLeftMenu
+            leftMenu: LibraryLeftMenu,
+            leftBadge: LibraryBadge
         }
     ]
 });
