@@ -10,19 +10,25 @@
             <GuestNav v-else></GuestNav>
         </nav>
 
-        <div class="container h-100 mt-3 ">
-            <div class="row h-100">
-                <div class="col-sm-2">
-                    <!-- <UserBadge></UserBadge> -->
+        <div class="container h-100 mt-3">
+            <div v-if="isLoggedIn">
+                <div class="row h-100">
+                    <div class="col-sm-2">
+                        <component :is="leftBadge"></component>
 
-                    <component :is="leftBadge"></component>
+                        <div>
+                            <component :is="leftMenu"></component>
+                        </div>
+                    </div>
 
-                    <div>
-                        <component :is="leftMenu"></component>
+                    <div class="col-sm-10 h-100" style="overflow-y: scroll;">
+                        <router-view></router-view>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-sm-10 h-100" style="overflow-y: scroll;">
+            <div v-else>
+                <div class="h-100">
                     <router-view></router-view>
                 </div>
             </div>
@@ -78,7 +84,7 @@ export default {
     methods: {
         logout: function() {
             this.$store.dispatch("logout").then(() => {
-                this.$router.push("/login");
+                this.$router.push("/");
             });
         }
     },
