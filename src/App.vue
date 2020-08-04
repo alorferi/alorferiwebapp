@@ -24,7 +24,7 @@
                         />
                     </div>
 
-                    <div class="card text-center align-content-center">
+                    <div class="card text-center">
                         <h4>Alor Feri</h4>
                     </div>
 

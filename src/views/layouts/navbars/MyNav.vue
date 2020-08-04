@@ -8,6 +8,15 @@
             />
         </router-link>
 
+        <form class="form-inline" action="/action_page.php">
+            <input
+                class="form-control mr-sm-2"
+                type="text"
+                placeholder="Search"
+            />
+            <button class="btn btn-success" type="submit">Search</button>
+        </form>
+
         <!-- Toggler/collapsibe Button -->
         <button
             class="navbar-toggler"
@@ -17,15 +26,6 @@
         >
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <form class="form-inline" action="/action_page.php">
-            <input
-                class="form-control mr-sm-2"
-                type="text"
-                placeholder="Search"
-            />
-            <button class="btn btn-success" type="submit">Search</button>
-        </form>
 
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="nav navbar-nav mr-auto">
