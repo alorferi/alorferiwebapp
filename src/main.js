@@ -32,6 +32,32 @@ Vue.mixin({
     methods: {
         getApiUrl(endPoint) {
             return this.$apiServerBaseUrl + endPoint;
+        },
+        extractUrl(text) {
+            var regex = /(https?:\/\/[^ ]*)/;
+            // var regex = /^(https?:\/\/[^/]+(\/[\w-]+)+)/;
+
+            var matches = text.match(regex);
+
+            if (matches.length >= 1) {
+                return matches[0];
+            }
+
+            return null;
+        },
+        extractYouTubeVideoId(url) {
+            var newval = "";
+            var vid = "";
+
+            if ((newval = url.match(/(\?|&)v=([^&#]+)/))) {
+                vid = newval.pop();
+            } else if ((newval = url.match(/(\.be\/)+([^\\/]+)/))) {
+                vid = newval.pop();
+            } else if ((newval = url.match(/(\\embed\/)+([^\\/]+)/))) {
+                vid = newval.pop().replace("?rel=0", "");
+            }
+
+            return vid;
         }
     }
 });

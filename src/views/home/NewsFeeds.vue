@@ -8,7 +8,8 @@
                     rows="3"
                     id="comment"
                     placeholder="What's on your mind?"
-                ></textarea>
+                >
+                </textarea>
             </div>
             <div class="card-footer justify-content-end d-flex">
                 <button class="btn btn-primary ml-auto">Post</button>
@@ -36,6 +37,29 @@
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua.
                 </p>
+
+                <!-- 4:3 aspect ratio -->
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe
+                        class="embed-responsive-item"
+                        :src="getYouTubeEmbedUrl"
+                    ></iframe>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class=" d-flex justify-content-between">
+                            <a href="#" class="btn btn-light">Comment</a>
+                            <a href="#" class="btn btn-light">Share</a>
+                        </div>
+
+                        <div class="d-flex">
+                            <input type="text" class="form-group w-100" />
+                            <!-- <button class="btn btn-primary ml-auto">
+                                Submit
+                            </button> -->
+                        </div>
+                    </div>
+                </div>
                 <div class="media p-3">
                     <img
                         src="img_avatar2.png"
@@ -163,12 +187,23 @@
 
 <script>
 export default {
-    name: "Feeds",
+    name: "NewsFeeds",
     data() {
-        return {};
+        return {
+            text:
+                "Lorem ipsum dolor sit amet, https://www.youtube.com/watch?v=Z_EsdERRRyg consectetur adipiscing\nelit, sed do eiusmod tempor incididunt ut labore et\ndolore magna aliqua."
+        };
     },
-    computed: {},
+    computed: {
+        getYouTubeEmbedUrl: function() {
+            return (
+                "https://www.youtube.com/embed/" +
+                this.extractYouTubeVideoId(this.extractUrl(this.text))
+            );
+        }
+    },
     mounted() {},
+
     methods: {}
 };
 </script>

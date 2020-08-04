@@ -6,7 +6,7 @@ import About from "./views/about/About.vue";
 import Login from "./views/auth/Login.vue";
 import Secure from "./views/auth/Secure.vue";
 import Register from "./views/auth/Register.vue";
-import Feeds from "./views/home/Feeds.vue";
+import NewsFeeds from "./views/home/NewsFeeds.vue";
 import MyLibraries from "./views/library/MyLibraries.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";
@@ -59,7 +59,7 @@ let router = new Router({
         {
             path: "/feeds",
             name: "feeds",
-            component: Feeds,
+            component: NewsFeeds,
             leftMenu: HomeLeftMenu,
             leftBadge: UserBadge
         },
