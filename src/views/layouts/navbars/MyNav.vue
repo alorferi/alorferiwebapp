@@ -15,11 +15,7 @@
                         <i class="fas fa-mobile-alt"></i>
                     </span>
 
-                    <select
-                        class="form-control"
-                        id="country_code"
-                        v-model="country_code"
-                    >
+                    <select class="form-control">
                         <option value="Library" selected>Library</option>
                         <option value="+91">Book</option>
                         <option value="+1">Blood</option>

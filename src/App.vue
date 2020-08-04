@@ -40,13 +40,13 @@
                         <a
                             href="#"
                             class="list-group-item list-group-item-action"
-                            >{{ currentRouteName }}</a
-                        >
+                            >{{ currentRouteName }}
+                        </a>
                     </div>
                 </div>
 
                 <div class="col-sm-10 h-100" style="overflow-y: scroll;">
-                    <router-view />
+                    <router-view></router-view>
                 </div>
             </div>
         </div>
@@ -72,7 +72,16 @@ export default {
             return this.$store.getters.isLoggedIn;
         },
         currentRouteName() {
-            return this.$route.name;
+            var name = this.$route.name;
+
+            // this.$router.options.routes.forEach(route => {
+            //     console.log(route.name);
+            //     if (route.name == name) {
+            //         return route.layout;
+            //     }
+            // });
+
+            return name;
         }
     },
     methods: {

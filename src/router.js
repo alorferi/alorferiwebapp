@@ -21,7 +21,8 @@ let router = new Router({
         {
             path: "/",
             name: "home",
-            component: Home
+            component: Home,
+            layout: "main"
         },
         {
             path: "user/login",

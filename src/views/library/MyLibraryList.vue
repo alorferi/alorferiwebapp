@@ -25,7 +25,7 @@
 
                         <router-link
                             :to="{
-                                name: 'library-edit',
+                                name: 'library-show',
                                 params: { id: library.id }
                             }"
                             class="stretched-link"
