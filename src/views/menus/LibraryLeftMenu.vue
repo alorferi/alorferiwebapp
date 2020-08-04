@@ -1,22 +1,24 @@
 <template>
     <div class="list-group mt-2">
+        <div class="list-group-item list-group-item-action">
+            <router-link
+                class="list-group-item-action"
+                :to="{ name: 'library-books', params: this.$route.params.id }"
+                >Books</router-link
+            >
+        </div>
+
         <router-link
             class="list-group-item list-group-item-action"
-            :to="{ name: 'feeds' }"
-            >Books</router-link
-        >
-        <router-link
-            class="list-group-item list-group-item-action"
-            :to="{ name: 'my-libraries' }"
+            :to="{ name: 'library-members', params: this.$route.params.id }"
             >Members</router-link
         >
-        <router-link
-            :to="{ name: 'library-create' }"
-            class="list-group-item list-group-item-action"
-            >Events
-        </router-link>
 
-        <a href="#" class="list-group-item list-group-item-action">Messages</a>
+        <router-link
+            class="list-group-item list-group-item-action"
+            :to="{ name: 'library-about', params: this.$route.params.id }"
+            >About</router-link
+        >
     </div>
 </template>
 
