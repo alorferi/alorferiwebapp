@@ -17,18 +17,26 @@
             <div class="row h-100">
                 <div class="col-sm-2">
                     <div class="card">
-                        <img
+                        <div class="card-body p-2 text-center">
+                            <i
+                                class="far fa-user-circle"
+                                style="width:100px;height:100px"
+                            ></i>
+
+                            <a href="/user/profile" class="stretched-link"> </a>
+                        </div>
+                        <!-- <img
                             src="@/assets/logo.png"
                             class="rounded m-2"
                             alt="Alor Feri Logo"
-                        />
+                        /> -->
+
+                        <div class="card-footer text-center">
+                            <span>Babul Mirdha</span>
+                        </div>
                     </div>
 
-                    <div class="card text-center">
-                        <h4>Alor Feri</h4>
-                    </div>
-
-                    <div class="list-group">
+                    <div class="list-group mt-2">
                         <router-link
                             class="list-group-item list-group-item-action"
                             to="/feeds"
@@ -42,7 +50,7 @@
                         <router-link
                             to="/library/create"
                             class="list-group-item list-group-item-action"
-                            >Create Library
+                            >Create Library kjkj kjk mnj jjj kkk kkk
                         </router-link>
 
                         <a
@@ -58,10 +66,7 @@
                     </div>
                 </div>
 
-                <div
-                    class="col-sm-10 h-100 card p-3"
-                    style="overflow-y: scroll;"
-                >
+                <div class="col-sm-10 h-100" style="overflow-y: scroll;">
                     <router-view />
                 </div>
             </div>

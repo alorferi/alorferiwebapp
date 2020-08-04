@@ -9,11 +9,30 @@
         </router-link>
 
         <form class="form-inline" action="/action_page.php">
-            <input
-                class="form-control mr-sm-2"
-                type="text"
-                placeholder="Search"
-            />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-mobile-alt"></i>
+                    </span>
+
+                    <select
+                        class="form-control"
+                        id="country_code"
+                        v-model="country_code"
+                    >
+                        <option value="Library" selected>Library</option>
+                        <option value="+91">Book</option>
+                        <option value="+1">Blood</option>
+                        <option value="+1">Jobs</option>
+                    </select>
+                </div>
+
+                <input
+                    class="form-control mr-sm-2"
+                    type="text"
+                    placeholder="Search"
+                />
+            </div>
             <button class="btn btn-success" type="submit">Search</button>
         </form>
 
