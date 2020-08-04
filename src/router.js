@@ -7,7 +7,7 @@ import Login from "./views/auth/Login.vue";
 import Secure from "./views/auth/Secure.vue";
 import Register from "./views/auth/Register.vue";
 import Feeds from "./views/home/Feeds.vue";
-import MyLibraryList from "./views/library/MyLibraryList.vue";
+import MyLibraries from "./views/library/MyLibraries.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";
 import LibraryShow from "./views/library/LibraryShow.vue";
@@ -75,7 +75,7 @@ let router = new Router({
         {
             path: "/library/my-libraries",
             name: "my-libraries",
-            component: MyLibraryList,
+            component: MyLibraries,
             leftMenu: HomeLeftMenu,
             leftBadge: UserBadge
         },
@@ -96,6 +96,13 @@ let router = new Router({
         {
             path: "/library/:id/edit",
             name: "library-edit",
+            component: LibraryEdit,
+            leftMenu: LibraryLeftMenu,
+            leftBadge: LibraryBadge
+        },
+        {
+            path: "/library/:id/books",
+            name: "library-books",
             component: LibraryEdit,
             leftMenu: LibraryLeftMenu,
             leftBadge: LibraryBadge

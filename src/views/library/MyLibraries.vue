@@ -48,7 +48,7 @@ import Loading from "../../components/Loading";
 import axios from "axios";
 
 export default {
-    name: "MyLibraryList",
+    name: "MyLibraries",
     components: {
         NameCircle,
         Loading
