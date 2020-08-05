@@ -63,7 +63,7 @@ Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
 
-// Vue.prototype.$http = axios;
+//  Vue.prototype.$http = axios;
 
 const access_token = localStorage.getItem("access_token");
 if (access_token) {
