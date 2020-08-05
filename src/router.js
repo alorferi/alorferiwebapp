@@ -1,28 +1,16 @@
-import Vue from "vue";
-import Router from "vue-router";
-import store from "./store.js";
-import Home from "./views/home/Home.vue";
-import About from "./views/about/About.vue";
-import Login from "./views/auth/Login.vue";
-import Secure from "./views/auth/Secure.vue";
-import Register from "./views/auth/Register.vue";
-import NewsFeeds from "./views/home/NewsFeeds.vue";
-import MyLibraries from "./views/library/MyLibraries.vue";
-import LibraryCreate from "./views/library/LibraryCreate.vue";
-import LibraryEdit from "./views/library/LibraryEdit.vue";
-import LibraryShow from "./views/library/LibraryShow.vue";
-import LibraryBooks from "./views/library/LibraryBooks.vue";
-import LibraryMembers from "./views/library/LibraryMembers.vue";
-import LibraryAbout from "./views/library/LibraryAbout.vue";
-import UserProfile from "./views/user/UserProfile";
-import HomeLeftMenu from "./views/menus/HomeLeftMenu";
-import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
-import LibraryBadge from "./views/badges/LibraryBadge";
-import UserBadge from "./views/badges/UserBadge";
+import Vue from 'vue'
+import Router from 'vue-router'
+import store from './store.js'
+import Home from './views/Home.vue'
+import About from './views/About.vue'
+import Login from './components/Login.vue'
+import Secure from './components/Secure.vue'
+import Register from './components/Register.vue'
 
-Vue.use(Router);
+Vue.use(Router)
 
 let router = new Router({
+<<<<<<< HEAD
     mode: "history",
     routes: [
         {
@@ -140,17 +128,51 @@ let router = new Router({
         }
     ]
 });
+=======
+  mode: 'history',
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: Home
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
+    },
+    {
+      path: '/secure',
+      name: 'secure',
+      component: Secure,
+      meta: { 
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: About
+    }
+  ]
+})
+>>>>>>> parent of 4463ec0... Merge branch 'development' of https://github.com/alorferi/alorferiwebapp into development
 
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (store.getters.isLoggedIn) {
-            next();
-            return;
-        }
-        next("/login");
-    } else {
-        next();
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
     }
-});
+    next('/login') 
+  } else {
+    next() 
+  }
+})
 
-export default router;
+export default router

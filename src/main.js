@@ -1,16 +1,12 @@
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
-import axios from "axios";
-import VueAxios from "vue-axios";
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+import Axios from 'axios'
 
-import JQuery from "jquery";
-import "popper.js";
-import "bootstrap";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
+Vue.prototype.$http = Axios;
 
+<<<<<<< HEAD
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 
@@ -75,12 +71,17 @@ const access_token = localStorage.getItem("access_token");
 if (access_token) {
     Vue.prototype.$http.defaults.headers.common["Authorization"] =
         "Bearer " + access_token;
+=======
+const token = localStorage.getItem('user-token')
+if (token) {
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+>>>>>>> parent of 4463ec0... Merge branch 'development' of https://github.com/alorferi/alorferiwebapp into development
 }
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 new Vue({
-    router,
-    store,
-    render: h => h(App)
-}).$mount("#app");
+  router,
+  store,
+  render: h => h(App)
+}).$mount('#app')
