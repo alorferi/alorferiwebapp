@@ -57,8 +57,8 @@ let router = new Router({
         },
 
         {
-            path: "/feeds",
-            name: "feeds",
+            path: "/newsfeeds",
+            name: "newsfeeds",
             component: NewsFeeds,
             leftMenu: HomeLeftMenu,
             leftBadge: UserBadge
