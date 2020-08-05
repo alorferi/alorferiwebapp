@@ -100,7 +100,7 @@ export default {
             this.$store
                 .dispatch("login", { username, password })
                 .then(() => {
-                    this.$router.push({ name: "newsfeeds" });
+                    this.$router.push({ name: "home" });
                 })
                 .catch(err => console.log(err));
         },
