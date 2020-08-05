@@ -5,32 +5,28 @@
             description="Description from vue-headful"
         />
 
-        <nav class="navbar navbar-expand-sm bg-warning navbar-dark">
+        <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top">
             <MyNav v-if="isLoggedIn"></MyNav>
             <GuestNav v-else></GuestNav>
         </nav>
 
-        <div class="container h-100 mt-3">
-            <div v-if="isLoggedIn">
-                <div class="row h-100">
-                    <div class="col-sm-2">
-                        <component :is="leftBadge"></component>
+        <div class="container h-100" style="margin-top:80px">
+            <div v-if="isLoggedIn" class="row h-100">
+                <div class="col-sm-2">
+                    <component :is="leftBadge"></component>
 
-                        <div>
-                            <component :is="leftMenu"></component>
-                        </div>
+                    <div>
+                        <component :is="leftMenu"></component>
                     </div>
+                </div>
 
-                    <div class="col-sm-10 h-100" style="overflow-y: scroll;">
-                        <router-view></router-view>
-                    </div>
+                <div class="col-sm-10 h-100" style="overflow-y: scroll;">
+                    <router-view></router-view>
                 </div>
             </div>
 
-            <div v-else>
-                <div class="h-100">
-                    <router-view></router-view>
-                </div>
+            <div v-else class="h-100">
+                <router-view></router-view>
             </div>
         </div>
     </div>
