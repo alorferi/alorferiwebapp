@@ -1,71 +1,99 @@
 <template>
-  <div id="app">
+    <div id="app" class="h-100">
+        <vue-headful
+            title="আলোর ফেরী"
+            description="Description from vue-headful"
+        />
 
-  <nav class="navbar navbar-default navbar-fixed-top" style="background:#F5BA14">
-            <div class="container">
+        <nav class="navbar navbar-expand-sm bg-warning navbar-dark">
+            <MyNav v-if="isLoggedIn"></MyNav>
+            <GuestNav v-else></GuestNav>
+        </nav>
 
+        <div class="container h-100 mt-3">
+            <div v-if="isLoggedIn">
+                <div class="row h-100">
+                    <div class="col-sm-2">
+                        <component :is="leftBadge"></component>
 
-     <router-link to="/" class="navbar-brand"> <img src="./assets/alorferi_logo_brand.png" height="24px" alt="Alor Feri logo"></router-link> 
-     
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
- 
-    </div> 
+                        <div>
+                            <component :is="leftMenu"></component>
+                        </div>
+                    </div>
 
-       
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="nav navbar-nav navbar-left">
-
-              
-                    <li>
-                       <router-link to="/about">About</router-link>
-                    </li>
-
-                <li v-if="isLoggedIn">
-                   <a @click="logout">Logout</a>
-                </li>
-                </ul>
-
+                    <div class="col-sm-10 h-100" style="overflow-y: scroll;">
+                        <router-view></router-view>
+                    </div>
+                </div>
             </div>
 
-
-  </div>
-</nav>
-
-<div class="container" style="margin-top:100px;">
- <router-view/>
-  </div>
-
-  </div>
+            <div v-else>
+                <div class="h-100">
+                    <router-view></router-view>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-// import Welcome from './components/Welcome.vue'
+import GuestNav from "./views/layouts/navbars/GuestNav";
+import MyNav from "./views/layouts/navbars/MyNav.vue";
+import VueHeadful from "vue-headful";
+import UserBadge from "./views/badges/UserBadge";
+import HomeLeftMenu from "./views/menus/HomeLeftMenu";
+import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
 
 export default {
-  name: 'App',
-  components: {
-    // Welcome
-  },
-      computed : {
-      isLoggedIn : function(){ return this.$store.getters.isLoggedIn}
+    name: "App",
+    components: {
+        GuestNav,
+        MyNav,
+        VueHeadful,
+        UserBadge,
+        HomeLeftMenu,
+        LibraryLeftMenu
     },
-        methods: {
-      logout: function () {
-        this.$store.dispatch('logout')
-        .then(() => {
-          this.$router.push('/login')
-        })
-      }
+    computed: {
+        isLoggedIn: function() {
+            return this.$store.getters.isLoggedIn;
+        },
+        leftBadge() {
+            var name = this.$route.name;
+            var routes = this.$router.options.routes.filter(function(route) {
+                return route.name == name;
+            });
+            if (routes.length == 1) {
+                return routes[0].leftBadge;
+            }
+
+            return null;
+        },
+        leftMenu() {
+            var name = this.$route.name;
+            var routes = this.$router.options.routes.filter(function(route) {
+                return route.name == name;
+            });
+            if (routes.length == 1) {
+                return routes[0].leftMenu;
+            }
+
+            return null;
+        }
     },
-}
+    methods: {
+        logout: function() {
+            this.$store.dispatch("logout").then(() => {
+                this.$router.push("/");
+            });
+        }
+    },
+    goBack() {
+        window.history.length > 1
+            ? this.$router.go(-1)
+            : this.$router.push("/");
+    }
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
