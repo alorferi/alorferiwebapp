@@ -6,6 +6,7 @@ import About from "./views/about/About.vue";
 import Login from "./views/auth/Login.vue";
 import Secure from "./views/auth/Secure.vue";
 import Register from "./views/auth/Register.vue";
+import ForgotPassword from "./views/auth/ForgotPassword.vue";
 import NewsFeeds from "./views/home/NewsFeeds.vue";
 import MyLibraries from "./views/library/MyLibraries.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
@@ -33,14 +34,19 @@ let router = new Router({
             leftBadge: UserBadge
         },
         {
-            path: "/user/login",
+            path: "/login",
             name: "login",
             component: Login
         },
         {
-            path: "/user/register",
+            path: "/register",
             name: "register",
             component: Register
+        },
+        {
+            path: "/forgot-password",
+            name: "forgot-password",
+            component: ForgotPassword
         },
         {
             path: "/secure",

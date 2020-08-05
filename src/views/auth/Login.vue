@@ -1,6 +1,6 @@
 <template>
     <div class="card card-default">
-        <div class="card-header">Login</div>
+        <div class="card-header">Welcome to Alor Feri</div>
         <div class="card-body">
             <form class="login form-horizontal" @submit.prevent="login">
                 <div class="input-group mb-3">
@@ -38,7 +38,7 @@
                     />
                 </div>
 
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
                             <i class="fas fa-key"></i>
@@ -56,19 +56,34 @@
                     />
                 </div>
 
-                <div class="form-group">
-                    <input type="checkbox" name="remember" />
-                    Remember Me
+                <div
+                    class="form-group d-flex justify-content-between align-items-center w-100"
+                >
+                    <div>
+                        <input type="checkbox" name="remember" />
+                        Remember Me
+                    </div>
+
+                    <router-link
+                        :to="{ name: 'forgot-password' }"
+                        class="btn btn-link"
+                    >
+                        Forgot password?
+                    </router-link>
                 </div>
 
                 <div class="form-group">
-                    <button
-                        type="submit"
-                        class="btn btn-primary"
-                        style="width:100%"
-                    >
+                    <button type="submit" class="btn btn-primary w-100">
                         Login
                     </button>
+                </div>
+                <div class="form-group">
+                    <router-link
+                        :to="{ name: 'register' }"
+                        class="btn btn-success w-100"
+                    >
+                        Join Now
+                    </router-link>
                 </div>
             </form>
         </div>
