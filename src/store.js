@@ -4,10 +4,6 @@ import axios from "axios";
 
 Vue.use(Vuex);
 
-// let base_url = "http://localhost:3000"
-// let base_url = "http://testpanel.alorferi.com";
-// let base_url = "http://alorfericpanelsrv.test";
-
 export default new Vuex.Store({
     state: {
         status: "",
@@ -32,17 +28,15 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        login({ commit }, userCredential) {
+        login({ commit }, loginCredential) {
             return new Promise((resolve, reject) => {
                 commit("auth_request");
 
-                userCredential.client_id =
-                    "91309ef1-f5dc-4b0e-b311-1b19f94dbe16";
-                userCredential.client_secret =
-                    "n0Kywq6QTvTBFjNmvEtqJacxmiKtfLHGpA0czcQG";
-                userCredential.grant_type = "password";
+                loginCredential.client_id = Vue.prototype.$apiClientId;
+                loginCredential.client_secret = Vue.prototype.$apiClientSecret;
+                loginCredential.grant_type = "password";
 
-                console.log(userCredential);
+                console.log(loginCredential);
 
                 let login_url =
                     Vue.prototype.$apiServerBaseUrl + "/oauth/token";
@@ -50,7 +44,7 @@ export default new Vuex.Store({
                 console.log("url", login_url);
                 axios({
                     url: login_url,
-                    data: userCredential,
+                    data: loginCredential,
                     method: "POST",
                     headers: { "Content-Type": "application/json" }
                 })

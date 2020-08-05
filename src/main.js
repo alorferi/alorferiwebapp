@@ -27,6 +27,8 @@ Vue.use(PortalVue);
 window.$ = window.JQuery = JQuery;
 
 Vue.prototype.$apiServerBaseUrl = "http://alorfericpanelsrv.test";
+Vue.prototype.$apiClientId = "91309ef1-f5dc-4b0e-b311-1b19f94dbe16";
+Vue.prototype.$apiClientSecret = "n0Kywq6QTvTBFjNmvEtqJacxmiKtfLHGpA0czcQG";
 
 Vue.mixin({
     methods: {
