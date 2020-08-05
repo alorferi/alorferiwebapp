@@ -22,8 +22,6 @@ Vue.use(VueAxios, axios);
 
 Vue.use(PortalVue);
 
-// Import the styles directly. (Or you could add them via script tags.)
-
 window.$ = window.JQuery = JQuery;
 
 Vue.prototype.$apiServerBaseUrl = "http://alorfericpanelsrv.test";
