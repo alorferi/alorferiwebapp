@@ -1,8 +1,8 @@
-<template>
+headful<template>
     <div id="app" class="h-100">
         <vue-headful
             title="আলোর ফেরী"
-            description="Description from vue-headful"
+            description="Alor Feri, a socilal library, on demand book reading service."
         />
 
         <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top">
