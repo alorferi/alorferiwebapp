@@ -10,6 +10,125 @@ import Register from './components/Register.vue'
 Vue.use(Router)
 
 let router = new Router({
+<<<<<<< HEAD
+    mode: "history",
+    routes: [
+        {
+            path: "/",
+            name: "home",
+            component: Home,
+            leftMenu: HomeLeftMenu,
+            leftBadge: UserBadge
+        },
+        {
+            path: "/user/login",
+            name: "login",
+            component: Login
+        },
+        {
+            path: "/user/register",
+            name: "register",
+            component: Register
+        },
+        {
+            path: "/secure",
+            name: "secure",
+            component: Secure,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/about",
+            name: "about",
+            component: About
+        },
+
+        {
+            path: "/newsfeeds",
+            name: "newsfeeds",
+            component: NewsFeeds,
+            leftMenu: HomeLeftMenu,
+            leftBadge: UserBadge
+        },
+        {
+            path: "/user/profile",
+            name: "user-profile",
+            component: UserProfile,
+            leftBadge: UserBadge
+        },
+        {
+            path: "/user/profile/edit",
+            name: "user-profile-edit",
+            component: UserProfile,
+            leftBadge: UserBadge
+        },
+        {
+            path: "/library/my-libraries",
+            name: "my-libraries",
+            component: MyLibraries,
+            leftMenu: HomeLeftMenu,
+            leftBadge: UserBadge
+        },
+        {
+            path: "/library/create",
+            name: "library-create",
+            component: LibraryCreate,
+            leftMenu: HomeLeftMenu,
+            leftBadge: UserBadge
+        },
+        {
+            path: "/library/:id",
+            name: "library-show",
+            component: LibraryShow,
+            leftMenu: LibraryLeftMenu,
+            leftBadge: LibraryBadge
+        },
+        {
+            path: "/library/:id/edit",
+            name: "library-edit",
+            component: LibraryEdit,
+            leftMenu: LibraryLeftMenu,
+            leftBadge: LibraryBadge
+        },
+        {
+            path: "/library/:id/books",
+            name: "library-books",
+            component: LibraryBooks,
+            leftMenu: LibraryLeftMenu,
+            leftBadge: LibraryBadge
+        },
+        {
+            path: "/library/:id/members",
+            name: "library-members",
+            component: LibraryMembers,
+            leftMenu: LibraryLeftMenu,
+            leftBadge: LibraryBadge
+        },
+        {
+            path: "/library/:id/book-add",
+            name: "library-book-add",
+            component: LibraryMembers,
+            leftMenu: LibraryLeftMenu,
+            leftBadge: LibraryBadge
+        },
+        {
+            path: "/library/:id/member-add",
+            name: "library-member-add",
+            component: LibraryMembers,
+            leftMenu: LibraryLeftMenu,
+            leftBadge: LibraryBadge
+        },
+        {
+            path: "/library/:id/about",
+            name: "library-about",
+            component: LibraryAbout,
+            leftMenu: LibraryLeftMenu,
+            leftBadge: LibraryBadge
+        }
+    ]
+});
+=======
   mode: 'history',
   routes: [
     {
@@ -42,6 +161,7 @@ let router = new Router({
     }
   ]
 })
+>>>>>>> parent of 4463ec0... Merge branch 'development' of https://github.com/alorferi/alorferiwebapp into development
 
 router.beforeEach((to, from, next) => {
   if(to.matched.some(record => record.meta.requiresAuth)) {

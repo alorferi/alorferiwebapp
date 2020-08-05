@@ -1,6 +1,33 @@
 <template>
   <div id="app">
 
+<<<<<<< HEAD
+        <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top">
+            <MyNav v-if="isLoggedIn"></MyNav>
+            <GuestNav v-else></GuestNav>
+        </nav>
+
+        <div class="container h-100" style="margin-top:80px">
+            <div v-if="isLoggedIn" class="row h-100">
+                <div class="col-sm-2">
+                    <component :is="leftBadge"></component>
+
+                    <div>
+                        <component :is="leftMenu"></component>
+                    </div>
+                </div>
+
+                <div class="col-sm-10 h-100" style="overflow-y: scroll;">
+                    <router-view></router-view>
+                </div>
+            </div>
+
+            <div v-else class="h-100">
+                <router-view></router-view>
+            </div>
+        </div>
+    </div>
+=======
   <nav class="navbar navbar-default navbar-fixed-top" style="background:#F5BA14">
             <div class="container">
 
@@ -42,6 +69,7 @@
   </div>
 
   </div>
+>>>>>>> parent of 4463ec0... Merge branch 'development' of https://github.com/alorferi/alorferiwebapp into development
 </template>
 
 <script>
