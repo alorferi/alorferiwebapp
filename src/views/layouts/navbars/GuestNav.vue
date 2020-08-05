@@ -21,9 +21,9 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav  mr-auto">
                 <li class="nav-item">
-                    <router-link class="nav-link" :to="{ name: 'about' }"
+                    <!-- <router-link class="nav-link" :to="{ name: 'about' }"
                         >About</router-link
-                    >
+                    > -->
                 </li>
             </ul>
 

@@ -106,7 +106,10 @@ export default {
         },
         onBlurMobileNumber(e) {
             console.log("blur", e.target.value);
-            e.target.value = parseInt(e.target.value, 10);
+            var value = parseInt(e.target.value, 10);
+            if (isNaN(value) == false) {
+                e.target.value = value;
+            }
         }
     }
 };
