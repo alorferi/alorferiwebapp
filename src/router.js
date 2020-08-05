@@ -33,7 +33,7 @@ let router = new Router({
             leftBadge: UserBadge
         },
         {
-            path: "/user/login",
+            path: "/login",
             name: "login",
             component: Login
         },

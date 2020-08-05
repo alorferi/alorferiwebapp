@@ -10,6 +10,10 @@ export default new Vuex.Store({
         access_token: localStorage.getItem("access_token") || "",
         user: {}
     },
+    getters: {
+        isLoggedIn: state => !!state.access_token,
+        authStatus: state => state.status
+    },
     mutations: {
         auth_request(state) {
             state.status = "loading";
@@ -103,9 +107,5 @@ export default new Vuex.Store({
                 resolve();
             });
         }
-    },
-    getters: {
-        isLoggedIn: state => !!state.access_token,
-        authStatus: state => state.status
     }
 });
