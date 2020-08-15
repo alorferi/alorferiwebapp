@@ -8,15 +8,16 @@ export default new Vuex.Store({
     state: {
         status: "",
         access_token: localStorage.getItem("access_token") || "",
-        user: {}
+        user: {},
+        my_libraries: []
     },
     getters: {
         isLoggedIn: state => !!state.access_token,
         authStatus: state => state.status
     },
     mutations: {
-        auth_request(state) {
-            state.status = "loading";
+        auth_request(state, status) {
+            state.status = status;
         },
         auth_success(state, access_token, user) {
             state.status = "success";
@@ -34,13 +35,13 @@ export default new Vuex.Store({
     actions: {
         login({ commit }, loginCredential) {
             return new Promise((resolve, reject) => {
-                commit("auth_request");
+                commit("auth_request", "loading");
 
                 loginCredential.client_id = Vue.prototype.$apiClientId;
                 loginCredential.client_secret = Vue.prototype.$apiClientSecret;
                 loginCredential.grant_type = "password";
 
-                console.log(loginCredential);
+                console.log("paylod", loginCredential);
 
                 let login_url =
                     Vue.prototype.$apiServerBaseUrl + "/oauth/token";
@@ -52,24 +53,29 @@ export default new Vuex.Store({
                     method: "POST",
                     headers: { "Content-Type": "application/json" }
                 })
-                    .then(resp => {
-                        console.log(resp.data);
+                    .then(response => {
+                        console.log(response.data);
 
-                        const access_token = resp.data.access_token;
-                        const user = resp.data.user;
+                        const access_token = response.data.access_token;
+                        const user = response.data.user;
                         localStorage.setItem("access_token", access_token);
                         // Add the following line:
                         axios.defaults.headers.common[
                             "Authorization"
                         ] = access_token;
                         commit("auth_success", access_token, user);
-                        resolve(resp);
+                        resolve(response);
                     })
-                    .catch(err => {
-                        console.log(err);
+                    .catch(error => {
+                        console.log(error);
                         commit("auth_error");
                         localStorage.removeItem("access_token");
-                        reject(err);
+
+                        if (error.response.data.error == "invalid_grant") {
+                            reject("Mobile Number or Password is Invalid.");
+                        } else {
+                            reject(error);
+                        }
                     });
             });
         },
@@ -81,16 +87,16 @@ export default new Vuex.Store({
                     data: user,
                     method: "POST"
                 })
-                    .then(resp => {
-                        const access_token = resp.data.access_token;
-                        const user = resp.data.user;
+                    .then(response => {
+                        const access_token = response.data.access_token;
+                        const user = response.data.user;
                         localStorage.setItem("access_token", access_token);
                         // Add the following line:
                         axios.defaults.headers.common[
                             "Authorization"
                         ] = access_token;
                         commit("auth_success", access_token, user);
-                        resolve(resp);
+                        resolve(response);
                     })
                     .catch(err => {
                         commit("auth_error", err);

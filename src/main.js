@@ -25,8 +25,12 @@ Vue.use(PortalVue);
 window.$ = window.JQuery = JQuery;
 
 Vue.prototype.$apiServerBaseUrl = process.env.VUE_APP_API_SERVER_BASE_URL;
-Vue.prototype.$apiClientId = "91309ef1-f5dc-4b0e-b311-1b19f94dbe16";
-Vue.prototype.$apiClientSecret = "n0Kywq6QTvTBFjNmvEtqJacxmiKtfLHGpA0czcQG";
+Vue.prototype.$apiClientId = process.env.VUE_APP_API_SERVER_CLIENT_ID;
+Vue.prototype.$apiClientSecret = process.env.VUE_APP_API_SERVER_CLIENT_SECRET;
+
+console.log("apiServerBaseUrl", Vue.prototype.$apiServerBaseUrl);
+console.log("apiClientId", Vue.prototype.$apiClientId);
+console.log("apiClientSecret", Vue.prototype.$apiClientSecret);
 
 Vue.mixin({
     methods: {
