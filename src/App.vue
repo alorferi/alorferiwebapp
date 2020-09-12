@@ -10,7 +10,7 @@ headful<template>
       <GuestNav v-else></GuestNav>
     </nav>
 
-    <div class="container h-100" style="margin-top:80px">
+    <div class="container-fluid h-100" style="margin-top:80px">
       <div v-if="isLoggedIn" class="row h-100">
         <div class="col-sm-2">
           <component :is="leftBadge"></component>

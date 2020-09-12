@@ -30,7 +30,7 @@ let router = new Router({
             name: "home",
             component: Home,
             leftMenu: HomeLeftMenu,
-            leftBadge: UserBadge
+
         },
         {
             path: "/login",
@@ -61,7 +61,7 @@ let router = new Router({
             name: "newsfeeds",
             component: NewsFeeds,
             leftMenu: HomeLeftMenu,
-            leftBadge: UserBadge
+
         },
         {
             path: "/user/profile",
@@ -80,14 +80,14 @@ let router = new Router({
             name: "my-libraries",
             component: MyLibraries,
             leftMenu: HomeLeftMenu,
-            leftBadge: UserBadge
+
         },
         {
             path: "/library/create",
             name: "library-create",
             component: LibraryCreate,
             leftMenu: HomeLeftMenu,
-            leftBadge: UserBadge
+
         },
         {
             path: "/library/:id",

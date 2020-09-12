@@ -1,20 +1,7 @@
 <template>
     <div>
-        <div class="card mb-3">
-            <div class="card-header">Create post</div>
-            <div class="card-body">
-                <textarea
-                    class="form-control"
-                    rows="3"
-                    id="comment"
-                    placeholder="What's on your mind?"
-                >
-                </textarea>
-            </div>
-            <div class="card-footer justify-content-end d-flex">
-                <button class="btn btn-primary ml-auto">Post</button>
-            </div>
-        </div>
+
+<NewPost></NewPost>
 
         <div class="media border p-3">
             <img
@@ -186,8 +173,10 @@
 </template>
 
 <script>
+import NewPost from "@/views/home/NewPost";
 export default {
     name: "NewsFeeds",
+    components:{NewPost},
     data() {
         return {
             text:

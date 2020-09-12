@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <router-link :to="{ name: 'home' }" class="navbar-brand">
       <img src="@/assets/alorferi_logo_brand.png" height="24px" alt="Alor Feri logo" />
     </router-link>
@@ -51,7 +51,7 @@
             href="#"
             id="navbardrop"
             data-toggle="dropdown"
-          >Babul Mirdha</a>
+          > <i class="far fa-user-circle" style=""></i> Babul Mirdha</a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/user/profile">Profile</a>
             <a class="dropdown-item" href="#">Link 2</a>
