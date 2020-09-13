@@ -5,22 +5,40 @@
             class="text-primary pt-2 uppercase text-xs font-bold absolute"
             >{{ label }}</label
         >
-        <input
-            :type="type"
-            :id="name"
-            class="form-control pt-2 w-full text-gray-900 border-b pb-2 focus:outline-none focus:border-blue-400"
-            v-model="value"
-            :placeholder="placeholder"
-            :class="errorClassObject()"
-            @input="updateField()"
-        />
+
+        <div class="input-group mb-3">
+            <input
+                type="radio"
+                :name="name"
+                class="form-control pt-2 w-full text-gray-900 border-b pb-2 focus:outline-none"
+                v-model="value"
+                value="m"
+                :placeholder="placeholder"
+                :class="errorClassObject()"
+                @input="updateField()"
+            />
+            Male
+
+            <input
+                type="radio"
+                :name="name"
+                class="form-control pt-2 w-full text-gray-900 border-b pb-2 focus:outline-none"
+                v-model="value"
+                value="f"
+                :placeholder="placeholder"
+                :class="errorClassObject()"
+                @input="updateField()"
+            />
+            Female
+        </div>
+
         <p class="text-danger text-sm" v-text="errorMessage()"></p>
     </div>
 </template>
 
 <script>
 export default {
-    name: "EditTextField",
+    name: "GenderInputField",
     props: ["name", "label", "placeholder", "type", "errors", "data"],
     mounted() {},
     data: function() {

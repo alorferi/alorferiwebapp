@@ -1,76 +1,162 @@
 <template>
-
-   <div class="panel panel-default">
-       <div class="panel-heading">  Register </div> 
-         <div class="panel-body">
-              
-            <form class="login form-horizontal" @submit.prevent="register">
-                         <div class="col-md-12">
-                             <div class="form-group">
-
-                                   <input id="name" v-model="name"  type="text" class="form-control" name="name" placeholder="Full Name" required autofocus>
-
-                            </div>
-
-                              <div class="form-group">
-                                   <input id="password"  v-model="password" type="password" class="form-control" name="password" placeholder="Password" required>
-                            </div>
-                           
-                                       <div class="form-group">
-
-                                   <input id="mobile" v-model="mobile"  type="text" class="form-control"  placeholder="Full Name" required autofocus>
-
-                            </div>
-
-
-                             <div class="form-group">
-                            
-                                <button type="submit" class="btn btn-primary"  style="width:100%">
-                                    Login
-                                </button>
-
-                             </div>
-
+    <div>
+        <div>
+            <form class="login form-horizontal" @submit.prevent="submitForm">
+                <div class="col-md-12">
+                    <div class="d-flex">
+                        <div class="form-group  flex-fill pr-2">
+                            <EditTextField
+                                type="text"
+                                name="first_name"
+                                label="First Name"
+                                placeholder="First Name"
+                                :errors="errors"
+                                @update:field="user.first_name = $event"
+                            />
                         </div>
 
+                        <div class="form-group  flex-fill pl-2">
+                                <EditTextField
+                                type="text"
+                                name="surname"
+                                label="Surname"
+                                placeholder="Surname"
+                                :errors="errors"
+                                @update:field="user.surname = $event"
+                            />
+                        </div>
+                    </div>
 
+                    <div class="form-group">
+
+                             <MobileInputField
+                                type="text"
+                                name="mobile"
+                                label="Mobile"
+                                placeholder="Mobile"
+                                :errors="errors"
+                                @update:field="user.mobile = $event"
+                            />
+
+
+                    </div>
+
+                    <div class="form-group">
+
+                             <EditTextField
+                                type="password"
+                                name="password"
+                                label="Password"
+                                placeholder="Password"
+                                :errors="errors"
+                                @update:field="user.password = $event"
+                            />
+
+                    </div>
+
+                    <div class="form-group">
+
+                             <EditTextField
+                                type="date"
+                                name="dob"
+                                label="Date of birth"
+                                placeholder="DD/MM/YYYY"
+                                :errors="errors"
+                                @update:field="user.password = $event"
+                            />
+
+                    </div>
+
+                    <div>
+
+                            <GenderInputField
+                                name="gender"
+                                label="Gender"
+                                :errors="errors"
+                                @update:field="user.gender = $event"
+                            />
+
+
+                        Gender
+                        <input
+                            type="radio"
+                            name="gender"
+                            v-model="user.gender"
+                            value="m"
+                        />
+                        Male
+                        <input
+                            type="radio"
+                            name="gender"
+                            v-model="user.gender"
+                            value="f"
+                        />
+                        Female
+                    </div>
+
+                    <div class="form-group">
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            style="width:100%"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </div>
             </form>
-
-         </div>
-   </div>
+        </div>
+    </div>
 </template>
 
 <script>
-export default {
-  name: 'Register',
-  props: {
-    msg: String
-  },    
-  data(){
-      return {
-        name : "",
-        mobile : "",
-        password : "",
-  
+import EditTextField from "../../components/EditTextField";
+import MobileInputField from "../../components/MobileInputField";
+import GenderInputField from "../../components/GenderInputField";
 
-      }
+export default {
+    name: "Register",
+    props: {
+        msg: String
     },
- methods: {
-      register: function () {
-        let data = {
-          name: this.name,
-          email: this.mobile,
-          password: this.password,
+    components: {
+        EditTextField,MobileInputField,GenderInputField
+    },
+    data() {
+        return {
+            user: {
+                first_name: "",
+                surname: "",
+                mobile: "",
+                password: "",
+                dob: "",
+                gender: ""
+            },
+            errors: null
+        };
+    },
+    methods: {
+        // register: function() {
+        //     this.$store
+        //         .dispatch("register", this.user)
+        //         .then(() => this.$router.push("/"))
+        //         .catch(err => console.log(err));
+        // },
+        submitForm: function() {
+            this.$axios
+                .post(this.$apiServerBaseUrl + "/api/auth/register", this.user)
+                .then(response => {
+                    console.log(response.data.data);
+                    this.$router.push("/auth/login");
+                })
+                .catch(errors => {
+                    console.log(errors);
+                    this.errors = errors.response.data.errors;
+                });
         }
-        this.$store.dispatch('register', data)
-       .then(() => this.$router.push('/'))
-       .catch(err => console.log(err))
-      }
     }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
+<style scoped></style>

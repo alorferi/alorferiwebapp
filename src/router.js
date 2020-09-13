@@ -33,12 +33,12 @@ let router = new Router({
 
         },
         {
-            path: "/login",
+            path: "/auth/login",
             name: "login",
             component: Login
         },
         {
-            path: "/user/register",
+            path: "/auth/register",
             name: "register",
             component: Register
         },

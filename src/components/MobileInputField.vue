@@ -5,7 +5,17 @@
             class="text-primary pt-2 uppercase text-xs font-bold absolute"
             >{{ label }}</label
         >
-        <input
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+
+            <select class="form-control" id="country_code" v-model="country_code">
+              <option value="+880" selected>+880</option>
+              <option value="+91">+91</option>
+              <option value="+1">+1</option>
+            </select>
+          </div>
+
+                  <input
             :type="type"
             :id="name"
             class="form-control pt-2 w-full text-gray-900 border-b pb-2 focus:outline-none focus:border-blue-400"
@@ -14,13 +24,16 @@
             :class="errorClassObject()"
             @input="updateField()"
         />
+
+        </div>
+
         <p class="text-danger text-sm" v-text="errorMessage()"></p>
     </div>
 </template>
 
 <script>
 export default {
-    name: "EditTextField",
+    name: "MobileInputField",
     props: ["name", "label", "placeholder", "type", "errors", "data"],
     mounted() {},
     data: function() {

@@ -60,6 +60,14 @@
         <div class="form-group">
           <button type="submit" class="btn btn-primary" style="width:100%">Login</button>
         </div>
+
+            <div class="form-group">
+
+          <router-link class="btn btn-success" :to="{ name:'register' }" style="width:100%">
+                Register
+          </router-link>
+
+        </div>
         <div class="text-center text-danger">{{error_message}}</div>
       </form>
     </div>

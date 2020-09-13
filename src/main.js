@@ -19,6 +19,7 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import PortalVue from "portal-vue";
 
 Vue.use(VueAxios, axios);
+Vue.prototype.$axios = axios
 
 Vue.use(PortalVue);
 
