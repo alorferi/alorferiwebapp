@@ -51,7 +51,7 @@
             href="#"
             id="navbardrop"
             data-toggle="dropdown"
-          > <i class="far fa-user-circle" style=""></i> Babul Mirdha</a>
+          > <i class="far fa-user-circle" style=""></i>  <UserName></UserName> </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/user/profile">Profile</a>
             <a class="dropdown-item" href="#">Link 2</a>
@@ -70,11 +70,13 @@
 </template>
 
 <script>
+import UserName from "../../views/user/UserName"
 // import Logout from './Logout'
 export default {
   name: "HomeNav",
   components: {
-    // Logout
+      UserName
+    // Logout,
   },
   data() {
     return {};

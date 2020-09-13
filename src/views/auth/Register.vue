@@ -4,7 +4,7 @@
             <form class="login form-horizontal" @submit.prevent="submitForm">
                 <div class="col-md-12">
                     <div class="d-flex">
-                        <div class="form-group  flex-fill pr-2">
+                        <div class="form-group flex-fill pr-2">
                             <EditTextField
                                 type="text"
                                 name="first_name"
@@ -27,10 +27,11 @@
                         </div>
                     </div>
 
+
+
                     <div class="form-group">
 
                              <MobileInputField
-                                type="text"
                                 name="mobile"
                                 label="Mobile"
                                 placeholder="Mobile"
@@ -41,7 +42,7 @@
 
                     </div>
 
-                    <div class="form-group">
+                                   <div class="form-group">
 
                              <EditTextField
                                 type="password"
@@ -54,6 +55,7 @@
 
                     </div>
 
+
                     <div class="form-group">
 
                              <EditTextField
@@ -62,7 +64,7 @@
                                 label="Date of birth"
                                 placeholder="DD/MM/YYYY"
                                 :errors="errors"
-                                @update:field="user.password = $event"
+                                @update:field="user.dob = $event"
                             />
 
                     </div>
@@ -76,22 +78,6 @@
                                 @update:field="user.gender = $event"
                             />
 
-
-                        Gender
-                        <input
-                            type="radio"
-                            name="gender"
-                            v-model="user.gender"
-                            value="m"
-                        />
-                        Male
-                        <input
-                            type="radio"
-                            name="gender"
-                            v-model="user.gender"
-                            value="f"
-                        />
-                        Female
                     </div>
 
                     <div class="form-group">
@@ -136,13 +122,9 @@ export default {
         };
     },
     methods: {
-        // register: function() {
-        //     this.$store
-        //         .dispatch("register", this.user)
-        //         .then(() => this.$router.push("/"))
-        //         .catch(err => console.log(err));
-        // },
+
         submitForm: function() {
+             console.log( this.user)
             this.$axios
                 .post(this.$apiServerBaseUrl + "/api/auth/register", this.user)
                 .then(response => {

@@ -1,8 +1,8 @@
 <template>
-    <div class="form-group pb-1">
+    <div class="form-group">
         <label
             :for="name"
-            class="text-primary pt-2 uppercase text-xs font-bold absolute"
+            class="text-primary"
             >{{ label }}</label
         >
 
@@ -10,24 +10,24 @@
             <input
                 type="radio"
                 :name="name"
-                class="form-control pt-2 w-full text-gray-900 border-b pb-2 focus:outline-none"
+                class="form-control"
                 v-model="value"
                 value="m"
                 :placeholder="placeholder"
                 :class="errorClassObject()"
-                @input="updateField()"
+                @change="updateField()"
             />
             Male
 
             <input
                 type="radio"
                 :name="name"
-                class="form-control pt-2 w-full text-gray-900 border-b pb-2 focus:outline-none"
+                class="form-control"
                 v-model="value"
                 value="f"
                 :placeholder="placeholder"
                 :class="errorClassObject()"
-                @input="updateField()"
+                @change="updateField()"
             />
             Female
         </div>
@@ -39,7 +39,7 @@
 <script>
 export default {
     name: "GenderInputField",
-    props: ["name", "label", "placeholder", "type", "errors", "data"],
+    props: ["name", "label", "placeholder", "errors", "data"],
     mounted() {},
     data: function() {
         return {
