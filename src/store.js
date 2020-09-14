@@ -105,6 +105,26 @@ export default new Vuex.Store({
                     });
             });
         },
+        getMe({ commit }) {
+            return new Promise((resolve, reject) => {
+                commit("auth_request");
+                axios({
+                    url: this.$apiServerBaseUrl + "/api/user/me",
+                    data: null,
+                    method: "GET"
+                })
+                    .then(response => {
+                        const user = response.data.data;
+                        commit("auth_success", user);
+                        resolve(response);
+                    })
+                    .catch(err => {
+                        commit("auth_error", err);
+                        localStorage.removeItem("access_token");
+                        reject(err);
+                    });
+            });
+        },
         logout({ commit }) {
             return new Promise(resolve => {
                 commit("logout");
