@@ -80,12 +80,12 @@ export default {
   methods: {
     logout: function () {
       this.$store.dispatch("logout").then(() => {
-        this.$router.push("/");
+        this.$router.push({name:"home"});
       });
     },
   },
   goBack() {
-    window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
+    window.history.length > 1 ? this.$router.go(-1) : this.$router.push({name:"home"});
   },
 };
 </script>

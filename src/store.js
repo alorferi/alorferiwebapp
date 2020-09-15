@@ -8,20 +8,24 @@ export default new Vuex.Store({
     state: {
         status: "",
         access_token: localStorage.getItem("access_token") || "",
-        user: {},
+        user: JSON.parse(localStorage.getItem("user") || null) ,
         my_libraries: []
     },
     getters: {
         isLoggedIn: state => !!state.access_token,
-        authStatus: state => state.status
+        authStatus: state => state.status,
+        user: state => state.user
     },
     mutations: {
         auth_request(state, status) {
             state.status = status;
         },
-        auth_success(state, access_token, user) {
+        oauth_success(state, access_token) {
             state.status = "success";
             state.access_token = access_token;
+        },
+        get_me_success(state, user) {
+            state.status = "success";
             state.user = user;
         },
         auth_error(state) {
@@ -41,12 +45,10 @@ export default new Vuex.Store({
                 loginCredential.client_secret = Vue.prototype.$apiClientSecret;
                 loginCredential.grant_type = "password";
 
-                console.log("paylod", loginCredential);
 
                 let login_url =
                     Vue.prototype.$apiServerBaseUrl + "/oauth/token";
                 // alert(login_url);
-                console.log("url", login_url);
                 axios({
                     url: login_url,
                     data: loginCredential,
@@ -54,20 +56,17 @@ export default new Vuex.Store({
                     headers: { "Content-Type": "application/json" }
                 })
                     .then(response => {
-                        console.log(response.data);
 
                         const access_token = response.data.access_token;
-                        const user = response.data.user;
                         localStorage.setItem("access_token", access_token);
                         // Add the following line:
                         axios.defaults.headers.common[
                             "Authorization"
                         ] = access_token;
-                        commit("auth_success", access_token, user);
+                        commit("oauth_success", access_token);
                         resolve(response);
                     })
                     .catch(error => {
-                        console.log(error);
                         commit("auth_error");
                         localStorage.removeItem("access_token");
 
@@ -81,7 +80,7 @@ export default new Vuex.Store({
         },
         register({ commit }, user) {
             return new Promise((resolve, reject) => {
-                commit("auth_request");
+                commit("reg_request");
                 axios({
                     url: Vue.prototype.$apiServerBaseUrl + "/register",
                     data: user,
@@ -95,11 +94,11 @@ export default new Vuex.Store({
                         axios.defaults.headers.common[
                             "Authorization"
                         ] = access_token;
-                        commit("auth_success", access_token, user);
+                        commit("reg_success", access_token, user);
                         resolve(response);
                     })
                     .catch(err => {
-                        commit("auth_error", err);
+                        commit("reg_error", err);
                         localStorage.removeItem("access_token");
                         reject(err);
                     });
@@ -107,20 +106,23 @@ export default new Vuex.Store({
         },
         getMe({ commit }) {
             return new Promise((resolve, reject) => {
-                commit("auth_request");
+                // commit("get_me_request");
                 axios({
-                    url: this.$apiServerBaseUrl + "/api/user/me",
-                    data: null,
+                    url: Vue.prototype.$apiServerBaseUrl + "/api/user/me",
+                    headers:{
+                        Authorization: 'Bearer ' + localStorage.getItem("access_token")
+                    },
                     method: "GET"
                 })
                     .then(response => {
                         const user = response.data.data;
-                        commit("auth_success", user);
+                        localStorage.setItem("user", JSON.stringify(user));
+                        commit("get_me_success", user);
                         resolve(response);
                     })
                     .catch(err => {
-                        commit("auth_error", err);
-                        localStorage.removeItem("access_token");
+                        console.log("err:", err)
+                        // commit("get_me_error", err);
                         reject(err);
                     });
             });

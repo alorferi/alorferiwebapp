@@ -1,5 +1,5 @@
 <template>
-    <div>{{ user.first_name }} </div>
+    <div>{{ firstName }} </div>
 </template>
 
 <script>
@@ -10,17 +10,12 @@ export default {
             user: null
         };
     },
-    computed: {},
+    computed: {
+          firstName: function () {
+      return this.$store.getters.user.first_name;
+    },
+    },
     mounted() {
-        this.$axios
-            .get(this.$apiServerBaseUrl + "/api/user/me")
-            .then(response => {
-                console.log(response.data.data);
-                this.user = response.data.data;
-            })
-            .catch(errors => {
-                console.log(errors);
-            });
     },
     methods: {}
 };

@@ -29,9 +29,9 @@ Vue.prototype.$apiServerBaseUrl = process.env.VUE_APP_API_SERVER_BASE_URL;
 Vue.prototype.$apiClientId = process.env.VUE_APP_API_SERVER_CLIENT_ID;
 Vue.prototype.$apiClientSecret = process.env.VUE_APP_API_SERVER_CLIENT_SECRET;
 
-console.log("apiServerBaseUrl", Vue.prototype.$apiServerBaseUrl);
-console.log("apiClientId", Vue.prototype.$apiClientId);
-console.log("apiClientSecret", Vue.prototype.$apiClientSecret);
+// console.log("apiServerBaseUrl", Vue.prototype.$apiServerBaseUrl);
+// console.log("apiClientId", Vue.prototype.$apiClientId);
+// console.log("apiClientSecret", Vue.prototype.$apiClientSecret);
 
 Vue.mixin({
     methods: {
