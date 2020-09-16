@@ -9,21 +9,14 @@
             />
             <div class="media-body">
                 <h4>
-                    John Doe <small><i>Posted on February 19, 2016</i></small>
+                    {{post.user.first_name}} <small><i>Posted on February 19, 2016</i></small>
                 </h4>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                   {{post.body}}
                 </p>
 
                 <!-- 4:3 aspect ratio -->
-                <div class="embed-responsive embed-responsive-16by9">
+                <div v-if="getYouTubeEmbedUrl" class="embed-responsive embed-responsive-16by9">
                     <iframe
                         class="embed-responsive-item"
                         :src="getYouTubeEmbedUrl"
@@ -59,18 +52,31 @@
 <script>
 export default {
     name: "Post",
+    props: ['post'],
     components: {},
     data() {
         return {
-            text:
-                "Lorem ipsum dolor sit amet, https://www.youtube.com/watch?v=Z_EsdERRRyg consectetur adipiscing\nelit, sed do eiusmod tempor incididunt ut labore et\ndolore magna aliqua."
+
+
         };
     },
     computed: {
+
+
         getYouTubeEmbedUrl: function() {
+
+          var url = this.extractUrl(this.post.body)
+
+
+        if(url){
+          url = "https://www.youtube.com/embed/" +
+                this.extractYouTubeVideoId(url)
+        }
+
+
+
             return (
-                "https://www.youtube.com/embed/" +
-                this.extractYouTubeVideoId(this.extractUrl(this.text))
+               url
             );
         }
     }

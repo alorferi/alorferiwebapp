@@ -44,7 +44,7 @@ Vue.mixin({
 
             var matches = text.match(regex);
 
-            if (matches.length >= 1) {
+            if (matches && matches.length >= 1) {
                 return matches[0];
             }
 
