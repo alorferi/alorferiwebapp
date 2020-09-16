@@ -9,7 +9,7 @@
             />
             <div class="media-body">
                 <h4>
-                    {{post.user.first_name}} <small><i>Posted on February 19, 2016</i></small>
+                    {{post.user.first_name}} <small><i>Posted {{ post.posted_at }}</i></small>
                 </h4>
                 <p>
                    {{post.body}}
