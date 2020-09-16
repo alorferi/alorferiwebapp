@@ -47,11 +47,11 @@
         <!-- Dropdown -->
         <li class="nav-item dropdown">
           <a
-            class="nav-link dropdown-toggle"
+            class="nav-link dropdown-toggle bg-primary "
             href="#"
             id="navbardrop"
             data-toggle="dropdown"
-          > <i class="far fa-user-circle" style=""></i>  <UserName></UserName> </a>
+          > <i class="far fa-user-circle" style=""></i>  {{ firstName }}  </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/user/profile">Profile</a>
             <a class="dropdown-item" href="#">Link 2</a>
@@ -70,18 +70,19 @@
 </template>
 
 <script>
-import UserName from "../../views/user/UserName"
 // import Logout from './Logout'
 export default {
   name: "HomeNav",
   components: {
-      UserName
     // Logout,
   },
   data() {
     return {};
   },
-  computed: {},
+    computed: {
+          firstName: function () {
+      return this.$store.getters.user.first_name;
+    }},
   mounted() {},
   methods: {
     logoutMe: function () {
