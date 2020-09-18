@@ -14,7 +14,8 @@ export default new Vuex.Store({
     getters: {
         isLoggedIn: state => !!state.access_token,
         authStatus: state => state.status,
-        user: state => state.user
+        user: state => state.user,
+        access_token: state => state.access_token
     },
     mutations: {
         auth_request(state, status) {
@@ -108,7 +109,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 // commit("get_me_request");
                 axios({
-                    url: Vue.prototype.$apiServerBaseUrl + "/api/user/me",
+                    url: Vue.prototype.$apiServerBaseUrl + "/api/users/me",
                     headers:{
                         Authorization: 'Bearer ' + localStorage.getItem("access_token")
                     },

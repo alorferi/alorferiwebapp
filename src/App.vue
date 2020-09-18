@@ -11,18 +11,12 @@ headful<template>
     </nav>
 
     <div class="container-fluid h-100" style="margin-top:80px">
-      <div v-if="isLoggedIn" class="row h-100">
-        <div class="col-sm-2">
-          <component :is="leftBadge"></component>
+      <div v-if="isLoggedIn" class="h-100">
 
-          <div>
-            <component :is="leftMenu"></component>
-          </div>
-        </div>
-
-        <div class="col-sm-10 h-100" style="overflow-y: scroll;">
+           <!-- class="row h-100" -->
+        <!-- <div class="col-sm-10 h-100" style="overflow-y: scroll;"> -->
           <router-view></router-view>
-        </div>
+        <!-- </div> -->
       </div>
 
       <div v-else class="h-100">
@@ -36,9 +30,9 @@ headful<template>
 import GuestNav from "./views/navbars/GuestNav";
 import HomeNav from "./views/navbars/HomeNav.vue";
 import VueHeadful from "vue-headful";
-import UserBadge from "./views/badges/UserBadge";
-import HomeLeftMenu from "./views/menus/HomeLeftMenu";
-import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
+// import UserBadge from "./views/badges/UserBadge";
+// import HomeLeftMenu from "./views/menus/HomeLeftMenu";
+// import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
 
 export default {
   name: "App",
@@ -46,9 +40,9 @@ export default {
     GuestNav,
     HomeNav,
     VueHeadful,
-    UserBadge,
-    HomeLeftMenu,
-    LibraryLeftMenu,
+    // UserBadge,
+    // HomeLeftMenu,
+    // LibraryLeftMenu,
   },
   computed: {
     isLoggedIn: function () {

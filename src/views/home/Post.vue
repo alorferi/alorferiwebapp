@@ -8,12 +8,19 @@
                 style="width:40px;height:40px"
             />
             <div class="media-body">
-                <h4>
-                    {{post.user.first_name}} <small><i>Posted {{ post.posted_at }}</i></small>
-                </h4>
+                <h5>
+                    {{post.user.first_name}} <small><i class="text-text-secondary"> {{ post.posted_at }}</i></small>
+                </h5>
                 <p>
                    {{post.body}}
                 </p>
+
+
+                <div v-if="post.image">
+
+                    <img :src="post.image" alt="Posted image" class="w-100">
+
+                </div>
 
                 <!-- 4:3 aspect ratio -->
                 <div v-if="getYouTubeEmbedUrl" class="embed-responsive embed-responsive-16by9">

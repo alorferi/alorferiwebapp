@@ -64,75 +64,80 @@ let router = new Router({
 
         },
         {
-            path: "/user/profile",
+            path: "/users/profile",
             name: "user-profile",
             component: UserProfile,
             leftBadge: UserBadge
         },
         {
-            path: "/user/profile/edit",
+            path: "/users/:user_id",
+            name: "user.show",
+            component: UserProfile,
+        },
+        {
+            path: "/users/profile/edit",
             name: "user-profile-edit",
             component: UserProfile,
             leftBadge: UserBadge
         },
         {
-            path: "/library/my-libraries",
+            path: "/libraries/my-libraries",
             name: "my-libraries",
             component: MyLibraries,
             leftMenu: HomeLeftMenu,
 
         },
         {
-            path: "/library/create",
+            path: "/libraries/create",
             name: "library-create",
             component: LibraryCreate,
             leftMenu: HomeLeftMenu,
 
         },
         {
-            path: "/library/:id",
+            path: "/libraries/:id",
             name: "library-show",
             component: LibraryShow,
             leftMenu: LibraryLeftMenu,
             leftBadge: LibraryBadge
         },
         {
-            path: "/library/:id/edit",
+            path: "/libraries/:id/edit",
             name: "library-edit",
             component: LibraryEdit,
             leftMenu: LibraryLeftMenu,
             leftBadge: LibraryBadge
         },
         {
-            path: "/library/:id/books",
+            path: "/libraries/:id/books",
             name: "library-books",
             component: LibraryBooks,
             leftMenu: LibraryLeftMenu,
             leftBadge: LibraryBadge
         },
         {
-            path: "/library/:id/members",
+            path: "/libraries/:id/members",
             name: "library-members",
             component: LibraryMembers,
             leftMenu: LibraryLeftMenu,
             leftBadge: LibraryBadge
         },
         {
-            path: "/library/:id/book-add",
+            path: "/libraries/:id/book-add",
             name: "library-book-add",
             component: LibraryMembers,
             leftMenu: LibraryLeftMenu,
             leftBadge: LibraryBadge
         },
         {
-            path: "/library/:id/member-add",
+            path: "/libraries/:id/member-add",
             name: "library-member-add",
             component: LibraryMembers,
             leftMenu: LibraryLeftMenu,
             leftBadge: LibraryBadge
         },
         {
-            path: "/library/:id/about",
+            path: "/libraries/:id/about",
             name: "library-about",
             component: LibraryAbout,
             leftMenu: LibraryLeftMenu,
