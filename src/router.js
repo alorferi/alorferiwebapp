@@ -64,10 +64,9 @@ let router = new Router({
 
         },
         {
-            path: "/users/profile",
-            name: "user-profile",
+            path: "/users/me",
+            name: "user.me",
             component: UserProfile,
-            leftBadge: UserBadge
         },
         {
             path: "/users/:user_id",

@@ -70,8 +70,11 @@ export default {
     },
     computed: {},
     mounted() {
+
+        var user_id = this.$route.params.user_id  == undefined? this.$store.getters.user.id : this.$route.params.user_id
+
         this.$axios
-            .get(this.getApiUrl("/api/users/" + this.$route.params.user_id))
+            .get(this.getApiUrl("/api/users/" + user_id))
             .then(response => (this.user = response.data.data))
             .catch(err => {
                 console.log(err);
@@ -83,7 +86,7 @@ export default {
         this.$axios
             .get(
                 this.getApiUrl(
-                    "/api/users/" + this.$route.params.user_id + "/posts"
+                    "/api/users/" + user_id+ "/posts"
                 )
             )
             .then(response => (this.posts = response.data.data))
