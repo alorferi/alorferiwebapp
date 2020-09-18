@@ -13,8 +13,8 @@
                 src="https://lh3.googleusercontent.com/5ylhx9Mwx1HbCArBj8spYIhSsGtrmxFAJnqJfeXdV8GdCE7FANZa0PolHmkxkREFkOdBbxSMeUZVGaxeV2bg1KQQaTJN-DkVBoSRGaCjcIFYXa1kN1FCb72At-oOro9So9N3bfTM"
                 alt="Profile image example"
             />
-            <div class="fb-profile-text">
-                <h1>{{ user.first_name }}</h1>
+            <div class="fb-profile-text pl-3">
+                <h3>{{ user.first_name }} {{ user.surname }} </h3>
                 <p>{{ user.motto }}</p>
             </div>
         </div>
@@ -109,14 +109,14 @@ export default {
 }
 
 .fb-image-profile {
-    margin: -300px 10px 0px 50px;
+    margin: -200px 10px 0px 50px;
     z-index: 9;
     width: 20%;
     height: 20%;
 }
 
 @media (max-width: 768px) {
-    .fb-profile-text > h1 {
+    .fb-profile-text > h3 {
         font-weight: 700;
         font-size: 16px;
     }
