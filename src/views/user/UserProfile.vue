@@ -25,7 +25,7 @@
 
             <!-- The Modal -->
             <div id="myModal" class="modal">
-                <span id="closeModel" class="close" v-on:click="closeModel"
+                <span id="closeModel" class="close text-white" v-on:click="closeModel"
                     >&times;</span
                 >
                 <img class="modal-content" id="img01" />
