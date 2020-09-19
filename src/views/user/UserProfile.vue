@@ -153,7 +153,7 @@ export default {
 
     }
 
-#coverImg:hover {opacity: 0.9;}
+#coverImg:hover {opacity: 0.5;}
 
 /* The Modal (background) */
 .modal {

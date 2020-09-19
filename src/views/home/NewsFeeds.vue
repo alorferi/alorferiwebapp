@@ -15,10 +15,11 @@
                     :post="post"
                 />
 
-            <p v-if=" ! is_loading_posts &&  posts.length < 1"> No post found. </p>
+                <p v-if="!is_loading_posts && posts.length < 1">
+                    No post found.
+                </p>
 
-
-                <br>
+                <br />
             </div>
 
             <div class="col-sm-2 h-100"></div>
@@ -30,8 +31,14 @@
 import Post from "@/views/home/Post";
 import NewPost from "@/views/home/NewPost";
 import UserBadge from "@/views/badges/UserBadge";
+import { mapGetters } from "vuex";
 export default {
     name: "NewsFeeds",
+    computed: {
+        ...mapGetters({
+            access_token: "access_token"
+        })
+    },
     components: { NewPost, Post, UserBadge },
     data: () => {
         return {
@@ -41,7 +48,11 @@ export default {
     },
     mounted() {
         this.$axios
-            .get(this.getApiUrl("/api/posts"))
+            .get(this.getApiUrl("/api/posts"), {
+                headers: {
+                    Authorization: "Bearer " + this.access_token //the token is a variable which holds the token
+                }
+            })
             .then(response => (this.posts = response.data.data))
             .catch(err => {
                 console.log(err);
@@ -56,5 +67,4 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-</style>
+<style></style>

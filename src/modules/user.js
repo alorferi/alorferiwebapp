@@ -24,7 +24,7 @@ const actions = {
                 .then(response => {
                     const user = response.data.data;
                     localStorage.setItem("user", JSON.stringify(user));
-                    commit("setAuthUser", user);
+                    commit("setUser", user);
                     resolve(response);
                 })
                 .catch(err => {
@@ -37,7 +37,7 @@ const actions = {
 };
 
 const mutations = {
-    setAuthUser(state,user){
+    setUser(state,user){
         state.user = user
     }
 };
