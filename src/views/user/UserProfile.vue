@@ -22,7 +22,9 @@
 
             <!-- The Modal -->
             <div id="myModal" class="modal">
-                <span id="closeModel" class="close" v-on:click="closeModel">&times;</span>
+                <span id="closeModel" class="close" v-on:click="closeModel"
+                    >&times;</span
+                >
                 <img class="modal-content" id="img01" />
                 <div id="caption"></div>
             </div>
@@ -85,7 +87,11 @@ export default {
                 : this.$route.params.user_id;
 
         this.$axios
-            .get(this.getApiUrl("/api/users/" + user_id))
+            .get(this.getApiUrl("/api/users/" + user_id), {
+                headers: {
+                    Authorization: "Bearer " + this.$store.getters.access_token
+                }
+            })
             .then(response => (this.user = response.data.data))
             .catch(err => {
                 console.log(err);
@@ -95,7 +101,11 @@ export default {
             });
 
         this.$axios
-            .get(this.getApiUrl("/api/users/" + user_id + "/posts"))
+            .get(this.getApiUrl("/api/users/" + user_id + "/posts"), {
+                headers: {
+                    Authorization: "Bearer " + this.$store.getters.access_token
+                }
+            })
             .then(response => (this.posts = response.data.data))
             .catch(err => {
                 console.log(err);
@@ -113,9 +123,9 @@ export default {
             modalImg.src = event.target.src;
             captionText.innerHTML = event.target.alt;
         },
-        closeModel: ()=>{
-             var myModal = document.getElementById("myModal");
-             myModal.style.display = "none";
+        closeModel: () => {
+            var myModal = document.getElementById("myModal");
+            myModal.style.display = "none";
         }
     }
 };
@@ -150,81 +160,85 @@ export default {
         z-index: 9;
         width: 20%;
     }
+}
 
-    }
-
-#coverImg:hover {opacity: 0.5;}
+#coverImg:hover {
+    opacity: 0.5;
+}
 
 /* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
 }
 
 /* Modal Content (image) */
 .modal-content {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px;
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
 }
 
 /* Caption of Modal Image */
 #caption {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px;
-  text-align: center;
-  color: #ccc;
-  padding: 10px 0;
-  height: 150px;
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
 }
 
 /* Add Animation */
-.modal-content, #caption {
-  animation-name: zoom;
-  animation-duration: 0.6s;
+.modal-content,
+#caption {
+    animation-name: zoom;
+    animation-duration: 0.6s;
 }
 
 @keyframes zoom {
-  from {transform: scale(0.1)}
-  to {transform: scale(1)}
+    from {
+        transform: scale(0.1);
+    }
+    to {
+        transform: scale(1);
+    }
 }
 
 /* The Close Button */
 .close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
 .close:hover,
 .close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /* 100% Image Width on Smaller Screens */
-@media only screen and (max-width: 700px){
-  .modal-content {
-    width: 100%;
-  }
-
+@media only screen and (max-width: 700px) {
+    .modal-content {
+        width: 100%;
+    }
 }
-
 </style>

@@ -31,13 +31,13 @@
 import Post from "@/views/home/Post";
 import NewPost from "@/views/home/NewPost";
 import UserBadge from "@/views/badges/UserBadge";
-import { mapGetters } from "vuex";
+// import { mapGetters } from "vuex";
 export default {
     name: "NewsFeeds",
     computed: {
-        ...mapGetters({
-            access_token: "access_token"
-        })
+        // ...mapGetters({
+        //     access_token: "access_token"
+        // })
     },
     components: { NewPost, Post, UserBadge },
     data: () => {
@@ -50,7 +50,7 @@ export default {
         this.$axios
             .get(this.getApiUrl("/api/posts"), {
                 headers: {
-                    Authorization: "Bearer " + this.access_token //the token is a variable which holds the token
+                    Authorization: "Bearer " + this.$store.getters.access_token
                 }
             })
             .then(response => (this.posts = response.data.data))

@@ -108,7 +108,9 @@ export default {
     mounted() {},
     methods: {
         logoutMe: function() {
-            this.$parent.logout();
+            this.$store.dispatch("logout").then(() => {
+                this.$router.push({ name: "home" }).catch(() => {});
+            });
         }
     }
 };
