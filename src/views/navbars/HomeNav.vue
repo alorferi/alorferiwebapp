@@ -45,13 +45,13 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="nav navbar-nav mr-auto">
                 <li>
-                    <router-link class="nav-link" :to="{ name:'home' }">
+                    <router-link class="nav-link" :to="{ name: 'home' }">
                         <i class="fas fa-home"></i
                     ></router-link>
                 </li>
 
                 <li>
-                    <router-link class="nav-link" :to="{ name:'user.me'  }">
+                    <router-link class="nav-link" :to="{ name: 'user.me' }">
                         <i class="far fa-user-circle"></i
                     ></router-link>
                 </li>
@@ -67,7 +67,7 @@
                         data-toggle="dropdown"
                     >
                         <i class="far fa-user-circle" style=""></i>
-                        {{ firstName }}
+                        {{ user.first_name }} {{ user.surname }}
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/user/profile"
@@ -91,6 +91,7 @@
 
 <script>
 // import Logout from './Logout'
+import { mapGetters } from "vuex";
 export default {
     name: "HomeNav",
     components: {
@@ -100,9 +101,9 @@ export default {
         return {};
     },
     computed: {
-        firstName: function() {
-            return this.$store.getters.user.first_name;
-        }
+        ...mapGetters({
+            user: "user"
+        })
     },
     mounted() {},
     methods: {

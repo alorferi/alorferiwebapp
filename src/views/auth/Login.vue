@@ -115,7 +115,7 @@ export default {
                 .dispatch("login", { username, password })
                 .then(() => {
                                             this.$store
-                        .dispatch("getMe")
+                        .dispatch("fetchMe")
                         .then(() => {
                             console.log("success");
                         })

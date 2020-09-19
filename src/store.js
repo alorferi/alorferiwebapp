@@ -1,20 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import User from "./modules/user"
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+    modules:{
+        User,
+    },
     state: {
         status: "",
         access_token: localStorage.getItem("access_token") || "",
-        user: JSON.parse(localStorage.getItem("user") || null) ,
         my_libraries: []
     },
     getters: {
         isLoggedIn: state => !!state.access_token,
         authStatus: state => state.status,
-        user: state => state.user,
         access_token: state => state.access_token
     },
     mutations: {
@@ -101,29 +103,6 @@ export default new Vuex.Store({
                     .catch(err => {
                         commit("reg_error", err);
                         localStorage.removeItem("access_token");
-                        reject(err);
-                    });
-            });
-        },
-        getMe({ commit }) {
-            return new Promise((resolve, reject) => {
-                // commit("get_me_request");
-                axios({
-                    url: Vue.prototype.$apiServerBaseUrl + "/api/users/me",
-                    headers:{
-                        Authorization: 'Bearer ' + localStorage.getItem("access_token")
-                    },
-                    method: "GET"
-                })
-                    .then(response => {
-                        const user = response.data.data;
-                        localStorage.setItem("user", JSON.stringify(user));
-                        commit("get_me_success", user);
-                        resolve(response);
-                    })
-                    .catch(err => {
-                        console.log("err:", err)
-                        // commit("get_me_error", err);
                         reject(err);
                     });
             });
