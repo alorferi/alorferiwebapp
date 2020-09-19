@@ -15,7 +15,10 @@
                 src="https://lh3.googleusercontent.com/5ylhx9Mwx1HbCArBj8spYIhSsGtrmxFAJnqJfeXdV8GdCE7FANZa0PolHmkxkREFkOdBbxSMeUZVGaxeV2bg1KQQaTJN-DkVBoSRGaCjcIFYXa1kN1FCb72At-oOro9So9N3bfTM"
                 alt="Profile image example"
             />
-            <div class="fb-profile-text pl-3">
+
+             <p v-if="is_loading_user">Loading user</p>
+
+            <div v-else class="fb-profile-text pl-3">
                 <h3>{{ user.first_name }} {{ user.surname }}</h3>
                 <p>{{ user.motto }}</p>
             </div>
