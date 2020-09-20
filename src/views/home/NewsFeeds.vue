@@ -2,7 +2,8 @@
     <div class="container-fluid h-100">
         <div class="row h-100">
             <div class="col-sm-2 h-100">
-                <UserBadge />
+                <!-- <UserBadge /> -->
+                <HomeLeftMenu></HomeLeftMenu>
             </div>
             <div class="col-sm-8 h-100" style="overflow-y: scroll;">
                 <NewPost></NewPost>
@@ -28,9 +29,10 @@
 </template>
 
 <script>
-import Post from "@/views/home/Post";
-import NewPost from "@/views/home/NewPost";
-import UserBadge from "@/views/badges/UserBadge";
+import Post from "@/views/post/Post";
+import NewPost from "@/views/post/NewPost";
+import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
+
 // import { mapGetters } from "vuex";
 export default {
     name: "NewsFeeds",
@@ -39,7 +41,7 @@ export default {
         //     access_token: "access_token"
         // })
     },
-    components: { NewPost, Post, UserBadge },
+    components: { NewPost, Post,HomeLeftMenu },
     data: () => {
         return {
             posts: [],

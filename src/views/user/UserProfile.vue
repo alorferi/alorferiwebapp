@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import Post from "@/views/home/Post";
+import Post from "@/views/post/Post";
 export default {
     name: "UserProfile",
     components: { Post },
