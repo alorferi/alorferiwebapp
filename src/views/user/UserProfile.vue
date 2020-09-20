@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid h-100" style="overflow-y: scroll">
+    <div>
         <div class="fb-profile">
             <img
                 id="coverImg"

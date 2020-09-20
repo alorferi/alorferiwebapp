@@ -1,11 +1,10 @@
 <template>
-    <div class="container-fluid h-100">
-        <div class="row h-100">
-            <div class="col-sm-2 h-100">
-                <!-- <UserBadge /> -->
+    <div >
+        <!-- <div class="row h-100"> -->
+            <!-- <div class="col-sm-2 h-100">
                 <HomeLeftMenu></HomeLeftMenu>
-            </div>
-            <div class="col-sm-8 h-100" style="overflow-y: scroll;">
+            </div> -->
+            <!-- <div class="col-sm-8 h-100" style="overflow-y: scroll;"> -->
                 <NewPost></NewPost>
 
                 <p v-if="is_loading_posts">Loading posts</p>
@@ -21,17 +20,17 @@
                 </p>
 
                 <br />
-            </div>
+            <!-- </div> -->
 
-            <div class="col-sm-2 h-100"></div>
-        </div>
+            <!-- <div class="col-sm-2 h-100"></div> -->
+        <!-- </div> -->
     </div>
 </template>
 
 <script>
 import Post from "@/views/post/Post";
 import NewPost from "@/views/post/NewPost";
-import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
+// import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
 
 // import { mapGetters } from "vuex";
 export default {
@@ -41,7 +40,7 @@ export default {
         //     access_token: "access_token"
         // })
     },
-    components: { NewPost, Post,HomeLeftMenu },
+    components: { NewPost, Post },
     data: () => {
         return {
             posts: [],

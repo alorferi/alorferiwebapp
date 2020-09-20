@@ -69,12 +69,14 @@ let router = new Router({
             path: "/users/me",
             name: "user.me",
             component: UserProfile,
+            leftMenu: HomeLeftMenu,
             meta:{title: "Profile"}
         },
         {
             path: "/users/:user_id",
             name: "user.show",
             component: UserProfile,
+            leftMenu: HomeLeftMenu,
             meta:{title: "Profile"}
         },
         {
