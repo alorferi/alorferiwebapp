@@ -17,7 +17,7 @@ const actions = {
             axios({
                 url: Vue.prototype.$apiServerBaseUrl + "/api/auth/me",
                 headers:{
-                    Authorization: 'Bearer ' + localStorage.getItem("access_token")
+                    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem("token")).access_token
                 },
                 method: "GET"
             })
