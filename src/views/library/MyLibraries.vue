@@ -69,7 +69,13 @@ export default {
 
     mounted() {
         axios
-            .get(this.getApiUrl("/api/v0/library/my-libraries"))
+            .get(this.getApiUrl("/api/v0/library/my-libraries"),
+          {
+                headers: {
+                    Authorization: "Bearer " + this.$store.getters.access_token
+                }
+            }
+            )
             .then(response => {
                 this.show_loading = false;
                 this.libraries = response.data.data;
