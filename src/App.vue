@@ -1,10 +1,5 @@
 headful<template>
   <div id="app" class="h-100">
-    <vue-headful
-      title="আলোর ফেরী"
-      description="Alor Feri, a socilal library, on demand book reading service."
-    />
-
     <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top">
       <HomeNav v-if="isLoggedIn"></HomeNav>
       <GuestNav v-else></GuestNav>
@@ -29,7 +24,6 @@ headful<template>
 <script>
 import GuestNav from "./views/navbars/GuestNav";
 import HomeNav from "./views/navbars/HomeNav.vue";
-import VueHeadful from "vue-headful";
 // import UserBadge from "./views/badges/UserBadge";
 // import HomeLeftMenu from "./views/menus/HomeLeftMenu";
 // import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
@@ -39,7 +33,6 @@ export default {
   components: {
     GuestNav,
     HomeNav,
-    VueHeadful,
     // UserBadge,
     // HomeLeftMenu,
     // LibraryLeftMenu,
@@ -73,6 +66,14 @@ export default {
   },
   methods: {
 
+  },
+  created(){
+      this.$store.dispatch("setPageTitle", this.$route.meta.title)
+  },
+  watch:{
+      $route(to){
+          this.$store.dispatch("setPageTitle", to.meta.title)
+      }
   },
   goBack() {
     window.history.length > 1 ? this.$router.go(-1) : this.$router.push({name:"home"});

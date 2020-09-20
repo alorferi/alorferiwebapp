@@ -30,6 +30,7 @@ let router = new Router({
             name: "home",
             component: Home,
             leftMenu: HomeLeftMenu,
+            meta:{title: "Home"}
 
         },
         {
@@ -61,17 +62,20 @@ let router = new Router({
             name: "newsfeeds",
             component: NewsFeeds,
             leftMenu: HomeLeftMenu,
+            meta:{title: "News Feed"}
 
         },
         {
             path: "/users/me",
             name: "user.me",
             component: UserProfile,
+            meta:{title: "Profile"}
         },
         {
             path: "/users/:user_id",
             name: "user.show",
             component: UserProfile,
+            meta:{title: "Profile"}
         },
         {
             path: "/users/profile/edit",
