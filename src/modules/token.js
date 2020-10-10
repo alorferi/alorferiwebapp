@@ -23,7 +23,6 @@ const actions = {
 
             let login_url =
                 Vue.prototype.$apiServerBaseUrl + "/oauth/token";
-            // alert(login_url);
             axios({
                 url: login_url,
                 data: loginCredential,
