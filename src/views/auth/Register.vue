@@ -19,8 +19,8 @@
                                 <EditTextField
                                 type="text"
                                 name="surname"
-                                label="Surname"
-                                placeholder="Surname"
+                                label="Last Name"
+                                placeholder="Last Name"
                                 :errors="errors"
                                 @update:field="user.surname = $event"
                             />
@@ -133,7 +133,7 @@ export default {
                 })
                 .catch(errors => {
                     console.log(errors);
-                    this.errors = errors.response.data.errors;
+                    this.errors = errors.response.data.data.errors;
                 });
         }
     }

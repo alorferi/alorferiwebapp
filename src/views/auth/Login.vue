@@ -29,9 +29,9 @@
                         value
                         @blur="onBlurMobileNumber"
                         placeholder="Mobile number"
-                        size="11"
-                        minlength="10"
-                        maxlength="11"
+                        size="13"
+                        minlength="12"
+                        maxlength="13"
                         pattern="([0-9]{10})|([0-9]{11})"
                         required
                         autofocus
