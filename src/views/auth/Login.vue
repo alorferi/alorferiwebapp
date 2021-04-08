@@ -131,11 +131,15 @@ export default {
         },
         onBlurMobileNumber(e) {
             console.log("blur", e.target.value);
-            var value = parseInt(e.target.value, 10);
-            if (isNaN(value) == false) {
-                e.target.value = value;
-                this.value = value;
+
+            if(e.target.value.startsWith("0",0)){
+              e.target.value =   e.target.value.substring(1);
             }
+            // var value = parseInt(e.target.value, 10);
+            // if (isNaN(value) == false) {
+            //     e.target.value = value;
+            //     this.value = value;
+            // }
         }
     }
 };

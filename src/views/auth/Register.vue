@@ -133,7 +133,10 @@ export default {
                 })
                 .catch(errors => {
                     console.log(errors);
-                    this.errors = errors.response.data.data.errors;
+                    if(errors.response.data.data.errors){
+                        this.errors = errors.response.data.data.errors;
+                    }
+
                 });
         }
     }

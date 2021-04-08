@@ -23,10 +23,10 @@
                 class="form-control"
                 v-model="value"
                 @blur="onBlurMobileNumber"
-                size="11"
-                minlength="12"
+                size="13"
+                minlength="10"
                 maxlength="13"
-                pattern="([0-9]{10})|([0-9]{11})"
+                pattern="(([0-9]{11})|([1-9]{10}))(#[1-9]{1})?"
                 :placeholder="placeholder"
                 :class="errorClassObject()"
                 @input="updateField()"
@@ -83,11 +83,17 @@ export default {
         },
         onBlurMobileNumber(e) {
             console.log("blur", e.target.value);
-            var value = parseInt(e.target.value, 10);
-            if (isNaN(value) == false) {
-               this.value = value;
+
+            if(e.target.value.startsWith("0",0)){
+               this.value =  e.target.value.substring(1);
                this.updateField()
             }
+
+            // var value = parseInt(e.target.value, 10);
+            // if (isNaN(value) == false) {
+            //    this.value = value;
+            //    this.updateField()
+            // }
         }
     },
 
