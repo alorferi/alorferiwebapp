@@ -1,6 +1,10 @@
 <template>
     <div>
         <div>
+
+
+
+
             <form class="login form-horizontal" @submit.prevent="submitForm">
                 <div class="col-md-12">
                     <div class="d-flex">
@@ -81,6 +85,13 @@
                     </div>
 
                     <div class="form-group">
+
+
+
+                     <AskForOtp/>
+
+
+
                         <button
                             type="submit"
                             class="btn btn-primary"
@@ -99,6 +110,10 @@
 import EditTextField from "../../components/EditTextField";
 import MobileInputField from "../../components/MobileInputField";
 import GenderInputField from "../../components/GenderInputField";
+import AskForOtp from "../../components/AskForOtp";
+import $ from 'jquery'
+
+import jQuery from 'jquery'
 
 export default {
     name: "Register",
@@ -106,7 +121,10 @@ export default {
         msg: String
     },
     components: {
-        EditTextField,MobileInputField,GenderInputField
+        EditTextField,
+        MobileInputField,
+        GenderInputField,
+        AskForOtp
     },
     data() {
         return {
@@ -116,7 +134,8 @@ export default {
                 mobile: "",
                 password: "",
                 dob: "",
-                gender: ""
+                gender: "",
+                otp_code: ""
             },
             errors: null
         };
@@ -129,7 +148,19 @@ export default {
                 .post(this.$apiServerBaseUrl + "/api/auth/register", this.user)
                 .then(response => {
                     console.log(response.data.data);
-                    this.$router.push("/auth/login");
+
+
+                    switch(response.data.status){
+                        case "OK": break;
+                        case "OTP_GENERARED":
+                            jQuery.noConflict();
+                            $("#otpModal").modal('show')
+
+                        break;
+                        case "OTP_REJECTED": break;
+                    }
+
+                    // this.$router.push("/auth/login");
                 })
                 .catch(errors => {
                     console.log(errors);
