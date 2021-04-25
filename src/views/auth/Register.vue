@@ -111,9 +111,9 @@ import EditTextField from "../../components/EditTextField";
 import MobileInputField from "../../components/MobileInputField";
 import GenderInputField from "../../components/GenderInputField";
 import AskForOtp from "../../components/AskForOtp";
-import $ from 'jquery'
+// import $ from 'jquery'
 
-import jQuery from 'jquery'
+// import jQuery from 'jquery'
 
 export default {
     name: "Register",
@@ -152,20 +152,21 @@ export default {
 
                     switch(response.data.status){
                         case "OK": break;
-                        case "OTP_GENERARED":
-                            jQuery.noConflict();
-                            $("#otpModal").modal('show')
+                        case "OTP_GENERATED":
+                        case "OTP_REJECTED":
+                            console.log(response.data.data);
+                            // jQuery.noConflict();
+                            // $("#otpModal").modal('show')
 
                         break;
-                        case "OTP_REJECTED": break;
                     }
 
                     // this.$router.push("/auth/login");
                 })
                 .catch(errors => {
                     console.log(errors);
-                    if(errors.response.data.data.errors){
-                        this.errors = errors.response.data.data.errors;
+                    if(errors.response.data.errors){
+                        this.errors = errors.response.data.errors;
                     }
 
                 });
