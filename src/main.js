@@ -5,10 +5,10 @@ import store from "./store";
 import axios from "axios";
 import VueAxios from "vue-axios";
 
-import JQuery from "jquery";
+
 import "popper.js";
 import "bootstrap";
-import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
 import "@fortawesome/fontawesome-free/css/all.css";
@@ -18,12 +18,15 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
 import PortalVue from "portal-vue";
 
+// import JQuery from "jquery";
+// window.$ = window.JQuery = JQuery;
+window.$ = window.JQuery = require('jquery');
+
 Vue.use(VueAxios, axios);
 Vue.prototype.$axios = axios
 
 Vue.use(PortalVue);
 
-window.$ = window.JQuery = JQuery;
 
 Vue.prototype.$apiServerBaseUrl = process.env.VUE_APP_API_SERVER_BASE_URL;
 Vue.prototype.$apiClientId = process.env.VUE_APP_API_SERVER_CLIENT_ID;
