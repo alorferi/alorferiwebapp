@@ -41,7 +41,8 @@ let router = new Router({
         {
             path: "/auth/register",
             name: "register",
-            component: Register
+            component: Register,
+            meta:{title: "Register"}
         },
         {
             path: "/secure",
