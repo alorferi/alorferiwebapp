@@ -1,60 +1,138 @@
 <template>
+    <div>
+        <b-modal
+            id="modal-prevent-closing"
+            ref="modal"
+            title="One Time Code"
+            @show="initModal"
+            @hidden="resetModal"
+            :ok-title="okTitleText"
+            v-model="showOtpModal"
+            :hide-header="hideHeader"
+            @ok="handleOk"
+        >
+            <div class="modal-header">
+                <h5 class="modal-title">One Time Code</h5>
 
-<div >
+                <span id="countdownTimerSpan">
+                    {{ downCounterText }}
+                </span>
+            </div>
 
-    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#otpModal">
-  Open modal
-</button> -->
-<div id="otpModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">One Time Code</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body text-center">
-            <input
-               id="otp_code"
-               v-model="otp_code"
-             class="text-center" type="number" value name="otp_code" placeholder="Type 6-digit code here"   minlength="6" maxlength="6" pattern="[0-9]{6}"
-            autofocus
-            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+            <form ref="form" @submit.stop.prevent="handleSubmit" class="pt-4">
+                <b-form-group
+                    label=""
+                    label-for="otp-code-input"
+                    invalid-feedback="One Time Code is required"
+                    :state="otpCodeState"
+                >
+                    <div class="d-flex  justify-content-center">
+                        <b-form-input
+                            id="otp-code-input"
+                            v-model="otp_code"
+                            :state="otpCodeState"
+                            placeholder="Type 6-digit code here"
+                            maxlength="6"
+                            size="6"
+                            pattern="\d*"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                            type="number"
+                            required
+                        />
+                    </div>
 
-        </div>
-        <div class="modal-footer">
-            <button  type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <!-- <button id="okOtpButton" type="button"  class="btn btn-primary">Ok</button> -->
-
-              <button
-                            type="submit"
-                            class="btn btn-primary"
-                        >
-                            OK
-                        </button>
-
-        </div>
-      </div>
+                    <div class="text-center text-danger">
+                        {{ message }}
+                    </div>
+                </b-form-group>
+            </form>
+        </b-modal>
     </div>
-  </div>
-  </div>
-
 </template>
-
 
 <script>
 export default {
-  name: 'AskForOtp',
-  props: {
-    // msg: String
-  },
+    name: "AskForOtp",
+    props: ["showOtpModal", "durationInSeconds"],
+    computed: {},
+    mounted: function() {
+        this.otpCountdownTimer();
+        this.downCounter = this.durationInSeconds;
+    },
+    data() {
+        return {
+            otp_code: "",
+            otpCodeState: null,
+            downCounter: 0,
+            downCounterText: "",
+            message: "",
+            oldSetInterval: null,
+            okTitleText: "OK",
+            hideHeader: true
+        };
+    },
+    methods: {
+        otpCountdownTimer: function() {
+            this.oldSetInterval = setInterval(() => {
+                if (this.downCounter <= 0) {
+                    this.message = "Time expired";
+                    // $("#okOtpButton").text("Try Again");
+                    this.okTitleText = "Try Again";
+                    clearInterval(this.oldSetInterval);
+                    return;
+                }
+                this.downCounter--;
 
+                this.downCounterText =
+                    parseInt(this.downCounter / 60) +
+                    ":" +
+                    (this.downCounter % 60);
+            }, 1000);
+        },
 
-}
+        checkFormValidity() {
+            const valid = this.$refs.form.checkValidity();
+            this.otpCodeState = valid;
+            return valid;
+        },
+        resetModal() {
+            this.otp_code = "";
+            this.otpCodeState = null;
+            this.downCounter = 0;
+            if (this.oldSetInterval != null) {
+                clearInterval(this.oldSetInterval);
+            }
+        },
+        initModal() {
+            this.otp_code = "";
+            this.message = "";
+            this.okTitleText ="OK"
+            this.otpCodeState = null;
+            this.otpCountdownTimer();
+            this.downCounter = this.durationInSeconds;
+            if (this.oldSetInterval != null) {
+                clearInterval(this.oldSetInterval);
+            }
+        },
+        handleOk(bvModalEvt) {
+            // Prevent modal from closing
+            bvModalEvt.preventDefault();
+            // Trigger submit handler
+            this.handleSubmit();
+        },
+        handleSubmit() {
+            // Exit when the form isn't valid
+            if (!this.checkFormValidity()) {
+                return;
+            }
+            // Push the name to submitted names
+            // Hide the modal manually
+            this.$nextTick(() => {
+                this.$bvModal.hide("modal-prevent-closing");
+            });
+        }
+    }
+};
 </script>
 
-<style scoped>
-
-</style>
-
+<style></style>

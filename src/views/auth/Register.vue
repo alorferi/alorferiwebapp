@@ -87,12 +87,7 @@
 
                     <div class="form-group">
 
-
-
-                     <AskForOtp/>
-
-
-
+                     <AskForOtp :showOtpModal="showOtpModal" :durationInSeconds="durationInSeconds" />
                         <button
                             type="submit"
                             class="btn btn-primary"
@@ -141,7 +136,9 @@ export default {
                 gender: "",
                 otp_code: ""
             },
-            errors: null
+            errors: null,
+            showOtpModal:false,
+            durationInSeconds:30,
         };
     },
     methods: {
@@ -153,14 +150,15 @@ export default {
                 .then(response => {
                     console.log(response.data.data);
 
-
                     switch(response.data.status){
-                        case "OK": break;
+                        case "OK":
+                        // Show modal here
+                        break;
                         case "OTP_GENERATED":
                         case "OTP_REJECTED":
-                            console.log(response.data.data);
-                            // jQuery.noConflict();
-                            // $("#otpModal").modal('show')
+                            var otp_expired_after_in_seconds = response.data.data.otp_expired_after_in_seconds;
+                            this.durationInSeconds = otp_expired_after_in_seconds;
+                            this.showOtpModal = true;
 
                         break;
                     }
