@@ -44,7 +44,7 @@ const actions = {
                     localStorage.removeItem("token");
 
                     if (error.response.data.error == "invalid_grant") {
-                        reject("Mobile Number or Password is Invalid.");
+                        reject("Mobile Number or Password does not match.");
                     } else {
                         reject(error);
                     }

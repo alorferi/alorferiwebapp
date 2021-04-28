@@ -9,8 +9,8 @@
             :ok-title="okTitleText"
             v-model="showOtpModal"
             :hide-header="hideHeader"
-            @ok="handleOk"
-        >
+            @ok="handleOk">
+
             <div class="modal-header">
                 <h5 class="modal-title">One Time Code</h5>
 
@@ -72,6 +72,9 @@ export default {
         };
     },
     methods: {
+        emitOtp: function() {
+            this.$emit("updateOtp", this.otp_code);
+        },
         otpCountdownTimer: function() {
             this.oldSetInterval = setInterval(() => {
                 if (this.downCounter <= 0) {
@@ -110,9 +113,6 @@ export default {
             this.otpCodeState = null;
             this.otpCountdownTimer();
             this.downCounter = this.durationInSeconds;
-            if (this.oldSetInterval != null) {
-                clearInterval(this.oldSetInterval);
-            }
         },
         handleOk(bvModalEvt) {
             // Prevent modal from closing
@@ -125,6 +125,8 @@ export default {
             if (!this.checkFormValidity()) {
                 return;
             }
+
+            this.emitOtp()
             // Push the name to submitted names
             // Hide the modal manually
             this.$nextTick(() => {

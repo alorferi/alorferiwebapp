@@ -16,7 +16,7 @@
                                 label="First Name"
                                 placeholder="First Name"
                                 :errors="errors"
-                                @update:field="user.first_name = $event"
+                                @update:field="userRegisterModel.first_name = $event"
                             />
                         </div>
 
@@ -27,7 +27,7 @@
                                 label="Last Name"
                                 placeholder="Last Name"
                                 :errors="errors"
-                                @update:field="user.surname = $event"
+                                @update:field="userRegisterModel.surname = $event"
                             />
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                                 label="Mobile"
                                 placeholder="Mobile"
                                 :errors="errors"
-                                @update:field="user.mobile = $event"
+                                @update:field="userRegisterModel.mobile = $event"
                             />
 
 
@@ -55,7 +55,7 @@
                                 label="Password"
                                 placeholder="Password"
                                 :errors="errors"
-                                @update:field="user.password = $event"
+                                @update:field="userRegisterModel.password = $event"
                             />
 
                     </div>
@@ -69,7 +69,7 @@
                                 label="Date of birth"
                                 placeholder="DD/MM/YYYY"
                                 :errors="errors"
-                                @update:field="user.dob = $event"
+                                @update:field="userRegisterModel.dob = $event"
                             />
 
                     </div>
@@ -80,14 +80,16 @@
                                 name="gender"
                                 label="Gender"
                                 :errors="errors"
-                                @update:field="user.gender = $event"
+                                @update:field="userRegisterModel.gender = $event"
                             />
 
                     </div>
 
                     <div class="form-group">
 
-                     <AskForOtp :showOtpModal="showOtpModal" :durationInSeconds="durationInSeconds" />
+                     <AskForOtp :showOtpModal="showOtpModal" :durationInSeconds="durationInSeconds"
+
+                     @updateOtp="updateOtp" />
                         <button
                             type="submit"
                             class="btn btn-primary"
@@ -127,7 +129,7 @@ export default {
     },
     data() {
         return {
-            user: {
+            userRegisterModel: {
                 first_name: "",
                 surname: "",
                 mobile: "",
@@ -142,17 +144,21 @@ export default {
         };
     },
     methods: {
+        updateOtp(value){
+           this.userRegisterModel.otp_code = value
+           this.submitForm();
+        },
 
         submitForm: function() {
-             console.log( this.user)
+             console.log( this.userRegisterModel)
             this.$axios
-                .post(this.$apiServerBaseUrl + "/api/auth/register", this.user)
+                .post(this.$apiServerBaseUrl + "/api/auth/register", this.userRegisterModel)
                 .then(response => {
                     console.log(response.data.data);
 
                     switch(response.data.status){
                         case "OK":
-                        // Show modal here
+                             window.location.href = "/auth/login"
                         break;
                         case "OTP_GENERATED":
                         case "OTP_REJECTED":
@@ -170,6 +176,8 @@ export default {
                     if(errors.response.data.errors){
                         this.errors = errors.response.data.errors;
                     }
+
+                    this.userRegisterModel.otp_code = null;
 
                 });
         }
