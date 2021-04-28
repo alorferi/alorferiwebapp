@@ -1,4 +1,4 @@
-headful<template>
+<template>
     <div id="app" class="h-100">
         <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top">
             <HomeNav v-if="isLoggedIn"></HomeNav>
