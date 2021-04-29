@@ -3,7 +3,7 @@
       <nav aria-label="Page navigation example">
   <ul class="pagination">
     <li class="page-item" :class="{ disabled: meta.current_page == 1 }">
-      <a class="page-link" href="#" aria-label="Previous">
+      <a class="page-link" :href="getUrlFromRouteName(meta.current_page-1)"  aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
         <span class="sr-only">Previous</span>
       </a>
@@ -13,7 +13,7 @@
         <a class="page-link" :href="getUrlFromRouteName(page)">{{page}}</a>
         </li>
     <li class="page-item" :class="{ disabled: meta.current_page == meta.last_page }">
-      <a class="page-link" href="#" aria-label="Next">
+      <a class="page-link" :href="getUrlFromRouteName(meta.current_page+1)" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
         <span class="sr-only">Next</span>
       </a>
