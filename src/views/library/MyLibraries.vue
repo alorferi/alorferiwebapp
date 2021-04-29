@@ -7,30 +7,7 @@
         <div class="col-sm-8"> -->
     <Loading v-if="show_loading"></Loading>
     <div v-else>
-        <div v-if="libraries.length === 0">
-            <p>
-                No libraries yet
-                <!-- <a href="/library/create" class="text-blue-500">Create one</a> -->
-                <router-link class="text-blue" :to="{ name: 'library-create' }"
-                    >Create one</router-link
-                >
-            </p>
-        </div>
-        <div v-else class="h-100">
-
-
-            <Paginator :meta="meta"   route_name="my-libraries"/>
-
-            <div
-                v-for="libraryWrapper in libraries"
-                v-bind:key="libraryWrapper.attributes.id"
-            >
-                <LibraryListItem :library="libraryWrapper.attributes" />
-            </div>
-
-     <Paginator :meta="meta" route_name="my-libraries" />
-
-        </div>
+            <LibraryListView :libraries="libraries" :meta="meta"/>
     </div>
     <!-- </div> -->
     <!-- <div class="col-sm-2"></div>
@@ -38,17 +15,15 @@
 </template>
 
 <script>
-import LibraryListItem from "./LibraryListItem";
+import LibraryListView from "./LibraryListView";
 import Loading from "../../components/Loading";
-import Paginator from "../../components/Paginator";
 // import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
 import axios from "axios";
 
 export default {
     name: "MyLibraries",
     components: {
-        Loading,
-        LibraryListItem, Paginator
+        Loading,LibraryListView
     },
       mounted() {
         this.fetchMyLibraries()
