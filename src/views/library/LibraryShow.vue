@@ -55,7 +55,7 @@
             </div>
 
             <div class="flex items-center pt-6">
-                <NameCircle :name="library.name" />
+                <LibraryLogo :library ="library" size="72" />
                 <div class="pl-5 text-xl">{{ library.name }}</div>
             </div>
 
@@ -72,13 +72,13 @@
 </template>
 
 <script>
-import NameCircle from "../../components/NameCircle";
+import LibraryLogo from "./LibraryLogo";
 import Loading from "../../components/Loading";
 import axios from "axios";
 export default {
     name: "LibraryShow",
     components: {
-        NameCircle,
+        LibraryLogo,
         Loading
     },
     mounted() {

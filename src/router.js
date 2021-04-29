@@ -11,7 +11,7 @@ import MyLibraries from "./views/library/MyLibraries.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";
 import LibraryShow from "./views/library/LibraryShow.vue";
-import LibraryBooks from "./views/library/LibraryBooks.vue";
+import LibraryBooks from "./views/librarybook/LibraryBooks.vue";
 import LibraryMembers from "./views/library/LibraryMembers.vue";
 import LibraryAbout from "./views/library/LibraryAbout.vue";
 import UserProfile from "./views/user/UserProfile";

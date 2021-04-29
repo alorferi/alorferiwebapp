@@ -50,7 +50,7 @@
                 >
                     <div class="card mb-3 p-3">
                         <div>
-                            <NameCircle :name="library.name"></NameCircle>
+                            <NameCircle :name="library.name" size="64" ></NameCircle>
                             <h4>{{ library.name }}</h4>
                         </div>
                         <p>{{ library.address }}</p>
