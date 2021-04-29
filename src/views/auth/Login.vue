@@ -3,7 +3,7 @@
         <div class="card-header">Login</div>
         <div class="card-body">
             <form class="login form-horizontal" @submit.prevent="login">
-                <div class="input-group mb-3">
+                <!-- <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
                             <i class="fas fa-mobile-alt"></i>
@@ -36,9 +36,40 @@
                         required
                         autofocus
                     />
-                </div>
+            </div> -->
 
-                <div class="input-group mb-3">
+                        <div class="form-group">
+
+                             <MobileInputField
+                                name="username"
+                                label="Mobile Number"
+                                placeholder="Mobile"
+                                icon="fas fa-mobile-alt"
+                                :errors="errors"
+                                @update:field="username = $event"
+                            />
+
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                             <EditTextField
+                                type="password"
+                                name="password"
+                                label="Password"
+                                placeholder="Password"
+                                icon="fas fa-key"
+                                :errors="errors"
+                                @update:field="password = $event"
+                            />
+
+                    </div>
+
+
+                <!-- <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
                             <i class="fas fa-key"></i>
@@ -54,7 +85,10 @@
                         placeholder="Password"
                         required
                     />
-                </div>
+                </div> -->
+
+
+
 
                 <div class="form-group">
                     <input type="checkbox" name="remember" />
@@ -87,10 +121,16 @@
 </template>
 
 <script>
+import MobileInputField from "../../components/MobileInputField";
+import EditTextField from "../../components/EditTextField";
+
 export default {
     name: "Login",
     props: {
         msg: String
+    },
+       components: {
+        MobileInputField,EditTextField
     },
     mounted: function() {
         if (this.$store.getters.isLoggedIn) {
@@ -101,15 +141,15 @@ export default {
         return {
             username: "",
             password: "",
-            country_code: "+880",
             is_error: false,
-            error_message: ""
+            error_message: "",
+            errors: null,
         };
     },
     methods: {
         login: function() {
             this.is_error = false;
-            let username = this.country_code + this.username.replace(/^0+/, "");
+            let username = this.username.replace(/^0+/, "");
             let password = this.password;
             this.$store
                 .dispatch("login", { username, password })

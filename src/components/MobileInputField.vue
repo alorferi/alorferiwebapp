@@ -5,6 +5,9 @@
         </label>
         <div class="input-group">
             <div class="input-group-prepend">
+                   <span class="input-group-text" v-if="icon">
+                            <i :class="icon"></i>
+                    </span>
                 <select
                     class="form-control"
                     id="country_code"
@@ -40,7 +43,7 @@
 <script>
 export default {
     name: "MobileInputField",
-    props: ["name", "label", "placeholder", "errors", "data"],
+    props: ["name", "label", "placeholder", "errors", "data",'icon'],
     mounted() {},
     data: function() {
         return {

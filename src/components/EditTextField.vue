@@ -5,6 +5,13 @@
             class="text-primary"
             >{{ label }}</label
         >
+
+             <div class="input-group">
+            <div class="input-group-prepend">
+                    <span class="input-group-text" v-if="icon">
+                            <i :class="icon"></i>
+                    </span>
+            </div>
         <input
             :type="type"
             :name="name"
@@ -14,6 +21,8 @@
             :class="errorClassObject()"
             @input="updateField()"
         />
+
+             </div>
         <p class="text-danger" v-text="errorMessage()"></p>
     </div>
 </template>
@@ -21,7 +30,7 @@
 <script>
 export default {
     name: "EditTextField",
-    props: ["name", "label", "placeholder", "type", "errors", "data"],
+    props: ["name", "label", "placeholder", "type", "errors", "data","icon"],
     mounted() {},
     data: function() {
         return {

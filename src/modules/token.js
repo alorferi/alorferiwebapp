@@ -43,11 +43,22 @@ const actions = {
                 .catch(error => {
                     localStorage.removeItem("token");
 
-                    if (error.response.data.error == "invalid_grant") {
-                        reject("Mobile Number or Password does not match.");
-                    } else {
-                        reject(error);
+
+                    switch(error.response.data.error){
+                        case "invalid_grant":
+                            reject("Mobile Number or Password does not match.");
+                        break;
+
+                        case "invalid_request":
+                            reject(error.response.data.hint);
+                            break;
+
+                        default:
+                            reject(error);
+                        break;
                     }
+
+
                 });
         });
     },

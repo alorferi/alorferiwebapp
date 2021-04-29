@@ -15,6 +15,7 @@
                                 name="first_name"
                                 label="First Name"
                                 placeholder="First Name"
+                                icon=" "
                                 :errors="errors"
                                 @update:field="userRegisterModel.first_name = $event"
                             />
@@ -26,6 +27,7 @@
                                 name="surname"
                                 label="Last Name"
                                 placeholder="Last Name"
+                                 icon=" "
                                 :errors="errors"
                                 @update:field="userRegisterModel.surname = $event"
                             />
@@ -40,6 +42,7 @@
                                 name="mobile"
                                 label="Mobile"
                                 placeholder="Mobile"
+                                icon="fas fa-mobile-alt"
                                 :errors="errors"
                                 @update:field="userRegisterModel.mobile = $event"
                             />
@@ -47,13 +50,14 @@
 
                     </div>
 
-                                   <div class="form-group">
+                     <div class="form-group">
 
                              <EditTextField
                                 type="password"
                                 name="password"
                                 label="Password"
                                 placeholder="Password"
+                                icon="fas fa-key"
                                 :errors="errors"
                                 @update:field="userRegisterModel.password = $event"
                             />
@@ -68,6 +72,7 @@
                                 name="dob"
                                 label="Date of birth"
                                 placeholder="DD/MM/YYYY"
+                                icon="fas fa-birthday-cake"
                                 :errors="errors"
                                 @update:field="userRegisterModel.dob = $event"
                             />

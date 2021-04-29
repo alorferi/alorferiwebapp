@@ -36,7 +36,8 @@ let router = new Router({
         {
             path: "/auth/login",
             name: "login",
-            component: Login
+            component: Login,
+            meta:{title: "Login"}
         },
         {
             path: "/auth/register",

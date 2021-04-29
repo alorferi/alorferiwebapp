@@ -22,7 +22,7 @@ const actions = {
                 method: "GET"
             })
                 .then(response => {
-                    const user = response.data.data;
+                    const user = response.data.data.attributes;
                     localStorage.setItem("user", JSON.stringify(user));
                     commit("setUser", user);
                     resolve(response);
