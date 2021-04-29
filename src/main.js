@@ -41,6 +41,37 @@ Vue.mixin({
         getApiUrl(endPoint) {
             return this.$apiServerBaseUrl + endPoint;
         },
+        getEndPointQueryString(endPoint, page=null, term = null) {
+
+            if(page == null){
+                page = this.$route.query.page
+            }
+
+            if(term == null){
+                term = this.$route.query.term
+            }
+
+            var queryObj ={
+                page: page==undefined? null: page,
+                term: term==undefined? null: term,
+        }
+
+       queryObj = this.cleanObject(queryObj)
+
+    var qString = new URLSearchParams(queryObj).toString()
+
+    return endPoint +"?"+ qString;
+
+
+        },
+        cleanObject(obj) {
+            for (var propName in obj) {
+              if (obj[propName] === null || obj[propName] === undefined) {
+                delete obj[propName];
+              }
+            }
+            return obj
+          },
         getBearerToken(){
             return {
                 headers: {

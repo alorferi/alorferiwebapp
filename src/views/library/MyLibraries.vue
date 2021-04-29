@@ -17,12 +17,19 @@
             </p>
         </div>
         <div v-else class="h-100">
+
+
+            <Paginator :meta="meta"   route_name="my-libraries"/>
+
             <div
                 v-for="libraryWrapper in libraries"
                 v-bind:key="libraryWrapper.attributes.id"
             >
                 <LibraryListItem :library="libraryWrapper.attributes" />
             </div>
+
+     <Paginator :meta="meta" route_name="my-libraries" />
+
         </div>
     </div>
     <!-- </div> -->
@@ -33,6 +40,7 @@
 <script>
 import LibraryListItem from "./LibraryListItem";
 import Loading from "../../components/Loading";
+import Paginator from "../../components/Paginator";
 // import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
 import axios from "axios";
 
@@ -40,34 +48,50 @@ export default {
     name: "MyLibraries",
     components: {
         Loading,
-        LibraryListItem
+        LibraryListItem, Paginator
+    },
+      mounted() {
+        this.fetchMyLibraries()
     },
     methods: {
         editUrl: function(library) {
             return this.getApiUrl("/api/libraries/" + library.id + "/edit");
-        }
-    },
+        },
+    fetchMyLibraries: function(){
 
-    mounted() {
+
+        var endPoint = "/api/libraries/my-libraries";
+
+
+    endPoint = this.getEndPointQueryString(endPoint);
+
         axios
             .get(
-                this.getApiUrl("/api/libraries/my-libraries"),
+                this.getApiUrl(endPoint),
                 this.getBearerToken()
             )
             .then(response => {
                 this.show_loading = false;
                 this.libraries = response.data.data;
+                this.meta = response.data.meta;
+
                 console.warn(response.data);
             })
             .catch(errors => {
                 this.show_loading = false;
                 console.error(errors);
             });
+
+        }
     },
+    computed: {},
+
     data: function() {
         return {
             libraries: null,
-            show_loading: true
+            show_loading: true,
+            meta: null,
+            term: null
         };
     }
 };

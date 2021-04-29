@@ -1,35 +1,40 @@
 <template>
     <div class="form-group">
-        <label
-            :for="name"
-            class="text-primary"
-            >{{ label }}</label
-        >
+        <label :for="name" class="text-primary">{{ label }}</label>
 
-        <div class="input-group mb-3">
-            <input
-                type="radio"
-                :name="name"
-                class="form-control"
-                v-model="value"
-                value="m"
-                :placeholder="placeholder"
-                :class="errorClassObject()"
-                @change="updateField()"
-            />
-            Male
+        <div class="input-group mb-3 border">
 
-            <input
-                type="radio"
-                :name="name"
-                class="form-control"
-                v-model="value"
-                value="f"
-                :placeholder="placeholder"
-                :class="errorClassObject()"
-                @change="updateField()"
-            />
-            Female
+            <div class="input-group-prepend">
+                    <span class="input-group-text">
+                              <i class="fas fa-venus-mars"></i>
+                    </span>
+            </div>
+
+
+            <label class="radio-inline pl-2">
+                <input
+                    type="radio"
+                    :name="name"
+                    v-model="value"
+                    value="m"
+                    :placeholder="placeholder"
+                    :class="errorClassObject()"
+                    @change="updateField()"
+                />
+                Male
+            </label>
+            <label class="radio-inline  pl-2">
+                <input
+                    type="radio"
+                    :name="name"
+                    v-model="value"
+                    value="f"
+                    :placeholder="placeholder"
+                    :class="errorClassObject()"
+                    @change="updateField()"
+                />
+                Female
+            </label>
         </div>
 
         <p class="text-danger text-sm" v-text="errorMessage()"></p>

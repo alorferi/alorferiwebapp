@@ -92,6 +92,7 @@ let router = new Router({
             name: "my-libraries",
             component: MyLibraries,
             leftMenu: HomeLeftMenu,
+            meta:{title: "My Libraries"}
 
         },
         {
