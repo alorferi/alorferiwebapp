@@ -41,6 +41,13 @@ Vue.mixin({
         getApiUrl(endPoint) {
             return this.$apiServerBaseUrl + endPoint;
         },
+        getBearerToken(){
+            return {
+                headers: {
+                    Authorization: "Bearer " + this.$store.getters.access_token
+                }
+            }
+        },
         extractUrl(text) {
             var regex = /(https?:\/\/[^ ]*)/;
             // var regex = /^(https?:\/\/[^/]+(\/[\w-]+)+)/;

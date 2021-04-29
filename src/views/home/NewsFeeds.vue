@@ -49,11 +49,7 @@ export default {
     },
     mounted() {
         this.$axios
-            .get(this.getApiUrl("/api/posts"), {
-                headers: {
-                    Authorization: "Bearer " + this.$store.getters.access_token
-                }
-            })
+            .get(this.getApiUrl("/api/posts"), this.getBearerToken())
             .then(response => (this.posts = response.data.data))
             .catch(err => {
                 console.log(err);

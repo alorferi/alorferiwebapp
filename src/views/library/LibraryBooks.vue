@@ -84,13 +84,13 @@ export default {
     },
     methods: {
         editUrl: function(library) {
-            return this.getApiUrl("/api/v0/library/" + library.id + "/edit");
+            return this.getApiUrl("/api/libraries/" + library.id + "/edit");
         }
     },
 
     mounted() {
         axios
-            .get(this.getApiUrl("/api/v0/library/my-libraries"))
+            .get(this.getApiUrl("/api/libraries/my-libraries"))
             .then(response => {
                 this.show_loading = false;
                 this.libraries = response.data.data;

@@ -90,11 +90,7 @@ export default {
                 : this.$route.params.user_id;
 
         this.$axios
-            .get(this.getApiUrl("/api/users/" + user_id), {
-                headers: {
-                    Authorization: "Bearer " + this.$store.getters.access_token
-                }
-            })
+            .get(this.getApiUrl("/api/users/" + user_id), this.getBearerToken())
             .then(response => (this.user = response.data.data))
             .catch(err => {
                 console.log(err);
@@ -104,11 +100,7 @@ export default {
             });
 
         this.$axios
-            .get(this.getApiUrl("/api/users/" + user_id + "/posts"), {
-                headers: {
-                    Authorization: "Bearer " + this.$store.getters.access_token
-                }
-            })
+            .get(this.getApiUrl("/api/users/" + user_id + "/posts"), this.getBearerToken())
             .then(response => (this.posts = response.data.data))
             .catch(err => {
                 console.log(err);

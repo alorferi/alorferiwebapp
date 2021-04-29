@@ -83,9 +83,9 @@ export default {
     },
     mounted() {
         axios
-            .get(this.getApiUrl("/api/v0/library/" + this.$route.params.id))
+            .get(this.getApiUrl("/api/libraries/" + this.$route.params.id),this.getBearerToken())
             .then(response => {
-                this.library = response.data.data;
+                this.library = response.data.data.attributes;
                 console.info(response);
                 this.loading = false;
             })
@@ -108,7 +108,7 @@ export default {
         destroy: function() {
             axios
                 .delete(
-                    this.getApiUrl("/api/v0/library/" + this.$route.params.id)
+                    this.getApiUrl("/api/libraries/" + this.$route.params.id)
                 )
                 .then(response => {
                     this.$router.push("/library/my-libraries");

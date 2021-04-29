@@ -21,21 +21,21 @@
                 <div v-else class="h-100">
                     <div
                         v-for="library in libraries"
-                        v-bind:key="library.id"
+                        v-bind:key="library.attributes.id"
                         class=""
                     >
                         <div class="card mb-3 p-3">
                             <div>
-                                <NameCircle :name="library.name"></NameCircle>
-                                <h4>{{ library.name }}</h4>
+                                <NameCircle :name="library.attributes.name"></NameCircle>
+                                <h4>{{ library.attributes.name }}</h4>
                             </div>
-                            <p>{{ library.address }}</p>
-                            <p>{{ library.mobile }}</p>
+                            <p>{{ library.attributes.address }}</p>
+                            <p>{{ library.attributes.mobile }}</p>
 
                             <router-link
                                 :to="{
                                     name: 'library-show',
-                                    params: { id: library.id }
+                                    params: { id: library.attributes.id }
                                 }"
                                 class="stretched-link"
                             >
@@ -63,18 +63,13 @@ export default {
     },
     methods: {
         editUrl: function(library) {
-            return this.getApiUrl("/api/v0/library/" + library.id + "/edit");
+            return this.getApiUrl("/api/libraries/" + library.id + "/edit");
         }
     },
 
     mounted() {
         axios
-            .get(this.getApiUrl("/api/v0/library/my-libraries"),
-          {
-                headers: {
-                    Authorization: "Bearer " + this.$store.getters.access_token
-                }
-            }
+            .get(this.getApiUrl("/api/libraries/my-libraries"),this.getBearerToken()
             )
             .then(response => {
                 this.show_loading = false;
