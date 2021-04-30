@@ -72,7 +72,7 @@ Vue.mixin({
             }
             return obj
           },
-        getBearerToken(){
+        getHeaderWithBearerToken(){
             return {
                 headers: {
                     Authorization: "Bearer " + this.$store.getters.access_token
