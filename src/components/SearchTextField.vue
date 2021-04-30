@@ -2,6 +2,12 @@
     <div>
         <form v-on:submit.prevent="updateTerm">
             <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-light text-secondary">
+                         <i class="fas fa-search"></i
+                        >
+                    </span>
+                </div>
                 <input
                     type="text"
                     v-model="term"
@@ -10,13 +16,7 @@
                     placeholder="Search"
                 />
 
-                <div class="input-group-prepend">
-                    <span class="input-group-text">
-                        <a href="#" @click="updateTerm">
-                            <i class="fas fa-search"></i
-                        ></a>
-                    </span>
-                </div>
+
             </div>
         </form>
     </div>

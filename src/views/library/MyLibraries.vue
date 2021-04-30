@@ -24,6 +24,8 @@ import Loading from "../../components/Loading";
 import SearchTextField from "../../components/SearchTextField";
 // import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
 import Paginator from "../../components/Paginator";
+// import Autocomplete from 'vuejs-auto-complete';
+
 import axios from "axios";
 
 export default {
