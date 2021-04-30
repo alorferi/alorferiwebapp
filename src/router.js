@@ -8,6 +8,7 @@ import Secure from "./views/auth/Secure.vue";
 import Register from "./views/auth/Register.vue";
 import NewsFeeds from "./views/home/NewsFeeds.vue";
 import MyLibraries from "./views/library/MyLibraries.vue";
+import AutoCompleteTest from "./views/library/AutocompleteTest.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";
 import LibraryShow from "./views/library/LibraryShow.vue";
@@ -93,6 +94,14 @@ let router = new Router({
             component: MyLibraries,
             leftMenu: HomeLeftMenu,
             meta:{title: "My Libraries"}
+
+        },
+        {
+            path: "/libraries/autocomplete",
+            name: "autocomplete",
+            component: AutoCompleteTest,
+            leftMenu: HomeLeftMenu,
+            meta:{title: "AutoCompleteTest"}
 
         },
         {

@@ -1,40 +1,31 @@
 <template>
     <div>
-        <h4 class="text-secondary">My Libraries</h4>
+        <h4 class="text-secondary">Autocomplete</h4>
+        <Autocomplete
+            :items="libraries"
+            filterby="name"
+            @change="onChangeAutocomplete"
+            title="Look for a customer"
+            @selected="customerSelected"
+        />
 
-        <SearchTextField @update:term="term = $event" />
-        <Loading v-if="show_loading"></Loading>
-        <div v-else>
-            <Paginator
-                :meta="meta"
-                route="my-libraries"
-                @update:page="page = $event"
-            />
-
-            <LibraryListView :libraries="libraries" />
-        </div>
     </div>
 </template>
 
 <script>
-import LibraryListView from "./LibraryListView";
-import Loading from "../../components/Loading";
-import SearchTextField from "../../components/SearchTextField";
-// import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
-import Paginator from "../../components/Paginator";
+import customers from "../../assets/customers";
+import Autocomplete from "../../components/Autocomplete";
 
 import axios from "axios";
 
 export default {
-    name: "MyLibraries",
+    name: "AutocompleteTest",
     components: {
-        Loading,
-        LibraryListView,
-        SearchTextField,
-        Paginator,
+        Autocomplete
     },
     mounted() {
         this.fetchMyLibraries();
+        this.customers = customers;
     },
     methods: {
         editUrl: function(library) {
@@ -59,6 +50,14 @@ export default {
                     console.error(errors);
                 });
         },
+        customerSelected(customer) {
+            console.log(
+                `Customer Selected:\nid: ${customer.id}\nname: ${customer.name}`
+            );
+        },
+        onChangeAutocomplete() {
+            // do something with the current value
+        }
     },
     computed: {},
 
@@ -69,6 +68,7 @@ export default {
             meta: null,
             term: null,
             page: null,
+            customers: []
         };
     },
     watch: {
