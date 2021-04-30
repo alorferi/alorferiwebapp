@@ -2,6 +2,7 @@
 
 
 <div>
+    <h4 class="text-secondary">My Libraries</h4>
     <SearchTextField @update:term="term = $event"/>
         <Loading v-if="show_loading"></Loading>
     <div v-else>

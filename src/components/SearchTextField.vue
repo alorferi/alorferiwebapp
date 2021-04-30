@@ -5,13 +5,16 @@
                 <input
                     type="text"
                     v-model="term"
+                    v-on:change="textChange"
                     class="form-control"
                     placeholder="Search"
                 />
 
                 <div class="input-group-prepend">
                     <span class="input-group-text">
-                        <a href="#" @click="updateTerm"> <i class="fas fa-search"></i></a>
+                        <a href="#" @click="updateTerm">
+                            <i class="fas fa-search"></i
+                        ></a>
                     </span>
                 </div>
             </div>
@@ -32,9 +35,23 @@ export default {
     },
 
     methods: {
-         updateTerm: function() {
-            this.$emit("update:term",  this.term);
+        updateTerm: function() {
+            this.$emit("update:term", this.term);
         },
+        textChange: function() {
+            console.log(this.term);
+        }
+    },
+    watch: {
+        term: {
+            // the callback will be called immediately after the start of the observation
+            immediate: true,
+            handler(newVal, oldVal) {
+                if (newVal != oldVal && newVal == "") {
+                    this.$emit("update:term", this.term);
+                }
+            }
+        }
     }
 };
 </script>
