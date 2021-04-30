@@ -39,6 +39,11 @@ Vue.prototype.$apiClientSecret = process.env.VUE_APP_API_SERVER_CLIENT_SECRET;
 Vue.mixin({
     methods: {
         getApiUrl(endPoint) {
+
+            if(!endPoint.startsWith("/")){
+                endPoint ="/"+endPoint
+            }
+
             return this.$apiServerBaseUrl + endPoint;
         },
         getEndPointQueryString(endPoint, term = null,page=null) {

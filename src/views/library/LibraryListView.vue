@@ -9,7 +9,7 @@
                 >
             </p>
         </div>
-        <div v-else class="h-100">
+        <div v-else class="">
 
 
 

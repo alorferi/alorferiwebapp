@@ -1,25 +1,31 @@
 <template>
-    <div id="app" class="h-100">
-        <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top">
+    <div id="app" class="">
+
+
+        <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top  ">
+            <div class="container">
+
+
             <HomeNav v-if="isLoggedIn"></HomeNav>
             <GuestNav v-else></GuestNav>
+              </div>
         </nav>
 
-        <div class="container-fluid h-100" style="margin-top:80px">
-            <div v-if="isLoggedIn" class="h-100">
-                <div class="row h-100">
-                    <div class="col-sm-2 h-100">
+        <div class="container" style="margin-top:70px;">
+            <div v-if="isLoggedIn">
+                <div class="row">
+                    <div class="col-sm-2">
                         <component :is="leftBadge"></component>
                         <component :is="leftMenu"></component>
                     </div>
-                    <div class="col-sm-8 h-100" style="overflow-y: scroll;">
+                    <div class="col-sm-8" style="overflow-y: scroll;">
                         <router-view></router-view>
                     </div>
-                    <div class="col-sm-2 h-100"></div>
+                    <div class="col-sm-2"></div>
                 </div>
             </div>
 
-            <div v-else class="h-100">
+            <div v-else class="">
                 <router-view></router-view>
             </div>
         </div>

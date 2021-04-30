@@ -58,25 +58,28 @@
                 </li>
 
                 <li>
-                    <router-link class="nav-link" :to="{ name: 'user.me' }">
-                        <i class="far fa-user-circle"></i
-                    ></router-link>
+                    <router-link class="nav-link" :to="{ name: 'users.me' }">
+                        <i class="far fa-user-circle"></i></router-link>
                 </li>
             </ul>
 
-            <ul class="navbar-nav ml-auto">
+            <ul class="nav navbar-nav">
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle bg-primary "
+                    <a id="navbarDropdown"
+                        class="nav-link dropdown-toggle "
                         href="#"
-                        id="navbardrop"
+                         role="button"
                         data-toggle="dropdown"
-                    >
-                        <i class="far fa-user-circle" style=""></i>
-                        {{ user.first_name }} {{ user.surname }}
+                        aria-haspopup="true" aria-expanded="false">
+
+
+                        <UserPhoto :user="user" size="12"/>
+
+                        {{ user.first_name }}
+
                     </a>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/user/profile"
                             >Profile</a
                         >
@@ -99,10 +102,11 @@
 <script>
 // import Logout from './Logout'
 import { mapGetters } from "vuex";
+import UserPhoto from '../user/UserPhoto'
 export default {
     name: "HomeNav",
     components: {
-        // Logout,
+       UserPhoto, // Logout,
     },
     data() {
         return {};

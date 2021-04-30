@@ -1,10 +1,10 @@
 <template>
     <div >
-        <!-- <div class="row h-100"> -->
-            <!-- <div class="col-sm-2 h-100">
+        <!-- <div class="row"> -->
+            <!-- <div class="col-sm-2">
                 <HomeLeftMenu></HomeLeftMenu>
             </div> -->
-            <!-- <div class="col-sm-8 h-100" style="overflow-y: scroll;"> -->
+            <!-- <div class="col-sm-8 " style="overflow-y: scroll;"> -->
                 <NewPost></NewPost>
 
                 <p v-if="is_loading_posts">Loading posts</p>
@@ -22,7 +22,7 @@
                 <br />
             <!-- </div> -->
 
-            <!-- <div class="col-sm-2 h-100"></div> -->
+            <!-- <div class="col-sm-2 "></div> -->
         <!-- </div> -->
     </div>
 </template>

@@ -25,7 +25,7 @@
                     >
                 </p>
             </div>
-            <div v-else class="h-100">
+            <div v-else class="">
                 <ul class="pagination  justify-content-end">
                     <li class="page-item">
                         <a class="page-link" href="#">Previous</a>

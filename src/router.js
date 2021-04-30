@@ -70,7 +70,7 @@ let router = new Router({
         },
         {
             path: "/users/me",
-            name: "user.me",
+            name: "users.me",
             component: UserProfile,
             leftMenu: HomeLeftMenu,
             meta:{title: "Profile"}
