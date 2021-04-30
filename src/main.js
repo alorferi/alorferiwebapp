@@ -41,7 +41,7 @@ Vue.mixin({
         getApiUrl(endPoint) {
             return this.$apiServerBaseUrl + endPoint;
         },
-        getEndPointQueryString(endPoint, page=null, term = null) {
+        getEndPointQueryString(endPoint, term = null,page=null) {
 
             if(page == null){
                 page = this.$route.query.page

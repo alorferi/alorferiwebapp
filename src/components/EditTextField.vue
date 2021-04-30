@@ -1,28 +1,23 @@
 <template>
     <div class="form-group">
-        <label
-            :for="name"
-            class="text-primary"
-            >{{ label }}</label
-        >
+        <label :for="name" class="text-primary">{{ label }}</label>
 
-             <div class="input-group">
+        <div class="input-group">
             <div class="input-group-prepend">
-                    <span class="input-group-text" v-if="icon">
-                            <i :class="icon"></i>
-                    </span>
+                <span class="input-group-text" v-if="icon">
+                    <i :class="icon"></i>
+                </span>
             </div>
-        <input
-            :type="type"
-            :name="name"
-            class="form-control"
-            v-model="value"
-            :placeholder="placeholder"
-            :class="errorClassObject()"
-            @input="updateField()"
-        />
-
-             </div>
+            <input
+                :type="type"
+                :name="name"
+                class="form-control"
+                v-model="value"
+                :placeholder="placeholder"
+                :class="errorClassObject()"
+                @input="updateField()"
+            />
+        </div>
         <p class="text-danger" v-text="errorMessage()"></p>
     </div>
 </template>
@@ -30,7 +25,7 @@
 <script>
 export default {
     name: "EditTextField",
-    props: ["name", "label", "placeholder", "type", "errors", "data","icon"],
+    props: ["name", "label", "placeholder", "type", "errors", "data", "icon"],
     mounted() {},
     data: function() {
         return {

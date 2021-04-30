@@ -24,12 +24,19 @@
                 </div>
 
                 <input
-                    class="form-control mr-sm-2"
+                    class="form-control"
                     type="text"
                     placeholder="Search"
                 />
+
+                    <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <a href="#"> <i class="fas fa-search"></i></a>
+                        <!-- <button type="submit"> <i class="fas fa-search"></i> </button> -->
+                    </span>
+                </div>
             </div>
-            <button class="btn btn-success" type="submit">Search</button>
+            <!-- <button class="btn btn-success" type="submit">Search</button> -->
         </form>
 
         <!-- Toggler/collapsibe Button -->

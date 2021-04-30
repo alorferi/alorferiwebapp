@@ -12,7 +12,7 @@
         <div v-else class="h-100">
 
 
-        <Paginator :meta="meta"   route_name="my-libraries"/>
+
 
             <div
                 v-for="libraryWrapper in libraries"
@@ -21,7 +21,6 @@
                 <LibraryListItem :library="libraryWrapper.attributes" />
             </div>
 
-         <Paginator :meta="meta" route_name="my-libraries" />
 
         </div>
     </div>
@@ -30,13 +29,13 @@
 
 <script>
 import LibraryListItem from "./LibraryListItem";
-import Paginator from "../../components/Paginator";
+
 
 export default {
     name: "LibraryListView",
-    props:["libraries","meta"],
+    props:["libraries"],
     components: {
-        LibraryListItem, Paginator
+        LibraryListItem,
     },
       mounted() {
     },

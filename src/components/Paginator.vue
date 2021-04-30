@@ -8,11 +8,13 @@
                             class="page-item"
                             :class="{ disabled: meta.current_page == 1 }"
                         >
+
+                        <!-- :href="getUrlFromRouteName(meta.current_page - 1)" -->
+
                             <a
                                 class="page-link"
-                                :href="
-                                    getUrlFromRouteName(meta.current_page - 1)
-                                "
+                                href="#"
+                                 @click="updatePage(meta.current_page - 1)"
                                 aria-label="Previous"
                             >
                                 <span aria-hidden="true">&laquo;</span>
@@ -26,9 +28,12 @@
                             :key="index"
                             :class="{ active: page == meta.current_page }"
                         >
+                          <!-- :href="getUrlFromRouteName(page)" -->
+
                             <a
                                 class="page-link"
-                                :href="getUrlFromRouteName(page)"
+                                 href="#"
+                                @click="updatePage(page)"
                                 >{{ page }}</a
                             >
                         </li>
@@ -38,11 +43,13 @@
                                 disabled: meta.current_page == meta.last_page
                             }"
                         >
+
+                         <!-- :href="getUrlFromRouteName(meta.current_page + 1)" -->
+
                             <a
                                 class="page-link"
-                                :href="
-                                    getUrlFromRouteName(meta.current_page + 1)
-                                "
+                                href="#"
+                                 @click="updatePage(meta.current_page + 1)"
                                 aria-label="Next"
                             >
                                 <span aria-hidden="true">&raquo;</span>
@@ -63,7 +70,7 @@
 <script>
 export default {
     name: "Paginator",
-    props: ["meta", "route_name"],
+    props: ["meta", "route"],
     mounted() {},
     computed: {
 
@@ -78,16 +85,20 @@ export default {
 
     },
     data() {
-        return {};
+        return {
+        };
     },
 
     methods: {
         getUrlFromRouteName: function(page) {
-            var urlResolver = this.$router.resolve({ name: this.route_name });
+            var urlResolver = this.$router.resolve({ name: this.route });
 
             var endPoint = urlResolver.href;
 
-            return this.getEndPointQueryString(endPoint, page);
+            return this.getEndPointQueryString(endPoint,null,page);
+        },
+            updatePage: function(page) {
+            this.$emit("update:page",  page);
         },
 
     }

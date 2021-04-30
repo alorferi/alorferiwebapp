@@ -1,29 +1,34 @@
 <template>
-    <!-- <div class="row">
-        <div class="col-sm-2">
-            <HomeLeftMenu></HomeLeftMenu>
-        </div>
 
-        <div class="col-sm-8"> -->
-    <Loading v-if="show_loading"></Loading>
+
+<div>
+    <SearchTextField @update:term="term = $event"/>
+        <Loading v-if="show_loading"></Loading>
     <div v-else>
-            <LibraryListView :libraries="libraries" :meta="meta"/>
+
+           <Paginator :meta="meta"   route="my-libraries" @update:page="page = $event" />
+
+            <LibraryListView :libraries="libraries"/>
+
+
     </div>
-    <!-- </div> -->
-    <!-- <div class="col-sm-2"></div>
-    </div> -->
+
+</div>
+
 </template>
 
 <script>
 import LibraryListView from "./LibraryListView";
 import Loading from "../../components/Loading";
+import SearchTextField from "../../components/SearchTextField";
 // import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
+import Paginator from "../../components/Paginator";
 import axios from "axios";
 
 export default {
     name: "MyLibraries",
     components: {
-        Loading,LibraryListView
+        Loading,LibraryListView,SearchTextField,Paginator
     },
       mounted() {
         this.fetchMyLibraries()
@@ -32,13 +37,12 @@ export default {
         editUrl: function(library) {
             return this.getApiUrl("/api/libraries/" + library.id + "/edit");
         },
-    fetchMyLibraries: function(){
-
+    fetchMyLibraries: function(term=null,page=null) {
 
         var endPoint = "/api/libraries/my-libraries";
 
 
-    endPoint = this.getEndPointQueryString(endPoint);
+    endPoint = this.getEndPointQueryString(endPoint,term,page);
 
         axios
             .get(
@@ -66,8 +70,30 @@ export default {
             libraries: null,
             show_loading: true,
             meta: null,
-            term: null
+            term: null,
+            page:null,
         };
+    },
+    watch: {
+        page: {
+            // the callback will be called immediately after the start of the observation
+            immediate: true,
+            handler(newVal, oldVal) {
+                if (newVal != oldVal) {
+                    this.fetchMyLibraries(this.term,this.page)
+                }
+            }
+        },
+
+             term: {
+            // the callback will be called immediately after the start of the observation
+            immediate: true,
+            handler(newVal, oldVal) {
+                if (newVal != oldVal) {
+                    this.fetchMyLibraries(this.term,this.page)
+                }
+            }
+        }
     }
 };
 </script>
