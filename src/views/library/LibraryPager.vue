@@ -39,15 +39,22 @@
                 </ul>
             </div>
         </div>
+
+           <component :is="body"></component>
+
     </div>
 </template>
 
 <script>
 import LibraryLogo from "./LibraryLogo";
+import LibraryTimeline from "./LibraryTimeline"
+import LibraryAbout from "./LibraryAbout"
+import LibraryBooks from "./LibraryBooks"
+import LibraryMembers from "./LibraryMembers"
 export default {
-    name: "LibraryHeader",
+    name: "LibraryPager",
     components: {
-        LibraryLogo
+        LibraryLogo,LibraryTimeline,LibraryAbout,LibraryMembers,LibraryBooks
     },
     mounted: function() {
         this.initTabItems();
@@ -60,21 +67,26 @@ export default {
         getTabs() {
             return this.tabs;
         },
+        body() {
+            return this.activeTab.body;
+        },
     },
     methods: {
         initTabItems() {
             var library = this.$store.getters.library;
 
-            this.tabs.push({ title: "Home", active: true });
+            this.tabs.push({ title: "Home", body: LibraryTimeline , active: true});
             this.tabs.push({
                 title: "Books (" + library.total_books + ")",
+                 body: LibraryBooks ,
                 active: false
             });
             this.tabs.push({
                 title: "Members(" + library.total_members + ")",
+                                 body: LibraryMembers ,
                 active: false
             });
-            this.tabs.push({  title: "About", active: false });
+            this.tabs.push({  title: "About", body: LibraryAbout , active: false });
 
 
            this.activeTab = this.tabs[0];

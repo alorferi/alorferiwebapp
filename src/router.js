@@ -115,15 +115,15 @@ let router = new Router({
             path: "/libraries/:id",
             name: "library-show",
             component: LibraryShow,
-            leftMenu: LibraryLeftMenu,
-            leftBadge: LibraryBadge
+            leftMenu: HomeLeftMenu,
+            // leftBadge: LibraryBadge
         },
         {
             path: "/libraries/:id/edit",
             name: "library-edit",
             component: LibraryEdit,
-            leftMenu: LibraryLeftMenu,
-            leftBadge: LibraryBadge
+            leftMenu: HomeLeftMenu,
+            // leftBadge: LibraryBadge
         },
         {
             path: "/libraries/:id/books",
