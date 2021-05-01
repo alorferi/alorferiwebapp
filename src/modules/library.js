@@ -1,9 +1,5 @@
 import Vue from "vue";
 import axios from "axios";
-import mixin from "../mixin"
-
-Vue.mixin(mixin);
-
 
 const state = {
     library: JSON.parse(localStorage.getItem("library") || null),
