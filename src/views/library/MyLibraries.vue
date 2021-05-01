@@ -62,12 +62,9 @@ export default {
         //
         fetchMyLibraries: function(pTerm = null, pPage = null) {
 
-            var url = this.getApiUrl("/api/libraries/my-libraries",pTerm,pPage)
-
             var payload = {
                 term: pTerm,
                 page: pPage,
-                url:url
             };
 
             this.$store

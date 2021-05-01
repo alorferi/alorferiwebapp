@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 export default {
     methods: {
         getApiUrl(endPoint, term = null, page = null) {
@@ -7,16 +9,9 @@ export default {
 
             endPoint = this.getEndPointQueryString(endPoint,term,page);
 
-            return this.$apiServerBaseUrl + endPoint;
+            return Vue.prototype.$apiServerBaseUrl + endPoint;
         },
         getEndPointQueryString(endPoint, term = null, page = null) {
-            if (page == null) {
-                page = this.$route.query.page;
-            }
-
-            if (term == null) {
-                term = this.$route.query.term;
-            }
 
             var queryObj = {
                 page: page == undefined ? null : page,
@@ -27,7 +22,12 @@ export default {
 
             var qString = new URLSearchParams(queryObj).toString();
 
-            return endPoint + "?" + qString;
+            if(qString==""){
+                return endPoint
+            }else{
+                return endPoint + "?" + qString;
+            }
+
         },
         cleanObject(obj) {
             for (var propName in obj) {

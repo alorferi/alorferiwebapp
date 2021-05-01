@@ -21,6 +21,10 @@ import PortalVue from "portal-vue";
 // window.$ = window.JQuery = JQuery;
 window.$ = window.JQuery = require("jquery");
 
+import mixin from "./mixin"
+
+Vue.mixin(mixin);
+
 Vue.use(VueAxios, axios);
 Vue.prototype.$axios = axios;
 
@@ -33,9 +37,7 @@ Vue.prototype.$apiClientSecret = process.env.VUE_APP_API_SERVER_CLIENT_SECRET;
 // console.log("apiServerBaseUrl", Vue.prototype.$apiServerBaseUrl);
 // console.log("apiClientId", Vue.prototype.$apiClientId);
 // console.log("apiClientSecret", Vue.prototype.$apiClientSecret);
-import mixin from "./mixin"
 
-Vue.mixin(mixin);
 
 // Install BootstrapVue
 Vue.use(BootstrapVue);

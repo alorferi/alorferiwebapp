@@ -1,5 +1,6 @@
 import Vue from "vue";
 import axios from "axios";
+import mixin from '../mixin'
 
 const state = {
     library: JSON.parse(localStorage.getItem("library") || null),
@@ -54,7 +55,8 @@ const actions = {
 
         return new Promise((resolve, reject) => {
 
-        var url = payload.url;
+        var url = mixin.methods.getApiUrl("/api/libraries/my-libraries",payload.term,payload.page)
+
 
                 axios({
                     url:url,
