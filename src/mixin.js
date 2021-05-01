@@ -1,9 +1,11 @@
 export default {
     methods: {
-        getApiUrl(endPoint) {
+        getApiUrl(endPoint, term = null, page = null) {
             if (!endPoint.startsWith("/")) {
                 endPoint = "/" + endPoint;
             }
+
+            endPoint = this.getEndPointQueryString(endPoint,term,page);
 
             return this.$apiServerBaseUrl + endPoint;
         },
