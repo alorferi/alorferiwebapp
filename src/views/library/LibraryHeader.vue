@@ -33,7 +33,7 @@
                             href="#"
                             :class="{ active: tab.active }"
                             @click="clickTabItem(tab)"
-                            >{{ tab.title }}, {{index}}</a
+                            >{{ tab.title }}</a
                         >
                     </li>
                 </ul>
