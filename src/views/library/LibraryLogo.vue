@@ -1,8 +1,8 @@
 <template>
     <div>
         <b-img
-            v-if="this.library.logo_url"
-            :src="this.getApiUrl(this.library.logo_url)"
+            v-if="this.library.logo_url != null"
+            :src="this.logoUrl()"
             :style="imgStyle"
             class="rounded-circle p-2"
         />
@@ -36,7 +36,12 @@ export default {
         },
 
         logoUrl() {
-            return this.getApiUrl(this.library.logo_url);
+            if(this.library.logo_url==null){
+                return ""
+            }else{
+                return this.getApiUrl(this.library.logo_url);
+            }
+
         }
     }
 };

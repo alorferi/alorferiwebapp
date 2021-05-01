@@ -1,5 +1,5 @@
 <template>
     <div>
-        Members
+        Books
     </div>
 </template>

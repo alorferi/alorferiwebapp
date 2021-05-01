@@ -2,6 +2,9 @@
     <div class="">
         <Loading v-if="loading" />
         <div v-else>
+
+            <LibraryHeader/>
+
             <div class="d-flex justify-content-between">
                 <div>
                     <a href="#" @click="$router.back()">&lt; Back</a>
@@ -75,15 +78,18 @@
 import LibraryLogo from "./LibraryLogo";
 import Loading from "../../components/Loading";
 import axios from "axios";
+import LibraryHeader from "./LibraryHeader"
+
 export default {
     name: "LibraryShow",
     components: {
         LibraryLogo,
-        Loading
+        Loading, LibraryHeader
     },
     mounted() {
         this.fetchLibrary(this.$route.params.id)
     },
+
     computed: {
         library(){
 
