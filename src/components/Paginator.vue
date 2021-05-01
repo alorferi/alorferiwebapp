@@ -9,7 +9,6 @@
                             :class="{ disabled: meta.current_page == 1 }"
                         >
 
-                        <!-- :href="getUrlFromRouteName(meta.current_page - 1)" -->
 
                             <a
                                 class="page-link"
@@ -28,7 +27,6 @@
                             :key="index"
                             :class="{ active: page == meta.current_page }"
                         >
-                          <!-- :href="getUrlFromRouteName(page)" -->
 
                             <a
                                 class="page-link"
@@ -70,7 +68,7 @@
 <script>
 export default {
     name: "Paginator",
-    props: ["meta", "route"],
+    props: ["meta"],
     mounted() {},
     computed: {
 
@@ -90,13 +88,6 @@ export default {
     },
 
     methods: {
-        getUrlFromRouteName: function(page) {
-            var urlResolver = this.$router.resolve({ name: this.route });
-
-            var endPoint = urlResolver.href;
-
-            return this.getEndPointQueryString(endPoint,null,page);
-        },
             updatePage: function(page) {
             this.$emit("update:page",  page);
         },

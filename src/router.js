@@ -12,8 +12,6 @@ import AutoCompleteTest from "./views/library/AutocompleteTest.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";
 import LibraryShow from "./views/library/LibraryShow.vue";
-import LibraryBooks from "./views/librarybook/LibraryBooks.vue";
-import LibraryMembers from "./views/library/LibraryMembers.vue";
 import LibraryAbout from "./views/library/LibraryAbout.vue";
 import UserProfile from "./views/user/UserProfile";
 import HomeLeftMenu from "./views/menus/HomeLeftMenu";
@@ -124,34 +122,6 @@ let router = new Router({
             component: LibraryEdit,
             leftMenu: HomeLeftMenu,
             // leftBadge: LibraryBadge
-        },
-        {
-            path: "/libraries/:id/books",
-            name: "library-books",
-            component: LibraryBooks,
-            leftMenu: LibraryLeftMenu,
-            leftBadge: LibraryBadge
-        },
-        {
-            path: "/libraries/:id/members",
-            name: "library-members",
-            component: LibraryMembers,
-            leftMenu: LibraryLeftMenu,
-            leftBadge: LibraryBadge
-        },
-        {
-            path: "/libraries/:id/book-add",
-            name: "library-book-add",
-            component: LibraryMembers,
-            leftMenu: LibraryLeftMenu,
-            leftBadge: LibraryBadge
-        },
-        {
-            path: "/libraries/:id/member-add",
-            name: "library-member-add",
-            component: LibraryMembers,
-            leftMenu: LibraryLeftMenu,
-            leftBadge: LibraryBadge
         },
         {
             path: "/libraries/:id/about",
