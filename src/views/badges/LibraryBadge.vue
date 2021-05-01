@@ -20,7 +20,14 @@ import LibraryLogo from "../library/LibraryLogo";
 
 export default {
     name: "LibraryBadge",
-    props:["library"],
-    components: {LibraryLogo}
+    components: {LibraryLogo},
+      computed: {
+        library(){
+
+           var lib = this.$store.getters.library;
+
+           return lib;
+        }
+    },
 };
 </script>

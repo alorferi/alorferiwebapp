@@ -82,29 +82,34 @@ export default {
         Loading
     },
     mounted() {
-        axios
-            .get(this.getApiUrl("/api/libraries/" + this.$route.params.id),this.getHeaderWithAuthorizationBearerToken())
-            .then(response => {
-                this.library = response.data.data.attributes;
-                console.info(response);
-                this.loading = false;
-            })
-            .catch(errors => {
-                this.loading = false;
-                console.log(errors);
-                if (errors.response.status === 404) {
-                    this.$router.push("/library/my-libraries");
-                }
-            });
+        this.fetchLibrary(this.$route.params.id)
+    },
+    computed: {
+        library(){
+
+           var lib = this.$store.getters.library;
+
+           return lib;
+        }
     },
     data: function() {
         return {
             loading: true,
             delete_modal: false,
-            library: null
         };
     },
     methods: {
+        fetchLibrary(libraryId){
+                this.$store
+                .dispatch("fetchLibrary", libraryId)
+                .then(() => {
+                    this.loading = false;
+                })
+                .catch(() => {
+                    this.loading = false;
+                });
+
+        },
         destroy: function() {
             axios
                 .delete(
