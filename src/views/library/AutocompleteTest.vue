@@ -37,7 +37,7 @@ export default {
             endPoint = this.getEndPointQueryString(endPoint, term, page);
 
             axios
-                .get(this.getApiUrl(endPoint), this.getHeaderWithBearerToken())
+                .get(this.getApiUrl(endPoint), this.getHeaderWithAuthorizationBearerToken())
                 .then(response => {
                     this.show_loading = false;
                     this.libraries = response.data.data;

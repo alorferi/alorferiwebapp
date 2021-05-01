@@ -12,6 +12,16 @@ const getters = {
     },
     isLoggedIn: state => state.token != null ,
 };
+
+const mutations = {
+    setToken: (state, token) => {
+        state.token = token
+    },
+    logout(state) {
+        state.token = null;
+    }
+};
+
 const actions = {
     login({ commit }, loginCredential) {
         return new Promise((resolve, reject) => {
@@ -71,14 +81,7 @@ const actions = {
         });
     }
 };
-const mutations = {
-    setToken: (state, token) => {
-        state.token = token
-    },
-    logout(state) {
-        state.token = null;
-    }
-};
+
 
 export default {
     state,

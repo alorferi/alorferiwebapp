@@ -5,7 +5,6 @@ import store from "./store";
 import axios from "axios";
 import VueAxios from "vue-axios";
 
-
 import "popper.js";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -20,13 +19,12 @@ import PortalVue from "portal-vue";
 
 // import JQuery from "jquery";
 // window.$ = window.JQuery = JQuery;
-window.$ = window.JQuery = require('jquery');
+window.$ = window.JQuery = require("jquery");
 
 Vue.use(VueAxios, axios);
-Vue.prototype.$axios = axios
+Vue.prototype.$axios = axios;
 
 Vue.use(PortalVue);
-
 
 Vue.prototype.$apiServerBaseUrl = process.env.VUE_APP_API_SERVER_BASE_URL;
 Vue.prototype.$apiClientId = process.env.VUE_APP_API_SERVER_CLIENT_ID;
@@ -35,83 +33,9 @@ Vue.prototype.$apiClientSecret = process.env.VUE_APP_API_SERVER_CLIENT_SECRET;
 // console.log("apiServerBaseUrl", Vue.prototype.$apiServerBaseUrl);
 // console.log("apiClientId", Vue.prototype.$apiClientId);
 // console.log("apiClientSecret", Vue.prototype.$apiClientSecret);
+import mixin from "./mixin"
 
-Vue.mixin({
-    methods: {
-        getApiUrl(endPoint) {
-
-            if(!endPoint.startsWith("/")){
-                endPoint ="/"+endPoint
-            }
-
-            return this.$apiServerBaseUrl + endPoint;
-        },
-        getEndPointQueryString(endPoint, term = null,page=null) {
-
-            if(page == null){
-                page = this.$route.query.page
-            }
-
-            if(term == null){
-                term = this.$route.query.term
-            }
-
-            var queryObj ={
-                page: page==undefined? null: page,
-                term: term==undefined? null: term,
-        }
-
-       queryObj = this.cleanObject(queryObj)
-
-    var qString = new URLSearchParams(queryObj).toString()
-
-    return endPoint +"?"+ qString;
-
-
-        },
-        cleanObject(obj) {
-            for (var propName in obj) {
-              if (obj[propName] === null || obj[propName] === undefined) {
-                delete obj[propName];
-              }
-            }
-            return obj
-          },
-        getHeaderWithBearerToken(){
-            return {
-                headers: {
-                    Authorization: "Bearer " + this.$store.getters.access_token
-                }
-            }
-        },
-        extractUrl(text) {
-            var regex = /(https?:\/\/[^ ]*)/;
-            // var regex = /^(https?:\/\/[^/]+(\/[\w-]+)+)/;
-
-            var matches = text.match(regex);
-
-            if (matches && matches.length >= 1) {
-                return matches[0];
-            }
-
-            return null;
-        },
-        extractYouTubeVideoId(url) {
-            var newval = "";
-            var vid = "";
-
-            if ((newval = url.match(/(\?|&)v=([^&#]+)/))) {
-                vid = newval.pop();
-            } else if ((newval = url.match(/(\.be\/)+([^\\/]+)/))) {
-                vid = newval.pop();
-            } else if ((newval = url.match(/(\\embed\/)+([^\\/]+)/))) {
-                vid = newval.pop().replace("?rel=0", "");
-            }
-
-            return vid;
-        }
-    }
-});
+Vue.mixin(mixin);
 
 // Install BootstrapVue
 Vue.use(BootstrapVue);

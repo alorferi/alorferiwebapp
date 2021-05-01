@@ -83,7 +83,7 @@ export default {
     },
     mounted() {
         axios
-            .get(this.getApiUrl("/api/libraries/" + this.$route.params.id),this.getHeaderWithBearerToken())
+            .get(this.getApiUrl("/api/libraries/" + this.$route.params.id),this.getHeaderWithAuthorizationBearerToken())
             .then(response => {
                 this.library = response.data.data.attributes;
                 console.info(response);

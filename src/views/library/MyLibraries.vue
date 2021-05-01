@@ -3,7 +3,8 @@
         <h4 class="text-secondary">My Libraries</h4>
 
         <SearchTextField @update:term="term = $event" />
-        <Loading v-if="show_loading"></Loading>
+
+        <Loading v-if="libraries.length == 0"></Loading>
         <div v-else>
             <Paginator
                 :meta="meta"
@@ -23,54 +24,65 @@ import SearchTextField from "../../components/SearchTextField";
 // import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
 import Paginator from "../../components/Paginator";
 
-import axios from "axios";
-
 export default {
     name: "MyLibraries",
     components: {
         Loading,
         LibraryListView,
         SearchTextField,
-        Paginator,
+        Paginator
     },
     mounted() {
         this.fetchMyLibraries();
+    },
+    data: function() {
+        return {
+            show_loading: true,
+            term: null,
+            page: null
+        };
+    },
+    computed: {
+        libraries() {
+            return this.$store.getters.myLibraryResponse == null
+                ? []
+                : this.$store.getters.myLibraryResponse.data;
+        },
+
+        meta() {
+            return this.$store.getters.myLibraryResponse == null
+                ? null
+                : this.$store.getters.myLibraryResponse.meta;
+        }
     },
     methods: {
         editUrl: function(library) {
             return this.getApiUrl("/api/libraries/" + library.id + "/edit");
         },
-        fetchMyLibraries: function(term = null, page = null) {
-            var endPoint = "/api/libraries/my-libraries";
+        //
+        fetchMyLibraries: function(pTerm = null, pPage = null) {
 
-            endPoint = this.getEndPointQueryString(endPoint, term, page);
 
-            axios
-                .get(this.getApiUrl(endPoint), this.getHeaderWithBearerToken())
-                .then(response => {
+            var endPoint =   this.getEndPointQueryString("/api/libraries/my-libraries",pTerm,pPage)
+
+            var url = this.getApiUrl(endPoint)
+
+            var payload = {
+                term: pTerm,
+                page: pPage,
+                url:url
+            };
+            this.$store
+                .dispatch("fetchMyLibraries", payload)
+                .then(() => {
                     this.show_loading = false;
-                    this.libraries = response.data.data;
-                    this.meta = response.data.meta;
-
-                    console.warn(response.data);
                 })
-                .catch(errors => {
+                .catch(() => {
                     this.show_loading = false;
-                    console.error(errors);
                 });
-        },
+        }
     },
-    computed: {},
 
-    data: function() {
-        return {
-            libraries: null,
-            show_loading: true,
-            meta: null,
-            term: null,
-            page: null,
-        };
-    },
     watch: {
         page: {
             // the callback will be called immediately after the start of the observation

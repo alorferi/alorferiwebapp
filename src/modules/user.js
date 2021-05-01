@@ -10,6 +10,13 @@ const getters = {
     user: state => state.user,
 };
 
+
+const mutations = {
+    setUser(state,user){
+        state.user = user
+    }
+};
+
 const actions = {
     fetchMe({ commit }) {
         return new Promise((resolve, reject) => {
@@ -36,11 +43,6 @@ const actions = {
     },
 };
 
-const mutations = {
-    setUser(state,user){
-        state.user = user
-    }
-};
 
 export default {
     state,
