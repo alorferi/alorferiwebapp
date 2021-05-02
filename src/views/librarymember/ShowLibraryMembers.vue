@@ -6,35 +6,14 @@
         <div v-else>
             <Paginator :meta="meta" @update:page="page = $event" />
 
-            <div>
-                <div v-if="libraryBookWrappers.length === 0">
-                    <p>
-                        No library Book yet
-                        <!-- <a href="/library/create" class="text-blue-500">Create one</a> -->
-                        <router-link
-                            class="text-blue"
-                            :to="{ name: 'library-create' }"
-                            >Create one</router-link
-                        >
-                    </p>
-                </div>
-                <div v-else class="">
-                    <div
-                        v-for="libraryBookWrapper in libraryBookWrappers"
-                        v-bind:key="libraryBookWrapper.attributes.id"
-                    >
-                        <LibraryBookListItem
-                            :libraryBook="libraryBookWrapper.attributes"
-                        />
-                    </div>
-                </div>
-            </div>
+              <LibraryBookListView :libraryBookWrappers="libraryBookWrappers" />
+
         </div>
     </div>
 </template>
 
 <script>
-import LibraryBookListItem from "../librarybook/LibraryBookListItem";
+import LibraryBookListView from "../librarybook/LibraryBookListView";
 import Loading from "../../components/Loading";
 import SearchTextField from "../../components/SearchTextField";
 import Paginator from "../../components/Paginator";
@@ -43,7 +22,7 @@ export default {
     name: "ShowLibraryMembers",
     components: {
         Loading,
-        LibraryBookListItem,
+        LibraryBookListView,
         SearchTextField,
         Paginator
     },
