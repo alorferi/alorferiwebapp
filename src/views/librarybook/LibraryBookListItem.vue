@@ -25,7 +25,7 @@
                             v-bind:key="index"
                         >
                             {{ author.name }}
-                            <span v-if="inxex < item.book.authors - 1">|</span>
+                            <span v-if="index < item.book.authors - 1">|</span>
                         </div>
                     </div>
                 </div>
