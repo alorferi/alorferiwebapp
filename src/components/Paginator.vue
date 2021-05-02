@@ -8,49 +8,47 @@
                             class="page-item"
                             :class="{ disabled: meta.current_page == 1 }"
                         >
-
-
                             <a
                                 class="page-link"
                                 href="#"
-                                 @click="updatePage(meta.current_page - 1)"
-                                aria-label="Previous"
+                                @click="updatePage(meta.current_page - 1)"
+                                aria-label="« Previous"
                             >
-                                <span aria-hidden="true">&laquo;</span>
+                                <span aria-hidden="true">‹</span>
                                 <span class="sr-only">Previous</span>
                             </a>
                         </li>
 
                         <li
                             class="page-item"
-                            v-for="(page, index) in meta.last_page"
+                            v-for="(page, index) in nOfFirstLoop"
                             :key="index"
                             :class="{ active: page == meta.current_page }"
                         >
-
                             <a
                                 class="page-link"
-                                 href="#"
+                                href="#"
                                 @click="updatePage(page)"
                                 >{{ page }}</a
                             >
                         </li>
+
+                        <li class="page-item disabled" aria-disabled="true"><span class="page-link" v-if="isLongPaging">...</span></li>
+
                         <li
                             class="page-item"
+                            aria-label="Next »"
                             :class="{
                                 disabled: meta.current_page == meta.last_page
                             }"
                         >
-
-                         <!-- :href="getUrlFromRouteName(meta.current_page + 1)" -->
-
                             <a
                                 class="page-link"
                                 href="#"
-                                 @click="updatePage(meta.current_page + 1)"
-                                aria-label="Next"
+                                @click="updatePage(meta.current_page + 1)"
+
                             >
-                                <span aria-hidden="true">&raquo;</span>
+                                <span aria-hidden="true">›</span>
                                 <span class="sr-only">Next</span>
                             </a>
                         </li>
@@ -71,27 +69,30 @@ export default {
     props: ["meta"],
     mounted() {},
     computed: {
-
-                currentTotalItems: function() {
+        currentTotalItems: function() {
             var currentTotalItems = this.meta.current_page * this.meta.per_page;
 
             if (currentTotalItems > this.meta.total) {
                 currentTotalItems = this.meta.total;
             }
             return currentTotalItems;
-        }
+        },
+        nOfFirstLoop() {
+            return this.meta.last_page > 15 ? 10 : this.meta.last_page;
+        },
 
+        isLongPaging(){
+            return this.meta.last_page > 15
+        }
     },
     data() {
-        return {
-        };
+        return {};
     },
 
     methods: {
-            updatePage: function(page) {
-            this.$emit("update:page",  page);
-        },
-
+        updatePage: function(page) {
+            this.$emit("update:page", page);
+        }
     }
 };
 </script>

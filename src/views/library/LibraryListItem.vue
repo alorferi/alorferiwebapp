@@ -11,6 +11,8 @@
                     <p>{{ library.address }}</p>
                     <p v-if=" library.mobile != null ">{{ library.mobile }}</p>
 
+                     <p>Books: {{ library.total_books }}, Members: {{ library.total_members }} </p>
+
                     <router-link
                         :to="{
                             name: 'library-show',
