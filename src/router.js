@@ -7,7 +7,7 @@ import Login from "./views/auth/Login.vue";
 import Secure from "./views/auth/Secure.vue";
 import Register from "./views/auth/Register.vue";
 import NewsFeeds from "./views/home/NewsFeeds.vue";
-import MyLibraries from "./views/library/MyLibraries.vue";
+import ShowMyLibraryList from "./views/library/ShowMyLibraryList.vue";
 import AutoCompleteTest from "./views/library/AutocompleteTest.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";
@@ -89,7 +89,7 @@ let router = new Router({
         {
             path: "/libraries/my-libraries",
             name: "my-libraries",
-            component: MyLibraries,
+            component: ShowMyLibraryList,
             leftMenu: HomeLeftMenu,
             meta:{title: "My Libraries"}
 
