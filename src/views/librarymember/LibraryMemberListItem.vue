@@ -3,14 +3,14 @@
         <div class="card mb-3 p-2">
             <div class="d-flex">
                 <b-img
-                    :src="this.getApiUrl(libraryMember.user.photo_url)"
+                    :src="this.getApiUrl(item.user.photo_url)"
                     class="p-2  rounded-circle"
                 />
 
                 <div>
-                    <h4>{{ libraryMember.user.first_name }}</h4>
+                    <h4>{{ item.user.first_name }}</h4>
 
-                    <p>B{{ libraryMember.member_code }}</p>
+                    <p>B{{ item.member_code }}</p>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
 
 export default {
     name: "LibraryMemberListItem",
-    props: ["libraryMember"],
+    props: ["item"],
     components: {
         // LibraryLogo
     },

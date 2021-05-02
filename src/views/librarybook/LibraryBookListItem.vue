@@ -2,26 +2,32 @@
     <div>
         <div class="card mb-3 p-2">
             <div class="d-flex">
+                <!-- <LibraryLogo :item ="item" size="72"/> -->
 
-                <!-- <LibraryLogo :libraryBook ="libraryBook" size="72"/> -->
-
-                   <b-img
-            :src="this.getApiUrl(libraryBook.book.cover_url)"
-            :style="imgStyle"
-            class="p-2"
-        />
+                <b-img
+                    :src="this.getApiUrl(item.book.cover_url)"
+                    :style="imgStyle"
+                    class="p-2"
+                />
 
                 <div>
-                    <h4>{{ libraryBook.book.title }}</h4>
+                    <h4>{{ item.book.title }}</h4>
 
-                    <p>B{{ libraryBook.book_code }} - SF{{ libraryBook.shelf_number }} - BX{{ libraryBook.box_number }}</p>
+                    <p>
+                        B{{ item.book_code }} - SF{{ item.shelf_number }} - BX{{
+                            item.box_number
+                        }}
+                    </p>
 
-                                <div class="d-flex">
-                                    <div v-for="(author,index) in libraryBook.book.authors" v-bind:key="index">  {{author.name}} <span v-if="inxex < libraryBook.book.authors-1 " >|</span>   </div>
-                                </div>
-
-
-
+                    <div class="d-flex">
+                        <div
+                            v-for="(author, index) in item.book.authors"
+                            v-bind:key="index"
+                        >
+                            {{ author.name }}
+                            <span v-if="inxex < item.book.authors - 1">|</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -33,16 +39,14 @@
 
 export default {
     name: "LibraryBookListItem",
-    props: ["libraryBook"],
+    props: ["item"],
     components: {
         // LibraryLogo
     },
     methods: {
-
-        coverUrl(){
-                return this.getApiUrl(this.libraryBook.book.cover_url)
+        coverUrl() {
+            return this.getApiUrl(this.item.book.cover_url);
         }
-
     }
 };
 </script>

@@ -10,7 +10,7 @@
                 @update:page="page = $event"
             />
 
-            <LibraryBookListView :libraryBookWrappers="libraryBookWrappers" />
+            <WrapperListView :wrapperList="libraryBookWrappers" :itemComponent="libraryBookListItem" />
 
         </div>
     </div>
@@ -18,7 +18,9 @@
 
 
 <script>
-import LibraryBookListView from "./LibraryBookListView";
+
+import WrapperListView from "../../components/WrapperListView";
+import LibraryBookListItem from "./LibraryBookListItem"
 import Loading from "../../components/Loading";
 import SearchTextField from "../../components/SearchTextField";
 import Paginator from "../../components/Paginator";
@@ -27,9 +29,10 @@ export default {
     name: "ShowLibraryBooks",
     components: {
         Loading,
-        LibraryBookListView,
+        WrapperListView,
         SearchTextField,
-        Paginator
+        Paginator,
+        LibraryBookListItem
     },
     mounted() {
         this.fetchLibraryBooks();
@@ -38,7 +41,8 @@ export default {
         return {
             show_loading: true,
             term: null,
-            page: null
+            page: null,
+            libraryBookListItem: LibraryBookListItem
         };
     },
     computed: {

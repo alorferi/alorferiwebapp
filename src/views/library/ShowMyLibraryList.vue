@@ -12,23 +12,23 @@
                 @update:page="page = $event"
             />
 
-            <LibraryListView :libraries="libraries" />
+            <WrapperListView :wrapperList="libraries" :itemComponent="libraryListItem" />
         </div>
     </div>
 </template>
 
 <script>
-import LibraryListView from "./LibraryListView";
+import LibraryListItem from "./LibraryListItem";
+import WrapperListView from "../../components/WrapperListView";
 import Loading from "../../components/Loading";
 import SearchTextField from "../../components/SearchTextField";
-// import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
 import Paginator from "../../components/Paginator";
 
 export default {
     name: "ShowMyLibraryList",
     components: {
         Loading,
-        LibraryListView,
+        WrapperListView,
         SearchTextField,
         Paginator
     },
@@ -39,7 +39,9 @@ export default {
         return {
             show_loading: true,
             term: null,
-            page: null
+            page: null,
+            libraryListItem: LibraryListItem,
+
         };
     },
     computed: {

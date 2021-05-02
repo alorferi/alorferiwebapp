@@ -6,25 +6,28 @@
         <div v-else>
             <Paginator :meta="meta" @update:page="page = $event" />
 
-              <LibraryMemberListView :libraryMemberWrappers="libraryMemberWrappers" />
+              <!-- <LibraryMemberListView :libraryMemberWrappers="libraryMemberWrappers" /> -->
+              <WrapperListView :wrapperList="libraryMemberWrappers" :itemComponent="itemComponent" />
 
         </div>
     </div>
 </template>
 
 <script>
-import LibraryMemberListView from "./LibraryMemberListView";
+// import LibraryMemberListView from "./LibraryMemberListView";
+import LibraryMemberListItem from "./LibraryMemberListItem";
 import Loading from "../../components/Loading";
 import SearchTextField from "../../components/SearchTextField";
 import Paginator from "../../components/Paginator";
+import WrapperListView from "../../components/WrapperListView";
 
 export default {
     name: "ShowLibraryMembers",
     components: {
         Loading,
-        LibraryMemberListView,
+        // LibraryMemberListView,
         SearchTextField,
-        Paginator
+        Paginator,WrapperListView
     },
     mounted() {
         this.fetchLibraryMembers();
@@ -33,7 +36,8 @@ export default {
         return {
             show_loading: true,
             term: null,
-            page: null
+            page: null,
+            itemComponent: LibraryMemberListItem,
         };
     },
     computed: {

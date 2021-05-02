@@ -3,20 +3,20 @@
         <div class="card mb-3 p-3">
             <div class="d-flex">
 
-                <LibraryLogo :library ="library" size="72"/>
+                <LibraryLogo :library ="item" size="72"/>
 
                 <div>
-                    <h4>{{ library.name }}</h4>
+                    <h4>{{ item.name }}</h4>
 
-                    <p>{{ library.address }}</p>
-                    <p v-if=" library.mobile != null ">{{ library.mobile }}</p>
+                    <p>{{ item.address }}</p>
+                    <p v-if=" item.mobile != null ">{{ item.mobile }}</p>
 
-                     <p>Books: {{ library.total_books }}, Members: {{ library.total_members }} </p>
+                     <p>Books: {{ item.total_books }}, Members: {{ item.total_members }} </p>
 
                     <router-link
                         :to="{
                             name: 'library-show',
-                            params: { id: library.id }
+                            params: { id: item.id }
                         }"
                         class="stretched-link"
                     >
@@ -32,14 +32,14 @@ import LibraryLogo from "./LibraryLogo";
 
 export default {
     name: "LibraryListItem",
-    props: ["library"],
+    props: ["item"],
     components: {
         LibraryLogo
     },
     methods: {
 
         logoUrl(){
-                return this.getApiUrl(this.library.logo_url)
+                return this.getApiUrl(this.item.logo_url)
         }
 
     }

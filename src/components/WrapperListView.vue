@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div v-if="libraryBookWrappers.length === 0">
+      <div v-if="wrapperList.length === 0">
             <p>
                 No library Book yet
                 <!-- <a href="/library/create" class="text-blue-500">Create one</a> -->
@@ -12,13 +12,12 @@
         <div v-else class="">
 
 
-
-
             <div
-                v-for="libraryBookWrapper in libraryBookWrappers"
-                v-bind:key="libraryBookWrapper.attributes.id"
+                v-for="wrapper in wrapperList"
+                v-bind:key="wrapper.attributes.id"
             >
-                <LibraryBookListItem :libraryBook="libraryBookWrapper.attributes" />
+                 <component :is="itemComponent" :item="wrapper.attributes"></component>
+
             </div>
 
 
@@ -28,14 +27,12 @@
 
 
 <script>
-import LibraryBookListItem from "./LibraryBookListItem";
 
 
 export default {
-    name: "LibraryListView",
-    props:["libraryBookWrappers"],
+    name: "WrapperListView",
+    props:["wrapperList","itemComponent"],
     components: {
-        LibraryBookListItem,
     }
 
 
