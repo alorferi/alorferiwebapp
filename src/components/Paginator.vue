@@ -41,7 +41,7 @@
                         <!-- End: Firstr Loop -->
 
                         <!-- Start: First Gap -->
-                        <li class="first_gap page-item disabled" aria-disabled="true">
+                        <li class="page-item disabled" aria-disabled="true">
                             <span class="page-link" v-if="isMake1stGap"
                                 >...</span
                             >
@@ -66,7 +66,7 @@
                         <!-- End: Middle Loop -->
 
                         <!--Start: Second Gap -->
-                        <li class="second_gap page-item disabled" aria-disabled="true">
+                        <li class="page-item disabled" aria-disabled="true">
                             <span class="page-link" v-if="isMake2ndGap"
                                 >...</span
                             >
