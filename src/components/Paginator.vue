@@ -114,7 +114,7 @@
                 </nav>
             </div>
 
-            <div class="text-primary p-2">
+            <div class="text-secondary p-2">
                 Items: {{ this.currentTotalItems }} of {{ meta.total }}
             </div>
         </div>
