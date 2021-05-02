@@ -41,7 +41,7 @@
                         <!-- End: Firstr Loop -->
 
                         <!-- Start: First Gap -->
-                        <li class="page-item disabled" aria-disabled="true">
+                        <li class="first_gap page-item disabled" aria-disabled="true">
                             <span class="page-link" v-if="isMake1stGap"
                                 >...</span
                             >
@@ -66,7 +66,7 @@
                         <!-- End: Middle Loop -->
 
                         <!--Start: Second Gap -->
-                        <li class="page-item disabled" aria-disabled="true">
+                        <li class="second_gap page-item disabled" aria-disabled="true">
                             <span class="page-link" v-if="isMake2ndGap"
                                 >...</span
                             >
@@ -139,7 +139,7 @@ export default {
         firstLoop() {
             var endPage = 0;
 
-            if (this.meta.last_page > 15) {
+            if (this.meta.last_page > this.smallPageLimit) {
                 if (this.meta.current_page >= this.firstValueOfTerminatingMiddleLoop()) {
                     endPage = 2;
                 } else {
@@ -169,7 +169,7 @@ export default {
             var startPage = 0;
             var endPage = 0;
 
-            if (this.meta.last_page > 15) {
+            if (this.meta.last_page > this.smallPageLimit) {
                  const lastValue = this.lastValueOfTerminatingMiddleLoop()
                 if ( this.meta.current_page > lastValue) {
                     startPage = this.meta.last_page - 9;
@@ -183,16 +183,19 @@ export default {
         },
 
         isMake1stGap() {
-            return this.meta.current_page >= this.firstValueOfTerminatingMiddleLoop();
+            return this.meta.current_page >= this.firstValueOfTerminatingMiddleLoop() && this.meta.last_page != this.smallPageLimit;
         },
 
         isMake2ndGap() {
              const lastValue = this.lastValueOfTerminatingMiddleLoop()
-            return this.meta.current_page <= lastValue;
+            return this.meta.current_page <= lastValue && this.meta.last_page != this.smallPageLimit
+            //|| this.meta.last_page > this.smallPageLimit;
+            //  return  this.middleLoop.length>0;
         }
     },
     data() {
         return {
+            smallPageLimit:13,
         };
     },
 
