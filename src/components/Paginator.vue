@@ -8,6 +8,7 @@
                         <li
                             class="page-item"
                             :class="{ disabled: meta.current_page == 1 }"
+                            v-if="meta.last_page !=  1"
                         >
                             <a
                                 class="page-link"
@@ -96,6 +97,7 @@
                             :class="{
                                 disabled: meta.current_page == meta.last_page
                             }"
+                               v-if="meta.last_page != 1"
                         >
                             <a
                                 class="page-link"
@@ -138,7 +140,7 @@ export default {
             var endPage = 0;
 
             if (this.meta.last_page > 15) {
-                if (this.meta.current_page > 7) {
+                if (this.meta.current_page >= this.firstValueOfTerminatingMiddleLoop()) {
                     endPage = 2;
                 } else {
                     endPage = 10;
@@ -153,9 +155,9 @@ export default {
         middleLoop() {
             var startPage = 0;
             var endPage = 0;
-
-            const diff = this.meta.last_page - this.meta.current_page;
-            if (this.meta.current_page > 7 && diff > 7) {
+            const  currentPage = this.meta.current_page
+            const lastValue = this.lastValueOfTerminatingMiddleLoop()
+            if (currentPage >= 8 && currentPage <= lastValue ) {
                 startPage = this.meta.current_page - 3;
                 endPage = this.meta.current_page + 3;
             }
@@ -168,7 +170,8 @@ export default {
             var endPage = 0;
 
             if (this.meta.last_page > 15) {
-                if (this.meta.last_page - this.meta.current_page < 7) {
+                 const lastValue = this.lastValueOfTerminatingMiddleLoop()
+                if ( this.meta.current_page > lastValue) {
                     startPage = this.meta.last_page - 9;
                     endPage = this.meta.last_page;
                 } else {
@@ -180,20 +183,16 @@ export default {
         },
 
         isMake1stGap() {
-            return this.meta.current_page > 7;
+            return this.meta.current_page >= this.firstValueOfTerminatingMiddleLoop();
         },
 
         isMake2ndGap() {
-            // return this.meta.last_page > 15;
-            return this.meta.last_page - this.meta.current_page > 7;
+             const lastValue = this.lastValueOfTerminatingMiddleLoop()
+            return this.meta.current_page <= lastValue;
         }
     },
     data() {
         return {
-            // endPageOfFirstLoop:5,
-            // startPageOfMiddleLoop:5,
-            // endPageOfMiddleLoop:10,
-            // startPageOfLastLoop:0,
         };
     },
 
@@ -205,6 +204,12 @@ export default {
             var size = stop - start;
             size = size > 0 ? size + 1 : 0;
             return new Array(size).fill(start).map((n, i) => n + i);
+        },
+        lastValueOfTerminatingMiddleLoop(){
+            return this.meta.last_page - 7;
+        },
+        firstValueOfTerminatingMiddleLoop(){
+            return 8;
         }
     }
 };
