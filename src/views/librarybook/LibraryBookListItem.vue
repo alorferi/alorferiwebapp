@@ -6,7 +6,6 @@
 
                 <b-img
                     :src="this.getApiUrl(item.book.cover_url)"
-                    :style="imgStyle"
                     class="p-2"
                 />
 

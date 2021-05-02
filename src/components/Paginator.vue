@@ -26,7 +26,7 @@
                         <li
                             class="page-item"
                             v-for="(page, index) in firstLoop"
-                            :key="index"
+                            :key="'first'+index"
                             :class="{ active: page == meta.current_page }"
                         >
                             <a
@@ -52,7 +52,7 @@
                         <li
                             class="page-item"
                             v-for="(page, index) in middleLoop"
-                            :key="index"
+                            :key="'middle'+index"
                             :class="{ active: page == meta.current_page }"
                         >
                             <a
@@ -76,7 +76,7 @@
                         <li
                             class="page-item"
                             v-for="(page, index) in lastLoop"
-                            :key="index"
+                            :key="'last'+index"
                             :class="{ active: page == meta.current_page }"
                         >
                             <a
