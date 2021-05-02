@@ -6,8 +6,12 @@
         <div v-else>
             <Paginator :meta="meta" @update:page="page = $event" />
 
-              <!-- <LibraryMemberListView :libraryMemberWrappers="libraryMemberWrappers" /> -->
               <WrapperListView :dataWrapperList="libraryMemberWrappers" :listItemComponent="itemComponent" />
+
+            <Paginator
+                :meta="meta"
+                @update:page="page = $event"
+            />
 
         </div>
     </div>

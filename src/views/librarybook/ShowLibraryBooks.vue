@@ -12,6 +12,11 @@
 
             <WrapperListView :dataWrapperList="libraryBookWrappers" :listItemComponent="listItemComponent" />
 
+             <Paginator
+                :meta="meta"
+                @update:page="page = $event"
+            />
+
         </div>
     </div>
 </template>

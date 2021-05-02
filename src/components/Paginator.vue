@@ -21,7 +21,7 @@
 
                         <li
                             class="page-item"
-                            v-for="(page, index) in nOfFirstLoop"
+                            v-for="(page, index) in firstLoop"
                             :key="index"
                             :class="{ active: page == meta.current_page }"
                         >
@@ -41,7 +41,7 @@
 
                         <li
                             class="page-item"
-                            v-for="(page, index) in range(meta.last_page-1,meta.last_page)"
+                            v-for="(page, index) in lastLoop"
                             :key="index"
                             :class="{ active: page == meta.current_page }"
                         >
@@ -94,8 +94,20 @@ export default {
             }
             return currentTotalItems;
         },
-        nOfFirstLoop() {
-            return this.meta.last_page > 15 ? 10 : this.meta.last_page;
+        // nOfFirstLoop() {
+        //     return this.meta.last_page > 15 ? 10 : this.meta.last_page;
+        // },
+
+        firstLoop(){
+            return this.range(1,this.endPageOfFirstLoop)
+        },
+
+         middleLoop(){
+            return this.range(this.startPageOfMiddleLoop,this.endPageOfMiddleLoop)
+        },
+
+        lastLoop(){
+            return this.range(this.meta.last_page-1,this.meta.last_page)
         },
 
         isLongPaging() {
@@ -103,7 +115,12 @@ export default {
         }
     },
     data() {
-        return {};
+        return {
+            endPageOfFirstLoop:5,
+            startPageOfMiddleLoop:5,
+            endPageOfMiddleLoop:10,
+            startPageOfLastLoop:0,
+        };
     },
 
     methods: {

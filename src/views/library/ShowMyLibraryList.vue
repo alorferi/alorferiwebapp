@@ -13,6 +13,12 @@
             />
 
             <WrapperListView :dataWrapperList="libraries" :listItemComponent="libraryListItem" />
+
+                   <Paginator
+                :meta="meta"
+                @update:page="page = $event"
+            />
+
         </div>
     </div>
 </template>
