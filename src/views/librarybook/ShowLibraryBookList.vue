@@ -3,14 +3,14 @@
 
         <SearchTextField @update:term="term = $event" />
 
-        <Loading v-if="libraryBooks.length == 0"></Loading>
+        <Loading v-if="libraryBookWrappers.length == 0"></Loading>
         <div v-else>
             <Paginator
                 :meta="meta"
                 @update:page="page = $event"
             />
 
-            <LibraryBookListView :libraryBooks="libraryBooks" />
+            <LibraryBookListView :libraryBookWrappers="libraryBookWrappers" />
         </div>
     </div>
 </template>
@@ -44,7 +44,7 @@ export default {
            library() {
             return this.$store.getters.library;
         },
-        libraryBooks() {
+        libraryBookWrappers() {
             return this.$store.getters.libraryBooksResponse == null
                 ? []
                 : this.$store.getters.libraryBooksResponse.data;

@@ -3,22 +3,14 @@
         <div class="card mb-3 p-3">
             <div class="d-flex">
 
-                <!-- <LibraryLogo :library ="library" size="72"/> -->
+                <!-- <LibraryLogo :libraryBook ="libraryBook" size="72"/> -->
 
                 <div>
-                    <h4>{{ library.name }}</h4>
+                    <h4>{{ libraryBook.book.title }}</h4>
 
-                    <p>{{ library.address }}</p>
-                    <p v-if=" library.mobile != null ">{{ library.mobile }}</p>
+                    <p>{{ libraryBook.book_code }}</p>
 
-                    <router-link
-                        :to="{
-                            name: 'library-show',
-                            params: { id: library.id }
-                        }"
-                        class="stretched-link"
-                    >
-                    </router-link>
+
                 </div>
             </div>
         </div>
@@ -29,15 +21,15 @@
 // import LibraryLogo from "./LibraryLogo";
 
 export default {
-    name: "LibraryListItem",
-    props: ["library"],
+    name: "LibraryBookListItem",
+    props: ["libraryBook"],
     components: {
         // LibraryLogo
     },
     methods: {
 
-        logoUrl(){
-                return this.getApiUrl(this.library.logo_url)
+        coverUrl(){
+                return this.getApiUrl(this.libraryBook.book.cover_url)
         }
 
     }

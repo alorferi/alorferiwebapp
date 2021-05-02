@@ -1,8 +1,8 @@
 <template>
     <div>
-      <div v-if="libraries.length === 0">
+      <div v-if="libraryBookWrappers.length === 0">
             <p>
-                No libraries yet
+                No library Book yet
                 <!-- <a href="/library/create" class="text-blue-500">Create one</a> -->
                 <router-link class="text-blue" :to="{ name: 'library-create' }"
                     >Create one</router-link
@@ -15,10 +15,10 @@
 
 
             <div
-                v-for="libraryWrapper in libraries"
-                v-bind:key="libraryWrapper.attributes.id"
+                v-for="libraryBookWrapper in libraryBookWrappers"
+                v-bind:key="libraryBookWrapper.attributes.id"
             >
-                <LibraryBookListItem :library="libraryWrapper.attributes" />
+                <LibraryBookListItem :libraryBook="libraryBookWrapper.attributes" />
             </div>
 
 
@@ -33,23 +33,12 @@ import LibraryBookListItem from "./LibraryBookListItem";
 
 export default {
     name: "LibraryListView",
-    props:["libraries"],
+    props:["libraryBookWrappers"],
     components: {
         LibraryBookListItem,
-    },
-      mounted() {
-    },
-    methods: {
-
-
-    },
-    computed: {},
-
-    data: function() {
-        return {
-
-        };
     }
+
+
 };
 </script>
 
