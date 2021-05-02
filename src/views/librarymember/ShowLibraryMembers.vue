@@ -2,18 +2,18 @@
     <div class="mt-2">
         <SearchTextField @update:term="term = $event" />
 
-        <Loading v-if="libraryBookWrappers.length == 0"></Loading>
+        <Loading v-if="libraryMemberWrappers.length == 0"></Loading>
         <div v-else>
             <Paginator :meta="meta" @update:page="page = $event" />
 
-              <LibraryBookListView :libraryBookWrappers="libraryBookWrappers" />
+              <LibraryMemberListView :libraryMemberWrappers="libraryMemberWrappers" />
 
         </div>
     </div>
 </template>
 
 <script>
-import LibraryBookListView from "../librarybook/LibraryBookListView";
+import LibraryMemberListView from "./LibraryMemberListView";
 import Loading from "../../components/Loading";
 import SearchTextField from "../../components/SearchTextField";
 import Paginator from "../../components/Paginator";
@@ -22,12 +22,12 @@ export default {
     name: "ShowLibraryMembers",
     components: {
         Loading,
-        LibraryBookListView,
+        LibraryMemberListView,
         SearchTextField,
         Paginator
     },
     mounted() {
-        this.fetchLibraryBooks();
+        this.fetchLibraryMembers();
     },
     data: function() {
         return {
@@ -40,20 +40,20 @@ export default {
         library() {
             return this.$store.getters.library;
         },
-        libraryBookWrappers() {
-            return this.$store.getters.libraryBooksResponse == null
+        libraryMemberWrappers() {
+            return this.$store.getters.libraryMembersResponse == null
                 ? []
-                : this.$store.getters.libraryBooksResponse.data;
+                : this.$store.getters.libraryMembersResponse.data;
         },
 
         meta() {
-            return this.$store.getters.libraryBooksResponse == null
+            return this.$store.getters.libraryMembersResponse == null
                 ? null
-                : this.$store.getters.libraryBooksResponse.meta;
+                : this.$store.getters.libraryMembersResponse.meta;
         }
     },
     methods: {
-        fetchLibraryBooks: function(pTerm = null, pPage = null) {
+        fetchLibraryMembers: function(pTerm = null, pPage = null) {
             var payload = {
                 term: pTerm,
                 page: pPage,
@@ -61,7 +61,7 @@ export default {
             };
 
             this.$store
-                .dispatch("fetchLibraryBooks", payload)
+                .dispatch("fetchLibraryMembers", payload)
                 .then(() => {
                     this.show_loading = false;
                 })
@@ -77,7 +77,7 @@ export default {
             immediate: true,
             handler(newVal, oldVal) {
                 if (newVal != oldVal) {
-                    this.fetchLibraryBooks(this.term, this.page);
+                    this.fetchLibraryMembers(this.term, this.page);
                 }
             }
         },
@@ -87,7 +87,7 @@ export default {
             immediate: true,
             handler(newVal, oldVal) {
                 if (newVal != oldVal) {
-                    this.fetchLibraryBooks(this.term, this.page);
+                    this.fetchLibraryMembers(this.term, this.page);
                 }
             }
         }
