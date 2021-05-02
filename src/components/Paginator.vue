@@ -33,7 +33,25 @@
                             >
                         </li>
 
-                        <li class="page-item disabled" aria-disabled="true"><span class="page-link" v-if="isLongPaging">...</span></li>
+                        <li class="page-item disabled" aria-disabled="true">
+                            <span class="page-link" v-if="isLongPaging"
+                                >...</span
+                            >
+                        </li>
+
+                        <li
+                            class="page-item"
+                            v-for="(page, index) in range(meta.last_page-1,meta.last_page)"
+                            :key="index"
+                            :class="{ active: page == meta.current_page }"
+                        >
+                            <a
+                                class="page-link"
+                                href="#"
+                                @click="updatePage(page)"
+                                >{{ page }}</a
+                            >
+                        </li>
 
                         <li
                             class="page-item"
@@ -46,7 +64,6 @@
                                 class="page-link"
                                 href="#"
                                 @click="updatePage(meta.current_page + 1)"
-
                             >
                                 <span aria-hidden="true">›</span>
                                 <span class="sr-only">Next</span>
@@ -81,8 +98,8 @@ export default {
             return this.meta.last_page > 15 ? 10 : this.meta.last_page;
         },
 
-        isLongPaging(){
-            return this.meta.last_page > 15
+        isLongPaging() {
+            return this.meta.last_page > 15;
         }
     },
     data() {
@@ -92,6 +109,11 @@ export default {
     methods: {
         updatePage: function(page) {
             this.$emit("update:page", page);
+        },
+        range: function(start, stop) {
+           var size = stop - start
+           size = size>0? size +1 : 0
+            return new Array(size).fill(start).map((n, i) => n + i);
         }
     }
 };
