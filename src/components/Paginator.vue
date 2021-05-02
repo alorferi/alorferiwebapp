@@ -26,7 +26,7 @@
                         <li
                             class="page-item"
                             v-for="(page, index) in firstLoop"
-                            :key="'first'+index"
+                            :key="'first' + index"
                             :class="{ active: page == meta.current_page }"
                         >
                             <a
@@ -52,7 +52,7 @@
                         <li
                             class="page-item"
                             v-for="(page, index) in middleLoop"
-                            :key="'middle'+index"
+                            :key="'middle' + index"
                             :class="{ active: page == meta.current_page }"
                         >
                             <a
@@ -76,7 +76,7 @@
                         <li
                             class="page-item"
                             v-for="(page, index) in lastLoop"
-                            :key="'last'+index"
+                            :key="'last' + index"
                             :class="{ active: page == meta.current_page }"
                         >
                             <a
@@ -137,16 +137,14 @@ export default {
         firstLoop() {
             var endPage = 0;
 
-
-            if(  this.meta.last_page > 15){
-                if(this.meta.current_page>7){
-                    endPage = 2
-                }else{
-                     endPage = 10
+            if (this.meta.last_page > 15) {
+                if (this.meta.current_page > 7) {
+                    endPage = 2;
+                } else {
+                    endPage = 10;
                 }
-
-            } else{
-                 endPage = this.meta.last_page;
+            } else {
+                endPage = this.meta.last_page;
             }
 
             return this.range(1, endPage);
@@ -156,9 +154,10 @@ export default {
             var startPage = 0;
             var endPage = 0;
 
-            if(this.meta.current_page>7 && (this.meta.last_page-this.meta.current_page) > 7 ){
-                startPage = this.meta.current_page-3;
-                endPage = this.meta.current_page+3;
+            const diff = this.meta.last_page - this.meta.current_page;
+            if (this.meta.current_page > 7 && diff > 7) {
+                startPage = this.meta.current_page - 3;
+                endPage = this.meta.current_page + 3;
             }
 
             return this.range(startPage, endPage);
@@ -169,17 +168,13 @@ export default {
             var endPage = 0;
 
             if (this.meta.last_page > 15) {
-
-                if(this.meta.last_page - this.meta.current_page < 7 ){
-
-                startPage = this.meta.last_page - 9;
-                endPage = this.meta.last_page;
-
-                }else{
-                startPage = this.meta.last_page - 1;
-                endPage = this.meta.last_page;
+                if (this.meta.last_page - this.meta.current_page < 7) {
+                    startPage = this.meta.last_page - 9;
+                    endPage = this.meta.last_page;
+                } else {
+                    startPage = this.meta.last_page - 1;
+                    endPage = this.meta.last_page;
                 }
-
             }
             return this.range(startPage, endPage);
         },
@@ -190,7 +185,7 @@ export default {
 
         isMake2ndGap() {
             // return this.meta.last_page > 15;
-            return (this.meta.last_page - this.meta.current_page) > 7;
+            return this.meta.last_page - this.meta.current_page > 7;
         }
     },
     data() {
