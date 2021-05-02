@@ -49,12 +49,12 @@
 import LibraryLogo from "./LibraryLogo";
 import LibraryTimeline from "./LibraryTimeline"
 import LibraryAbout from "./LibraryAbout"
-import ShowLibraryBookList from "../librarybook/ShowLibraryBookList"
-import LibraryMembers from "../librarymember/LibraryMembers"
+import ShowLibraryBooks from "../librarybook/ShowLibraryBooks"
+import ShowLibraryMembers from "../librarymember/ShowLibraryMembers"
 export default {
     name: "LibraryPager",
     components: {
-        LibraryLogo,LibraryTimeline,LibraryAbout,LibraryMembers,ShowLibraryBookList
+        LibraryLogo,LibraryTimeline,LibraryAbout,ShowLibraryMembers,ShowLibraryBooks
     },
     mounted: function() {
         this.initTabItems();
@@ -78,12 +78,12 @@ export default {
             this.tabs.push({ title: "Home", body: LibraryTimeline , active: true});
             this.tabs.push({
                 title: "Books (" + library.total_books + ")",
-                 body: ShowLibraryBookList ,
+                 body: ShowLibraryBooks ,
                 active: false
             });
             this.tabs.push({
                 title: "Members(" + library.total_members + ")",
-                                 body: LibraryMembers ,
+                                 body: ShowLibraryMembers ,
                 active: false
             });
             this.tabs.push({  title: "About", body: LibraryAbout , active: false });
