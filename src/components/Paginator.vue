@@ -11,7 +11,7 @@
                         >
                             <a
                                 class="page-link"
-                                href="#"
+                                role="button"
                                 @click="updatePage(meta.current_page - 1)"
                                 aria-label="« Previous"
                             >
@@ -31,7 +31,7 @@
                         >
                             <a
                                 class="page-link"
-                                href="#"
+                                role="button"
                                 @click="updatePage(page)"
                                 >{{ page }}</a
                             >
@@ -57,7 +57,7 @@
                         >
                             <a
                                 class="page-link"
-                                href="#"
+                                role="button"
                                 @click="updatePage(page)"
                                 >{{ page }}</a
                             >
@@ -81,7 +81,7 @@
                         >
                             <a
                                 class="page-link"
-                                href="#"
+                                role="button"
                                 @click="updatePage(page)"
                                 >{{ page }}</a
                             >
@@ -99,7 +99,7 @@
                         >
                             <a
                                 class="page-link"
-                                href="#"
+                                role="button"
                                 @click="updatePage(meta.current_page + 1)"
                             >
                                 <span aria-hidden="true">›</span>
