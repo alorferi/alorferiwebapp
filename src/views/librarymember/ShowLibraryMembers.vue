@@ -7,7 +7,7 @@
             <Paginator :meta="meta" @update:page="page = $event" />
 
               <!-- <LibraryMemberListView :libraryMemberWrappers="libraryMemberWrappers" /> -->
-              <WrapperListView :wrapperList="libraryMemberWrappers" :itemComponent="itemComponent" />
+              <WrapperListView :dataWrapperList="libraryMemberWrappers" :listItemComponent="itemComponent" />
 
         </div>
     </div>
@@ -25,7 +25,6 @@ export default {
     name: "ShowLibraryMembers",
     components: {
         Loading,
-        // LibraryMemberListView,
         SearchTextField,
         Paginator,WrapperListView
     },

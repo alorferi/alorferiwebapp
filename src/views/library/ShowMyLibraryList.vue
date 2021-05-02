@@ -12,7 +12,7 @@
                 @update:page="page = $event"
             />
 
-            <WrapperListView :wrapperList="libraries" :itemComponent="libraryListItem" />
+            <WrapperListView :dataWrapperList="libraries" :listItemComponent="libraryListItem" />
         </div>
     </div>
 </template>

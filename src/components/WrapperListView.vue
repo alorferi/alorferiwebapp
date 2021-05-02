@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div v-if="wrapperList.length === 0">
+      <div v-if="dataWrapperList.length === 0">
             <p>
                 No library Book yet
                 <!-- <a href="/library/create" class="text-blue-500">Create one</a> -->
@@ -13,10 +13,10 @@
 
 
             <div
-                v-for="wrapper in wrapperList"
+                v-for="wrapper in dataWrapperList"
                 v-bind:key="wrapper.attributes.id"
             >
-                 <component :is="itemComponent" :item="wrapper.attributes"></component>
+                 <component :is="listItemComponent" :item="wrapper.attributes"></component>
 
             </div>
 
@@ -31,7 +31,7 @@
 
 export default {
     name: "WrapperListView",
-    props:["wrapperList","itemComponent"],
+    props:["dataWrapperList","listItemComponent"],
     components: {
     }
 
