@@ -4,13 +4,13 @@ import moment from "moment";
 export default {
     methods: {
         momentFromNow: function(value) {
-            var date = moment(value).lang("bn").fromNow(); // here u modify data
+            var date = moment(value).locale('bn').fromNow(); // here u modify data
            return date;
         },
 
         formatDate: function(value,expectedFormat="Do MMMM YYYY") {
             var date = moment(value);
-           return moment(date).format(expectedFormat);
+           return moment(date).locale('bn').format(expectedFormat);
         },
 
         getApiUrl(endPoint, term = null, page = null) {
