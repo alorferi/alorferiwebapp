@@ -2,7 +2,7 @@
     <div>
         <div
             class="d-flex flex-column pt-2 pl-2 pr-2"
-            style="background: #f2f3fb"
+            style="background: #e1ebe3"
         >
             <div class="d-flex">
                 <div class="p-2">

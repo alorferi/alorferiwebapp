@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="card mb-3 p-2">
-            <div class="d-flex">
+        <div class="card mb-3 p-1 ">
+            <div class="d-flex align-items-center">
 
 
 
@@ -11,13 +11,13 @@
                    style=" max-width:48px;max-height:48px;"
                 />
 
-               <div class="p-2">
+               <div class="p-1 ">
                     {{ item.library_member.user.first_name }}
                 </div>
 
-  <div class="p-2" v-if=" isCollected ">{{this.dateshow(item.collected_at)}} </div>
+  <div class="p-1 " v-if=" isCollected ">{{this.dateshow(item.collected_at)}} </div>
 
-                <div class="p-2" v-else>{{this.dateshow(item.issued_at)}} </div>
+                <div class="p-1 " v-else>{{this.dateshow(item.issued_at)}} </div>
 
                 <b-img-lazy
                     :src="this.getApiUrl(item.library_book.book.cover_url)"
@@ -25,15 +25,15 @@
                      style=" max-width:48px;max-height:48px;"
                 />
 
-               <div class="p-2">
+               <div class="p-1 ">
                  {{ item.library_book.book.title }}  (B{{ item.library_book.book_code }})
 
                 </div>
 
-                <div class="p-2"  v-if=" isCollected ">
+                <div class="p-1 "  v-if=" isCollected ">
                     বইটি ফেরত দিয়েছেন।
                 </div>
-                <div class="p-2"  v-else>
+                <div class="p-1 "  v-else>
                     বইটি পড়তে নিয়েছেন।
                 </div>
             </div>

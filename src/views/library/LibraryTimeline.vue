@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="pt-2">
         <Loading v-if="show_loading"></Loading>
         <div v-else>
             <WrapperListView
