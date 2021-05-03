@@ -100,7 +100,7 @@ export default {
     computed: {},
     mounted() {
         axios
-            .get(this.getApiUrl("/api/v0/library/" + this.$route.params.id))
+            .get(this.getApiUrl("/api/libraries/" + this.$route.params.id))
             .then(response => {
                 this.form = response.data.data;
 
@@ -118,7 +118,7 @@ export default {
         submitForm: function() {
             axios
                 .put(
-                    this.getApiUrl("/api/v0/library/" + this.$route.params.id),
+                    this.getApiUrl("/api/libraries/" + this.$route.params.id),
                     this.form
                 )
                 .then(response => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100">
+  <div class="">
     <NewsFeeds v-if="$store.getters.isLoggedIn"></NewsFeeds>
     <Welcome v-else></Welcome>
   </div>

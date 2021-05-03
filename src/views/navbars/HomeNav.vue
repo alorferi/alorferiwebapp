@@ -1,91 +1,129 @@
 <template>
-  <div class="container">
-    <router-link :to="{ name: 'home' }" class="navbar-brand">
-      <img src="@/assets/alorferi_logo_brand.png" height="24px" alt="Alor Feri logo" />
-    </router-link>
+    <div class="container-fluid">
+        <router-link :to="{ name: 'home' }" class="navbar-brand">
+            <img
+                src="@/assets/alorferi_logo_brand.png"
+                height="24px"
+                alt="Alor Feri logo"
+            />
+        </router-link>
 
-    <form class="form-inline" action="/action_page.php">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <i class="fas fa-mobile-alt"></i>
-          </span>
+        <form class="form-inline" action="/action_page.php">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-mobile-alt"></i>
+                    </span>
 
-          <select class="form-control">
-            <option value="Library" selected>Library</option>
-            <option value="+91">Book</option>
-            <option value="+1">Blood</option>
-            <option value="+1">Jobs</option>
-          </select>
+                    <select class="form-control">
+                        <option value="Library" selected>Library</option>
+                        <option value="+91">Book</option>
+                        <option value="+1">Blood</option>
+                        <option value="+1">Jobs</option>
+                    </select>
+                </div>
+
+                <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Search"
+                />
+
+                    <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <a href="#"> <i class="fas fa-search"></i></a>
+                        <!-- <button type="submit"> <i class="fas fa-search"></i> </button> -->
+                    </span>
+                </div>
+            </div>
+            <!-- <button class="btn btn-success" type="submit">Search</button> -->
+        </form>
+
+        <!-- Toggler/collapsibe Button -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsibleNavbar"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="nav navbar-nav mr-auto">
+                <li>
+                    <router-link class="nav-link" :to="{ name: 'home' }">
+                        <i class="fas fa-home"></i
+                    ></router-link>
+                </li>
+
+                <li>
+                    <router-link class="nav-link" :to="{ name: 'users.me' }">
+                        <i class="far fa-user-circle"></i></router-link>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav">
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown"
+                        class="nav-link dropdown-toggle "
+                        href="#"
+                         role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+
+
+                        <UserPhoto :user="user" size="12"/>
+
+                        {{ user.first_name }}
+
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/user/profile"
+                            >Profile</a
+                        >
+                        <a class="dropdown-item" href="#">Link 2</a>
+                        <div class="dropdown-divider"></div>
+                        <a
+                            class="dropdown-item"
+                            href="#"
+                            @click="logoutMe"
+                            v-if="this.$store.getters.isLoggedIn"
+                            >Logout</a
+                        >
+                    </div>
+                </li>
+            </ul>
         </div>
-
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" />
-      </div>
-      <button class="btn btn-success" type="submit">Search</button>
-    </form>
-
-    <!-- Toggler/collapsibe Button -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#collapsibleNavbar"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-      <ul class="nav navbar-nav mr-auto">
-        <li>
-          <!-- <router-link class="nav-link" to=" name:'my-libraries'"
-                        >My Libraries</router-link
-          >-->
-        </li>
-      </ul>
-
-      <ul class="navbar-nav ml-auto">
-        <!-- Dropdown -->
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="navbardrop"
-            data-toggle="dropdown"
-          >Babul Mirdha</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="/user/profile">Profile</a>
-            <a class="dropdown-item" href="#">Link 2</a>
-            <div class="dropdown-divider"></div>
-            <a
-              class="dropdown-item"
-              href="#"
-              @click="logoutMe"
-              v-if="this.$store.getters.isLoggedIn"
-            >Logout</a>
-          </div>
-        </li>
-      </ul>
     </div>
-  </div>
 </template>
 
 <script>
 // import Logout from './Logout'
+import { mapGetters } from "vuex";
+import UserPhoto from '../user/UserPhoto'
 export default {
-  name: "HomeNav",
-  components: {
-    // Logout
-  },
-  data() {
-    return {};
-  },
-  computed: {},
-  mounted() {},
-  methods: {
-    logoutMe: function () {
-      this.$parent.logout();
+    name: "HomeNav",
+    components: {
+       UserPhoto, // Logout,
     },
-  },
+    data() {
+        return {};
+    },
+    computed: {
+        ...mapGetters({
+            user: "user"
+        })
+    },
+    mounted() {},
+    methods: {
+        logoutMe: function() {
+            this.$store.dispatch("logout").then(() => {
+                this.$router.push({ name: "home" }).catch(() => {});
+            });
+        }
+    }
 };
 </script>
 

@@ -2,30 +2,49 @@
     <div class="form-group">
         <label :for="name" class="text-primary">{{ label }}</label>
 
-        <div class="input-group">
+        <div class="input-group mb-3 border">
+
             <div class="input-group-prepend">
-                <span class="input-group-text" v-if="icon">
-                    <i :class="icon"></i>
-                </span>
+                    <span class="input-group-text">
+                              <i class="fas fa-venus-mars"></i>
+                    </span>
             </div>
-            <input
-                :type="type"
-                :name="name"
-                class="form-control"
-                v-model="value"
-                :placeholder="placeholder"
-                :class="errorClassObject()"
-                @input="updateField()"
-            />
+
+
+            <label class="radio-inline pl-2">
+                <input
+                    type="radio"
+                    :name="name"
+                    v-model="value"
+                    value="m"
+                    :placeholder="placeholder"
+                    :class="errorClassObject()"
+                    @change="updateField()"
+                />
+                Male
+            </label>
+            <label class="radio-inline  pl-2">
+                <input
+                    type="radio"
+                    :name="name"
+                    v-model="value"
+                    value="f"
+                    :placeholder="placeholder"
+                    :class="errorClassObject()"
+                    @change="updateField()"
+                />
+                Female
+            </label>
         </div>
-        <p class="text-danger" v-text="errorMessage()"></p>
+
+        <p class="text-danger text-sm" v-text="errorMessage()"></p>
     </div>
 </template>
 
 <script>
 export default {
-    name: "EditTextField",
-    props: ["name", "label", "placeholder", "type", "errors", "data", "icon"],
+    name: "GenderInputField",
+    props: ["name", "label", "placeholder", "errors", "data"],
     mounted() {},
     data: function() {
         return {

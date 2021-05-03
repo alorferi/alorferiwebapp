@@ -2,7 +2,7 @@
     <div class>
         <div
             class="border border-light  rounded-circle d-flex justify-content-center align-items-center bg-primary text-white"
-            style="width: 50px; height: 50px;"
+            :style="style"
         >
             <span class=" justify-content-center">
                 {{ shortName }}
@@ -14,7 +14,7 @@
 <script>
 export default {
     name: "NameCircle",
-    props: ["name"],
+    props: ["name",'size'],
     computed: {
         shortName: function() {
             // var matches = this.name.match(/[A-Z]/g);
@@ -28,7 +28,10 @@ export default {
             } else {
                 return matches.slice(0, 2).join("");
             }
-        }
+        },
+        style () {
+        return "width:" + this.size + "px; height:" + this.size + "px;";
+      }
     },
     mounted() {
         console.log("Component mounted.");
