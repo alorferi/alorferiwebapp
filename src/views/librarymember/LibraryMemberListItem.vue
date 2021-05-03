@@ -2,7 +2,7 @@
     <div>
         <div class="card mb-3 p-2">
             <div class="d-flex">
-                <b-img
+                <b-img-lazy
                     :src="this.getApiUrl(item.user.photo_url)"
                     class="p-2  rounded-circle"
                 />

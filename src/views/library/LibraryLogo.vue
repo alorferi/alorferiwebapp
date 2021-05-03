@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-img
+        <b-img-lazy
             v-if="this.library.logo_url != null"
             :src="this.logoUrl()"
             :style="imgStyle"

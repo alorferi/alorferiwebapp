@@ -4,7 +4,7 @@
             <div class="d-flex">
                 <!-- <LibraryLogo :item ="item" size="72"/> -->
 
-                <b-img
+                <b-img-lazy
                     :src="this.getApiUrl(item.book.cover_url)"
                     class="p-2"
                 />
