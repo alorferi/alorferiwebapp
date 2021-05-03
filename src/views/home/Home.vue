@@ -1,8 +1,8 @@
 <template>
-    <div class="h-100">
-        <NewsFeeds v-if="$store.getters.isLoggedIn"></NewsFeeds>
-        <Welcome v-else />
-    </div>
+  <div class="">
+    <NewsFeeds v-if="$store.getters.isLoggedIn"></NewsFeeds>
+    <Welcome v-else></Welcome>
+  </div>
 </template>
 
 <script>
@@ -11,10 +11,10 @@ import Welcome from "@/views/Welcome.vue";
 import NewsFeeds from "@/views/home/NewsFeeds";
 
 export default {
-    name: "home",
-    components: {
-        Welcome,
-        NewsFeeds
-    }
+  name: "home",
+  components: {
+    Welcome,
+    NewsFeeds,
+  },
 };
 </script>

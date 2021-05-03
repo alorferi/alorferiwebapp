@@ -1,12 +1,15 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import Axios from 'axios'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import axios from "axios";
+import VueAxios from "vue-axios";
 
-Vue.prototype.$http = Axios;
+import "popper.js";
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
-<<<<<<< HEAD
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 
@@ -14,49 +17,31 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
 import PortalVue from "portal-vue";
 
+// import JQuery from "jquery";
+// window.$ = window.JQuery = JQuery;
+window.$ = window.JQuery = require("jquery");
+
+import mixin from "./mixin"
+
+Vue.mixin(mixin);
+
 Vue.use(VueAxios, axios);
+Vue.prototype.$axios = axios;
 
 Vue.use(PortalVue);
 
-window.$ = window.JQuery = JQuery;
+import moment from 'moment'
+
+Vue.prototype.moment = moment
 
 Vue.prototype.$apiServerBaseUrl = process.env.VUE_APP_API_SERVER_BASE_URL;
-Vue.prototype.$apiClientId = "91309ef1-f5dc-4b0e-b311-1b19f94dbe16";
-Vue.prototype.$apiClientSecret = "n0Kywq6QTvTBFjNmvEtqJacxmiKtfLHGpA0czcQG";
+Vue.prototype.$apiClientId = process.env.VUE_APP_API_SERVER_CLIENT_ID;
+Vue.prototype.$apiClientSecret = process.env.VUE_APP_API_SERVER_CLIENT_SECRET;
 
-Vue.mixin({
-    methods: {
-        getApiUrl(endPoint) {
-            return this.$apiServerBaseUrl + endPoint;
-        },
-        extractUrl(text) {
-            var regex = /(https?:\/\/[^ ]*)/;
-            // var regex = /^(https?:\/\/[^/]+(\/[\w-]+)+)/;
+// console.log("apiServerBaseUrl", Vue.prototype.$apiServerBaseUrl);
+// console.log("apiClientId", Vue.prototype.$apiClientId);
+// console.log("apiClientSecret", Vue.prototype.$apiClientSecret);
 
-            var matches = text.match(regex);
-
-            if (matches.length >= 1) {
-                return matches[0];
-            }
-
-            return null;
-        },
-        extractYouTubeVideoId(url) {
-            var newval = "";
-            var vid = "";
-
-            if ((newval = url.match(/(\?|&)v=([^&#]+)/))) {
-                vid = newval.pop();
-            } else if ((newval = url.match(/(\.be\/)+([^\\/]+)/))) {
-                vid = newval.pop();
-            } else if ((newval = url.match(/(\\embed\/)+([^\\/]+)/))) {
-                vid = newval.pop().replace("?rel=0", "");
-            }
-
-            return vid;
-        }
-    }
-});
 
 // Install BootstrapVue
 Vue.use(BootstrapVue);
@@ -69,17 +54,12 @@ const access_token = localStorage.getItem("access_token");
 if (access_token) {
     Vue.prototype.$http.defaults.headers.common["Authorization"] =
         "Bearer " + access_token;
-=======
-const token = localStorage.getItem('user-token')
-if (token) {
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
->>>>>>> parent of 4463ec0... Merge branch 'development' of https://github.com/alorferi/alorferiwebapp into development
 }
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+    router,
+    store,
+    render: h => h(App)
+}).$mount("#app");

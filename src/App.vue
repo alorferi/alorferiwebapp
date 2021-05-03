@@ -1,31 +1,31 @@
-headful<template>
-    <div id="app" class="h-100">
-        <vue-headful
-            title="আলোর ফেরী"
-            description="Alor Feri, a socilal library, on demand book reading service."
-        />
+<template>
+    <div id="app" class="">
 
-        <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top">
-            <MyNav v-if="isLoggedIn"></MyNav>
+
+        <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top  ">
+            <div class="container">
+
+
+            <HomeNav v-if="isLoggedIn"></HomeNav>
             <GuestNav v-else></GuestNav>
+              </div>
         </nav>
 
-        <div class="container h-100" style="margin-top:80px">
-            <div v-if="isLoggedIn" class="row h-100">
-                <div class="col-sm-2">
-                    <component :is="leftBadge"></component>
-
-                    <div>
+        <div class="container" style="margin-top:70px;">
+            <div v-if="isLoggedIn">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <component :is="leftBadge"></component>
                         <component :is="leftMenu"></component>
                     </div>
-                </div>
-
-                <div class="col-sm-10 h-100" style="overflow-y: scroll;">
-                    <router-view></router-view>
+                    <div class="col-sm-8" style="overflow-y: scroll;">
+                        <router-view></router-view>
+                    </div>
+                    <div class="col-sm-2"></div>
                 </div>
             </div>
 
-            <div v-else class="h-100">
+            <div v-else class="">
                 <router-view></router-view>
             </div>
         </div>
@@ -33,22 +33,17 @@ headful<template>
 </template>
 
 <script>
-import GuestNav from "./views/layouts/navbars/GuestNav";
-import MyNav from "./views/layouts/navbars/MyNav.vue";
-import VueHeadful from "vue-headful";
-import UserBadge from "./views/badges/UserBadge";
-import HomeLeftMenu from "./views/menus/HomeLeftMenu";
-import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
+import GuestNav from "./views/navbars/GuestNav";
+import HomeNav from "./views/navbars/HomeNav.vue";
+// import UserBadge from "./views/badges/UserBadge";
+// import HomeLeftMenu from "./views/menus/HomeLeftMenu";
+// import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
 
 export default {
     name: "App",
     components: {
         GuestNav,
-        MyNav,
-        VueHeadful,
-        UserBadge,
-        HomeLeftMenu,
-        LibraryLeftMenu
+        HomeNav
     },
     computed: {
         isLoggedIn: function() {
@@ -77,17 +72,19 @@ export default {
             return null;
         }
     },
-    methods: {
-        logout: function() {
-            this.$store.dispatch("logout").then(() => {
-                this.$router.push("/");
-            });
+    methods: {},
+    created() {
+        this.$store.dispatch("setPageTitle", this.$route.meta.title);
+    },
+    watch: {
+        $route(to) {
+            this.$store.dispatch("setPageTitle", to.meta.title);
         }
     },
     goBack() {
         window.history.length > 1
             ? this.$router.go(-1)
-            : this.$router.push("/");
+            : this.$router.push({ name: "home" });
     }
 };
 </script>
