@@ -4,7 +4,7 @@ import moment from "moment";
 export default {
     methods: {
         momentFromNow: function(value) {
-            var date = moment(value).fromNow(); // here u modify data
+            var date = moment(value).lang("bn").fromNow(); // here u modify data
            return date;
         },
 
