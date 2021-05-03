@@ -12,7 +12,7 @@
                     name="body"
                     placeholder="Write something..."
                     readonly
-                    v-b-modal.modal-prevent-closing
+                    v-b-modal.createPostModal
                 />
             </div>
             <!-- <div class="card-footer justify-content-end d-flex">
@@ -20,13 +20,16 @@
             </div> -->
 
             <b-modal
-                id="modal-prevent-closing"
+                id="createPostModal"
                 ref="modal"
                 title="Write something"
                 @show="resetModal"
                 @hidden="resetModal"
-                 ok-title="Post"
+                ok-title="Post"
                 @ok="handleOk"
+                hide-backdrop
+                content-class="shadow"
+
             >
                 <div class="d-flex align-items-center m-2">
                     <UserPhoto :user="activeUser" size="16"></UserPhoto>
@@ -42,18 +45,12 @@
                         invalid-feedback="Name is required"
                         :state="bodyTextState"
                     >
-                        <!-- <b-form-input
-            id="name-input"
-            v-model="name"
-            :state="bodyTextState"
-            required
-          ></b-form-input> -->
 
                         <b-form-textarea
                             id="textarea"
                             v-model="bodyText"
                             placeholder="Enter something here..."
-                            rows="3"
+                            rows="3s"
                             max-rows="6"
                             :state="bodyTextState"
                             required
@@ -108,7 +105,7 @@ export default {
         this.submittedNames.push(this.bodyText)
         // Hide the modal manually
         this.$nextTick(() => {
-          this.$bvModal.hide('modal-prevent-closing')
+          this.$bvModal.hide('createPostModal')
         })
       }
     }
