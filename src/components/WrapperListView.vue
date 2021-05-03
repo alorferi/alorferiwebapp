@@ -2,11 +2,7 @@
     <div>
       <div v-if="dataWrapperList.length === 0">
             <p>
-                No library Book yet
-                <!-- <a href="/library/create" class="text-blue-500">Create one</a> -->
-                <router-link class="text-blue" :to="{ name: 'library-create' }"
-                    >Create one</router-link
-                >
+                {{emptyListMessage}}
             </p>
         </div>
         <div v-else class="">
@@ -31,7 +27,7 @@
 
 export default {
     name: "WrapperListView",
-    props:["dataWrapperList","listItemComponent"],
+    props:["dataWrapperList","listItemComponent", "emptyListMessage"],
     components: {
     }
 
