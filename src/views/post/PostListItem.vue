@@ -1,13 +1,16 @@
 <template>
     <div>
-        <div class="media border p-3 mt-4">
-            <img
+        <div class="media border p-3 mt-3">
+            <!-- <img
                 src="@/assets/ic_user_male.png"
                 alt="John Doe"
                 class="mr-3 mt-3 rounded-circle"
                 style="width:40px;height:40px"
-            />
-            <div class="media-body">
+            /> -->
+
+            <UserPhoto :user="post.user" size="40"></UserPhoto>
+
+            <div class="media-body pl-3">
                 <h5>
                     {{post.user.first_name}} <small><i class="text-text-secondary"> {{ post.posted_at }}</i></small>
                 </h5>
@@ -57,10 +60,11 @@
 </template>
 
 <script>
+import UserPhoto from "../user/UserPhoto"
 export default {
-    name: "Post",
+    name: "PostListItem",
     props: ['post'],
-    components: {},
+    components: {UserPhoto},
     data() {
         return {
 

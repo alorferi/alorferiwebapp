@@ -5,14 +5,14 @@
                 <HomeLeftMenu></HomeLeftMenu>
             </div> -->
             <!-- <div class="col-sm-8 " style="overflow-y: scroll;"> -->
-                <NewPost></NewPost>
+                <CreatePost></CreatePost>
 
                 <p v-if="is_loading_posts">Loading posts</p>
-                <Post
+                <PostListItem
                     v-else
                     v-for="post in posts"
                     v-bind:key="post.id"
-                    :post="post"
+                    :post="post.attributes"
                 />
 
                 <p v-if="!is_loading_posts && posts.length < 1">
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import Post from "@/views/post/Post";
-import NewPost from "@/views/post/NewPost";
+import PostListItem from "@/views/post/PostListItem";
+import CreatePost from "@/views/post/CreatePost";
 // import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
 
 // import { mapGetters } from "vuex";
@@ -40,7 +40,7 @@ export default {
         //     access_token: "access_token"
         // })
     },
-    components: { NewPost, Post },
+    components: { CreatePost, PostListItem },
     data: () => {
         return {
             posts: [],

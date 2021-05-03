@@ -50,7 +50,7 @@
 
         <div>
             <p v-if="is_loading_posts">Loading posts</p>
-            <Post
+            <PostListItem
                 v-else
                 v-for="post in posts"
                 v-bind:key="post.id"
@@ -70,10 +70,10 @@
 </template>
 
 <script>
-import Post from "@/views/post/Post";
+import PostListItem from "@/views/post/PostListItem";
 export default {
     name: "UserProfile",
-    components: { Post },
+    components: { PostListItem },
     data() {
         return {
             user: null,

@@ -33,7 +33,7 @@
 
 
 export default {
-  name: "NewPost",
+  name: "CreatePost",
   components: {
 
   },
