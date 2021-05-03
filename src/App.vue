@@ -44,9 +44,6 @@ export default {
     components: {
         GuestNav,
         HomeNav
-        // UserBadge,
-        // HomeLeftMenu,
-        // LibraryLeftMenu,
     },
     computed: {
         isLoggedIn: function() {

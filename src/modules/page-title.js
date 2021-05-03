@@ -8,7 +8,7 @@ const getters = {
 };
 
 const mutations = {
-    setTitle: (state, pageTitle) => {
+    setPageTitle: (state, pageTitle) => {
         state.pageTitle = pageTitle + " | Alor Feri";
         document.pageTitle = state.pageTitle
     }
@@ -17,7 +17,7 @@ const mutations = {
 
 const actions = {
     setPageTitle({ commit }, pageTitle) {
-        commit("setTitle", pageTitle);
+        commit("setPageTitle", pageTitle);
     }
 };
 

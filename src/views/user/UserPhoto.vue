@@ -1,6 +1,6 @@
 <template>
     <span>
-                       <b-img
+            <b-img-lazy
             v-if="this.user.photo_url"
             :src="this.getApiUrl(this.user.photo_url)"
             :style="imgStyle"

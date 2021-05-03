@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="card mb-3 p-2">
-            <div class="d-flex">
+            <div class="d-flex align-items-center">
                 <!-- <LibraryLogo :item ="item" size="72"/> -->
 
                 <b-img-lazy
@@ -10,13 +10,7 @@
                 />
 
                 <div>
-                    <h4>{{ item.book.title }}</h4>
-
-                    <p>
-                        B{{ item.book_code }} - SF{{ item.shelf_number }} - BX{{
-                            item.box_number
-                        }}
-                    </p>
+                    <h5>{{ item.book.title }}</h5>
 
                     <div class="d-flex">
                         <div
@@ -27,6 +21,12 @@
                             <span v-if="index < item.book.authors - 1">|</span>
                         </div>
                     </div>
+
+                    <p>
+                        B{{ item.book_code }} - SF{{ item.shelf_number }} - BX{{
+                            item.box_number
+                        }}
+                    </p>
                 </div>
             </div>
         </div>
