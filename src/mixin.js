@@ -1,7 +1,18 @@
 import Vue from "vue";
+import moment from "moment";
 
 export default {
     methods: {
+        momentFromNow: function(value) {
+            var date = moment(value).fromNow(); // here u modify data
+           return date;
+        },
+
+        formatDate: function(value,expectedFormat="Do MMMM YYYY") {
+            var date = moment(value);
+           return moment(date).format(expectedFormat);
+        },
+
         getApiUrl(endPoint, term = null, page = null) {
             if (!endPoint.startsWith("/")) {
                 endPoint = "/" + endPoint;

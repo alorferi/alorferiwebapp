@@ -15,9 +15,9 @@
                     {{ item.library_member.user.first_name }}
                 </div>
 
-  <div class="p-1 " v-if=" isCollected ">{{this.dateshow(item.collected_at)}} </div>
+  <div class="p-1 " v-if=" isCollected ">{{this.momentFromNow(item.collected_at)}} </div>
 
-                <div class="p-1 " v-else>{{this.dateshow(item.issued_at)}} </div>
+                <div class="p-1 " v-else>{{this.momentFromNow(item.issued_at)}} </div>
 
                 <b-img-lazy
                     :src="this.getApiUrl(item.library_book.book.cover_url)"
@@ -58,13 +58,9 @@ export default {
         }
     },
     methods: {
-           dateshow: function(value) {
-            var date = moment(value).fromNow(); // here u modify data
 
-
-           return date;
-        }
     },
+
     directives: {
 
     }
