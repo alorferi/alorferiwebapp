@@ -30,6 +30,10 @@ Vue.prototype.$axios = axios;
 
 Vue.use(PortalVue);
 
+import moment from 'moment'
+
+Vue.prototype.moment = moment
+
 Vue.prototype.$apiServerBaseUrl = process.env.VUE_APP_API_SERVER_BASE_URL;
 Vue.prototype.$apiClientId = process.env.VUE_APP_API_SERVER_CLIENT_ID;
 Vue.prototype.$apiClientSecret = process.env.VUE_APP_API_SERVER_CLIENT_SECRET;

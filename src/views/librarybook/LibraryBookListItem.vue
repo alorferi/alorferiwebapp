@@ -37,7 +37,7 @@
 // import LibraryLogo from "./LibraryLogo";
 
 export default {
-    name: "LibraryBookListItem",
+    name: "LibraryBookIssueTimelineItem",
     props: ["item"],
     components: {
         // LibraryLogo
