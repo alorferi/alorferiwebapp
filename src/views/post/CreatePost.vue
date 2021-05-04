@@ -66,6 +66,19 @@ export default {
             bodyState: null,
         }
     },    methods: {
+
+
+        createPostAction(){
+                this.$store.dispatch("createPost",{body: this.body})
+                .then(()=>{
+                      this. hideCreatePostModal();
+                })
+                .catch(()=>{
+
+                })
+                .finally()
+        },
+
       checkFormValidity() {
         const valid = this.$refs.form.checkValidity()
         this.bodyState = valid
@@ -87,10 +100,12 @@ export default {
           return
         }
         // Subit data to backend server
+        this.createPostAction()
 
+      },
 
-
-        // Hide the modal manually
+      hideCreatePostModal(){
+             // Hide the modal manually
         this.$nextTick(() => {
           this.$bvModal.hide('createPostModal')
         })
