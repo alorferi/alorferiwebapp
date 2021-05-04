@@ -7,12 +7,13 @@ import Libraries from "./libraries"
 import LibraryBooks from "./library-books"
 import LibraryMembers from "./library-members"
 import LibraryMemberIssues from "./library-book-issues"
+import Posts from "./posts"
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules:{
-        Users, PageTitle, Token,Libraries, LibraryBooks,LibraryMembers,LibraryMemberIssues
+        Users, PageTitle, Token,Libraries, LibraryBooks,LibraryMembers,LibraryMemberIssues,Posts
     },
     state: {
     },

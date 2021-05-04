@@ -1,20 +1,19 @@
 <template>
-    <div >
+    <div>
+        <Loading v-if="is_loading"></Loading>
 
-                <Loading v-if="is_loading"></Loading>
+        <PostListItem
+            v-else
+            v-for="post in posts"
+            :item="post.attributes"
+            v-bind:key="post.id"
+        />
 
-                <PostListItem
-                    v-else
-                    v-for="post in posts"
-                    :item="post.attributes"
-                    v-bind:key="post.id"
-                />
+        <p v-if="!is_loading && posts.length < 1">
+            No post found.
+        </p>
 
-                <p v-if="!is_loading && posts.length < 1">
-                    No post found.
-                </p>
-
-                <br />
+        <br />
     </div>
 </template>
 
@@ -25,27 +24,37 @@ import Loading from "@/components/Loading";
 export default {
     name: "ShowPosts",
     computed: {
+
+        posts(){
+          const pst =  this.$store.getters.postsResponse.data
+            return pst;
+        }
+
     },
-    components: {  PostListItem,Loading },
+    components: { PostListItem, Loading },
     data: () => {
         return {
-            posts: [],
             is_loading: true
         };
     },
     mounted() {
-        this.$axios
-            .get(this.getApiUrl("/api/posts"), this.getHeaderWithAuthorizationBearerToken())
-            .then(response => (this.posts = response.data.data))
-            .catch(err => {
-                console.log(err);
-            })
-            .finally(() => {
-                this.is_loading = false;
-            });
+        this.fetchPostsAction();
     },
 
-    methods: {}
+    methods: {
+
+        fetchPostsAction() {
+            this.$store
+                .dispatch("fetchPosts")
+                .then(() => {
+                })
+                .catch(() => {
+                })
+                .finally(() => {
+                    this.is_loading = false;
+                });
+        }
+    }
 };
 </script>
 
