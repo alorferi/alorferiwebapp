@@ -8,20 +8,20 @@
                 style="width:40px;height:40px"
             /> -->
 
-            <UserPhoto :user="post.user" size="40"></UserPhoto>
+            <UserPhoto :user="item.user" size="40"></UserPhoto>
 
             <div class="media-body pl-3">
                 <h5>
-                    {{post.user.first_name}} <small><i class="text-text-secondary"> {{ post.posted_at }}</i></small>
+                    {{item.user.first_name}} <small><i class="text-text-secondary"> {{ item.posted_at }}</i></small>
                 </h5>
                 <p>
-                   {{post.body}}
+                   {{item.body}}
                 </p>
 
 
-                <div v-if="post.image">
+                <div v-if="item.image">
 
-                    <img :src="post.image" alt="Posted image" class="w-100">
+                    <img :src="item.image" alt="Posted image" class="w-100">
 
                 </div>
 
@@ -63,7 +63,7 @@
 import UserPhoto from "../user/UserPhoto"
 export default {
     name: "PostListItem",
-    props: ['post'],
+    props: ['item'],
     components: {UserPhoto},
     data() {
         return {
@@ -76,7 +76,7 @@ export default {
 
         getYouTubeEmbedUrl: function() {
 
-          var url = this.extractUrl(this.post.body)
+          var url = this.extractUrl(this.item.body)
 
 
         if(url){

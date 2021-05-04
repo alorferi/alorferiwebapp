@@ -10,7 +10,7 @@
 
                  >Write something...</b-button> -->
 
-                 <button type="button" class="ml-3 form-control btn btn-outline-secondary"  v-b-modal.createPostModal>Write something...</button>
+                 <button type="button" class="ml-3 form-control btn btn-outline-info"  v-b-modal.createPostModal>Write something...</button>
 
             </div>
 
