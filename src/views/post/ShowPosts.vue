@@ -37,14 +37,14 @@ export default {
         };
     },
     mounted() {
-        this.fetchPostsAction();
+        this.fetchPostFeedAction();
     },
 
     methods: {
 
-        fetchPostsAction() {
+        fetchPostFeedAction() {
             this.$store
-                .dispatch("fetchPosts")
+                .dispatch("fetchPostFeed")
                 .then(() => {
                 })
                 .catch(() => {
