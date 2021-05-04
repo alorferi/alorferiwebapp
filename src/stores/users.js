@@ -1,53 +1,55 @@
-import Vue from "vue";
 import axios from "axios";
+import mixin from "../mixin";
 
 const state = {
-    user: JSON.parse(localStorage.getItem("user") || null) ,
-    userStatus:null
+    user: JSON.parse(localStorage.getItem("user") || null),
+    activeUser: JSON.parse(localStorage.getItem("activeUser") || null),
+    userStatus: null
 };
 
 const getters = {
     user: state => state.user,
+    activeUser: state => state.activeUser
 };
 
-
 const mutations = {
-    setUser(state,user){
-        state.user = user
+    setUser(state, user) {
+        state.user = user;
+        localStorage.setItem("user", JSON.stringify(user));
+    },
+    setActiveUser(state, newUser) {
+        state.activeUser = newUser;
+        localStorage.setItem("activeUser", JSON.stringify(newUser));
     }
 };
 
 const actions = {
-    fetchMe({ commit }) {
+    fetchMe(context) {
         return new Promise((resolve, reject) => {
-            // commit("get_me_request");
+            var url = mixin.methods.getApiUrl("/api/auth/me");
+            const headers = mixin.methods.getAuthorizationBearerToken();
+
             axios({
-                url: Vue.prototype.$apiServerBaseUrl + "/api/auth/me",
-                headers:{
-                    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem("token")).access_token
-                },
+                url: url,
+                headers: headers,
                 method: "GET"
             })
                 .then(response => {
                     const user = response.data.data.attributes;
-                    localStorage.setItem("user", JSON.stringify(user));
-                    commit("setUser", user);
+                    context.commit("setActiveUser", user);
                     resolve(response);
                 })
                 .catch(err => {
-                    console.log("err:", err)
-                    // commit("get_me_error", err);
+                    console.log("err:", err);
                     reject(err);
                 });
         });
-    },
+    }
 };
-
 
 export default {
     state,
     getters,
     mutations,
-    actions,
-
+    actions
 };

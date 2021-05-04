@@ -57,7 +57,7 @@ export default {
     },
     computed: {
         activeUser() {
-            return this.$store.getters.user;
+            return this.$store.getters.activeUser;
         }
     },
     data() {

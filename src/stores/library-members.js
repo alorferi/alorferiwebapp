@@ -4,12 +4,14 @@ import mixin from '../mixin'
 
 const state = {
     libraryMember: JSON.parse(localStorage.getItem("libraryMember") || null),
+    activeLibraryMember: JSON.parse(localStorage.getItem("activeLibraryMember") || null),
     libraryMembersResponse:null,
     libraryStatus: null
 };
 
 const getters = {
     libraryMember: state => state.libraryMember,
+    activeLibraryMember: state => state.activeLibraryMember,
     libraryMembersResponse: state => state.libraryMembersResponse
 };
 
@@ -18,7 +20,11 @@ const mutations = {
         state.libraryMember = libraryMember;
         // localStorage.setItem("libraryMember", JSON.stringify(libraryMember));
     },
-    setLibraryBooksResponse(state, libraryMembersResponse) {
+    setActiveLibraryBook(state, newLibraryMember) {
+        state.setActiveLibraryBook = newLibraryMember;
+        // localStorage.setItem("libraryMember", JSON.stringify(libraryMember));
+    },
+    setLibraryMembersResponse(state, libraryMembersResponse) {
         state.libraryMembersResponse = libraryMembersResponse;
         // localStorage.setItem("libraryMembersResponse", JSON.stringify(libraryMembersResponse));
     }
@@ -36,7 +42,6 @@ const actions = {
         .get(url,headers)
         .then(response => {
             const libraryMember = response.data.data.attributes;
-
             context.commit("setLibraryBook", libraryMember);
             resolve(response);
 
@@ -64,7 +69,7 @@ const actions = {
                 })
                 .then(response => {
                     const libraryMembersResponse = response.data;
-                    context.commit("setLibraryBooksResponse", libraryMembersResponse);
+                    context.commit("setLibraryMembersResponse", libraryMembersResponse);
                     resolve(response);
                 })
                 .catch(err => {
