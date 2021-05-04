@@ -1,23 +1,18 @@
 <template>
     <div>
         <div class="card">
-            <!-- <div class="card-header">Create post</div> -->
             <div class="card-body d-flex  align-items-center">
-                <UserPhoto :user="activeUser" size="40"></UserPhoto>
+                <UserPhoto :user="activeUser" size="40"> </UserPhoto>
 
-                <input
-                    class="form-control ml-3"
-                    rows="1"
-                    id="comment"
-                    name="body"
-                    placeholder="Write something..."
-                    readonly
-                    v-b-modal.createPostModal
-                />
+                 <!-- <b-button class="ml-3 form-control" variant="outline-secondary"
+
+                   v-b-modal.createPostModal
+
+                 >Write something...</b-button> -->
+
+                 <button type="button" class="ml-3 form-control btn btn-outline-secondary"  v-b-modal.createPostModal>Write something...</button>
+
             </div>
-            <!-- <div class="card-footer justify-content-end d-flex">
-                <button class="btn btn-primary ml-auto">Post</button>
-            </div> -->
 
             <b-modal
                 id="createPostModal"
@@ -40,22 +35,18 @@
                     </div>
                 </div>
                 <form ref="form" @submit.stop.prevent="handleSubmit">
-                    <b-form-group
-                        label-for="name-input"
-                        invalid-feedback="Name is required"
-                        :state="bodyTextState"
-                    >
+
 
                         <b-form-textarea
                             id="textarea"
-                            v-model="bodyText"
+                            v-model="body"
                             placeholder="Enter something here..."
                             rows="3s"
                             max-rows="6"
-                            :state="bodyTextState"
+                            :state="bodyState"
                             required
-                        ></b-form-textarea>
-                    </b-form-group>
+                        >
+                        </b-form-textarea>
                 </form>
             </b-modal>
         </div>
@@ -77,18 +68,18 @@ export default {
     },
     data() {
         return {
-            bodyText: null,
-             bodyTextState: null,
+            body: '',
+            bodyState: null,
         }
     },    methods: {
       checkFormValidity() {
         const valid = this.$refs.form.checkValidity()
-        this.bodyTextState = valid
+        this.bodyState = valid
         return valid
       },
       resetModal() {
-        this.bodyText = ''
-        this.bodyTextState = null
+        this.body = ''
+        this.bodyState = null
       },
       handleOk(bvModalEvt) {
         // Prevent modal from closing
@@ -101,8 +92,10 @@ export default {
         if (!this.checkFormValidity()) {
           return
         }
-        // Push the name to submitted names
-        this.submittedNames.push(this.bodyText)
+        // Subit data to backend server
+
+
+
         // Hide the modal manually
         this.$nextTick(() => {
           this.$bvModal.hide('createPostModal')
