@@ -1,7 +1,8 @@
 <template>
     <div >
 
-                <p v-if="is_loading_posts">Loading posts</p>
+                <Loading v-if="is_loading"></Loading>
+
                 <PostListItem
                     v-else
                     v-for="post in posts"
@@ -9,7 +10,7 @@
                     :post="post.attributes"
                 />
 
-                <p v-if="!is_loading_posts && posts.length < 1">
+                <p v-if="!is_loading && posts.length < 1">
                     No post found.
                 </p>
 
@@ -19,16 +20,17 @@
 
 <script>
 import PostListItem from "./PostListItem";
+import Loading from "@/components/Loading";
 
 export default {
     name: "ShowPosts",
     computed: {
     },
-    components: {  PostListItem },
+    components: {  PostListItem,Loading },
     data: () => {
         return {
             posts: [],
-            is_loading_posts: true
+            is_loading: true
         };
     },
     mounted() {
@@ -39,7 +41,7 @@ export default {
                 console.log(err);
             })
             .finally(() => {
-                this.is_loading_posts = false;
+                this.is_loading = false;
             });
     },
 
