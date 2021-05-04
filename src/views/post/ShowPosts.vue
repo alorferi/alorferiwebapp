@@ -6,8 +6,8 @@
                 <PostListItem
                     v-else
                     v-for="post in posts"
+                    :item="post.attributes"
                     v-bind:key="post.id"
-                    :post="post.attributes"
                 />
 
                 <p v-if="!is_loading && posts.length < 1">
