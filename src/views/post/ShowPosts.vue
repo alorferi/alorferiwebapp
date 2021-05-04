@@ -26,8 +26,7 @@ export default {
     computed: {
 
         posts(){
-          const pst =  this.$store.getters.postsResponse.data
-            return pst;
+            return this.$store.getters.postsResponse.data;
         }
 
     },
