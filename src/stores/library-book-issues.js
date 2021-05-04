@@ -56,13 +56,11 @@ const actions = {
 
         var url = mixin.methods.getApiUrl(endPoint,payload.term,payload.page)
 
+
+        const  headers = mixin.methods.getAuthorizationBearerToken()
                 axios({
                     url:url,
-                    headers: {
-                        Authorization:
-                            "Bearer " +
-                            JSON.parse(localStorage.getItem("token")).access_token
-                    },
+                    headers: headers,
                     method: "GET"
                 })
                 .then(response => {
@@ -81,6 +79,6 @@ const actions = {
 export default {
     state,
     getters,
-    actions,
-    mutations
+    mutations,
+    actions
 };

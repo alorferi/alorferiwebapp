@@ -52,15 +52,15 @@ export default {
     },
     computed: {
         libraries() {
-            return this.$store.getters.myLibraryResponse == null
+            return this.$store.getters.myLibrariesResponse == null
                 ? []
-                : this.$store.getters.myLibraryResponse.data;
+                : this.$store.getters.myLibrariesResponse.data;
         },
 
         meta() {
-            return this.$store.getters.myLibraryResponse == null
+            return this.$store.getters.myLibrariesResponse == null
                 ? null
-                : this.$store.getters.myLibraryResponse.meta;
+                : this.$store.getters.myLibrariesResponse.meta;
         }
     },
     methods: {

@@ -4,13 +4,13 @@ import mixin from '../mixin'
 
 const state = {
     library: JSON.parse(localStorage.getItem("library") || null),
-    myLibraryResponse:null,
+    myLibrariesResponse:null,
     libraryStatus: null
 };
 
 const getters = {
     library: state => state.library,
-    myLibraryResponse: state => state.myLibraryResponse
+    myLibrariesResponse: state => state.myLibrariesResponse
 };
 
 const mutations = {
@@ -18,9 +18,9 @@ const mutations = {
         state.library = library;
         // localStorage.setItem("library", JSON.stringify(library));
     },
-    setMyLibraryResponse(state, myLibraryResponse) {
-        state.myLibraryResponse = myLibraryResponse;
-        // localStorage.setItem("myLibraryResponse", JSON.stringify(myLibraryResponse));
+    setMyLibrariesResponse(state, myLibrariesResponse) {
+        state.myLibrariesResponse = myLibrariesResponse;
+        // localStorage.setItem("myLibrariesResponse", JSON.stringify(myLibrariesResponse));
     }
 };
 
@@ -55,24 +55,20 @@ const actions = {
 
         var url = mixin.methods.getApiUrl("/api/libraries/my-libraries",payload.term,payload.page)
 
+        const  headers = mixin.methods.getAuthorizationBearerToken()
+
                 axios({
                     url:url,
-                    headers: {
-                        Authorization:
-                            "Bearer " +
-                            JSON.parse(localStorage.getItem("token")).access_token
-                    },
+                    headers: headers,
                     method: "GET"
                 })
                 .then(response => {
-                    const myLibraryResponse = response.data;
- // context.commit("get_me_request");
-                    context.commit("setMyLibraryResponse", myLibraryResponse);
+                    const myLibrariesResponse = response.data;
+                    context.commit("setMyLibrariesResponse", myLibrariesResponse);
                     resolve(response);
                 })
                 .catch(err => {
                     console.log("err:", err);
-                    // context.commit("get_me_error", err);
                     reject(err);
                 });
         });
@@ -82,6 +78,7 @@ const actions = {
 export default {
     state,
     getters,
+    mutations,
     actions,
-    mutations
+
 };

@@ -4,13 +4,7 @@
             <div class="card-body d-flex  align-items-center">
                 <UserPhoto :user="activeUser" size="40"> </UserPhoto>
 
-                 <!-- <b-button class="ml-3 form-control" variant="outline-secondary"
-
-                   v-b-modal.createPostModal
-
-                 >Write something...</b-button> -->
-
-                 <button type="button" class="ml-3 form-control btn btn-outline-secondary"  v-b-modal.createPostModal>Write something...</button>
+                 <button type="button" class="ml-3 form-control btn btn-outline-info"  v-b-modal.createPostModal>Write something...</button>
 
             </div>
 
@@ -63,7 +57,7 @@ export default {
     },
     computed: {
         activeUser() {
-            return this.$store.getters.user;
+            return this.$store.getters.activeUser;
         }
     },
     data() {
