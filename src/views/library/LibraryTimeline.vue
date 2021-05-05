@@ -17,6 +17,7 @@ import Loading from "../../components/Loading";
 
 export default {
     name: "LibraryTimeline",
+     props:["library"],
     components: {
         Loading,
         WrapperListView
@@ -33,9 +34,6 @@ export default {
         };
     },
     computed: {
-        library() {
-            return this.$store.getters.library;
-        },
         dataWrappers() {
             return this.$store.getters.libraryBookIssuesResponse == null
                 ? []

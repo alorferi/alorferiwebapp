@@ -13,11 +13,12 @@ import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";
 import LibraryShow from "./views/library/LibraryShow.vue";
 import LibraryAbout from "./views/library/LibraryAbout.vue";
-import UserProfile from "./views/user/UserProfile";
+import ShowMe from "./views/user/ShowMe";
+import ShowUser from "./views/user/ShowUser";
 import HomeLeftMenu from "./views/menus/HomeLeftMenu";
 import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
 import LibraryBadge from "./views/badges/LibraryBadge";
-import UserBadge from "./views/badges/UserBadge";
+// import UserBadge from "./views/badges/UserBadge";
 
 Vue.use(Router);
 
@@ -69,23 +70,23 @@ let router = new Router({
         {
             path: "/users/me",
             name: "users.me",
-            component: UserProfile,
+            component: ShowMe,
             leftMenu: HomeLeftMenu,
             meta:{title: "Profile"}
         },
         {
             path: "/users/:user_id",
             name: "user.show",
-            component: UserProfile,
+            component: ShowUser,
             leftMenu: HomeLeftMenu,
             meta:{title: "Profile"}
         },
-        {
-            path: "/users/profile/edit",
-            name: "user-profile-edit",
-            component: UserProfile,
-            leftBadge: UserBadge
-        },
+        // {
+        //     path: "/users/profile/edit",
+        //     name: "user-profile-edit",
+        //     component: UserProfile,
+        //     leftBadge: UserBadge
+        // },
         {
             path: "/libraries/my-libraries",
             name: "my-libraries",

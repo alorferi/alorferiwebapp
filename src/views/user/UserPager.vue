@@ -6,13 +6,13 @@
         >
             <div class="d-flex">
                 <div class="p-2">
-                    <LibraryLogo :library="library" size="96" />
+                    <UserPhoto :user="user" size="96" />
                 </div>
 
                 <div class="flex-grow-1 p-2">
-                    <h3 class="text-success">{{ library.name }}</h3>
+                    <h3 class="text-success">{{ user.name }}</h3>
                     <h5>
-                        {{ library.address }}
+                        {{ user.address }}
                     </h5>
                 </div>
 
@@ -40,29 +40,27 @@
             </div>
         </div>
 
-           <component :is="tabBody" :library="library"></component>
+           <component :is="tabBody" :user="user" ></component>
 
     </div>
 </template>
 
 <script>
-import LibraryLogo from "./LibraryLogo";
-import LibraryTimeline from "./LibraryTimeline"
-import LibraryAbout from "./LibraryAbout"
-import ShowLibraryBooks from "../librarybook/ShowLibraryBooks"
-import ShowLibraryMembers from "../librarymember/ShowLibraryMembers"
+import UserPhoto from "./UserPhoto";
+import UserTimeline from "./UserTimeline"
+import UserAbout from "./UserAbout"
 export default {
     name: "LibraryPager",
+      props:["user"] ,
     components: {
-        LibraryLogo,LibraryTimeline,LibraryAbout,ShowLibraryMembers,ShowLibraryBooks
+        UserPhoto,UserTimeline,UserAbout
     },
     mounted: function() {
         this.initTabItems();
     },
+
     computed: {
-        library() {
-            return this.$store.getters.library;
-        },
+
 
         getTabs() {
             return this.tabs;
@@ -73,20 +71,10 @@ export default {
     },
     methods: {
         initTabItems() {
-            var library = this.$store.getters.library;
 
-            this.tabs.push({ title: "Timeline", tabBody: LibraryTimeline , active: true});
-            this.tabs.push({
-                title: "Books (" + library.total_books + ")",
-                 tabBody: ShowLibraryBooks ,
-                active: false
-            });
-            this.tabs.push({
-                title: "Members(" + library.total_members + ")",
-                                 tabBody: ShowLibraryMembers ,
-                active: false
-            });
-            this.tabs.push({  title: "About", tabBody: LibraryAbout , active: false });
+            this.tabs.push({ title: "TimeLine", tabBody: UserTimeline , active: true});
+
+            this.tabs.push({  title: "About", tabBody: UserAbout , active: false });
 
 
            this.activeTab = this.tabs[0];

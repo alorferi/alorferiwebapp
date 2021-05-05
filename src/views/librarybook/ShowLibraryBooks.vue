@@ -32,6 +32,7 @@ import LibraryBookListItem from "./LibraryBookListItem"
 
 export default {
     name: "ShowLibraryBooks",
+     props:["library"],
     components: {
         Loading,
         WrapperListView,
@@ -50,9 +51,6 @@ export default {
         };
     },
     computed: {
-           library() {
-            return this.$store.getters.library;
-        },
         libraryBookWrappers() {
             return this.$store.getters.libraryBooksResponse == null
                 ? []

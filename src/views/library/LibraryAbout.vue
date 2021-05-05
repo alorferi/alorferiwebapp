@@ -101,11 +101,7 @@ Closing Time    :
 <script>
 
 export default({
-  computed: {
-        library(){
-           return this.$store.getters.library;
-        }
-    },
+    props:["library"],
 })
 </script>
 

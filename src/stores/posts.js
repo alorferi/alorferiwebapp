@@ -57,6 +57,33 @@ const actions = {
         });
     },
 
+    fetchUserPosts(context,payload) {
+
+        return new Promise((resolve, reject) => {
+
+        var url = mixin.methods.getApiUrl("/api/users/"+payload.userId+"/posts")
+
+       const  headers = mixin.methods.getAuthorizationBearerToken()
+
+        axios({
+            url:url,
+            headers:headers ,
+            method: "GET"
+        })
+        .then(response => {
+            const postsResponse = response.data;
+            context.commit("setPostsResponse", postsResponse);
+            resolve(response);
+        })
+        .catch(err => {
+            console.log("err:", err);
+            reject(err);
+        });
+
+
+        });
+    },
+
 
     createPost(context,payload){
 

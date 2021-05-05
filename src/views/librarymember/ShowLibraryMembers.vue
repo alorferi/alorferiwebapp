@@ -27,6 +27,7 @@ import WrapperListView from "../../components/WrapperListView";
 
 export default {
     name: "ShowLibraryMembers",
+     props:["library"],
     components: {
         Loading,
         SearchTextField,
@@ -44,9 +45,6 @@ export default {
         };
     },
     computed: {
-        library() {
-            return this.$store.getters.library;
-        },
         libraryMemberWrappers() {
             return this.$store.getters.libraryMembersResponse == null
                 ? []
