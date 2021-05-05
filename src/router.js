@@ -79,7 +79,7 @@ let router = new Router({
             name: "user.show",
             component: ShowUser,
             leftMenu: HomeLeftMenu,
-            meta:{title: "Profile"}
+            meta:{title: "User Profile"}
         },
         // {
         //     path: "/users/profile/edit",

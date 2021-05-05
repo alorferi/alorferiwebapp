@@ -23,13 +23,9 @@
                     </select>
                 </div>
 
-                <input
-                    class="form-control"
-                    type="text"
-                    placeholder="Search"
-                />
+                <input class="form-control" type="text" placeholder="Search" />
 
-                    <div class="input-group-prepend">
+                <div class="input-group-prepend">
                     <span class="input-group-text">
                         <a href="#"> <i class="fas fa-search"></i></a>
                         <!-- <button type="submit"> <i class="fas fa-search"></i> </button> -->
@@ -53,41 +49,48 @@
             <ul class="nav navbar-nav mr-auto">
                 <li>
                     <router-link class="nav-link" :to="{ name: 'home' }">
-                      <i class="fas fa-broadcast-tower"></i>
-                      </router-link>
+                        <i class="fas fa-broadcast-tower"></i>
+                    </router-link>
                 </li>
 
                 <li>
                     <router-link class="nav-link" :to="{ name: 'users.me' }">
-                        <i class="far fa-user-circle"></i></router-link>
+                        <i class="far fa-user-circle"></i
+                    ></router-link>
                 </li>
             </ul>
 
             <ul class="nav navbar-nav">
-
-                    <li>
+                <li>
                     <Language></Language>
-                    </li>
+                </li>
 
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
-                    <a id="navbarDropdown"
+                    <a
+                        id="navbarDropdown"
                         class="nav-link dropdown-toggle "
                         href="#"
-                         role="button"
+                        role="button"
                         data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        <UserPhoto :user="activeUser" size="12" />
 
-
-                        <UserPhoto :user="user" size="12"/>
-
-                        {{ user.first_name }}
-
+                        {{ activeUser.first_name }}
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/user/profile"
-                            >Profile</a
+                    <div
+                        class="dropdown-menu dropdown-menu-right"
+                        aria-labelledby="navbarDropdown"
+                    >
+                        <router-link
+                            class="dropdown-item"
+                            :to="{ name: 'users.me' }"
                         >
+                            Profile
+                        </router-link>
+
                         <a class="dropdown-item" href="#">Link 2</a>
                         <div class="dropdown-divider"></div>
                         <a
@@ -106,21 +109,22 @@
 
 <script>
 // import Logout from './Logout'
-import { mapGetters } from "vuex";
-import UserPhoto from '../user/UserPhoto'
- import Language from "../../components/Language"
+// import { mapGetters } from "vuex";
+import UserPhoto from "../user/UserPhoto";
+import Language from "../../components/Language";
 export default {
     name: "HomeNav",
     components: {
-       UserPhoto, Language// Logout,
+        UserPhoto,
+        Language // Logout,
     },
     data() {
         return {};
     },
     computed: {
-        ...mapGetters({
-            user: "user"
-        })
+        activeUser() {
+            return this.$store.getters.activeUser;
+        }
     },
     mounted() {},
     methods: {

@@ -10,7 +10,7 @@
                 </div>
 
                 <div class="flex-grow-1 p-2">
-                    <h3 class="text-success">{{ user.name }}</h3>
+                    <h3 class="text-success">{{ user.first_name }} {{ user.surname }} {{ user.nickname }}</h3>
                     <h5>
                         {{ user.address }}
                     </h5>
@@ -50,7 +50,7 @@ import UserPhoto from "./UserPhoto";
 import UserTimeline from "./UserTimeline"
 import UserAbout from "./UserAbout"
 export default {
-    name: "LibraryPager",
+    name: "UserPager",
       props:["user"] ,
     components: {
         UserPhoto,UserTimeline,UserAbout

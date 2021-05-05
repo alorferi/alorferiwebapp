@@ -9,8 +9,8 @@
             v-bind:key="post.id"
         />
 
-        <p v-if="!is_loading && posts.length < 1">
-            No post found.
+        <p v-if="!is_loading && posts.length < 1" class="text-center mt-3">
+            No available posts.
         </p>
 
 
@@ -24,11 +24,11 @@ import PostListItem from "../post/PostListItem";
 import Loading from "@/components/Loading";
 
 export default {
-    name: "ShowPosts",
+    name: "UserTimeline",
     props:['user'],
     computed: {
         posts() {
-            return this.$store.getters.postsResponse.data;
+            return this.$store.getters.userPostsResponse.data;
         }
     },
     components: { PostListItem, Loading },
@@ -39,12 +39,12 @@ export default {
         };
     },
     mounted() {
-        this.fetchPostFeedAction();
+        this.fetchPost();
         this.scroll();
     },
 
     methods: {
-        fetchPostFeedAction() {
+        fetchPost() {
             this.$store
                 .dispatch("fetchUserPosts",{userId:this.user.id})
                 .then(() => {})

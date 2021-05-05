@@ -1,16 +1,15 @@
 <template>
-    <div class="">
+     <div class="">
         <Loading v-if="loading" />
         <div v-else>
 
-            <UserPager/>
+            <UserPager :user="user" />
         </div>
     </div>
 </template>
 
 <script>
 import Loading from "../../components/Loading";
-import axios from "axios";
 import UserPager from "./UserPager"
 
 
@@ -20,7 +19,7 @@ export default {
         Loading, UserPager
     },
     mounted() {
-        this.fetchUser(this.$route.params.id)
+        this.fetchUser()
     },
 
     computed: {
@@ -36,9 +35,9 @@ export default {
         };
     },
     methods: {
-        fetchUser(userId){
+        fetchUser(){
                 this.$store
-                .dispatch("fetchUser", userId)
+                .dispatch("fetchUser", this.$route.params.user_id)
                 .then(() => {
                     this.loading = false;
                 })
@@ -47,23 +46,6 @@ export default {
                 });
 
         },
-        destroy: function() {
-            axios
-                .delete(
-                    this.getApiUrl("/api/libraries/" + this.$route.params.id)
-                )
-                .then(response => {
-                    this.$router.push("/user/my-libraries");
-                    console.info(response);
-                })
-                .catch(error => {
-                    alert("Internal error, unable to delete contact.");
-
-                    if (error.response.status === 404) {
-                        this.$router.push("/user/my-libraries");
-                    }
-                });
-        }
     }
 };
 </script>

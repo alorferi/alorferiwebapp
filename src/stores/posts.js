@@ -2,13 +2,15 @@ import axios from "axios";
 import mixin from '../mixin'
 
 const state = {
-    postsResponse: [],
+    feedPostsResponse: [],
+    userPostsResponse: [],
     post:null
 };
 
 
 const getters = {
-    postsResponse: state => state.postsResponse,
+    feedPostsResponse: state => state.feedPostsResponse,
+    userPostsResponse: state => state.userPostsResponse,
     post: state => state.post
 };
 
@@ -18,13 +20,16 @@ const mutations = {
         state.post = newPost;
     },
 
-    pushPost(state, newPost) {
-        // state.postsResponse.data.push(newPost);
-        state.postsResponse.data.splice(0, 0, newPost);
+    pushPostToFeed(state, newPost) {
+        state.feedPostsResponse.data.splice(0, 0, newPost);
     },
 
-    setPostsResponse(state, newPostsResponse) {
-        state.postsResponse = newPostsResponse;
+    setFeedPostsResponse(state, newPostsResponse) {
+        state.feedPostsResponse = newPostsResponse;
+    },
+
+    setUserPostsResponse(state, newPostsResponse) {
+        state.userPostsResponse = newPostsResponse;
     }
 };
 
@@ -44,8 +49,7 @@ const actions = {
             method: "GET"
         })
         .then(response => {
-            const postsResponse = response.data;
-            context.commit("setPostsResponse", postsResponse);
+            context.commit("setFeedPostsResponse", response.data);
             resolve(response);
         })
         .catch(err => {
@@ -71,8 +75,7 @@ const actions = {
             method: "GET"
         })
         .then(response => {
-            const postsResponse = response.data;
-            context.commit("setPostsResponse", postsResponse);
+            context.commit("setUserPostsResponse", response.data);
             resolve(response);
         })
         .catch(err => {
@@ -103,7 +106,7 @@ const actions = {
             })
             .then(response => {
                 context.commit("setPost", response.data.data.attributes);
-                context.commit("pushPost", response.data.data);
+                context.commit("pushPostToFeed", response.data.data);
 
                 resolve(response);
             })
