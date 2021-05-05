@@ -39,7 +39,7 @@ const actions = {
 
         return new Promise((resolve, reject) => {
 
-        var url = mixin.methods.getApiUrl("/api/posts/feed")
+        var url = mixin.methods.getApiUrl("/api/posts")
 
        const  headers = mixin.methods.getAuthorizationBearerToken()
 

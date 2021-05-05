@@ -1,26 +1,35 @@
 <template>
     <div>
         <div class="media border p-3 mt-3">
-
-            <UserPhoto :user="item.user" size="24"></UserPhoto>
-
+            <router-link :to="{ name: 'users.show', params:{user_id: this.item.user.id }}">
+                <UserPhoto :user="item.user" size="24"></UserPhoto>
+            </router-link>
             <div class="media-body pl-3">
                 <h6>
-                    {{item.user.first_name}}  {{item.user.surname}} <small><i class="text-text-secondary"> {{ this.momentFromNow(item.created_at) }}</i></small>
+                    {{ item.user.first_name }} {{ item.user.surname }}
+                    <small
+                        ><i class="text-text-secondary">
+                            {{ this.momentFromNow(item.created_at) }}</i
+                        ></small
+                    >
                 </h6>
                 <p>
-                   {{item.body}}
+                    {{ item.body }}
                 </p>
 
-
                 <div v-if="item.image">
-
-                    <img :src="this.getApiUrl(item.image)" style=" max-width:620; max-height:480px" alt="Posted image">
-
+                    <img
+                        :src="this.getApiUrl(item.image)"
+                        style=" max-width:620; max-height:480px"
+                        alt="Posted image"
+                    />
                 </div>
 
                 <!-- 4:3 aspect ratio -->
-                <div v-if="getYouTubeEmbedUrl" class="embed-responsive embed-responsive-16by9">
+                <div
+                    v-if="getYouTubeEmbedUrl"
+                    class="embed-responsive embed-responsive-16by9"
+                >
                     <iframe
                         class="embed-responsive-item"
                         :src="getYouTubeEmbedUrl"
@@ -46,7 +55,9 @@
                         >
                     </div>
 
-                    <a href="#" class="btn btn-light">  <i class="far fa-comment-dots"></i> Comment</a>
+                    <a href="#" class="btn btn-light">
+                        <i class="far fa-comment-dots"></i> Comment</a
+                    >
                 </div>
             </div>
         </div>
@@ -54,35 +65,25 @@
 </template>
 
 <script>
-import UserPhoto from "../user/UserPhoto"
+import UserPhoto from "../user/UserPhoto";
 export default {
     name: "PostListItem",
-    props: ['item'],
-    components: {UserPhoto},
+    props: ["item"],
+    components: { UserPhoto },
     data() {
-        return {
-
-
-        };
+        return {};
     },
     computed: {
-
-
         getYouTubeEmbedUrl: function() {
+            var url = this.extractUrl(this.item.body);
 
-          var url = this.extractUrl(this.item.body)
+            if (url) {
+                url =
+                    "https://www.youtube.com/embed/" +
+                    this.extractYouTubeVideoId(url);
+            }
 
-
-        if(url){
-          url = "https://www.youtube.com/embed/" +
-                this.extractYouTubeVideoId(url)
-        }
-
-
-
-            return (
-               url
-            );
+            return url;
         }
     }
 };

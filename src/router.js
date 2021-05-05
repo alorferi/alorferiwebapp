@@ -76,7 +76,7 @@ let router = new Router({
         },
         {
             path: "/users/:user_id",
-            name: "user.show",
+            name: "users.show",
             component: ShowUser,
             leftMenu: HomeLeftMenu,
             meta:{title: "User Profile"}
