@@ -4,7 +4,8 @@ import moment from "moment";
 export default {
     methods: {
         momentFromNow: function(value) {
-            var date = moment(value).locale('bn').fromNow(); // here u modify data
+          const ln = this.$store.getters.activeLanguage
+            var date = moment(value).locale(ln).fromNow(); // here u modify data
            return date;
         },
 

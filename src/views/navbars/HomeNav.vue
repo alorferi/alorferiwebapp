@@ -53,8 +53,8 @@
             <ul class="nav navbar-nav mr-auto">
                 <li>
                     <router-link class="nav-link" :to="{ name: 'home' }">
-                        <i class="fas fa-home"></i
-                    ></router-link>
+                      <i class="fas fa-broadcast-tower"></i>
+                      </router-link>
                 </li>
 
                 <li>
@@ -64,6 +64,11 @@
             </ul>
 
             <ul class="nav navbar-nav">
+
+                    <li>
+                    <Language></Language>
+                    </li>
+
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown"
@@ -103,10 +108,11 @@
 // import Logout from './Logout'
 import { mapGetters } from "vuex";
 import UserPhoto from '../user/UserPhoto'
+ import Language from "../../components/Language"
 export default {
     name: "HomeNav",
     components: {
-       UserPhoto, // Logout,
+       UserPhoto, Language// Logout,
     },
     data() {
         return {};

@@ -8,12 +8,13 @@ import LibraryBooks from "./library-books"
 import LibraryMembers from "./library-members"
 import LibraryMemberIssues from "./library-book-issues"
 import Posts from "./posts"
+import Language from "./language"
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules:{
-        Users, PageTitle, Token,Libraries, LibraryBooks,LibraryMembers,LibraryMemberIssues,Posts
+        Users, PageTitle, Token,Libraries, LibraryBooks,LibraryMembers,LibraryMemberIssues,Posts,Language
     },
     state: {
     },

@@ -1,19 +1,13 @@
 <template>
     <div>
         <div class="media border p-3 mt-3">
-            <!-- <img
-                src="@/assets/ic_user_male.png"
-                alt="John Doe"
-                class="mr-3 mt-3 rounded-circle"
-                style="width:40px;height:40px"
-            /> -->
 
-            <UserPhoto :user="item.user" size="40"></UserPhoto>
+            <UserPhoto :user="item.user" size="24"></UserPhoto>
 
             <div class="media-body pl-3">
-                <h5>
-                    {{item.user.first_name}} <small><i class="text-text-secondary"> {{ item.posted_at }}</i></small>
-                </h5>
+                <h6>
+                    {{item.user.first_name}} <small><i class="text-text-secondary"> {{ this.momentFromNow(item.created_at) }}</i></small>
+                </h6>
                 <p>
                    {{item.body}}
                 </p>

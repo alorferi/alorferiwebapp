@@ -2,7 +2,7 @@
     <div>
         <div class="card">
             <div class="card-body d-flex  align-items-center">
-                <UserPhoto :user="activeUser" size="40"> </UserPhoto>
+                <UserPhoto :user="activeUser" size="32"> </UserPhoto>
 
                 <button
                     type="button"

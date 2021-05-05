@@ -10,7 +10,7 @@ const getters = {
 const mutations = {
     setPageTitle: (state, pageTitle) => {
         state.pageTitle = pageTitle + " | Alor Feri";
-        document.pageTitle = state.pageTitle
+        document.title = state.pageTitle
     }
 };
 
