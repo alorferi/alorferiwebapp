@@ -6,7 +6,7 @@
 
             <div class="media-body pl-3">
                 <h6>
-                    {{item.user.first_name}} <small><i class="text-text-secondary"> {{ this.momentFromNow(item.created_at) }}</i></small>
+                    {{item.user.first_name}}  {{item.user.surname}} <small><i class="text-text-secondary"> {{ this.momentFromNow(item.created_at) }}</i></small>
                 </h6>
                 <p>
                    {{item.body}}
