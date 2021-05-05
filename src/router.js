@@ -6,7 +6,7 @@ import About from "./views/about/About.vue";
 import Login from "./views/auth/Login.vue";
 import Secure from "./views/auth/Secure.vue";
 import Register from "./views/auth/Register.vue";
-import NewsFeeds from "./views/home/NewsFeeds.vue";
+// import NewsFeeds from "./views/home/NewsFeeds.vue";
 import ShowMyLibraries from "./views/library/ShowMyLibraries.vue";
 import AutoCompleteTest from "./views/library/AutocompleteTest.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
@@ -58,14 +58,14 @@ let router = new Router({
             component: About
         },
 
-        {
-            path: "/newsfeeds",
-            name: "newsfeeds",
-            component: NewsFeeds,
-            leftMenu: HomeLeftMenu,
-            meta:{title: "News Feed"}
+        // {
+        //     path: "/newsfeeds",
+        //     name: "newsfeeds",
+        //     component: NewsFeeds,
+        //     leftMenu: HomeLeftMenu,
+        //     meta:{title: "News Feed"}
 
-        },
+        // },
         {
             path: "/users/me",
             name: "users.me",
