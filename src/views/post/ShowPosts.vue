@@ -13,7 +13,9 @@
             No post found.
         </p>
 
-        <br />
+
+         <Loading v-if="scrolledToBottom" class="border mt-3"></Loading>
+
     </div>
 </template>
 
@@ -24,34 +26,48 @@ import Loading from "@/components/Loading";
 export default {
     name: "ShowPosts",
     computed: {
-
-        posts(){
+        posts() {
             return this.$store.getters.postsResponse.data;
         }
-
     },
     components: { PostListItem, Loading },
     data: () => {
         return {
-            is_loading: true
+            is_loading: true,
+            scrolledToBottom:false
         };
     },
     mounted() {
         this.fetchPostFeedAction();
+        this.scroll();
     },
 
     methods: {
-
         fetchPostFeedAction() {
             this.$store
                 .dispatch("fetchPostFeed")
-                .then(() => {
-                })
-                .catch(() => {
-                })
+                .then(() => {})
+                .catch(() => {})
                 .finally(() => {
                     this.is_loading = false;
                 });
+        },
+
+        scroll() {
+            window.onscroll = () => {
+                let bottomOfWindow =
+                    Math.max(
+                        window.pageYOffset,
+                        document.documentElement.scrollTop,
+                        document.body.scrollTop
+                    ) +
+                        window.innerHeight ===
+                    document.documentElement.offsetHeight;
+
+                if (bottomOfWindow) {
+                    this.scrolledToBottom = true; // replace it with your code
+                }
+            };
         }
     }
 };

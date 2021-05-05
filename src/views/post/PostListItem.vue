@@ -21,7 +21,7 @@
 
                 <div v-if="item.image">
 
-                    <img :src="item.image" alt="Posted image" class="w-100">
+                    <img :src="this.getApiUrl(item.image)" style=" max-width:620; max-height:480px" alt="Posted image">
 
                 </div>
 

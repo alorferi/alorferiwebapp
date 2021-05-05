@@ -66,6 +66,7 @@ const actions = {
             var url = mixin.methods.getApiUrl("/api/posts")
 
            const  headers = mixin.methods.getAuthorizationBearerToken()
+           headers['Content-Type'] =  'multipart/form-data'
 
             axios({
                 url:url,
