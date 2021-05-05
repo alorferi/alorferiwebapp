@@ -2,7 +2,7 @@
     <div>
         <div
             class="d-flex flex-column pt-2 pl-2 pr-2"
-            style="background: #e1ebe3"
+            :style="{'background-image': 'url(' + 'https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80' + ')'}"
         >
             <div class="d-flex">
                 <div class="p-2">
