@@ -21,8 +21,7 @@
                 @hidden="resetModal"
                 ok-title="Post"
                 @ok="handleOk"
-                hide-backdrop
-                content-class="shadow"
+                centered
             >
                 <div class="d-flex align-items-center mb-3">
                     <UserPhoto :user="activeUser" size="16"></UserPhoto>
