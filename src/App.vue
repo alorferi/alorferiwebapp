@@ -18,7 +18,8 @@
                         <component :is="leftBadge"></component>
                         <component :is="leftMenu"></component>
                     </div>
-                    <div class="col-sm-8" style="overflow-y: scroll;">
+                    <!-- style="overflow-y: scroll;" -->
+                    <div class="col-sm-8" >
                         <router-view></router-view>
                     </div>
                     <div class="col-sm-2"></div>

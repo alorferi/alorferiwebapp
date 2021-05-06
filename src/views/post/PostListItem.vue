@@ -60,8 +60,9 @@
                 <div v-if="item.image">
                     <img
                         :src="this.getApiUrl(item.image)"
-                        style=" max-width:620; max-height:480px"
+                        style="max-width:100%; height: auto;"
                         alt="Posted image"
+                        class="img-fluid"
                     />
                 </div>
 
