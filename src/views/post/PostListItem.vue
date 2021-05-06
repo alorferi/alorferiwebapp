@@ -1,18 +1,58 @@
 <template>
     <div>
         <div class="media border p-3 mt-3">
-            <router-link :to="{ name: 'users.show', params:{user_id: this.item.user.id }}">
+            <router-link
+                :to="{
+                    name: 'users.show',
+                    params: { user_id: this.item.user.id }
+                }"
+            >
                 <UserPhoto :user="item.user" size="24"></UserPhoto>
             </router-link>
             <div class="media-body pl-3">
-                <h6>
-                    {{ item.user.first_name }} {{ item.user.surname }}
-                    <small
-                        ><i class="text-text-secondary">
-                            {{ this.momentFromNow(item.created_at) }}</i
-                        ></small
-                    >
-                </h6>
+                <div class="d-flex justify-content-between">
+                    <h6>
+                        {{ item.user.first_name }} {{ item.user.surname }}
+                        <small
+                            ><i class="text-text-secondary">
+                                {{ this.momentFromNow(item.created_at) }}</i
+                            ></small
+                        >
+                    </h6>
+
+                    <div>
+                        <div class="dropdown show">
+                            <a
+                                class="dropdown-toggle"
+                                href="#"
+                                role="button"
+                                id="dropdownMenuLink"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                &nbsp;
+                            </a>
+
+                            <div
+                                class="dropdown-menu"
+                                aria-labelledby="dropdownMenuLink"
+                            >
+                             <a class="dropdown-item" href="#"
+                                    >Make prive this post</a
+                                >
+
+                                <a class="dropdown-item" href="#"
+                                    >Edit this post</a
+                                >
+                                <a class="dropdown-item text-danger" href="#"
+                                    >Delete this post</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p>
                     {{ item.body }}
                 </p>
