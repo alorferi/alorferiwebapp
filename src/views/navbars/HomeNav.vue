@@ -49,7 +49,7 @@
             <ul class="nav navbar-nav mr-auto">
                 <li>
                     <router-link class="nav-link" :to="{ name: 'home' }">
-                        <i class="fas fa-broadcast-tower"></i>
+                      <i class="fas fa-home"></i>
                     </router-link>
                 </li>
 
