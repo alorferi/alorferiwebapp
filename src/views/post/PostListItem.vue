@@ -53,11 +53,11 @@
                     </div>
                 </div>
 
-                <p>
+                <p class="mr-5"  style="text-align:justify">
                     {{ item.body }}
                 </p>
 
-                <div v-if="item.image">
+                <div v-if="item.image" class="mr-5">
                     <img
                         :src="this.getApiUrl(item.image)"
                         style="max-width:100%; height: auto;"
