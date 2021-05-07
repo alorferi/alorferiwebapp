@@ -24,6 +24,21 @@ const mutations = {
         state.feedPostsResponse.data.splice(0, 0, newPost);
     },
 
+
+    removePost(state, post) {
+
+
+        state.feedPostsResponse.data.forEach(  function (item, index, arr) {
+            if(item.attributes.id == post.id){
+                arr.splice(index,1);
+            }
+
+          })
+
+
+
+    },
+
     setFeedPostsResponse(state, newPostsResponse) {
         state.feedPostsResponse = newPostsResponse;
     },
@@ -108,6 +123,33 @@ const actions = {
                 context.commit("setPost", response.data.data.attributes);
                 context.commit("pushPostToFeed", response.data.data);
 
+                resolve(response);
+            })
+            .catch(err => {
+                console.log("err:", err);
+                reject(err);
+            });
+
+
+            });
+
+    },
+
+    deletePost(context,post){
+
+        return new Promise((resolve, reject) => {
+
+            var url = mixin.methods.getApiUrl("/api/posts/"+post.id)
+
+           const  headers = mixin.methods.getAuthorizationBearerToken()
+
+            axios({
+                url:url,
+                headers:headers ,
+                method: "DELETE",
+            })
+            .then(response => {
+                context.commit("removePost", post);
                 resolve(response);
             })
             .catch(err => {

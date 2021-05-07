@@ -38,14 +38,14 @@
                                 class="dropdown-menu"
                                 aria-labelledby="dropdownMenuLink"
                             >
-                             <a class="dropdown-item" href="#"
+                             <a class="dropdown-item"  role="button"
                                     >Make prive this post</a
                                 >
 
-                                <a class="dropdown-item" href="#"
+                                <a class="dropdown-item"  role="button"
                                     >Edit this post</a
                                 >
-                                <a class="dropdown-item text-danger" href="#"
+                                <a class="dropdown-item text-danger"  role="button" @click="deletePost(item)"
                                     >Delete this post</a
                                 >
                             </div>
@@ -125,6 +125,11 @@ export default {
             }
 
             return url;
+        }
+    },
+    methods: {
+        deletePost(post){
+            this.$store.dispatch("deletePost",post)
         }
     }
 };
