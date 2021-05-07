@@ -24,14 +24,13 @@
                         <div class="dropdown show">
                             <a
                                 class="dropdown-toggle"
-                                href="#"
                                 role="button"
                                 id="dropdownMenuLink"
                                 data-toggle="dropdown"
                                 aria-haspopup="true"
                                 aria-expanded="false"
                             >
-                                &nbsp;
+                               <!-- <i class="fas fa-ellipsis-v"></i> -->
                             </a>
 
                             <div
