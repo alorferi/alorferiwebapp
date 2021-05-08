@@ -29,7 +29,6 @@
                 size="13"
                 minlength="10"
                 maxlength="13"
-                pattern="(([0-9]{11})|([1-9]{10}))(#[1-9]{1})?"
                 :placeholder="placeholder"
                 :class="errorClassObject()"
                 @input="updateField()"

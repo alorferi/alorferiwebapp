@@ -70,7 +70,7 @@
                              <EditTextField
                                 type="date"
                                 name="dob"
-                                :initval="this.currentDate"
+                                :initval="this.userRegisterModel.dob"
                                 label="Date of birth"
                                 placeholder="DD/MM/YYYY"
                                 icon="fas fa-birthday-cake"
@@ -134,9 +134,6 @@ export default {
         AskForOtp
     },
     computed: {
-            currentDate(){
-                return this.formatDate(new Date(),"YYYY-MM-DD","en");
-            }
     },
     data() {
         return {
@@ -145,7 +142,7 @@ export default {
                 surname: "",
                 mobile: "",
                 password: "",
-                dob: "",
+                dob:this.formatDate(new Date(),"YYYY-MM-DD","en"),
                 gender: "",
                 otp_code: ""
             },
