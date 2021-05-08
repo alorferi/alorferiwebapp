@@ -9,7 +9,9 @@
             :ok-title="okTitleText"
             v-model="showOtpModal"
             :hide-header="hideHeader"
-            @ok="handleOk">
+            @ok="handleOk"
+            centered
+            >
 
             <div class="modal-header">
                 <h5 class="modal-title">One Time Code</h5>
