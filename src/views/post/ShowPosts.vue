@@ -50,6 +50,7 @@ export default {
                 .catch(() => {})
                 .finally(() => {
                     this.is_loading = false;
+                    this.scrolledToBottom = false;
                 });
         },
 
@@ -66,6 +67,7 @@ export default {
 
                 if (bottomOfWindow) {
                     this.scrolledToBottom = true; // replace it with your code
+                     this.fetchPostFeedAction();
                 }
             };
         }
