@@ -1,94 +1,28 @@
 <template>
     <div class="card card-default">
-        <div class="card-header">Login</div>
+        <!-- <div class="card-header">Login</div> -->
         <div class="card-body">
-            <form class="login form-horizontal" @submit.prevent="login">
-                <!-- <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">
-                            <i class="fas fa-mobile-alt"></i>
-                        </span>
-
-                        <select
-                            class="form-control"
-                            id="country_code"
-                            v-model="country_code"
-                        >
-                            <option value="+880" selected>+880</option>
-                            <option value="+91">+91</option>
-                            <option value="+1">+1</option>
-                        </select>
-                    </div>
-
-                    <input
-                        id="username"
-                        v-model="username"
-                        type="tel"
-                        class="form-control"
+            <form @submit.prevent="login">
+                <div class="form-group">
+                    <MobileNumberField
                         name="username"
-                        value
-                        @blur="onBlurMobileNumber"
-                        placeholder="Mobile number"
-                        size="13"
-                        minlength="12"
-                        maxlength="13"
-                        pattern="([0-9]{10})|([0-9]{11})"
-                        required
-                        autofocus
+                        placeholder="Mobile Number"
+                        icon="fas fa-mobile-alt"
+                        :errors="errors"
+                        @update:field="username = $event"
                     />
-            </div> -->
+                </div>
 
-                        <div class="form-group">
-
-                             <MobileNumberField
-                                name="username"
-                                label="Mobile Number"
-                                placeholder="Mobile"
-                                icon="fas fa-mobile-alt"
-                                :errors="errors"
-                                @update:field="username = $event"
-                            />
-
-
-                    </div>
-
-
-
-                    <div class="form-group">
-
-                             <EditTextField
-                                type="password"
-                                name="password"
-                                label="Password"
-                                placeholder="Password"
-                                icon="fas fa-key"
-                                :errors="errors"
-                                @update:field="password = $event"
-                            />
-
-                    </div>
-
-
-                <!-- <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">
-                            <i class="fas fa-key"></i>
-                        </span>
-                    </div>
-
-                    <input
-                        id="password"
-                        v-model="password"
+                <div class="form-group">
+                    <EditTextField
                         type="password"
-                        class="form-control"
                         name="password"
                         placeholder="Password"
-                        required
+                        icon="fas fa-key"
+                        :errors="errors"
+                        @update:field="password = $event"
                     />
-                </div> -->
-
-
-
+                </div>
 
                 <div class="form-group">
                     <input type="checkbox" name="remember" />
@@ -103,6 +37,15 @@
                     >
                         Login
                     </button>
+
+                    <div class="text-center">
+                        <router-link
+                            class="btn btn-link"
+                            :to="{ name: 'reset-password' }"
+                        >
+                            Forgot Your Password?
+                        </router-link>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -114,7 +57,9 @@
                         Register
                     </router-link>
                 </div>
-                <div class="text-center text-danger">{{ error_message }}</div>
+                <div class="text-center text-danger" v-if="error_message">
+                    {{ error_message }}
+                </div>
             </form>
         </div>
     </div>
@@ -129,8 +74,9 @@ export default {
     props: {
         msg: String
     },
-       components: {
-        MobileNumberField,EditTextField
+    components: {
+        MobileNumberField,
+        EditTextField
     },
     mounted: function() {
         if (this.$store.getters.isLoggedIn) {
@@ -143,7 +89,7 @@ export default {
             password: "",
             is_error: false,
             error_message: "",
-            errors: null,
+            errors: null
         };
     },
     methods: {
@@ -172,8 +118,8 @@ export default {
         onBlurMobileNumber(e) {
             console.log("blur", e.target.value);
 
-            if(e.target.value.startsWith("0",0)){
-              e.target.value =   e.target.value.substring(1);
+            if (e.target.value.startsWith("0", 0)) {
+                e.target.value = e.target.value.substring(1);
             }
             // var value = parseInt(e.target.value, 10);
             // if (isNaN(value) == false) {

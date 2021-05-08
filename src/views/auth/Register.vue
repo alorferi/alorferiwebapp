@@ -93,9 +93,7 @@
 
                     <div class="form-group">
 
-                     <AskForOtp :showOtpModal="showOtpModal" :durationInSeconds="durationInSeconds"
-
-                     @updateOtp="updateOtp" />
+                     <AskForOtp :showOtpModal="showOtpModal" :durationInSeconds="durationInSeconds" @updateOtp="updateOtp"></AskForOtp>
                         <button
                             type="submit"
                             class="btn btn-primary"

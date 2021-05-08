@@ -1,6 +1,6 @@
 <template>
     <div class="form-group">
-        <label :for="name" class="text-primary">{{ label }}</label>
+        <label :for="name" v-if="label" class="text-primary">{{ label }}</label>
 
         <div class="input-group">
             <div class="input-group-prepend">
