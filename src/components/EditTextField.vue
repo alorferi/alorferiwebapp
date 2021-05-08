@@ -25,11 +25,11 @@
 <script>
 export default {
     name: "EditTextField",
-    props: ["name", "label", "placeholder", "type", "errors", "data", "icon"],
+    props: ["name", "label", "placeholder", "type", "errors", "initval", "icon"],
     mounted() {},
     data: function() {
         return {
-            value: ""
+            value: this.initval
         };
     },
     computed: {

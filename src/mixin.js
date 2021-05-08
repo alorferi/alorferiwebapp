@@ -9,9 +9,10 @@ export default {
            return date;
         },
 
-        formatDate: function(value,expectedFormat="Do MMMM YYYY") {
+        formatDate: function(value,expectedFormat="Do MMMM YYYY", language = null) {
             var date = moment(value);
-           return moment(date).locale('bn').format(expectedFormat);
+            const ln = (language==null)? this.$store.getters.activeLanguage : language
+           return moment(date).locale(ln).format(expectedFormat);
         },
 
         getApiUrl(endPoint, term = null, page = null) {

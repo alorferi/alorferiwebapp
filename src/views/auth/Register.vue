@@ -70,6 +70,7 @@
                              <EditTextField
                                 type="date"
                                 name="dob"
+                                :initval="this.currentDate"
                                 label="Date of birth"
                                 placeholder="DD/MM/YYYY"
                                 icon="fas fa-birthday-cake"
@@ -131,6 +132,11 @@ export default {
         MobileNumberField,
         GenderInputField,
         AskForOtp
+    },
+    computed: {
+            currentDate(){
+                return this.formatDate(new Date(),"YYYY-MM-DD","en");
+            }
     },
     data() {
         return {
