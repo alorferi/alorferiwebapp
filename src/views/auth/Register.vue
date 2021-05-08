@@ -38,7 +38,7 @@
 
                     <div class="form-group">
 
-                             <MobileInputField
+                             <MobileNumberField
                                 name="mobile"
                                 label="Mobile"
                                 placeholder="Mobile"
@@ -114,7 +114,7 @@
 
 <script>
 import EditTextField from "../../components/EditTextField";
-import MobileInputField from "../../components/MobileInputField";
+import MobileNumberField from "../../components/MobileNumberField";
 import GenderInputField from "../../components/GenderInputField";
 import AskForOtp from "../../components/AskForOtp";
 // import $ from 'jquery'
@@ -128,7 +128,7 @@ export default {
     },
     components: {
         EditTextField,
-        MobileInputField,
+        MobileNumberField,
         GenderInputField,
         AskForOtp
     },

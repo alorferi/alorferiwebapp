@@ -40,7 +40,7 @@
 
                         <div class="form-group">
 
-                             <MobileInputField
+                             <MobileNumberField
                                 name="username"
                                 label="Mobile Number"
                                 placeholder="Mobile"
@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import MobileInputField from "../../components/MobileInputField";
+import MobileNumberField from "../../components/MobileNumberField";
 import EditTextField from "../../components/EditTextField";
 
 export default {
@@ -130,7 +130,7 @@ export default {
         msg: String
     },
        components: {
-        MobileInputField,EditTextField
+        MobileNumberField,EditTextField
     },
     mounted: function() {
         if (this.$store.getters.isLoggedIn) {

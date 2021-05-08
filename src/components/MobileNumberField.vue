@@ -41,7 +41,7 @@
 
 <script>
 export default {
-    name: "MobileInputField",
+    name: "MobileNumberField",
     props: ["name", "label", "placeholder", "errors", "data",'icon'],
     mounted() {},
     data: function() {
