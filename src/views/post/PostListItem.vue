@@ -30,29 +30,29 @@
                                 aria-haspopup="true"
                                 aria-expanded="false"
                             >
-                               <!-- <i class="fas fa-ellipsis-v"></i> -->
+                                <!-- <i class="fas fa-ellipsis-v"></i> -->
                             </a>
 
                             <div
                                 class="dropdown-menu"
                                 aria-labelledby="dropdownMenuLink"
                             >
-                             <a class="dropdown-item"  role="button"
-                                    >Make prive this post</a
-                                >
 
-                                <a class="dropdown-item"  role="button"
-                                    >Edit this post</a
+                                <a class="dropdown-item" role="button" v-if="isMyPost"
+                                    ><i class="far fa-edit"></i> Edit this post</a
                                 >
-                                <a class="dropdown-item text-danger"  role="button" @click="deletePost(item)"
-                                    >Delete this post</a
+                                <a
+                                    class="dropdown-item text-danger" v-if="isMyPost"
+                                    role="button"
+                                    @click="deletePost(item)"
+                                    ><i class="far fa-trash-alt"></i> Delete this post</a
                                 >
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <p class="mr-5"  style="text-align:justify">
+                <p class="mr-5" style="text-align:justify">
                     {{ item.body }}
                 </p>
 
@@ -99,6 +99,73 @@
                         <i class="far fa-comment-dots"></i> Comment</a
                     >
                 </div>
+                <form action="">
+                      <div class="form-group d-flex">
+                               <UserPhoto :user="item.user" size="24" ></UserPhoto>    <input type="text" class="form-control ml-2" placeholder="Type your comment here"/>
+                      </div>
+                </form>
+
+                <div class="media p-3">
+                    <!-- <img
+                        src="img_avatar2.png"
+                        alt="Jane Doe"
+                        class="mr-3 mt-3 rounded-circle"
+                        style="width:45px;"
+                    /> -->
+
+                      <UserPhoto :user="item.user" size="24"  class="mr-3 mt-3"></UserPhoto>
+
+                    <div class="media-body">
+                        <!-- <h4>
+                            Jane Doe
+                            <small><i>Posted on February 20 2016</i></small>
+                        </h4> -->
+
+                                          <h6>
+                        {{ item.user.first_name }} {{ item.user.surname }}
+                        <small
+                            ><i class="text-text-secondary">
+                                {{ this.momentFromNow(item.created_at) }}</i
+                            ></small
+                        >
+                    </h6>
+
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="media p-3">
+                      <UserPhoto :user="item.user" size="24"  class="mr-3 mt-3"></UserPhoto>
+                    <div class="media-body">
+                                        <h6>
+                        {{ item.user.first_name }} {{ item.user.surname }}
+                        <small
+                            ><i class="text-text-secondary">
+                                {{ this.momentFromNow(item.created_at) }}</i
+                            ></small
+                        >
+                    </h6>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -124,11 +191,17 @@ export default {
             }
 
             return url;
-        }
+        },
+
+        isMyPost(){
+            return this.item.user.id == this.$store.getters.activeUser.id
+        },
+
     },
+
     methods: {
-        deletePost(post){
-            this.$store.dispatch("deletePost",post)
+        deletePost(post) {
+            this.$store.dispatch("deletePost", post);
         }
     }
 };

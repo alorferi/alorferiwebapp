@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group"> -->
                     <router-link
                         class="btn btn-success"
                         :to="{ name: 'register' }"
@@ -56,7 +56,7 @@
                     >
                         Register
                     </router-link>
-                </div>
+                <!-- </div> -->
                 <div class="text-center text-danger" v-if="error_message">
                     {{ error_message }}
                 </div>
