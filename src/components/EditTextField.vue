@@ -1,31 +1,35 @@
 <template>
-    <div class="form-group pb-1">
-        <label
-            :for="name"
-            class="text-blue-500 pt-2 uppercase text-xs font-bold absolute"
-            >{{ label }}</label
-        >
-        <input
-            :type="type"
-            :id="name"
-            class="form-control pt-2 w-full text-gray-900 border-b pb-2 focus:outline-none focus:border-blue-400"
-            v-model="value"
-            :placeholder="placeholder"
-            :class="errorClassObject()"
-            @input="updateField()"
-        />
-        <p class="text-red-600 text-sm" v-text="errorMessage()"></p>
+    <div class="form-group">
+        <label :for="name" v-if="label" class="text-primary">{{ label }}</label>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" v-if="icon">
+                    <i :class="icon"></i>
+                </span>
+            </div>
+            <input
+                :type="type"
+                :name="name"
+                class="form-control"
+                v-model="value"
+                :placeholder="placeholder"
+                :class="errorClassObject()"
+                @input="updateField()"
+            />
+        </div>
+        <p class="text-danger" v-text="errorMessage()"></p>
     </div>
 </template>
 
 <script>
 export default {
     name: "EditTextField",
-    props: ["name", "label", "placeholder", "type", "errors", "data"],
+    props: ["name", "label", "placeholder", "type", "errors", "initval", "icon"],
     mounted() {},
     data: function() {
         return {
-            value: ""
+            value: this.initval
         };
     },
     computed: {
@@ -75,6 +79,6 @@ export default {
 
 <style scoped>
 .error-field {
-    @apply .border-red-500 .border-b-2;
+    @apply .border .border-danger .border-top-0 .border-left-0 .border-right-0;
 }
 </style>

@@ -98,7 +98,7 @@ export default {
     methods: {
         submitForm: function() {
             axios
-                .post(this.getApiUrl("/api/v0/library"), this.form)
+                .post(this.getApiUrl("/api/libraries"), this.form)
                 .then(response => {
                     console.log(response.data.data);
                     this.$router.push("/library/" + response.data.data);

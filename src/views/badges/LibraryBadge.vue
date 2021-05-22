@@ -2,18 +2,13 @@
     <div>
         <div class="card">
             <div class="card-body p-2 text-center">
-                <img
-                    src="@/assets/logo.png"
-                    class="rounded m-2"
-                    style="width:100px;height:100px"
-                    alt="Alor Feri Logo"
-                />
+                   <LibraryLogo :library ="library" size="72"/>
                 <a href="/user/profile" class="stretched-link"> </a>
             </div>
 
-            <div class="card-footer text-center">
+            <!-- <div class="card-footer text-center">
                 <span>Alor Feri</span>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -21,8 +16,18 @@
 <script>
 // @ is an alias to /src
 
+import LibraryLogo from "../library/LibraryLogo";
+
 export default {
     name: "LibraryBadge",
-    components: {}
+    components: {LibraryLogo},
+      computed: {
+        library(){
+
+           var lib = this.$store.getters.library;
+
+           return lib;
+        }
+    },
 };
 </script>

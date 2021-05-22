@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" style="padding-top: 60pt">
         <div class="col-sm-4">
             <img
                 src="../assets/slider_imgs/img_02.png"
