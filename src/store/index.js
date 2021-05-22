@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import Users from "./users"
 import PageTitle from "./page-title"
-import Token from "./token"
+import Auth from "./auth"
 import Libraries from "./libraries"
 import LibraryBooks from "./library-books"
 import LibraryMembers from "./library-members"
@@ -14,7 +14,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules:{
-        Users, PageTitle, Token,Libraries, LibraryBooks,LibraryMembers,LibraryMemberIssues,Posts,Language
+        Users, PageTitle, Auth,Libraries, LibraryBooks,LibraryMembers,LibraryMemberIssues,Posts,Language
     },
     state: {
     },

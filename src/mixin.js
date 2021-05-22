@@ -53,13 +53,13 @@ export default {
         getHeaderWithAuthorizationBearerToken() {
             return {
                 headers: {
-                    Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")).access_token
+                    Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
                 }
             };
         },
         getAuthorizationBearerToken() {
             return {
-                    Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")).access_token
+                    Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
                 }
             ;
         },

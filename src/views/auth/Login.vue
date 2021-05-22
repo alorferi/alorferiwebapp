@@ -98,7 +98,7 @@ export default {
             let username = this.username.replace(/^0+/, "");
             let password = this.password;
             this.$store
-                .dispatch("login", { username, password })
+                .dispatch("loginBasic", { username, password })
                 .then(() => {
                     this.$store
                         .dispatch("fetchMe")
