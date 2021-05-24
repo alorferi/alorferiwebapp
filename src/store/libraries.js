@@ -1,10 +1,10 @@
 // import Vue from "vue";
 import axios from "axios";
-import mixin from '../mixin'
+import mixin from "../mixin";
 
 const state = {
     library: JSON.parse(localStorage.getItem("library") || null),
-    myLibrariesResponse:null,
+    myLibrariesResponse: null,
     libraryStatus: null
 };
 
@@ -25,46 +25,49 @@ const mutations = {
 };
 
 const actions = {
-
-    fetchLibrary(context,libraryId) {
-
-        var url = mixin.methods.getApiUrl("/api/libraries/"+libraryId)
-        var headers = mixin.methods.getHeaderWithAuthorizationBearerToken()
+    fetchLibrary(context, libraryId) {
+        var url = mixin.methods.getApiUrl("/api/libraries/" + libraryId);
+        var headers = mixin.methods.getHeaderWithAuthorizationBearerToken();
 
         return new Promise((resolve, reject) => {
-        axios
-        .get(url,headers)
-        .then(response => {
-            const library = response.data.data.attributes;
+            axios
+                .get(url, headers)
+                .then(response => {
+                    const library = response.data.data.attributes;
 
-            context.commit("setLibrary", library);
-            resolve(response);
-
-        })
-        .catch(err => {
-            console.log("err:", err);
+                    context.commit("setLibrary", library);
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
                     reject(err);
+                });
         });
-    });
     },
 
-    fetchMyLibraries(context,payload) {
-
-
+    fetchMyLibraries(context, payload) {
+        var endpoint =
+            "/api/users/" + this.getters.activeUser.id + "/libraries";
         return new Promise((resolve, reject) => {
+            var url = mixin.methods.getApiUrl(
+                endpoint,
+                payload.term,
+                payload.page
+            );
 
-        var url = mixin.methods.getApiUrl("/api/libraries/my-libraries",payload.term,payload.page)
+            const headers = mixin.methods.getAuthorizationBearerToken();
 
-        const  headers = mixin.methods.getAuthorizationBearerToken()
-
-                axios({
-                    url:url,
-                    headers: headers,
-                    method: "GET"
-                })
+            axios({
+                url: url,
+                headers: headers,
+                method: "GET"
+            })
                 .then(response => {
                     const myLibrariesResponse = response.data;
-                    context.commit("setMyLibrariesResponse", myLibrariesResponse);
+                    context.commit(
+                        "setMyLibrariesResponse",
+                        myLibrariesResponse
+                    );
                     resolve(response);
                 })
                 .catch(err => {
@@ -79,6 +82,5 @@ export default {
     state,
     getters,
     mutations,
-    actions,
-
+    actions
 };
