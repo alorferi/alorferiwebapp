@@ -14,9 +14,7 @@
                                 placeholder="First Name"
                                 icon=" "
                                 :errors="errors"
-                                @update:field="
-                                    userRegisterModel.first_name = $event
-                                "
+                                @update:field="userData.first_name = $event"
                             />
                         </div>
 
@@ -28,9 +26,7 @@
                                 placeholder="Last Name"
                                 icon=" "
                                 :errors="errors"
-                                @update:field="
-                                    userRegisterModel.surname = $event
-                                "
+                                @update:field="userData.surname = $event"
                             />
                         </div>
                     </div>
@@ -42,7 +38,7 @@
                             placeholder="Mobile"
                             icon="fas fa-mobile-alt"
                             :errors="errors"
-                            @update:field="userRegisterModel.mobile = $event"
+                            @update:field="userData.mobile = $event"
                         />
                     </div>
 
@@ -54,7 +50,7 @@
                             placeholder="Password"
                             icon="fas fa-key"
                             :errors="errors"
-                            @update:field="userRegisterModel.password = $event"
+                            @update:field="userData.password = $event"
                         />
                     </div>
 
@@ -62,12 +58,12 @@
                         <EditTextField
                             type="date"
                             name="dob"
-                            :initval="this.userRegisterModel.dob"
+                            :initval="this.userData.dob"
                             label="Date of birth"
                             placeholder="DD/MM/YYYY"
                             icon="fas fa-birthday-cake"
                             :errors="errors"
-                            @update:field="userRegisterModel.dob = $event"
+                            @update:field="userData.dob = $event"
                         />
                     </div>
 
@@ -76,7 +72,7 @@
                             name="gender"
                             label="Gender"
                             :errors="errors"
-                            @update:field="userRegisterModel.gender = $event"
+                            @update:field="userData.gender = $event"
                         />
                     </div>
 
@@ -124,15 +120,15 @@ export default {
     computed: {},
     data() {
         return {
-            userRegisterModel: {
+            userData: {
                 first_name: "",
                 surname: "",
                 mobile: "",
                 password: "",
                 dob: this.formatDate(new Date(), "YYYY-MM-DD", "en"),
-                gender: "",
-                otp_code: ""
+                gender: ""
             },
+            otp_code: "",
             errors: null,
             showOtpModal: false,
             durationInSeconds: 30
@@ -140,17 +136,23 @@ export default {
     },
     methods: {
         updateOtp(value) {
-            this.userRegisterModel.otp_code = value;
+            this.otp_code = value;
             this.submitForm();
         },
 
         submitForm: function() {
-            console.log(this.userRegisterModel);
+            console.log(this.userData);
+
+            const url = this.$apiServerBaseUrl + "/api/auth/register";
+
+            const headers = {
+                // "Content-Type": "application/json",
+                // Accept: "application/json",
+                otp_code: this.otp_code
+            };
+
             this.$axios
-                .post(
-                    this.$apiServerBaseUrl + "/api/auth/register",
-                    this.userRegisterModel
-                )
+                .post(url, this.userData, headers)
                 .then(response => {
                     console.log(response.data.data);
 
@@ -176,7 +178,7 @@ export default {
                         this.errors = errors.response.data.errors;
                     }
 
-                    this.userRegisterModel.otp_code = null;
+                    this.otp_code = null;
                 });
         }
     }
