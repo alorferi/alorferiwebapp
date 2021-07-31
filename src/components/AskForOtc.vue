@@ -7,12 +7,11 @@
             @show="initModal"
             @hidden="resetModal"
             :ok-title="okTitleText"
-            v-model="showOtpModal"
+            v-model="showOtcModal"
             :hide-header="hideHeader"
             @ok="handleOk"
             centered
-            >
-
+        >
             <div class="modal-header">
                 <h5 class="modal-title">One Time Code</h5>
 
@@ -24,15 +23,15 @@
             <form ref="form" @submit.stop.prevent="handleSubmit" class="pt-4">
                 <b-form-group
                     label=""
-                    label-for="otp-code-input"
+                    label-for="ot-code-input"
                     invalid-feedback="One Time Code is required"
-                    :state="otpCodeState"
+                    :state="otCodeState"
                 >
                     <div class="d-flex  justify-content-center">
                         <b-form-input
-                            id="otp-code-input"
-                            v-model="otp_code"
-                            :state="otpCodeState"
+                            id="ot-code-input"
+                            v-model="ot_code"
+                            :state="otCodeState"
                             placeholder="Type 6-digit code here"
                             maxlength="6"
                             size="6"
@@ -54,17 +53,17 @@
 
 <script>
 export default {
-    name: "AskForOtp",
-    props: ["showOtpModal", "durationInSeconds"],
+    name: "AskForOtc",
+    props: ["showOtcModal", "durationInSeconds"],
     computed: {},
     mounted: function() {
-        this.otpCountdownTimer();
+        this.otcCountdownTimer();
         this.downCounter = this.durationInSeconds;
     },
     data() {
         return {
-            otp_code: "",
-            otpCodeState: null,
+            ot_code: "",
+            otCodeState: null,
             downCounter: 0,
             downCounterText: "",
             message: "",
@@ -74,14 +73,14 @@ export default {
         };
     },
     methods: {
-        emitOtp: function() {
-            this.$emit("updateOtp", this.otp_code);
+        emitOtc: function() {
+            this.$emit("updateOtc", this.ot_code);
         },
-        otpCountdownTimer: function() {
+        otcCountdownTimer: function() {
             this.oldSetInterval = setInterval(() => {
                 if (this.downCounter <= 0) {
                     this.message = "Time expired";
-                    // $("#okOtpButton").text("Try Again");
+                    // $("#okOtcButton").text("Try Again");
                     this.okTitleText = "Try Again";
                     clearInterval(this.oldSetInterval);
                     return;
@@ -97,23 +96,23 @@ export default {
 
         checkFormValidity() {
             const valid = this.$refs.form.checkValidity();
-            this.otpCodeState = valid;
+            this.otCodeState = valid;
             return valid;
         },
         resetModal() {
-            this.otp_code = "";
-            this.otpCodeState = null;
+            this.ot_code = "";
+            this.otCodeState = null;
             this.downCounter = 0;
             if (this.oldSetInterval != null) {
                 clearInterval(this.oldSetInterval);
             }
         },
         initModal() {
-            this.otp_code = "";
+            this.ot_code = "";
             this.message = "";
-            this.okTitleText ="OK"
-            this.otpCodeState = null;
-            this.otpCountdownTimer();
+            this.okTitleText = "OK";
+            this.otCodeState = null;
+            this.otcCountdownTimer();
             this.downCounter = this.durationInSeconds;
         },
         handleOk(bvModalEvt) {
@@ -128,7 +127,7 @@ export default {
                 return;
             }
 
-            this.emitOtp()
+            this.emitOtc();
             // Push the name to submitted names
             // Hide the modal manually
             this.$nextTick(() => {

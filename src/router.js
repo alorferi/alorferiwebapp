@@ -19,7 +19,7 @@ import HomeLeftMenu from "./views/menus/HomeLeftMenu";
 import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
 import LibraryBadge from "./views/badges/LibraryBadge";
 // import UserBadge from "./views/badges/UserBadge";
-import ResetPasswordWithOtp from "./views/auth/ResetPasswordWithOtp"
+import ResetPasswordWithOtc from "./views/auth/ResetPasswordWithOtc";
 
 Vue.use(Router);
 
@@ -31,26 +31,25 @@ let router = new Router({
             name: "home",
             component: Home,
             leftMenu: HomeLeftMenu,
-            meta:{title: "Home"}
-
+            meta: { title: "Home" }
         },
         {
             path: "/auth/login",
             name: "login",
             component: Login,
-            meta:{title: "Login"}
+            meta: { title: "Login" }
         },
         {
             path: "/auth/register",
             name: "register",
             component: Register,
-            meta:{title: "Register"}
+            meta: { title: "Register" }
         },
         {
             path: "/auth/reset-password",
             name: "reset-password",
-            component: ResetPasswordWithOtp,
-            meta:{title: "Reset password"}
+            component: ResetPasswordWithOtc,
+            meta: { title: "Reset password" }
         },
         {
             path: "/secure",
@@ -79,14 +78,14 @@ let router = new Router({
             name: "users.me",
             component: ShowMe,
             leftMenu: HomeLeftMenu,
-            meta:{title: "Profile"}
+            meta: { title: "Profile" }
         },
         {
             path: "/users/:user_id",
             name: "users.show",
             component: ShowUser,
             leftMenu: HomeLeftMenu,
-            meta:{title: "User Profile"}
+            meta: { title: "User Profile" }
         },
         // {
         //     path: "/users/profile/edit",
@@ -99,36 +98,33 @@ let router = new Router({
             name: "my-libraries",
             component: ShowMyLibraries,
             leftMenu: HomeLeftMenu,
-            meta:{title: "My Libraries"}
-
+            meta: { title: "My Libraries" }
         },
         {
             path: "/libraries/autocomplete",
             name: "autocomplete",
             component: AutoCompleteTest,
             leftMenu: HomeLeftMenu,
-            meta:{title: "AutoCompleteTest"}
-
+            meta: { title: "AutoCompleteTest" }
         },
         {
             path: "/libraries/create",
             name: "library-create",
             component: LibraryCreate,
-            leftMenu: HomeLeftMenu,
-
+            leftMenu: HomeLeftMenu
         },
         {
             path: "/libraries/:id",
             name: "library-show",
             component: LibraryShow,
-            leftMenu: HomeLeftMenu,
+            leftMenu: HomeLeftMenu
             // leftBadge: LibraryBadge
         },
         {
             path: "/libraries/:id/edit",
             name: "library-edit",
             component: LibraryEdit,
-            leftMenu: HomeLeftMenu,
+            leftMenu: HomeLeftMenu
             // leftBadge: LibraryBadge
         },
         {

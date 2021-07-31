@@ -7,29 +7,27 @@
             @show="initModal"
             @hidden="resetModal"
             :ok-title="okTitleText"
-            v-model="showOtpModal"
+            v-model="showOtcModal"
             :hide-header="hideHeader"
             @ok="handleOk"
             centered
-            >
-
+        >
             <div class="modal-header">
                 <h5 class="modal-title">Reset Password</h5>
-
             </div>
 
             <form ref="form" @submit.stop.prevent="handleSubmit" class="pt-4">
                 <b-form-group
                     label=""
-                    label-for="otp-code-input"
+                    label-for="ot-code-input"
                     invalid-feedback="One Time Code is required"
-                    :state="otpCodeState"
+                    :state="otCodeState"
                 >
                     <div class="d-flex  justify-content-center">
                         <b-form-input
-                            id="otp-code-input"
-                            v-model="otp_code"
-                            :state="otpCodeState"
+                            id="ot-code-input"
+                            v-model="ot_code"
+                            :state="otCodeState"
                             placeholder="Type 6-digit code here"
                             maxlength="6"
                             size="6"
@@ -52,20 +50,19 @@
 <script>
 export default {
     name: "ResetPasswordModal",
-    props: ["showOtpModal"],
+    props: ["showOtcModal"],
     computed: {},
-    mounted: function() {
-    },
+    mounted: function() {},
     data() {
         return {
-            otp_code: "",
-            otpCodeState: null,
+            ot_code: "",
+            otCodeState: null,
             message: "",
             oldSetInterval: null,
             okTitleText: "OK",
             hideHeader: true
         };
-    },
+    }
 };
 </script>
 

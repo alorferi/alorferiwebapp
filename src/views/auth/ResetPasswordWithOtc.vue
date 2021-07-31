@@ -7,8 +7,8 @@
                 <h4>Reset Password</h4>
 
                 <form
-                    id="loginWithOtpForm"
-                    class="otp_enabled_form"
+                    id="loginWithOtcForm"
+                    class="otc_enabled_form"
                     @submit.prevent="submitForm"
                 >
                     <div class="form-group">
@@ -20,11 +20,11 @@
                         ></MobileNumberField>
                     </div>
 
-                    <AskForOtp
-                        :showOtpModal="showOtpModal"
+                    <AskForOtc
+                        :showOtcModal="showOtcModal"
                         :durationInSeconds="durationInSeconds"
-                        @updateOtp="updateOtp"
-                    ></AskForOtp>
+                        @updateOtc="updateOtc"
+                    ></AskForOtc>
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-success btn-block">
@@ -40,30 +40,30 @@
 </template>
 <script>
 import MobileNumberField from "../../components/MobileNumberField";
-import AskForOtp from "../../components/AskForOtp";
+import AskForOtc from "../../components/AskForOtc";
 
 export default {
-    name: "ResetPasswordWithOtp",
+    name: "ResetPasswordWithOtc",
     components: {
         MobileNumberField,
-        AskForOtp
+        AskForOtc
     },
     data() {
         return {
             resetPasswordModel: {
-                otp_type_name: "RESET_PASSWORD",
+                otc_type_name: "RESET_PASSWORD",
                 username: "",
-                otp_code: ""
+                ot_code: ""
             },
             durationInSeconds: 0,
-            showOtpModal: false,
+            showOtcModal: false,
             errors: null
         };
     },
 
     methods: {
-        updateOtp(value) {
-            this.resetPasswordModel.otp_code = value;
+        updateOtc(value) {
+            this.resetPasswordModel.ot_code = value;
             this.submitForm();
         },
 
@@ -72,7 +72,7 @@ export default {
             const self = this;
             this.$axios
                 .post(
-                    self.getApiUrl("/api/auth/login-with-otp"),
+                    self.getApiUrl("/api/auth/login-with-otc"),
                     self.resetPasswordModel
                 )
                 .then(response => {
@@ -82,12 +82,12 @@ export default {
                         case "OK":
                             window.location.href = "/auth/login";
                             break;
-                        case "OTP_GENERATED":
-                        case "OTP_REJECTED":
-                            var otp_expired_after_in_seconds =
-                                response.data.data.otp_expired_after_in_seconds;
-                            self.durationInSeconds = otp_expired_after_in_seconds;
-                            self.showOtpModal = true;
+                        case "OTC_GENERATED":
+                        case "OTC_REJECTED":
+                            var otc_expired_after_in_seconds =
+                                response.data.data.otc_expired_after_in_seconds;
+                            self.durationInSeconds = otc_expired_after_in_seconds;
+                            self.showOtcModal = true;
 
                             break;
                     }
@@ -100,7 +100,7 @@ export default {
                         self.errors = errors.response.data.errors;
                     }
 
-                    self.resetPasswordModel.otp_code = null;
+                    self.resetPasswordModel.ot_code = null;
                 });
         }
     }

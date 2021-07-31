@@ -1,13 +1,13 @@
 <template>
     <div class="form-group">
-        <label :for="name"  v-if="label" class="text-primary">
+        <label :for="name" v-if="label" class="text-primary">
             {{ label }}
         </label>
         <div class="input-group">
             <div class="input-group-prepend">
-                   <span class="input-group-text" v-if="icon">
-                            <i :class="icon"></i>
-                    </span>
+                <span class="input-group-text" v-if="icon">
+                    <i :class="icon"></i>
+                </span>
                 <select
                     class="form-control"
                     id="country_code"
@@ -15,8 +15,6 @@
                     @change="updateField()"
                 >
                     <option value="+880" selected>+880</option>
-                    <option value="+91">+91</option>
-                    <option value="+1">+1</option>
                 </select>
             </div>
 
@@ -41,18 +39,16 @@
 <script>
 export default {
     name: "MobileNumberField",
-    props: ["name", "label", "placeholder", "errors", "data",'icon'],
+    props: ["name", "label", "placeholder", "errors", "data", "icon"],
     mounted() {},
     data: function() {
         return {
             countryCode: "+880",
-            mobileNumber: "",
-
+            mobileNumber: ""
         };
     },
     computed: {
-
-        mobileNumberWithCountryCode(){
+        mobileNumberWithCountryCode() {
             return this.countryCode + this.mobileNumber;
         },
 
@@ -67,7 +63,7 @@ export default {
     methods: {
         updateField: function() {
             this.clearErrors(this.name);
-            this.$emit("update:field",  this.mobileNumberWithCountryCode);
+            this.$emit("update:field", this.mobileNumberWithCountryCode);
         },
         errorMessage: function() {
             if (this.hasError) {
@@ -87,9 +83,9 @@ export default {
         onBlurMobileNumber(e) {
             console.log("blur", e.target.value);
 
-            if(e.target.value.startsWith("0",0)){
-               this.mobileNumber =  e.target.value.substring(1);
-               this.updateField()
+            if (e.target.value.startsWith("0", 0)) {
+                this.mobileNumber = e.target.value.substring(1);
+                this.updateField();
             }
 
             // var value = parseInt(e.target.value, 10);

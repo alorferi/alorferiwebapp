@@ -77,11 +77,11 @@
                     </div>
 
                     <div class="form-group">
-                        <AskForOtp
-                            :showOtpModal="showOtpModal"
+                        <AskForOtc
+                            :showOtcModal="showOtcModal"
                             :durationInSeconds="durationInSeconds"
-                            @updateOtp="updateOtp"
-                        ></AskForOtp>
+                            @updateOtc="updateOtc"
+                        ></AskForOtc>
                         <button
                             type="submit"
                             class="btn btn-primary"
@@ -101,7 +101,7 @@
 import EditTextField from "../../components/EditTextField";
 import MobileNumberField from "../../components/MobileNumberField";
 import GenderInputField from "../../components/GenderInputField";
-import AskForOtp from "../../components/AskForOtp";
+import AskForOtc from "../../components/AskForOtc";
 // import $ from 'jquery'
 
 // import jQuery from 'jquery'
@@ -115,7 +115,7 @@ export default {
         EditTextField,
         MobileNumberField,
         GenderInputField,
-        AskForOtp
+        AskForOtc
     },
     computed: {},
     data() {
@@ -128,15 +128,15 @@ export default {
                 dob: this.formatDate(new Date(), "YYYY-MM-DD", "en"),
                 gender: ""
             },
-            otp_code: "",
+            ot_code: "",
             errors: null,
-            showOtpModal: false,
+            showOtcModal: false,
             durationInSeconds: 30
         };
     },
     methods: {
-        updateOtp(value) {
-            this.otp_code = value;
+        updateOtc(value) {
+            this.ot_code = value;
             this.submitForm();
         },
 
@@ -148,7 +148,7 @@ export default {
             const headers = {
                 // "Content-Type": "application/json",
                 // Accept: "application/json",
-                otp_code: this.otp_code
+                ot_code: this.ot_code
             };
 
             this.$axios
@@ -160,12 +160,12 @@ export default {
                         case "OK":
                             window.location.href = "/auth/login";
                             break;
-                        case "OTP_GENERATED":
-                        case "OTP_REJECTED":
-                            var otp_expired_after_in_seconds =
-                                response.data.data.otp_expired_after_in_seconds;
-                            this.durationInSeconds = otp_expired_after_in_seconds;
-                            this.showOtpModal = true;
+                        case "OTC_GENERATED":
+                        case "OTC_REJECTED":
+                            var otc_expired_after_in_seconds =
+                                response.data.data.otc_expired_after_in_seconds;
+                            this.durationInSeconds = otc_expired_after_in_seconds;
+                            this.showOtcModal = true;
 
                             break;
                     }
@@ -178,7 +178,7 @@ export default {
                         this.errors = errors.response.data.errors;
                     }
 
-                    this.otp_code = null;
+                    this.ot_code = null;
                 });
         }
     }
