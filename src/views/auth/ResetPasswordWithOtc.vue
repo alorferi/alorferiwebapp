@@ -52,9 +52,9 @@ export default {
         return {
             resetPasswordModel: {
                 otc_type_name: "RESET_PASSWORD",
-                username: "",
-                ot_code: ""
+                username: ""
             },
+            ot_code: "",
             durationInSeconds: 0,
             showOtcModal: false,
             errors: null
@@ -63,17 +63,26 @@ export default {
 
     methods: {
         updateOtc(value) {
-            this.resetPasswordModel.ot_code = value;
+            this.ot_code = value;
             this.submitForm();
         },
 
         submitForm: function() {
             console.log(this.resetPasswordModel);
             const self = this;
+
+            const headers = {
+                ot_code: self.ot_code,
+                "Content-Type": "application/json"
+            };
+
             this.$axios
                 .post(
                     self.getApiUrl("/api/auth/login-with-otc"),
-                    self.resetPasswordModel
+                    self.resetPasswordModel,
+                    {
+                        headers: headers
+                    }
                 )
                 .then(response => {
                     console.log(response.data.data);
@@ -100,7 +109,7 @@ export default {
                         self.errors = errors.response.data.errors;
                     }
 
-                    self.resetPasswordModel.ot_code = null;
+                    self.ot_code = null;
                 });
         }
     }

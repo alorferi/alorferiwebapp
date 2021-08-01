@@ -146,13 +146,15 @@ export default {
             const url = this.$apiServerBaseUrl + "/api/auth/register";
 
             const headers = {
-                // "Content-Type": "application/json",
-                // Accept: "application/json",
+                "Content-Type": "application/json",
+                Accept: "application/json",
                 ot_code: this.ot_code
             };
 
             this.$axios
-                .post(url, this.userData, headers)
+                .post(url, this.userData, {
+                    headers: headers
+                })
                 .then(response => {
                     console.log(response.data.data);
 

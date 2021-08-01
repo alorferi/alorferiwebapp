@@ -49,13 +49,13 @@
                 </div>
 
                 <!-- <div class="form-group"> -->
-                    <router-link
-                        class="btn btn-success"
-                        :to="{ name: 'register' }"
-                        style="width:100%"
-                    >
-                        Register
-                    </router-link>
+                <router-link
+                    class="btn btn-success"
+                    :to="{ name: 'register' }"
+                    style="width:100%"
+                >
+                    Register
+                </router-link>
                 <!-- </div> -->
                 <div class="text-center text-danger" v-if="error_message">
                     {{ error_message }}
@@ -103,6 +103,7 @@ export default {
                     this.$store
                         .dispatch("fetchMe")
                         .then(() => {
+                            window.location.href = "/";
                             console.log("success");
                         })
                         .catch(() => {
