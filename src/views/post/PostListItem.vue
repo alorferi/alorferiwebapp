@@ -37,15 +37,28 @@
                                 class="dropdown-menu"
                                 aria-labelledby="dropdownMenuLink"
                             >
-
-                                <a class="dropdown-item" role="button" v-if="isMyPost"
-                                    ><i class="far fa-edit"></i> Edit this post</a
+                                <a
+                                    class="dropdown-item  text-primary"
+                                    role="button"
+                                    v-if="isMyPost"
+                                    ><i class="far fa-edit"></i> Edit this
+                                    post</a
                                 >
                                 <a
-                                    class="dropdown-item text-danger" v-if="isMyPost"
+                                    class="dropdown-item text-danger"
+                                    v-if="isMyPost"
                                     role="button"
                                     @click="deletePost(item)"
-                                    ><i class="far fa-trash-alt"></i> Delete this post</a
+                                    ><i class="far fa-trash-alt"></i> Delete
+                                    this post</a
+                                >
+
+                                <a
+                                    class="dropdown-item text-danger"
+                                    v-if="!isMyPost"
+                                    role="button"
+                                    ><i class="fas fa-exclamation-triangle"></i>
+                                    Report this post</a
                                 >
                             </div>
                         </div>
@@ -100,9 +113,14 @@
                     >
                 </div>
                 <form action="">
-                      <div class="form-group d-flex">
-                               <UserPhoto :user="item.user" size="24" ></UserPhoto>    <input type="text" class="form-control ml-2" placeholder="Type your comment here"/>
-                      </div>
+                    <div class="form-group d-flex">
+                        <UserPhoto :user="item.user" size="24"></UserPhoto>
+                        <input
+                            type="text"
+                            class="form-control ml-2"
+                            placeholder="Type your comment here"
+                        />
+                    </div>
                 </form>
 
                 <div class="media p-3">
@@ -113,7 +131,11 @@
                         style="width:45px;"
                     /> -->
 
-                      <UserPhoto :user="item.user" size="24"  class="mr-3 mt-3"></UserPhoto>
+                    <UserPhoto
+                        :user="item.user"
+                        size="24"
+                        class="mr-3 mt-3"
+                    ></UserPhoto>
 
                     <div class="media-body">
                         <!-- <h4>
@@ -121,14 +143,14 @@
                             <small><i>Posted on February 20 2016</i></small>
                         </h4> -->
 
-                                          <h6>
-                        {{ item.user.first_name }} {{ item.user.surname }}
-                        <small
-                            ><i class="text-text-secondary">
-                                {{ this.momentFromNow(item.created_at) }}</i
-                            ></small
-                        >
-                    </h6>
+                        <h6>
+                            {{ item.user.first_name }} {{ item.user.surname }}
+                            <small
+                                ><i class="text-text-secondary">
+                                    {{ this.momentFromNow(item.created_at) }}</i
+                                ></small
+                            >
+                        </h6>
 
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -144,16 +166,20 @@
                 </div>
 
                 <div class="media p-3">
-                      <UserPhoto :user="item.user" size="24"  class="mr-3 mt-3"></UserPhoto>
+                    <UserPhoto
+                        :user="item.user"
+                        size="24"
+                        class="mr-3 mt-3"
+                    ></UserPhoto>
                     <div class="media-body">
-                                        <h6>
-                        {{ item.user.first_name }} {{ item.user.surname }}
-                        <small
-                            ><i class="text-text-secondary">
-                                {{ this.momentFromNow(item.created_at) }}</i
-                            ></small
-                        >
-                    </h6>
+                        <h6>
+                            {{ item.user.first_name }} {{ item.user.surname }}
+                            <small
+                                ><i class="text-text-secondary">
+                                    {{ this.momentFromNow(item.created_at) }}</i
+                                ></small
+                            >
+                        </h6>
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit, sed do eiusmod tempor incididunt ut labore et
@@ -193,10 +219,9 @@ export default {
             return url;
         },
 
-        isMyPost(){
-            return this.item.user.id == this.$store.getters.activeUser.id
-        },
-
+        isMyPost() {
+            return this.item.user.id == this.$store.getters.activeUser.id;
+        }
     },
 
     methods: {

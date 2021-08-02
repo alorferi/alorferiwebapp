@@ -40,7 +40,7 @@
                         id="textarea"
                         v-model="body"
                         placeholder="Enter something here..."
-                        rows="3s"
+                        rows="2s"
                         max-rows="6"
                         :state="bodyState"
                         required
@@ -48,8 +48,14 @@
                     </b-form-textarea>
 
                     <div class="d-flex justify-content-center m-2">
-                        <img v-if="imgUrl && imgFile!=null " :src="imgUrl" style="max-width:460px; max-height:320px" />
+                        <img
+                            v-if="imgUrl && imgFile != null"
+                            :src="imgUrl"
+                            style="max-width:460px; max-height:320px"
+                        />
                     </div>
+
+                    <!-- <ImageAutoResize @update:field="imgFile = $event" /> -->
 
                     <b-form-file
                         v-model="imgFile"
@@ -58,8 +64,6 @@
                         drop-placeholder="Drop image here..."
                         @change="onFileChange"
                     ></b-form-file>
-
-
                 </form>
             </b-modal>
         </div>
@@ -68,16 +72,20 @@
 
 <script>
 import UserPhoto from "../user/UserPhoto";
+// import ImageUploader from "vue-image-upload-resize";
+// import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
     name: "CreatePost",
     components: {
         UserPhoto
+        // ImageAutoResize
+        // ImageUploader
     },
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
-        },
+        }
     },
     data() {
         return {
@@ -85,22 +93,29 @@ export default {
             bodyState: null,
             imgUrl: null,
             imgFile: null,
+            hasImage: false
+            // image: null
         };
     },
     methods: {
+        setImage: function(output) {
+            this.hasImage = true;
+            this.imgFile = output;
+            console.log("Info", output.info);
+            console.log("Exif", output.exif);
+        },
         onFileChange(e) {
             const file = e.target.files[0];
             this.imgUrl = URL.createObjectURL(file);
         },
         createPostAction() {
-
             let formData = new FormData();
 
-            if(this.imgFile){
-                formData.append('image', this.imgFile);
+            if (this.imgFile) {
+                formData.append("image", this.imgFile);
             }
 
-            formData.append('body', this.body);
+            formData.append("body", this.body);
 
             this.$store
                 .dispatch("createPost", formData)
@@ -118,8 +133,8 @@ export default {
         },
         resetModal() {
             this.body = "";
-               this.imgUrl = null;
-               this.imgFile = null;
+            this.imgUrl = null;
+            this.imgFile = null;
             this.bodyState = null;
         },
         handleOk(bvModalEvt) {
@@ -148,5 +163,26 @@ export default {
 </script>
 
 <style scoped>
-
+#fileInput {
+    display: none;
+}
+h1,
+h2 {
+    font-weight: normal;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+li {
+    display: inline-block;
+    margin: 0 10px;
+}
+a {
+    color: #42b983;
+}
+.my-8 {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+}
 </style>

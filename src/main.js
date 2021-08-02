@@ -5,6 +5,9 @@ import store from "./store";
 import axios from "axios";
 import VueAxios from "vue-axios";
 
+import ImageUploader from "vue-image-upload-resize";
+Vue.use(ImageUploader);
+
 import "popper.js";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -21,7 +24,7 @@ import PortalVue from "portal-vue";
 // window.$ = window.JQuery = JQuery;
 window.$ = window.JQuery = require("jquery");
 
-import mixin from "./mixin"
+import mixin from "./mixin";
 
 Vue.mixin(mixin);
 
@@ -30,9 +33,9 @@ Vue.prototype.$axios = axios;
 
 Vue.use(PortalVue);
 
-import moment from 'moment'
+import moment from "moment";
 
-Vue.prototype.moment = moment
+Vue.prototype.moment = moment;
 
 Vue.prototype.$apiServerBaseUrl = process.env.VUE_APP_API_SERVER_BASE_URL;
 Vue.prototype.$apiClientId = process.env.VUE_APP_API_SERVER_CLIENT_ID;
@@ -41,7 +44,6 @@ Vue.prototype.$apiClientSecret = process.env.VUE_APP_API_SERVER_CLIENT_SECRET;
 // console.log("apiServerBaseUrl", Vue.prototype.$apiServerBaseUrl);
 // console.log("apiClientId", Vue.prototype.$apiClientId);
 // console.log("apiClientSecret", Vue.prototype.$apiClientSecret);
-
 
 // Install BootstrapVue
 Vue.use(BootstrapVue);
