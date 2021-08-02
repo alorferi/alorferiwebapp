@@ -72,8 +72,7 @@ export default {
             const self = this;
 
             const headers = {
-                ot_code: self.ot_code,
-                "Content-Type": "application/json"
+                "ot-code": self.ot_code
             };
 
             this.$axios
@@ -89,7 +88,7 @@ export default {
 
                     switch (response.data.status) {
                         case "OK":
-                            window.location.href = "/auth/login";
+                            window.location.href = "/";
                             break;
                         case "OTC_GENERATED":
                         case "OTC_REJECTED":
@@ -105,8 +104,13 @@ export default {
                 })
                 .catch(errors => {
                     console.log(errors);
-                    if (errors.response.data.errors) {
-                        self.errors = errors.response.data.errors;
+
+                    try {
+                        if (errors.response.data.errors) {
+                            self.errors = errors.response.data.errors;
+                        }
+                    } catch (err) {
+                        self.errors = err;
                     }
 
                     self.ot_code = null;

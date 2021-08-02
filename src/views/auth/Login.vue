@@ -54,7 +54,7 @@
                     :to="{ name: 'register' }"
                     style="width:100%"
                 >
-                    Register
+                    Create New Account
                 </router-link>
                 <!-- </div> -->
                 <div class="text-center text-danger" v-if="error_message">

@@ -140,15 +140,35 @@ export default {
             this.submitForm();
         },
 
-        submitForm: function() {
-            console.log(this.userData);
+        login: function() {
+            let username = this.userData.mobile;
+            let password = this.userData.password;
+            this.$store
+                .dispatch("loginBasic", { username, password })
+                .then(() => {
+                    this.$store
+                        .dispatch("fetchMe")
+                        .then(() => {
+                            window.location.href = "/";
+                            console.log("success");
+                        })
+                        .catch(() => {
+                            console.log("failed");
+                        });
+                })
+                .catch(err => {
+                    this.error_message = err;
+                    console.log(err);
+                    this.is_error = true;
+                });
+        },
 
+        submitForm: function() {
+            const self = this;
             const url = this.$apiServerBaseUrl + "/api/auth/register";
 
             const headers = {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                ot_code: this.ot_code
+                "ot-code": self.ot_code
             };
 
             this.$axios
@@ -160,7 +180,11 @@ export default {
 
                     switch (response.data.status) {
                         case "OK":
-                            window.location.href = "/auth/login";
+                            // self.$router.push({ name: "login" });
+                            // this.$route.path = "/auth/login";
+
+                            self.login();
+
                             break;
                         case "OTC_GENERATED":
                         case "OTC_REJECTED":
@@ -176,11 +200,15 @@ export default {
                 })
                 .catch(errors => {
                     console.log(errors);
-                    if (errors.response.data.errors) {
-                        this.errors = errors.response.data.errors;
+                    try {
+                        if (errors.response.data.errors) {
+                            self.errors = errors.response.data.errors;
+                        }
+                    } catch (err) {
+                        self.errors = err;
                     }
 
-                    this.ot_code = null;
+                    this.ot_code = "";
                 });
         }
     }
