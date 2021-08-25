@@ -1,5 +1,7 @@
 <template>
-    <div>
+    <div class="media p-3" >
+
+            <div class="media-body">
         <form ref="form" @submit.stop.prevent="handleSubmit">
             <div class="form-group d-flex">
                 <UserPhoto
@@ -15,6 +17,7 @@
                 ></b-form-input>
             </div>
         </form>
+        </div>
     </div>
 </template>
 

@@ -1,50 +1,41 @@
 <template>
     <div>
-        <div class="media p-3">
-            <UserPhoto
-                :user="post.user"
-                size="24"
-                class="mr-3 mt-3"
-            ></UserPhoto>
-            <div class="media-body">
-                <h6>
-                    {{ post.user.first_name }} {{ post.user.surname }}
-                    <small
-                        ><i class="text-text-secondary">
-                            {{ this.momentFromNow(post.created_at) }}</i
-                        ></small
-                    >
-                </h6>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                </p>
-            </div>
-        </div>
+
+        <CommentListItem
+            v-for="comment in post.comments"
+            :comment="comment.attributes"
+            v-bind:key="comment.id"
+        />
+
 
         <CreatePostComment :post="post" />
     </div>
 </template>
 
 <script>
-import UserPhoto from "../user/UserPhoto";
 import CreatePostComment from "../postcomment/CreatePostComment";
+import CommentListItem from "../postcomment/CommentListItem";
 
 export default {
     name: "ShowPostComments",
     props: ["post"],
-    components: { UserPhoto, CreatePostComment },
+    components: {  CreatePostComment,CommentListItem },
     data() {
         return {};
     },
     computed: {},
 
-    methods: {}
+    methods: {
+                fetchPostCommentsAction() {
+            this.$store
+                .dispatch("fetchPostComments")
+                .then(() => {})
+                .catch(() => {})
+                .finally(() => {
+                    this.is_loading = false;
+                    this.scrolledToBottom = false;
+                });
+        },
+    }
 };
 </script>
