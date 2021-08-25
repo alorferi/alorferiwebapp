@@ -86,7 +86,7 @@ const actions = {
     fetchUserPosts(context, payload) {
         return new Promise((resolve, reject) => {
             var url = mixin.methods.getApiUrl(
-                "/api/users/" + payload.userId + "/posts"
+                "/api/users/" + payload.user_id + "/posts"
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
@@ -109,7 +109,11 @@ const actions = {
 
     createPost(context, payload) {
         return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl("/api/posts");
+            // var url = mixin.methods.getApiUrl("/api/posts");
+
+            var url = mixin.methods.getApiUrl(
+                "/api/users/" + this.getters.activeUser.id  + "/posts"
+            );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
             headers["Content-Type"] = "multipart/form-data";
@@ -135,7 +139,11 @@ const actions = {
 
     deletePost(context, post) {
         return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl("/api/posts/" + post.id);
+
+            var url = mixin.methods.getApiUrl(
+                "/api/users/" + this.getters.activeUser.id  + "/posts/"+ post.id
+            );
+
 
             const headers = mixin.methods.getAuthorizationBearerToken();
 

@@ -116,6 +116,7 @@ export default {
             }
 
             formData.append("body", this.body);
+            formData.append("user_id", this.activeUser.id);
 
             this.$store
                 .dispatch("createPost", formData)

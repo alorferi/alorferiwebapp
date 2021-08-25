@@ -46,7 +46,7 @@ export default {
     methods: {
         fetchPost() {
             this.$store
-                .dispatch("fetchUserPosts",{userId:this.user.id})
+                .dispatch("fetchUserPosts",{user_id:this.user.id})
                 .then(() => {})
                 .catch(() => {})
                 .finally(() => {
