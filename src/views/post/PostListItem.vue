@@ -95,7 +95,7 @@
                     </div>
 
                     <div class="p-2">
-                        123 comments
+                        <i class="far fa-comment-dots"></i> 123 comments
                     </div>
                 </div>
 
@@ -112,86 +112,9 @@
                         <i class="far fa-comment-dots"></i> Comment</a
                     >
                 </div>
-                <form action="">
-                    <div class="form-group d-flex">
-                        <UserPhoto :user="item.user" size="24"></UserPhoto>
-                        <input
-                            type="text"
-                            class="form-control ml-2"
-                            placeholder="Type your comment here"
-                        />
-                    </div>
-                </form>
 
-                <div class="media p-3">
-                    <!-- <img
-                        src="img_avatar2.png"
-                        alt="Jane Doe"
-                        class="mr-3 mt-3 rounded-circle"
-                        style="width:45px;"
-                    /> -->
+            <ShowPostComments :post="item"/>
 
-                    <UserPhoto
-                        :user="item.user"
-                        size="24"
-                        class="mr-3 mt-3"
-                    ></UserPhoto>
-
-                    <div class="media-body">
-                        <!-- <h4>
-                            Jane Doe
-                            <small><i>Posted on February 20 2016</i></small>
-                        </h4> -->
-
-                        <h6>
-                            {{ item.user.first_name }} {{ item.user.surname }}
-                            <small
-                                ><i class="text-text-secondary">
-                                    {{ this.momentFromNow(item.created_at) }}</i
-                                ></small
-                            >
-                        </h6>
-
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua.
-                        </p>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="media p-3">
-                    <UserPhoto
-                        :user="item.user"
-                        size="24"
-                        class="mr-3 mt-3"
-                    ></UserPhoto>
-                    <div class="media-body">
-                        <h6>
-                            {{ item.user.first_name }} {{ item.user.surname }}
-                            <small
-                                ><i class="text-text-secondary">
-                                    {{ this.momentFromNow(item.created_at) }}</i
-                                ></small
-                            >
-                        </h6>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua.
-                        </p>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua.
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -199,10 +122,11 @@
 
 <script>
 import UserPhoto from "../user/UserPhoto";
+import ShowPostComments from "../postcomment/ShowPostComments";
 export default {
     name: "PostListItem",
     props: ["item"],
-    components: { UserPhoto },
+    components: { UserPhoto,  ShowPostComments},
     data() {
         return {};
     },

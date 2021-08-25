@@ -8,9 +8,11 @@ const state = {
 };
 
 const getters = {
+    post: state => state.post,
+
     feedPostsResponse: state => state.feedPostsResponse,
     userPostsResponse: state => state.userPostsResponse,
-    post: state => state.post
+
 };
 
 const mutations = {
@@ -107,7 +109,7 @@ const actions = {
         });
     },
 
-    createPost(context, payload) {
+    createPost(context, fromData) {
         return new Promise((resolve, reject) => {
             // var url = mixin.methods.getApiUrl("/api/posts");
 
@@ -122,7 +124,7 @@ const actions = {
                 url: url,
                 headers: headers,
                 method: "POST",
-                data: payload
+                data: fromData
             })
                 .then(response => {
                     context.commit("setPost", response.data.data.attributes);
