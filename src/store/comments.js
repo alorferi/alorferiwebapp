@@ -5,12 +5,12 @@ const state = {
 };
 
 const getters = {
-    post: state => state.post
+    comment: state => state.comment
 };
 
 const mutations = {
-    setPost(state, newPost) {
-        state.post = newPost;
+    setComment(state, newComment) {
+        state.comment = newComment;
     },
 
 

@@ -4,6 +4,7 @@
         <CommentListItem
             v-for="comment in post.comments"
             :comment="comment.attributes"
+            :post="post"
             v-bind:key="comment.id"
         />
 
