@@ -36,7 +36,7 @@
                                 class="dropdown-item  text-primary"
                                 role="button"
                                 v-if="isAbleToEditComment"
-                                ><i class="far fa-edit"></i> Edit this post</a
+                                ><i class="far fa-edit"></i> Edit this comment</a
                             >
                             <a
                                 class="dropdown-item text-danger"
@@ -44,7 +44,7 @@
                                 role="button"
                                 @click="deleteComment(comment)"
                                 ><i class="far fa-trash-alt"></i> Delete this
-                                post</a
+                                comment</a
                             >
 
                         </div>

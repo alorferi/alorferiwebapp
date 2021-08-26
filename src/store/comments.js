@@ -36,7 +36,7 @@ const actions = {
                 .then(response => {
                      context.commit("pushPostComments",{
                          post: post,
-                         data:  response.data.data
+                         data:  response.data
                      });
 
                     resolve(response);
@@ -78,9 +78,15 @@ const actions = {
 
                     data.push(response.data.data)
 
+                    let comments = {
+                           data:  data,
+                           meta:{
+                               total:1
+                           }
+                    }
                     context.commit("pushPostComments",{
                         post: packet.overhead.post,
-                        data:  data
+                        data:  comments
                     });
 
                     resolve(response);

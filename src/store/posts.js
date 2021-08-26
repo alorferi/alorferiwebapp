@@ -52,9 +52,15 @@ const mutations = {
         state.feedPostsResponse.data.forEach(function(post) {
             if (post.attributes.id == payload.post.id) {
 
-                payload.data.forEach(function(comment) {
-                    post.attributes.comments.push(comment);
-                })
+                if( post.attributes.comments==null){
+                    post.attributes.comments = payload.data
+                }else{
+                    payload.data.data.forEach(function(comment) {
+                        post.attributes.comments.data.push(comment);
+                        post.attributes.comments.meta.total ++  ;
+                    })
+                }
+
 
             }
 

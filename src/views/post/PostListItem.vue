@@ -89,29 +89,7 @@
                     ></iframe>
                 </div>
 
-                <div class="d-flex justify-content-between">
-                    <div class="p-2">
-                        <i class="far fa-thumbs-up"></i> Iqbal and 137 others
-                    </div>
 
-                    <div class="p-2">
-                        <i class="far fa-comment-dots"></i> 123 comments
-                    </div>
-                </div>
-
-                <div
-                    class="d-flex justify-content-between border border-left-0 border-right-0 border-bottom-0"
-                >
-                    <div>
-                        <a href="#" class="btn btn-light">
-                            <i class="far fa-thumbs-up"></i> Like</a
-                        >
-                    </div>
-
-                    <a href="#" class="btn btn-light">
-                        <i class="far fa-comment-dots"></i> Comment</a
-                    >
-                </div>
 
             <ShowPostComments :post="item"/>
 
