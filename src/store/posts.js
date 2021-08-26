@@ -24,8 +24,8 @@ const mutations = {
     },
 
     removePost(state, post) {
-        state.feedPostsResponse.data.forEach(function(item, index, arr) {
-            if (item.attributes.id == post.id) {
+        state.feedPostsResponse.data.forEach(function(postItem, index, arr) {
+            if (postItem.attributes.id == post.id) {
                 arr.splice(index, 1);
             }
         });
@@ -65,6 +65,28 @@ const mutations = {
 
         });
     },
+
+
+    removePostComment(state, packet) {
+        state.feedPostsResponse.data.forEach(function(postItem) {
+
+
+            if (postItem.attributes.id == packet.overhead.post.id) {
+
+                postItem.attributes.comments.data.forEach(function(commentItem, index, arr) {
+
+                    if(commentItem.attributes.id == packet.overhead.comment.id) {
+                        arr.splice(index, 1);
+                    }
+
+                })
+
+
+            }
+
+        });
+    },
+
 };
 
 const actions = {

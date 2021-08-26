@@ -115,7 +115,7 @@ const actions = {
                 method: "DELETE"
             })
                 .then(response => {
-                    // context.commit("removePostComment", post);
+                    context.commit("removePostComment", packet);
                     resolve(response);
                 })
                 .catch(err => {
