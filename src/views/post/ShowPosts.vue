@@ -5,7 +5,7 @@
         <PostListItem
             v-else
             v-for="post in posts"
-            :item="post.attributes"
+            :post="post.attributes"
             v-bind:key="post.id"
         />
 

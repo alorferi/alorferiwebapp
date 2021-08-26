@@ -4,18 +4,18 @@
             <router-link
                 :to="{
                     name: 'users.show',
-                    params: { user_id: this.item.user.id }
+                    params: { user_id: this.post.user.id }
                 }"
             >
-                <UserPhoto :user="item.user" size="24"></UserPhoto>
+                <UserPhoto :user="post.user" size="24"></UserPhoto>
             </router-link>
             <div class="media-body pl-3">
                 <div class="d-flex justify-content-between">
                     <h6>
-                        {{ item.user.first_name }} {{ item.user.surname }}
+                        {{ post.user.first_name }} {{ post.user.surname }}
                         <small
                             ><i class="text-text-secondary">
-                                {{ this.momentFromNow(item.created_at) }}</i
+                                {{ this.momentFromNow(post.created_at) }}</i
                             ></small
                         >
                     </h6>
@@ -41,6 +41,7 @@
                                     class="dropdown-item  text-primary"
                                     role="button"
                                     v-if="isMyPost"
+                                     @click="showEditPostModal = !showEditPostModal"
                                     ><i class="far fa-edit"></i> Edit this
                                     post</a
                                 >
@@ -48,7 +49,7 @@
                                     class="dropdown-item text-danger"
                                     v-if="isMyPost"
                                     role="button"
-                                    @click="deletePost(item)"
+                                    @click="deletePost(post)"
                                     ><i class="far fa-trash-alt"></i> Delete
                                     this post</a
                                 >
@@ -66,12 +67,12 @@
                 </div>
 
                 <p class="mr-5" style="text-align:justify">
-                    {{ item.body }}
+                    {{ post.body }}
                 </p>
 
-                <div v-if="item.image" class="mr-5">
+                <div v-if="post.image" class="mr-5">
                     <img
-                        :src="this.getApiUrl(item.image)"
+                        :src="this.getApiUrl(post.image)"
                         style="max-width:100%; height: auto;"
                         alt="Posted image"
                         class="img-fluid"
@@ -91,7 +92,13 @@
 
 
 
-            <ShowPostComments :post="item"/>
+            <ShowPostComments :post="post"/>
+
+
+            <EditPostModal :showEditPostModal="showEditPostModal"
+            :post="post"
+             @updateVisibleState="showEditPostModal = $event"
+             />
 
             </div>
         </div>
@@ -101,16 +108,20 @@
 <script>
 import UserPhoto from "../user/UserPhoto";
 import ShowPostComments from "../postcomment/ShowPostComments";
+import EditPostModal from "./EditPostModal.vue"
+
 export default {
     name: "PostListItem",
-    props: ["item"],
-    components: { UserPhoto,  ShowPostComments},
+    props: ["post"],
+    components: { UserPhoto,  ShowPostComments,EditPostModal},
     data() {
-        return {};
+        return {
+            showEditPostModal: false,
+        };
     },
     computed: {
         getYouTubeEmbedUrl: function() {
-            var url = this.extractUrl(this.item.body);
+            var url = this.extractUrl(this.post.body);
 
             if (url) {
                 url =
@@ -122,7 +133,7 @@ export default {
         },
 
         isMyPost() {
-            return this.item.user.id == this.$store.getters.activeUser.id;
+            return this.post.user.id == this.$store.getters.activeUser.id;
         }
     },
 
