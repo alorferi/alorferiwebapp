@@ -19,11 +19,11 @@ const mutations = {
 const actions = {
 
 
-    fetchPostComments(context, packet) {
+    fetchPostComments(context, post) {
         return new Promise((resolve, reject) => {
 
             var url = mixin.methods.getApiUrl(
-                "/api/posts/" + packet.overhead.post_id + "/comments"
+                "/api/posts/" + post.id + "/comments"
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
@@ -34,7 +34,11 @@ const actions = {
                 method: "GET"
             })
                 .then(response => {
-                    context.commit("setUserPostsResponse", response.data);
+                     context.commit("pushPostComments",{
+                         post: post,
+                         data:  response.data.data
+                     });
+
                     resolve(response);
                 })
                 .catch(err => {
@@ -50,7 +54,7 @@ const actions = {
             // var url = mixin.methods.getApiUrl("/api/posts");
 
 
-        let post_id =  packet.overhead.post_id;
+        let post_id =  packet.overhead.post.id;
 
             var url = mixin.methods.getApiUrl(
                 "/api/posts/" + post_id + "/comments"
@@ -67,9 +71,17 @@ const actions = {
                 data: packet.payload
             })
                 .then(response => {
-                    context.commit("setPost", response.data.data.attributes);
 
-                    // context.commit("pushPostToFeed", response.data.data);
+                    context.commit("setComment", response.data.data.attributes);
+
+                    var data = [];
+
+                    data.push(response.data.data)
+
+                    context.commit("pushPostComments",{
+                        post: packet.overhead.post,
+                        data:  data
+                    });
 
                     resolve(response);
                 })

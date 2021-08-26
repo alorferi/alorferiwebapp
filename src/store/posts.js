@@ -2,7 +2,7 @@ import axios from "axios";
 import mixin from "../mixin";
 
 const state = {
-    feedPostsResponse: {data:[], links:null,meta:null},
+    feedPostsResponse: { data: [], links: null, meta: null },
     userPostsResponse: [],
     post: null
 };
@@ -11,8 +11,7 @@ const getters = {
     post: state => state.post,
 
     feedPostsResponse: state => state.feedPostsResponse,
-    userPostsResponse: state => state.userPostsResponse,
-
+    userPostsResponse: state => state.userPostsResponse
 };
 
 const mutations = {
@@ -33,26 +32,33 @@ const mutations = {
     },
 
     setFeedPostsResponse(state, newPostsResponse) {
-
-
-
-         if(state.feedPostsResponse.data.length == 0){
-             state.feedPostsResponse.data =newPostsResponse.data;
-         }else{
-          newPostsResponse.data.forEach(function(item){
-            state.feedPostsResponse.data.push(item);
-          })
-         }
+        if (state.feedPostsResponse.data.length == 0) {
+            state.feedPostsResponse.data = newPostsResponse.data;
+        } else {
+            newPostsResponse.data.forEach(function(item) {
+                state.feedPostsResponse.data.push(item);
+            });
+        }
 
         state.feedPostsResponse.links = newPostsResponse.links;
         state.feedPostsResponse.meta = newPostsResponse.meta;
         //  state.feedPostsResponse = newPostsResponse;
-
-
     },
 
     setUserPostsResponse(state, newPostsResponse) {
         state.userPostsResponse = newPostsResponse;
+    },
+    pushPostComments(state, payload) {
+        state.feedPostsResponse.data.forEach(function(post) {
+            if (post.attributes.id == payload.post.id) {
+
+                payload.data.forEach(function(comment) {
+                    post.attributes.comments.push(comment);
+                })
+
+            }
+
+        });
     }
 };
 
@@ -114,7 +120,7 @@ const actions = {
             // var url = mixin.methods.getApiUrl("/api/posts");
 
             var url = mixin.methods.getApiUrl(
-                "/api/users/" + this.getters.activeUser.id  + "/posts"
+                "/api/users/" + this.getters.activeUser.id + "/posts"
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
@@ -141,11 +147,9 @@ const actions = {
 
     deletePost(context, post) {
         return new Promise((resolve, reject) => {
-
             var url = mixin.methods.getApiUrl(
-                "/api/users/" + this.getters.activeUser.id  + "/posts/"+ post.id
+                "/api/users/" + this.getters.activeUser.id + "/posts/" + post.id
             );
-
 
             const headers = mixin.methods.getAuthorizationBearerToken();
 

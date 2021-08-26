@@ -36,14 +36,10 @@ export default {
     },
     methods: {
         createPostCommenAction() {
-            // let formData = new FormData();
-
-            // formData.append("body", this.body);
-            // formData.append("post_id", this.post.id);
 
             let packet = {
                 overhead: {
-                    post_id: this.post.id
+                    post: this.post
                 },
                 payload: {
                     body: this.body
@@ -53,11 +49,9 @@ export default {
             this.$store
                 .dispatch("createPostComment", packet)
                 .then(() => {
-                    // this.hideCreatePostModal();
-                    alert("CommentSaved");
+                     this.body = ""
                 })
                 .catch(() => {
-                    alert("Faild to sve comment");
                 })
                 .finally();
         },

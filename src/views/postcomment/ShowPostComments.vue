@@ -1,42 +1,55 @@
 <template>
     <div>
 
+
+        <Loading v-if="is_loading"></Loading>
+
         <CommentListItem
-            v-for="comment in post.comments"
+            v-else
+            v-for="comment in comments"
             :comment="comment.attributes"
             :post="post"
-            v-bind:key="comment.id"
+            v-bind:key="comment.attributes.id"
         />
 
+         <CreatePostComment :post="post" />
 
-        <CreatePostComment :post="post" />
     </div>
 </template>
 
 <script>
 import CreatePostComment from "../postcomment/CreatePostComment";
 import CommentListItem from "../postcomment/CommentListItem";
+import Loading from "@/components/Loading";
 
 export default {
     name: "ShowPostComments",
     props: ["post"],
-    components: {  CreatePostComment,CommentListItem },
+    components: { CreatePostComment, CommentListItem, Loading },
     data() {
-        return {};
+        return {
+            is_loading: true
+        };
     },
-    computed: {},
+    computed: {
+        comments() {
+            return this.post.comments;
+        }
+    },
+    mounted() {
+        this.fetchPostCommentsAction();
+    },
 
     methods: {
-                fetchPostCommentsAction() {
+        fetchPostCommentsAction() {
             this.$store
-                .dispatch("fetchPostComments")
+                .dispatch("fetchPostComments", this.post)
                 .then(() => {})
                 .catch(() => {})
                 .finally(() => {
                     this.is_loading = false;
-                    this.scrolledToBottom = false;
                 });
-        },
+        }
     }
 };
 </script>
