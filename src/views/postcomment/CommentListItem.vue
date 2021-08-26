@@ -75,7 +75,22 @@ export default {
     methods: {
 
         deleteComment(comment){
-            console.log(comment)
+
+            const packet = {
+                overhead:{
+                    post:this.post,
+                    comment:comment
+                }
+            }
+
+               this.$store
+                .dispatch("deletePostComment", packet)
+                .then(() => {
+                })
+                .catch(() => {
+                })
+                .finally();
+
         }
 
     },computed:{

@@ -99,13 +99,11 @@ const actions = {
     },
 
 
-
-
-    deletePostComment(context, post) {
+    deletePostComment(context, packet) {
         return new Promise((resolve, reject) => {
 
             var url = mixin.methods.getApiUrl(
-                "/api/users/" + this.getters.activeUser.id  + "/posts/"+ post.id
+                "/api/posts/" + packet.overhead.post.id  + "/comments/"+ packet.overhead.comment.id
             );
 
 
@@ -117,7 +115,7 @@ const actions = {
                 method: "DELETE"
             })
                 .then(response => {
-                    context.commit("removePost", post);
+                    // context.commit("removePostComment", post);
                     resolve(response);
                 })
                 .catch(err => {
