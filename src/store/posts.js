@@ -61,11 +61,10 @@ const mutations = {
                     })
                 }
 
-
             }
 
         });
-    }
+    },
 };
 
 const actions = {
