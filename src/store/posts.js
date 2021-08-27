@@ -27,8 +27,9 @@ const mutations = {
     updatePostToFeed(state, updatedPost) {
         state.feedPostsResponse.data.forEach(function(postItem) {
             if (postItem.attributes.id == updatedPost.attributes.id) {
+                postItem.attributes.title = updatedPost.attributes.title;
                 postItem.attributes.body = updatedPost.attributes.body;
-                postItem.attributes.image = updatedPost.attributes.image + "?rand="+Date.now();
+                postItem.attributes.image = updatedPost.attributes.image ==null ? null : updatedPost.attributes.image+ "?rand="+Date.now();
             }
         });
     },

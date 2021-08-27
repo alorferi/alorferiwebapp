@@ -25,11 +25,18 @@
                     @submit.stop.prevent="handleSubmit"
                     class="mb-2"
                 >
+
+                                    <b-form-input
+                        class="form-control mb-2"
+                        v-model="title"
+                        placeholder="What is the title of your discussion?"
+                    ></b-form-input>
+
                     <b-form-textarea
                         id="textarea"
                         v-model="body"
-                        placeholder="Enter something here..."
-                        rows="2s"
+                        placeholder="What do you want to discussion about?"
+                        rows="4s"
                         max-rows="6"
                         :state="bodyState"
                         required
@@ -88,6 +95,7 @@ export default {
     },
     data() {
         return {
+            title: this.post.title,
             body: this.post.body,
             bodyState: null,
             imgUrl: null,
@@ -113,6 +121,7 @@ export default {
                 formData.append("image", this.imgFile);
             }
 
+            formData.append("title", this.title);
             formData.append("body", this.body);
 
             const packet = {

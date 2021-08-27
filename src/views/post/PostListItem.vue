@@ -66,7 +66,12 @@
                     </div>
                 </div>
 
-                <p class="mr-5" style="text-align:justify">
+
+                 <h5 v-if="post.title" class="mr-5" style="text-align:justify">
+                    {{ post.title }}
+                </h5>
+
+                <p v-if="post.body"  class="mr-5" style="text-align:justify">
                     {{ post.body }}
                 </p>
 

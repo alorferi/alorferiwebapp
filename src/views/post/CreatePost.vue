@@ -9,14 +9,14 @@
                     class="ml-3 form-control btn btn-outline-info"
                     v-b-modal.createPostModal
                 >
-                    Write something...
+                    Start a discussion
                 </button>
             </div>
 
             <b-modal
                 id="createPostModal"
                 ref="modal"
-                title="Write something"
+                title="Create a discussion"
                 @show="resetModal"
                 @hidden="resetModal"
                 ok-title="Post"
@@ -27,8 +27,10 @@
                     <UserPhoto :user="activeUser" size="16"></UserPhoto>
 
                     <div class="ml-2">
-                        {{ activeUser.first_name }} {{ activeUser.surname }}
-                        {{ activeUser.nickname }}
+                        <h6>
+                            {{ activeUser.first_name }} {{ activeUser.surname }}
+                            {{ activeUser.nickname }}
+                        </h6>
                     </div>
                 </div>
                 <form
@@ -36,11 +38,17 @@
                     @submit.stop.prevent="handleSubmit"
                     class="mb-2"
                 >
+                    <b-form-input
+                        class="form-control mb-2"
+                        v-model="title"
+                        placeholder="What is the title of your discussion?"
+                    ></b-form-input>
+
                     <b-form-textarea
                         id="textarea"
                         v-model="body"
-                        placeholder="Enter something here..."
-                        rows="2s"
+                        placeholder="What do you want to discussion about?"
+                        rows="4s"
                         max-rows="6"
                         :state="bodyState"
                         required
@@ -89,6 +97,7 @@ export default {
     },
     data() {
         return {
+            title: "",
             body: "",
             bodyState: null,
             imgUrl: null,
@@ -115,6 +124,7 @@ export default {
                 formData.append("image", this.imgFile);
             }
 
+            formData.append("title", this.title);
             formData.append("body", this.body);
 
             this.$store
@@ -132,6 +142,7 @@ export default {
             return valid;
         },
         resetModal() {
+            this.title = "";
             this.body = "";
             this.imgUrl = null;
             this.imgFile = null;
