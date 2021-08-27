@@ -3,15 +3,15 @@
         <div class="d-flex justify-content-between">
             <div >
                 <div v-if="totalLikes == 1" class="p-1">
-                    <i class="far fa-thumbs-up"></i> {{likes[0].attributes.user.first_name}}
+                    <i class="far fa-thumbs-up text-primary"></i> {{likes[0].attributes.user.first_name}}
                 </div>
 
                 <div v-else-if="totalLikes == 2" class="p-1">
-                    <i class="far fa-thumbs-up"></i> {{likes[0].attributes.user.first_name}} and {{likes[1].attributes.user.first_name}}
+                    <i class="far fa-thumbs-up text-primary"></i> {{likes[0].attributes.user.first_name}} and {{likes[1].attributes.user.first_name}}
                 </div>
 
                 <div v-else-if="totalLikes > 2" class="p-1">
-                    <i class="far fa-thumbs-up"></i> {{likes[0].attributes.user.first_name}} and
+                    <i class="far fa-thumbs-up text-primary"></i> {{likes[0].attributes.user.first_name}} and
                     {{ totalLikes-1 }} other
                 </div>
 
