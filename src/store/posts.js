@@ -23,17 +23,20 @@ const mutations = {
         state.feedPostsResponse.data.splice(0, 0, newPost);
     },
 
-
     updatePostToFeed(state, updatedPost) {
         state.feedPostsResponse.data.forEach(function(postItem) {
             if (postItem.attributes.id == updatedPost.attributes.id) {
                 postItem.attributes.title = updatedPost.attributes.title;
                 postItem.attributes.body = updatedPost.attributes.body;
-                postItem.attributes.image_url = updatedPost.attributes.image_url ==null ? null : updatedPost.attributes.image_url+ "?rand="+Date.now();
+                postItem.attributes.image_url =
+                    updatedPost.attributes.image_url == null
+                        ? null
+                        : updatedPost.attributes.image_url +
+                          "?rand=" +
+                          Date.now();
             }
         });
     },
-
 
     removePost(state, post) {
         state.feedPostsResponse.data.forEach(function(postItem, index, arr) {
@@ -63,42 +66,50 @@ const mutations = {
     pushPostComments(state, payload) {
         state.feedPostsResponse.data.forEach(function(post) {
             if (post.attributes.id == payload.post.id) {
-
-                if( post.attributes.comments==null){
-                    post.attributes.comments = payload.data
-                }else{
+                if (post.attributes.comments == null) {
+                    post.attributes.comments = payload.data;
+                } else {
                     payload.data.data.forEach(function(comment) {
                         post.attributes.comments.data.push(comment);
-                        post.attributes.comments.meta.total ++  ;
-                    })
+                        post.attributes.comments.meta.total++;
+                    });
                 }
-
             }
-
         });
     },
 
+    pushPostLikes(state, payload) {
+        state.feedPostsResponse.data.forEach(function(post) {
+            if (post.attributes.id == payload.post.id) {
+                if (post.attributes.likes == null) {
+                    post.attributes.likes = payload.data;
+                } else {
+                    payload.data.data.forEach(function(like) {
+                        post.attributes.likes.data.push(like);
+                        post.attributes.likes.meta.total++;
+                    });
+                }
+            }
+        });
+    },
 
     removePostComment(state, packet) {
         state.feedPostsResponse.data.forEach(function(postItem) {
-
-
             if (postItem.attributes.id == packet.overhead.post.id) {
-
-                postItem.attributes.comments.data.forEach(function(commentItem, index, arr) {
-
-                    if(commentItem.attributes.id == packet.overhead.comment.id) {
+                postItem.attributes.comments.data.forEach(function(
+                    commentItem,
+                    index,
+                    arr
+                ) {
+                    if (
+                        commentItem.attributes.id == packet.overhead.comment.id
+                    ) {
                         arr.splice(index, 1);
                     }
-
-                })
-
-
+                });
             }
-
         });
-    },
-
+    }
 };
 
 const actions = {
@@ -184,29 +195,31 @@ const actions = {
         });
     },
 
-
     updatePost(context, packet) {
         return new Promise((resolve, reject) => {
             // var url = mixin.methods.getApiUrl("/api/posts");
 
             var url = mixin.methods.getApiUrl(
-                "/api/users/" + this.getters.activeUser.id + "/posts/"+ packet.overhead.post.id +"?_method=PUT"
+                "/api/users/" +
+                    this.getters.activeUser.id +
+                    "/posts/" +
+                    packet.overhead.post.id +
+                    "?_method=PUT"
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
             headers["Content-Type"] = "multipart/form-data";
 
-          const formData =   packet.formData
-
+            const formData = packet.formData;
 
             axios({
                 url: url,
                 headers: headers,
                 method: "POST",
-                data:formData
+                data: formData
             })
                 .then(response => {
-                    context.commit("updatePostToFeed", response.data.data );
+                    context.commit("updatePostToFeed", response.data.data);
 
                     resolve(response);
                 })
@@ -216,7 +229,6 @@ const actions = {
                 });
         });
     },
-
 
     deletePost(context, post) {
         return new Promise((resolve, reject) => {
