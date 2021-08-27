@@ -38,7 +38,7 @@
 
                     <div class="d-flex justify-content-center m-2">
                         <img
-                            v-if="imgUrl && imgFile != null"
+                            v-if="imgUrl"
                             :src="imgUrl"
                             style="max-width:460px; max-height:320px"
                         />
@@ -146,9 +146,9 @@ export default {
             this.imgFile = null;
             this.bodyState = null;
         },
-             showData() {
+        showData() {
             this.body = this.post.body,
-            this.imgUrl = null;
+            this.imgUrl =this.getApiUrl( this.post.image);
             this.imgFile = null;
             this.bodyState = null;
         },
