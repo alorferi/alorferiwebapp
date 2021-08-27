@@ -30,7 +30,7 @@
             class="d-flex justify-content-between border border-left-0 border-right-0 border-bottom-0"
         >
             <div>
-                <button class="btn  "  type="button"  @click="storeLikeAction" v-bind:class="{'btn-light':true, 'btn-outline-primary':false, 'border-bottom-0':false, 'border-top-0':false, 'border-left-0':false, 'border-right-0':false}">
+                <button class="btn  "  type="button"  @click="storeOrRemoveLikeAction" v-bind:class="{'btn-light':!hasMyLike, 'btn-outline-primary':hasMyLike, 'border-bottom-0':hasMyLike, 'border-top-0':hasMyLike, 'border-left-0':hasMyLike, 'border-right-0':hasMyLike}">
                     <i class="far fa-thumbs-up"></i> Like</button
                 >
             </div>
@@ -85,10 +85,15 @@ export default {
         likes() {
             return this.post.likes == null ? [] : this.post.likes.data;
         }
+        ,
+         hasMyLike() {
+            return this.post.my_like != null ;
+        }
     },
     mounted() {
         this.fetchPostCommentsAction();
         this.fetchPostLikesAction();
+        this.fetchPostMyLikeAction();
     },
 
     methods: {
@@ -103,7 +108,7 @@ export default {
                 });
         },
         fetchPostLikesAction() {
-            this.is_loading = true;
+            // this.is_loading = true;
             this.$store
                 .dispatch("fetchPostLikes", this.post)
                 .then(() => {})
@@ -111,11 +116,27 @@ export default {
                 .finally(() => {
                     this.is_loading = false;
                 });
-        },
-        storeLikeAction() {
+        },        fetchPostMyLikeAction() {
             this.is_loading = true;
+            this.$store
+                .dispatch("fetchPostMyLike", this.post)
+                .then(() => {})
+                .catch(() => {})
+                .finally(() => {
+                    // this.is_loading = false;
+                });
+        },
+        storeOrRemoveLikeAction() {
 
-            const packet = {
+
+            if(this.post.attributes.my_like){
+
+                //Remove or Delete Like
+
+            }else{
+
+                //Create Like
+                 const packet = {
                 overhead: {
                     post: this.post
                 },
@@ -129,8 +150,11 @@ export default {
                 .then(() => {})
                 .catch(() => {})
                 .finally(() => {
-                    this.is_loading = false;
                 });
+
+            }
+
+
         }
     }
 };

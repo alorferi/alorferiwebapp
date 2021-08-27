@@ -92,6 +92,15 @@ const mutations = {
             }
         });
     },
+    pushMyLikeOnPost(state, payload) {
+        state.feedPostsResponse.data.forEach(function(post) {
+            if (post.attributes.id == payload.post.id) {
+                if (post.attributes.my_like == null) {
+                    post.attributes.my_like = payload.data;
+                }
+            }
+        });
+    },
 
     removePostComment(state, packet) {
         state.feedPostsResponse.data.forEach(function(postItem) {

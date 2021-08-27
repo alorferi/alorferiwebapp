@@ -50,6 +50,35 @@ const actions = {
         });
     },
 
+    fetchPostMyLike(context, post) {
+        return new Promise((resolve, reject) => {
+
+            var url = mixin.methods.getApiUrl(
+                "/api/posts/" + post.id + "/likes/my-like"
+            );
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "GET"
+            })
+                .then(response => {
+                     context.commit("pushMyLikeOnPost",{
+                         post: post,
+                         data:  response.data
+                     });
+
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
+
 
     storePostLike(context, packet) {
         return new Promise((resolve, reject) => {
@@ -74,7 +103,11 @@ const actions = {
             })
                 .then(response => {
 
-                    // context.commit("setLike", response.data.data.attributes);
+
+                    context.commit("pushMyLikeOnPost",{
+                        post: packet.overhead.post,
+                        data:  response.data
+                    });
 
                     var data = [];
 
