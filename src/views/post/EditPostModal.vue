@@ -135,11 +135,19 @@ export default {
             return valid;
         },
         showModal() {
+            this.showData()
         },
         hideModal() {
+            this.clearData()
         },
         clearData() {
             this.body = "";
+            this.imgUrl = null;
+            this.imgFile = null;
+            this.bodyState = null;
+        },
+             showData() {
+            this.body = this.post.body,
             this.imgUrl = null;
             this.imgFile = null;
             this.bodyState = null;
