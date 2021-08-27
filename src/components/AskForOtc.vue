@@ -7,7 +7,7 @@
             @show="initModal"
             @hidden="resetModal"
             :ok-title="okTitleText"
-            v-model="showOtcModal"
+            v-model="showOtcModalLocal"
             :hide-header="hideHeader"
             @ok="handleOk"
             centered
@@ -55,7 +55,16 @@
 export default {
     name: "AskForOtc",
     props: ["showOtcModal", "durationInSeconds"],
-    computed: {},
+      computed: {
+        showOtcModalLocal: {
+            get: function() {
+                return this.showOtcModal;
+            },
+            set: function(value) {
+                this.$emit("onUpdateVisibleState", value);
+            }
+        }
+    },
     mounted: function() {
         this.otcCountdownTimer();
         this.downCounter = this.durationInSeconds;
