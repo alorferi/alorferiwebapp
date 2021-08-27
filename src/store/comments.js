@@ -49,7 +49,7 @@ const actions = {
     },
 
 
-    createPostComment(context, packet) {
+    storePostComment(context, packet) {
         return new Promise((resolve, reject) => {
             // var url = mixin.methods.getApiUrl("/api/posts");
 

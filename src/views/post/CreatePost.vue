@@ -108,7 +108,7 @@ export default {
             const file = e.target.files[0];
             this.imgUrl = URL.createObjectURL(file);
         },
-        createPostAction() {
+        storePostAction() {
             let formData = new FormData();
 
             if (this.imgFile) {
@@ -116,10 +116,9 @@ export default {
             }
 
             formData.append("body", this.body);
-            formData.append("user_id", this.activeUser.id);
 
             this.$store
-                .dispatch("createPost", formData)
+                .dispatch("storePost", formData)
                 .then(() => {
                     this.hideCreatePostModal();
                 })
@@ -150,7 +149,7 @@ export default {
                 return;
             }
             // Subit data to backend server
-            this.createPostAction();
+            this.storePostAction();
         },
 
         hideCreatePostModal() {

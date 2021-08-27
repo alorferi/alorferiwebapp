@@ -1,12 +1,11 @@
 <template>
     <div>
         <div class="card">
-
             <b-modal
                 id="editPostModal"
                 ref="modal"
                 title="Edit Post"
-                v-model="showEditPostModal"
+                v-model="showEditPostModalLocal"
                 @show="showModal"
                 @hidden="hideModal"
                 ok-title="Post"
@@ -72,10 +71,19 @@ export default {
         // ImageAutoResize
         // ImageUploader
     },
-     props: ["showEditPostModal",'post'],
+    mounted: function() {},
+    props: ["showEditPostModal", "post"],
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
+        },
+        showEditPostModalLocal: {
+            get: function() {
+                return this.showEditPostModal;
+            },
+            set: function(value) {
+                this.$emit("updateVisibleState", value);
+            }
         }
     },
     data() {
@@ -85,13 +93,9 @@ export default {
             imgUrl: null,
             imgFile: null,
             hasImage: false,
-             modalVisibleState: false
         };
     },
     methods: {
-        emitVisibleState: function() {
-            this.$emit("updateVisibleState", this.modalVisibleState);
-        },
         setImage: function(output) {
             this.hasImage = true;
             this.imgFile = output;
@@ -102,7 +106,7 @@ export default {
             const file = e.target.files[0];
             this.imgUrl = URL.createObjectURL(file);
         },
-        createPostAction() {
+        updatePostAction() {
             let formData = new FormData();
 
             if (this.imgFile) {
@@ -110,10 +114,14 @@ export default {
             }
 
             formData.append("body", this.body);
-            formData.append("user_id", this.activeUser.id);
+
+            const packet = {
+                overhead: { post: this.post },
+                formData: formData
+            };
 
             this.$store
-                .dispatch("createPost", formData)
+                .dispatch("updatePost", packet)
                 .then(() => {
                     this.hideCreatePostModal();
                 })
@@ -126,22 +134,15 @@ export default {
             this.bodyState = valid;
             return valid;
         },
-        showModal(){
-        this.modalVisibleState = true;
-          this.emitVisibleState()
-        }
-        ,
-        hideModal(){
-            this.modalVisibleState = false;
-            this.emitVisibleState()
-
+        showModal() {
+        },
+        hideModal() {
         },
         clearData() {
             this.body = "";
             this.imgUrl = null;
             this.imgFile = null;
             this.bodyState = null;
-
         },
         handleOk(bvModalEvt) {
             // Prevent modal from closing
@@ -155,7 +156,7 @@ export default {
                 return;
             }
             // Subit data to backend server
-            this.createPostAction();
+            this.updatePostAction();
         },
 
         hideCreatePostModal() {

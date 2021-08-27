@@ -19,9 +19,21 @@ const mutations = {
         state.post = newPost;
     },
 
-    pushPostToFeed(state, newPost) {
+    insertPostToFeed(state, newPost) {
         state.feedPostsResponse.data.splice(0, 0, newPost);
     },
+
+
+    updatePostToFeed(state, packet) {
+        state.feedPostsResponse.data.forEach(function(postItem) {
+            if (postItem.attributes.id == packet.overhead.post.id) {
+
+                postItem.attributes.body = packet.formData.get('body');
+
+            }
+        });
+    },
+
 
     removePost(state, post) {
         state.feedPostsResponse.data.forEach(function(postItem, index, arr) {
@@ -142,7 +154,7 @@ const actions = {
         });
     },
 
-    createPost(context, fromData) {
+    storePost(context, fromData) {
         return new Promise((resolve, reject) => {
             // var url = mixin.methods.getApiUrl("/api/posts");
 
@@ -161,7 +173,7 @@ const actions = {
             })
                 .then(response => {
                     context.commit("setPost", response.data.data.attributes);
-                    context.commit("pushPostToFeed", response.data.data);
+                    context.commit("insertPostToFeed", response.data.data);
 
                     resolve(response);
                 })
@@ -171,6 +183,40 @@ const actions = {
                 });
         });
     },
+
+
+    updatePost(context, packet) {
+        return new Promise((resolve, reject) => {
+            // var url = mixin.methods.getApiUrl("/api/posts");
+
+            var url = mixin.methods.getApiUrl(
+                "/api/users/" + this.getters.activeUser.id + "/posts/"+ packet.overhead.post.id +"?_method=PUT"
+            );
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+            headers["Content-Type"] = "multipart/form-data";
+
+          const formData =   packet.formData
+
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "POST",
+                data:formData
+            })
+                .then(response => {
+                    context.commit("updatePostToFeed", packet );
+
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
+
 
     deletePost(context, post) {
         return new Promise((resolve, reject) => {

@@ -35,7 +35,7 @@ export default {
         };
     },
     methods: {
-        createPostCommenAction() {
+        storePostCommenAction() {
 
             let packet = {
                 overhead: {
@@ -47,7 +47,7 @@ export default {
             };
 
             this.$store
-                .dispatch("createPostComment", packet)
+                .dispatch("storePostComment", packet)
                 .then(() => {
                      this.body = ""
                 })
@@ -78,7 +78,7 @@ export default {
                     return;
                 }
                 // Subit data to backend server
-                this.createPostCommenAction();
+                this.storePostCommenAction();
             }
         }
     }
