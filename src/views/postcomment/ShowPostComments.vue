@@ -11,8 +11,8 @@
                 </div>
 
                 <div v-else-if="totalLikes > 2" class="p-1">
-                    <i class="far fa-thumbs-up text-primary"></i> {{likes[0].attributes.user.first_name}} and
-                    {{ totalLikes-1 }} other
+                    <i class="far fa-thumbs-up text-primary"></i> {{likes[0].attributes.user.first_name}}, {{likes[1].attributes.user.first_name}} and
+                    {{ totalLikes-2 }} other
                 </div>
 
                 <div v-else> </div>
