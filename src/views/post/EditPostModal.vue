@@ -95,8 +95,8 @@ export default {
     },
     data() {
         return {
-            title: this.post.title,
-            body: this.post.body,
+            title: this.post.title==null? "":this.post.title,
+            body: this.post.body==null? "":this.post.body,
             bodyState: null,
             imgUrl: null,
             imgFile: null,
@@ -121,8 +121,8 @@ export default {
                 formData.append("image", this.imgFile);
             }
 
-            formData.append("title", this.title);
-            formData.append("body", this.body);
+            formData.append("title", this.title==null? "":this.title);
+            formData.append("body", this.body==null? "":this.body);
 
             const packet = {
                 overhead: { post: this.post },
@@ -150,6 +150,7 @@ export default {
             this.clearData()
         },
         clearData() {
+            this.title = "";
             this.body = "";
             this.imgUrl = null;
             this.imgFile = null;
@@ -157,7 +158,7 @@ export default {
         },
         showData() {
             this.body = this.post.body,
-            this.imgUrl =this.getApiUrl( this.post.image);
+            this.imgUrl =this.getApiUrl( this.post.image_url);
             this.imgFile = null;
             this.bodyState = null;
         },

@@ -73,9 +73,9 @@
                 <p v-if="post.body" v-html="post.body"   class="mr-5" style="text-align:justify">
                 </p>
 
-                <div v-if="post.image" class="mr-5">
+                <div v-if="post.image_url" class="mr-5">
                     <img
-                        :src="this.getApiUrl(post.image)"
+                        :src="this.getApiUrl(post.image_url)"
                         style="max-width:100%; height: auto;"
                         alt="Posted image"
                         class="img-fluid"

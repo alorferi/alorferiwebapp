@@ -29,7 +29,7 @@ const mutations = {
             if (postItem.attributes.id == updatedPost.attributes.id) {
                 postItem.attributes.title = updatedPost.attributes.title;
                 postItem.attributes.body = updatedPost.attributes.body;
-                postItem.attributes.image = updatedPost.attributes.image ==null ? null : updatedPost.attributes.image+ "?rand="+Date.now();
+                postItem.attributes.image_url = updatedPost.attributes.image_url ==null ? null : updatedPost.attributes.image_url+ "?rand="+Date.now();
             }
         });
     },
