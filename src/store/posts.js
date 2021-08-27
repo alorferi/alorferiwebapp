@@ -24,11 +24,11 @@ const mutations = {
     },
 
 
-    updatePostToFeed(state, packet) {
+    updatePostToFeed(state, updatedPost) {
         state.feedPostsResponse.data.forEach(function(postItem) {
-            if (postItem.attributes.id == packet.overhead.post.id) {
-
-                postItem.attributes.body = packet.formData.get('body');
+            if (postItem.attributes.id == updatedPost.attributes.id) {
+                postItem.attributes.body = updatedPost.attributes.body;
+                postItem.attributes.image = updatedPost.attributes.image;
 
             }
         });
@@ -206,7 +206,7 @@ const actions = {
                 data:formData
             })
                 .then(response => {
-                    context.commit("updatePostToFeed", packet );
+                    context.commit("updatePostToFeed", response.data.data );
 
                     resolve(response);
                 })
