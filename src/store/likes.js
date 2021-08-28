@@ -44,7 +44,6 @@ const actions = {
                     resolve(response);
                 })
                 .catch(err => {
-                    console.log("err:", err);
                     reject(err);
                 });
         });
@@ -67,13 +66,12 @@ const actions = {
                 .then(response => {
                      context.commit("pushMyLikeOnPost",{
                          post: post,
-                         data:  response.data
+                         my_like:  response.data == "" ? null : response.data.data.attributes
                      });
 
                     resolve(response);
                 })
                 .catch(err => {
-                    console.log("err:", err);
                     reject(err);
                 });
         });
@@ -106,7 +104,7 @@ const actions = {
 
                     context.commit("pushMyLikeOnPost",{
                         post: packet.overhead.post,
-                        data:  response.data
+                        my_like:  response.data.data.attributes
                     });
 
                     var data = [];
@@ -127,7 +125,6 @@ const actions = {
                     resolve(response);
                 })
                 .catch(err => {
-                    console.log("err:", err);
                     reject(err);
                 });
         });
@@ -139,7 +136,7 @@ const actions = {
         return new Promise((resolve, reject) => {
 
             var url = mixin.methods.getApiUrl(
-                "/api/posts/" + packet.overhead.post.id  + "/likes/"+ packet.overhead.like.id
+                "/api/posts/" + packet.overhead.post.id  + "/likes/"+packet.overhead.post.my_like.attributes.id
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
@@ -150,11 +147,10 @@ const actions = {
                 method: "DELETE"
             })
                 .then(response => {
-                    context.commit("removePostLike", packet);
+                    context.commit("removeMyLikeFromPost", packet);
                     resolve(response);
                 })
                 .catch(err => {
-                    console.log("err:", err);
                     reject(err);
                 });
         });

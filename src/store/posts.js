@@ -96,7 +96,16 @@ const mutations = {
         state.feedPostsResponse.data.forEach(function(post) {
             if (post.attributes.id == payload.post.id) {
                 if (post.attributes.my_like == null) {
-                    post.attributes.my_like = payload.data;
+                    post.attributes.my_like = payload.my_like;
+                }
+            }
+        });
+    },
+    removeMyLikeFromPost(state, payload) {
+        state.feedPostsResponse.data.forEach(function(post) {
+            if (post.attributes.id == payload.post.id) {
+                if (post.attributes.my_like == null) {
+                    post.attributes.my_like = null;
                 }
             }
         });

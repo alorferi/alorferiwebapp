@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="card">
+        <!-- <div class="card"> -->
             <b-modal
                 id="editPostModal"
                 ref="modal"
                 title="Edit Post"
-                v-model="showEditPostModalLocal"
+                v-model="showLocal"
                 @show="showModal"
                 @hidden="hideModal"
                 ok-title="Post"
@@ -62,7 +62,7 @@
                     ></b-form-file>
                 </form>
             </b-modal>
-        </div>
+        <!-- </div> -->
     </div>
 </template>
 
@@ -79,14 +79,14 @@ export default {
         // ImageUploader
     },
     mounted: function() {},
-    props: ["showEditPostModal", "post"],
+    props: ["show", "post"],
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
         },
-        showEditPostModalLocal: {
+        showLocal: {
             get: function() {
-                return this.showEditPostModal;
+                return this.show;
             },
             set: function(value) {
                 this.$emit("updateVisibleState", value);

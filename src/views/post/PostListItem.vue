@@ -98,7 +98,7 @@
             <ShowPostComments :post="post"/>
 
 
-            <EditPostModal :showEditPostModal="showEditPostModal"
+            <EditPostModal :show="showEditPostModal"
             :post="post"
              @updateVisibleState="showEditPostModal = $event"
              />
@@ -116,7 +116,9 @@ import EditPostModal from "./EditPostModal.vue"
 export default {
     name: "PostListItem",
     props: ["post"],
-    components: { UserPhoto,  ShowPostComments,EditPostModal},
+    components: { UserPhoto,  ShowPostComments,
+    EditPostModal
+    },
     data() {
         return {
             showEditPostModal: false,
