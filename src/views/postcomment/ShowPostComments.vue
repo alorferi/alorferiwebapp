@@ -26,44 +26,18 @@
                     >
                         <i class="far fa-thumbs-up text-primary"></i>
 
-                        <span v-if="myLike != null">
-                            You
-                        </span>
-
-                        <span v-else>
-                            {{ twoOtherLikes[0].attributes.user.first_name }}
-                            <!-- {{ likes[0].attributes.user.first_name }} -->
-                        </span>
-
-                        and
-
-                        {{ twoOtherLikes[1].attributes.user.first_name }}
-
-                        <!-- {{ likes[1].attributes.user.first_name }} -->
+                        {{ textForTwoLikes }}
                     </a>
                 </div>
 
-                <div v-else-if="totalLikes > 2" class="p-1">
+                <div v-else-if="totalLikes >= 3" class="p-1">
                     <a
                         class="btn btn-link"
                         @click="showLikesModal = !showLikesModal"
                     >
                         <i class="far fa-thumbs-up text-primary"></i>
-                        <span v-if="myLike != null">
-                            You
-                        </span>
 
-                        <span v-else>
-                            {{ twoOtherLikes[0].attributes.user.first_name }}
-
-                            <!-- {{ likes[0].attributes.user.first_name }} -->
-                        </span>
-                        ,
-
-                        {{ twoOtherLikes[1].attributes.user.first_name }}
-                        <!-- {{ likes[1].attributes.user.first_name }} -->
-                        and
-                        {{ totalLikes - 2 }} other
+                        {{ textForGreatterThanOrEqualThreeLikes }}
                     </a>
                 </div>
 
@@ -114,13 +88,12 @@
             v-bind:key="comment.attributes.id"
         />
 
-
-
         <CreatePostComment :post="post" />
 
-                <PostLikesModal :show="showLikesModal"
-        :post="post"
-         @updateVisibleState="showLikesModal = $event"
+        <PostLikesModal
+            :show="showLikesModal"
+            :post="post"
+            @updateVisibleState="showLikesModal = $event"
         />
     </div>
 </template>
@@ -135,9 +108,10 @@ export default {
     name: "ShowPostComments",
     props: ["post"],
     components: {
-        CreatePostComment ,
+        CreatePostComment,
         CommentListItem,
-        Loading,PostLikesModal
+        Loading,
+        PostLikesModal
     },
     data() {
         return {
@@ -187,6 +161,52 @@ export default {
             }
 
             return collectedLikes;
+        },
+        textForTwoLikes() {
+            var text = "";
+
+            if (this.myLike != null) {
+                text = "You and ";
+
+                if (this.likes[0].attributes.user.id != this.myLike.user.id) {
+                    text = text + this.likes[0].attributes.user.first_name;
+                } else {
+                    text = text + this.likes[1].attributes.user.first_name;
+                }
+            } else {
+                text =
+                    this.likes[0].attributes.user.first_name +
+                    " and " +
+                    this.likes[1].attributes.user.first_name;
+            }
+
+            return text;
+        },
+        textForGreatterThanOrEqualThreeLikes() {
+            var text = "";
+
+            if (this.myLike != null) {
+                text = "You, ";
+
+                if (this.likes[0].attributes.user.id != this.myLike.user.id) {
+                    text = text + this.likes[0].attributes.user.first_name;
+                } else {
+                    text = text + this.likes[2].attributes.user.first_name;
+                }
+            } else {
+                text =
+                    this.likes[0].attributes.user.first_name +
+                    ", " +
+                    this.likes[1].attributes.user.first_name;
+            }
+
+            if (this.totalLikes == 3) {
+                text = text + " and 1 other";
+            } else if (this.totalLikes > 3) {
+                text = text + " and " + (this.totalLikes - 2 ).toString()+ " others";
+            }
+
+            return text;
         }
     },
     mounted() {
