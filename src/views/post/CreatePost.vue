@@ -16,7 +16,7 @@
             <b-modal
                 id="createPostModal"
                 ref="modal"
-                title="Create a discussion"
+                title="Write a discussion"
                 @show="resetModal"
                 @hidden="resetModal"
                 ok-title="Post"

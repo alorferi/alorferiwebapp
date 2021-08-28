@@ -2,7 +2,7 @@
     <div id="app" class="">
 
 
-        <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top  ">
+        <nav class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white">
             <div class="container">
 
 

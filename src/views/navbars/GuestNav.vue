@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <router-link :to="{ name: 'home' }" class="navbar-brand">
-      <img src="@/assets/alorferi_logo_brand.png" style="width:40px;" alt="Alor Feri logo" />
+      <img src="@/assets/images/defaults/alorferi_logo_brand.png" style="width:40px;" alt="Alor Feri logo" />
     </router-link>
 
     <!-- Toggler/collapsibe Button -->

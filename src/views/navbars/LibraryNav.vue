@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
             <img
-                src="./assets/alorferi_logo_brand.png"
+                src="./assets/images/defaults/alorferi_logo_brand.png"
                 height="24px"
                 alt="Alor Feri logo"
         /></router-link>

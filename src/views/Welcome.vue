@@ -12,29 +12,29 @@
             <!-- <img src="" width="250" alt="Alor Feri logo"> -->
             <img
                 alt="Alor Feri logo"
-                src="../assets/logo_large.png"
-                width="200"
+                src="../assets/images/defaults/logo_large.png"
+                width="255"
             />
 
-            <h3 style="color:#0000A0;text-shadow: 1px 1px #ffffff;">
-                <br />
-                এসো বই পড়ি <br />
-                আলোকিত সমাজ গড়ি।
-            </h3>
 
-            <br />
-            <br />
+   <br />
+   <br />
 
-            <a
+                 <a
                 href="https://play.google.com/store/apps/details?id=com.provatsoft.alorferi"
                 target="_blank"
             >
                 <img
-                    src="../assets/google_play_get_on.png"
+                    src="../assets/images/defaults/google_play_get_on.png"
                     width="250"
                     alt="Alor Feri logo"
                 />
             </a>
+
+            <br />
+            <br />
+
+
 
             <br />
             <br />
