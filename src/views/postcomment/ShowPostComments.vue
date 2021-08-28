@@ -53,7 +53,7 @@
         </div>
 
         <div
-            class="d-flex justify-content-between border border-left-0 border-right-0 border-bottom-0"
+            class="d-flex justify-content-between border border-left-0 border-right-0 border-bottom-0 pt-1"
         >
             <div>
                 <button
