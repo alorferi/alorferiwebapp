@@ -105,6 +105,16 @@ const mutations = {
         state.feedPostsResponse.data.forEach(function(post) {
             if (post.attributes.id == packet.overhead.post.id) {
                 if (post.attributes.my_like != null) {
+
+                    post.attributes.likes.data.forEach(function(likeItem, index, arr) {
+
+                        if (likeItem.attributes.id == post.attributes.my_like.id) {
+                            arr.splice(index, 1);
+                        }
+
+                    })
+
+
                     post.attributes.my_like = null;
                 }
             }

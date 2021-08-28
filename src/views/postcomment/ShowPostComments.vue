@@ -2,7 +2,7 @@
     <div>
         <div class="d-flex justify-content-between">
             <div>
-                <div v-if="totalLikes == 1" class="p-1">
+                <div v-if="likes.length == 1" class="p-1">
                     <a
                         class="btn btn-link"
                         @click="showLikesModal = !showLikesModal"
@@ -14,12 +14,12 @@
                         </span>
 
                         <span v-else>
-                            {{ likes[0].attributes.user.first_name }}
+                                 {{ likes[0].attributes.user.first_name }}
                         </span>
                     </a>
                 </div>
 
-                <div v-else-if="totalLikes == 2" class="p-1">
+                <div v-else-if="likes.length == 2" class="p-1">
                     <a
                         class="btn btn-link"
                         @click="showLikesModal = !showLikesModal"
@@ -30,7 +30,7 @@
                     </a>
                 </div>
 
-                <div v-else-if="totalLikes >= 3" class="p-1">
+                <div v-else-if="likes.length >= 3" class="p-1">
                     <a
                         class="btn btn-link"
                         @click="showLikesModal = !showLikesModal"
@@ -45,9 +45,9 @@
             </div>
 
             <div>
-                <div v-if="totalComments > 0" class="p-1">
+                <div v-if="comments.length > 0" class="p-1">
                     <i class="far fa-comment-dots"></i>
-                    {{ totalComments }} comments
+                    {{ comments.length }} comments
                 </div>
             </div>
         </div>
@@ -120,19 +120,10 @@ export default {
         };
     },
     computed: {
-        totalComments() {
-            return this.post.comments == null
-                ? 0
-                : this.post.comments.meta.total;
-        },
 
         comments() {
             return this.post.comments == null ? [] : this.post.comments.data;
         },
-        totalLikes() {
-            return this.post.likes == null ? 0 : this.post.likes.meta.total;
-        },
-
         likes() {
             return this.post.likes == null ? [] : this.post.likes.data;
         },
@@ -200,10 +191,10 @@ export default {
                     this.likes[1].attributes.user.first_name;
             }
 
-            if (this.totalLikes == 3) {
+            if (this.likes.length == 3) {
                 text = text + " and 1 other";
-            } else if (this.totalLikes > 3) {
-                text = text + " and " + (this.totalLikes - 2 ).toString()+ " others";
+            } else if (this.likes.length > 3) {
+                text = text + " and " + (this.likes.length - 2 ).toString()+ " others";
             }
 
             return text;
