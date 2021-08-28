@@ -136,7 +136,7 @@ const actions = {
         return new Promise((resolve, reject) => {
 
             var url = mixin.methods.getApiUrl(
-                "/api/posts/" + packet.overhead.post.id  + "/likes/"+packet.overhead.post.my_like.attributes.id
+                "/api/posts/" + packet.overhead.post.id  + "/likes/"+packet.overhead.post.my_like.id
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
@@ -144,6 +144,7 @@ const actions = {
             axios({
                 url: url,
                 headers: headers,
+                data: packet.payload,
                 method: "DELETE"
             })
                 .then(response => {

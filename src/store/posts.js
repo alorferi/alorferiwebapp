@@ -101,10 +101,10 @@ const mutations = {
             }
         });
     },
-    removeMyLikeFromPost(state, payload) {
+    removeMyLikeFromPost(state, packet) {
         state.feedPostsResponse.data.forEach(function(post) {
-            if (post.attributes.id == payload.post.id) {
-                if (post.attributes.my_like == null) {
+            if (post.attributes.id == packet.overhead.post.id) {
+                if (post.attributes.my_like != null) {
                     post.attributes.my_like = null;
                 }
             }
