@@ -2,16 +2,13 @@ import axios from "axios";
 import mixin from "../mixin";
 
 const state = {
-    feedPostsResponse: { data: [], links: null, meta: null },
-    userPostsResponse: [],
+    postsResponse: { data: [], links: null, meta: null },
     post: null
 };
 
 const getters = {
     post: state => state.post,
-
-    feedPostsResponse: state => state.feedPostsResponse,
-    userPostsResponse: state => state.userPostsResponse
+    postsResponse: state => state.postsResponse
 };
 
 const mutations = {
@@ -20,11 +17,11 @@ const mutations = {
     },
 
     insertPostToFeed(state, newPost) {
-        state.feedPostsResponse.data.splice(0, 0, newPost);
+        state.postsResponse.data.splice(0, 0, newPost);
     },
 
     updatePostToFeed(state, updatedPost) {
-        state.feedPostsResponse.data.forEach(function(postItem) {
+        state.postsResponse.data.forEach(function(postItem) {
             if (postItem.attributes.id == updatedPost.attributes.id) {
                 postItem.attributes.title = updatedPost.attributes.title;
                 postItem.attributes.body = updatedPost.attributes.body;
@@ -39,32 +36,35 @@ const mutations = {
     },
 
     removePost(state, post) {
-        state.feedPostsResponse.data.forEach(function(postItem, index, arr) {
+        state.postsResponse.data.forEach(function(postItem, index, arr) {
             if (postItem.attributes.id == post.id) {
                 arr.splice(index, 1);
             }
         });
     },
 
-    setFeedPostsResponse(state, newPostsResponse) {
-        if (state.feedPostsResponse.data.length == 0) {
-            state.feedPostsResponse.data = newPostsResponse.data;
+    clearPostsResponse(state) {
+        state.postsResponse = { data: [], links: null, meta: null };
+    },
+
+    setPostsResponse(state, newPostsResponse) {
+        if (state.postsResponse.data.length == 0) {
+            state.postsResponse.data = newPostsResponse.data;
         } else {
             newPostsResponse.data.forEach(function(item) {
-                state.feedPostsResponse.data.push(item);
+                state.postsResponse.data.push(item);
             });
         }
 
-        state.feedPostsResponse.links = newPostsResponse.links;
-        state.feedPostsResponse.meta = newPostsResponse.meta;
-        //  state.feedPostsResponse = newPostsResponse;
+        state.postsResponse.links = newPostsResponse.links;
+        state.postsResponse.meta = newPostsResponse.meta;
     },
 
     setUserPostsResponse(state, newPostsResponse) {
-        state.userPostsResponse = newPostsResponse;
+        this.setPostsResponse(state, newPostsResponse);
     },
     pushPostComments(state, payload) {
-        state.feedPostsResponse.data.forEach(function(post) {
+        state.postsResponse.data.forEach(function(post) {
             if (post.attributes.id == payload.post.id) {
                 if (post.attributes.comments == null) {
                     post.attributes.comments = payload.data;
@@ -79,7 +79,7 @@ const mutations = {
     },
 
     pushPostLikes(state, payload) {
-        state.feedPostsResponse.data.forEach(function(post) {
+        state.postsResponse.data.forEach(function(post) {
             if (post.attributes.id == payload.post.id) {
                 if (post.attributes.likes == null) {
                     post.attributes.likes = payload.data;
@@ -93,7 +93,7 @@ const mutations = {
         });
     },
     pushMyLikeOnPost(state, payload) {
-        state.feedPostsResponse.data.forEach(function(post) {
+        state.postsResponse.data.forEach(function(post) {
             if (post.attributes.id == payload.post.id) {
                 if (post.attributes.my_like == null) {
                     post.attributes.my_like = payload.my_like;
@@ -102,18 +102,20 @@ const mutations = {
         });
     },
     removeMyLikeFromPost(state, packet) {
-        state.feedPostsResponse.data.forEach(function(post) {
+        state.postsResponse.data.forEach(function(post) {
             if (post.attributes.id == packet.overhead.post.id) {
                 if (post.attributes.my_like != null) {
-
-                    post.attributes.likes.data.forEach(function(likeItem, index, arr) {
-
-                        if (likeItem.attributes.id == post.attributes.my_like.id) {
+                    post.attributes.likes.data.forEach(function(
+                        likeItem,
+                        index,
+                        arr
+                    ) {
+                        if (
+                            likeItem.attributes.id == post.attributes.my_like.id
+                        ) {
                             arr.splice(index, 1);
                         }
-
-                    })
-
+                    });
 
                     post.attributes.my_like = null;
                 }
@@ -122,7 +124,7 @@ const mutations = {
     },
 
     removePostComment(state, packet) {
-        state.feedPostsResponse.data.forEach(function(postItem) {
+        state.postsResponse.data.forEach(function(postItem) {
             if (postItem.attributes.id == packet.overhead.post.id) {
                 postItem.attributes.comments.data.forEach(function(
                     commentItem,
@@ -146,7 +148,7 @@ const actions = {
             var url = null;
 
             try {
-                url = context.getters.feedPostsResponse.links.next;
+                url = context.getters.postsResponse.links.next;
             } catch (err) {
                 url = mixin.methods.getApiUrl("/api/posts");
             }
@@ -159,7 +161,8 @@ const actions = {
                 method: "GET"
             })
                 .then(response => {
-                    context.commit("setFeedPostsResponse", response.data);
+                    context.commit("clearPostsResponse");
+                    context.commit("setPostsResponse", response.data);
                     resolve(response);
                 })
                 .catch(err => {
@@ -183,7 +186,8 @@ const actions = {
                 method: "GET"
             })
                 .then(response => {
-                    context.commit("setUserPostsResponse", response.data);
+                    context.commit("clearPostsResponse");
+                    context.commit("setPostsResponse", response.data);
                     resolve(response);
                 })
                 .catch(err => {

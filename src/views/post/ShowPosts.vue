@@ -27,7 +27,7 @@ export default {
     name: "ShowPosts",
     computed: {
         posts() {
-            return this.$store.getters.feedPostsResponse.data;
+            return this.$store.getters.postsResponse.data;
         }
     },
     components: { PostListItem, Loading },

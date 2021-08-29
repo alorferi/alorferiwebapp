@@ -28,7 +28,7 @@ export default {
     props:['user'],
     computed: {
         posts() {
-            return this.$store.getters.userPostsResponse.data;
+            return this.$store.getters.postsResponse.data;
         }
     },
     components: { PostListItem, Loading },
