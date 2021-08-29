@@ -2,7 +2,15 @@
     <div>
         <div class="card">
             <div class="card-body d-flex  align-items-center">
+
+                       <router-link
+                :to="{
+                    name: 'users.show',
+                    params: { user_id: this.activeUser.id }
+                }"
+            >
                 <UserPhoto :user="activeUser" size="32"> </UserPhoto>
+                       </router-link>
 
                 <button
                     type="button"

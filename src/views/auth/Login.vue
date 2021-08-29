@@ -1,6 +1,6 @@
 <template>
     <div class="card card-default">
-        <!-- <div class="card-header">Login</div> -->
+        <div class="card-header">Login</div>
         <div class="card-body">
             <form @submit.prevent="login">
                 <div class="form-group">

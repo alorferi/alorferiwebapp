@@ -4,10 +4,10 @@
 <div class="d-flex justify-content-around">
 
     <div class="text-center p-2">
-        <img src="@/assets/images/defaults/logo_large.png" height="150" alt="Alor Feri logo">
-        <div class="text-center" style="font-size:13pt">
+        <img src="@/assets/images/defaults/logo_large_bn.png" height="180" alt="Alor Feri logo">
+        <!-- <div class="text-center" style="font-size:13pt">
             আলোকিত সমাজের প্রত্যয়
-        </div>
+        </div> -->
     </div>
     <div class="text-center p-2">
         <img src="@/assets/images/defaults/af_mobile_app.png" height="200" alt="Alor Feri logo">

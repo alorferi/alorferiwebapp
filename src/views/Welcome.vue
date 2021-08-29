@@ -19,6 +19,7 @@
 
    <br />
    <br />
+   <br />
 
                  <a
                 href="https://play.google.com/store/apps/details?id=com.provatsoft.alorferi"
@@ -36,12 +37,10 @@
 
 
 
-            <br />
-            <br />
         </div>
 
         <div class="col-sm-4">
-            <login />
+            <Login />
         </div>
     </div>
 </template>
