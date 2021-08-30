@@ -1,5 +1,8 @@
 <template>
     <div>
+
+    <CreatePost class="mt-3" v-if="user.id == $store.getters.activeUser.id"/>
+
         <Loading v-if="is_loading"></Loading>
 
         <PostListItem
@@ -22,6 +25,7 @@
 <script>
 import PostListItem from "../post/PostListItem";
 import Loading from "@/components/Loading";
+    import CreatePost from "@/views/post/CreatePost";
 
 export default {
     name: "UserTimeline",
@@ -31,7 +35,7 @@ export default {
             return this.$store.getters.postsResponse.data;
         }
     },
-    components: { PostListItem, Loading },
+    components: { PostListItem, Loading,CreatePost },
     data: () => {
         return {
             is_loading: true,
