@@ -58,6 +58,7 @@ export default {
     },
     mounted: function() {
         this.initTabItems();
+        this.$store.dispatch("setPageTitle",this.library.name);
     },
     computed: {
         library() {
