@@ -1,7 +1,6 @@
 <template>
     <div>
         <b-modal
-            id="createPostModal"
             ref="modal"
             title="Write a discussion"
             v-model="showLocal"
@@ -157,7 +156,8 @@ export default {
         hideCreatePostModal() {
             // Hide the modal manually
             this.$nextTick(() => {
-                this.$bvModal.hide("createPostModal");
+                // this.$bvModal.hide("createPostModal");
+                this.showLocal = false;
             });
         }
     }

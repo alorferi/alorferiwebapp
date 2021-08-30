@@ -2,7 +2,6 @@
     <div>
         <!-- <div class="card"> -->
         <b-modal
-            id="createOrEditPostModalID"
             ref="modal"
             :title="modalTile"
             v-model="showLocal"
@@ -199,7 +198,7 @@ export default {
         hidePostModal() {
             // Hide the modal manually
             this.$nextTick(() => {
-                this.$bvModal.hide("createOrEditPostModalID");
+                this.showLocal = false;
             });
         }
     }
