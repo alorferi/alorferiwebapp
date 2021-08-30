@@ -15,21 +15,26 @@
                 <button
                     type="button"
                     class="ml-3 form-control btn btn-outline-info"
-                    v-b-modal.createPostModal
+                    @click="showCreaUserPostModel = !showCreaUserPostModel"
                 >
                     Start a discussion
                 </button>
             </div>
 
-    <CreaUserPostModel :show="showCreaUserPostModel" @updateVisibleState="showCreaUserPostModel = $event"/>
+    <CreateUserPostModel :show="showCreaUserPostModel" @updateVisibleState="showCreaUserPostModel = $event"
+    />
 
+              <!-- <EditPostModal :show="showEditPostModal"
+            :post="post"
+             @updateVisibleState="showEditPostModal = $event"
+             /> -->
         </div>
     </div>
 </template>
 
 <script>
 import UserPhoto from "../user/UserPhoto";
-import CreaUserPostModel from "./CreateUserPostModel.vue";
+import CreateUserPostModel from "./CreateOrEditPostModal.vue";
 // import ImageUploader from "vue-image-upload-resize";
 // import ImageAutoResize from "../../components/ImageAutoResize";
 
@@ -39,7 +44,7 @@ export default {
         UserPhoto,
         // ImageAutoResize
         // ImageUploader,
-        CreaUserPostModel
+        CreateUserPostModel
     },
     computed: {
         activeUser() {

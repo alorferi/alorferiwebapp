@@ -111,7 +111,7 @@
 <script>
 import UserPhoto from "../user/UserPhoto";
 import ShowPostComments from "../postcomment/ShowPostComments";
-import EditPostModal from "./EditPostModal.vue"
+import EditPostModal from "./CreateOrEditPostModal.vue"
 
 export default {
     name: "PostListItem",

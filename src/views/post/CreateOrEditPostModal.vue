@@ -2,9 +2,9 @@
     <div>
         <!-- <div class="card"> -->
         <b-modal
-            id="editPostModal"
+            id="createOrEditPostModalID"
             ref="modal"
-            title="Edit Post"
+            :title="modalTile"
             v-model="showLocal"
             @show="showModal"
             @hidden="hideModal"
@@ -70,7 +70,7 @@ import Loading from "@/components/Loading";
 // import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
-    name: "EditPostModal",
+    name: "CreateOrEditPostModal",
     components: {
         UserPhoto,
         // ImageAutoResize
@@ -94,22 +94,24 @@ export default {
     },
     data() {
         return {
-            title: this.post.title == null ? "" : this.post.title,
-            body: this.post.body == null ? "" : this.post.body,
+            title:
+                this.post == null || this.post.title == null
+                    ? ""
+                    : this.post.title,
+            body:
+                this.post == null || this.post.body == null
+                    ? ""
+                    : this.post.body,
             bodyState: null,
             imgUrl: null,
             imgFile: null,
             hasImage: false,
-            is_loading: false
+            is_loading: false,
+            modalTile:
+                this.post == null ? "Write a discussion" : "Edit the discussion"
         };
     },
     methods: {
-        setImage: function(output) {
-            this.hasImage = true;
-            this.imgFile = output;
-            console.log("Info", output.info);
-            console.log("Exif", output.exif);
-        },
         onFileChange(e) {
             const file = e.target.files[0];
             this.imgUrl = URL.createObjectURL(file);
@@ -130,15 +132,27 @@ export default {
             };
 
             this.is_loading = true;
-            this.$store
-                .dispatch("updatePost", packet)
-                .then(() => {
-                    this.hideEditPostModal();
-                })
-                .catch(() => {})
-                .finally(() => {
-                    this.is_loading = false;
-                });
+            if (this.post) {
+                this.$store
+                    .dispatch("updatePost", packet)
+                    .then(() => {
+                        this.hidePostModal();
+                    })
+                    .catch(() => {})
+                    .finally(() => {
+                        this.is_loading = false;
+                    });
+            } else {
+                this.$store
+                    .dispatch("storePost", formData)
+                    .then(() => {
+                        this.hidePostModal();
+                    })
+                    .catch(() => {})
+                    .finally(() => {
+                        this.is_loading = false;
+                    });
+            }
         },
 
         checkFormValidity() {
@@ -147,7 +161,9 @@ export default {
             return valid;
         },
         showModal() {
-            this.showData();
+            if (this.post) {
+                this.showData();
+            }
         },
         hideModal() {
             this.clearData();
@@ -180,10 +196,10 @@ export default {
             this.updatePostAction();
         },
 
-        hideEditPostModal() {
+        hidePostModal() {
             // Hide the modal manually
             this.$nextTick(() => {
-                this.$bvModal.hide("editPostModal");
+                this.$bvModal.hide("createOrEditPostModalID");
             });
         }
     }

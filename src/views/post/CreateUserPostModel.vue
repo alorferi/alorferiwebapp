@@ -4,6 +4,7 @@
             id="createPostModal"
             ref="modal"
             title="Write a discussion"
+            v-model="showLocal"
             @show="resetModal"
             @hidden="resetModal"
             ok-title="Post"
