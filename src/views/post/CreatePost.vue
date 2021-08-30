@@ -59,68 +59,7 @@ export default {
         };
     },
     methods: {
-        // setImage: function(output) {
-        //     this.hasImage = true;
-        //     this.imgFile = output;
-        //     console.log("Info", output.info);
-        //     console.log("Exif", output.exif);
-        // },
-        // onFileChange(e) {
-        //     const file = e.target.files[0];
-        //     this.imgUrl = URL.createObjectURL(file);
-        // },
-        // storePostAction() {
-        //     let formData = new FormData();
 
-        //     if (this.imgFile) {
-        //         formData.append("image", this.imgFile);
-        //     }
-
-        //     formData.append("title", this.title);
-        //     formData.append("body", this.body);
-
-        //     this.$store
-        //         .dispatch("storePost", formData)
-        //         .then(() => {
-        //             this.hideCreatePostModal();
-        //         })
-        //         .catch(() => {})
-        //         .finally();
-        // },
-
-        // checkFormValidity() {
-        //     const valid = this.$refs.form.checkValidity();
-        //     this.bodyState = valid;
-        //     return valid;
-        // },
-        // resetModal() {
-        //     this.title = "";
-        //     this.body = "";
-        //     this.imgUrl = null;
-        //     this.imgFile = null;
-        //     this.bodyState = null;
-        // },
-        // handleOk(bvModalEvt) {
-        //     // Prevent modal from closing
-        //     bvModalEvt.preventDefault();
-        //     // Trigger submit handler
-        //     this.handleSubmit();
-        // },
-        // handleSubmit() {
-        //     // Exit when the form isn't valid
-        //     if (!this.checkFormValidity()) {
-        //         return;
-        //     }
-        //     // Subit data to backend server
-        //     this.storePostAction();
-        // },
-
-        // hideCreatePostModal() {
-        //     // Hide the modal manually
-        //     this.$nextTick(() => {
-        //         this.$bvModal.hide("createPostModal");
-        //     });
-        // }
     }
 };
 </script>

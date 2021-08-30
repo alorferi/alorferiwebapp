@@ -1,82 +1,81 @@
 <template>
     <div>
         <!-- <div class="card"> -->
-            <b-modal
-                id="editPostModal"
-                ref="modal"
-                title="Edit Post"
-                v-model="showLocal"
-                @show="showModal"
-                @hidden="hideModal"
-                ok-title="Post"
-                @ok="handleOk"
-                centered
-            >
-                <div class="d-flex align-items-center mb-3">
-                    <UserPhoto :user="activeUser" size="16"></UserPhoto>
+        <b-modal
+            id="editPostModal"
+            ref="modal"
+            title="Edit Post"
+            v-model="showLocal"
+            @show="showModal"
+            @hidden="hideModal"
+            ok-title="Post"
+            @ok="handleOk"
+            centered
+        >
+            <div class="d-flex align-items-center mb-3">
+                <UserPhoto :user="activeUser" size="16"></UserPhoto>
 
-                    <div class="ml-2">
-                        {{ activeUser.first_name }} {{ activeUser.surname }}
-                        {{ activeUser.nickname }}
-                    </div>
+                <div class="ml-2">
+                    {{ activeUser.first_name }} {{ activeUser.surname }}
+                    {{ activeUser.nickname }}
                 </div>
-                <form
-                    ref="form"
-                    @submit.stop.prevent="handleSubmit"
-                    class="mb-2"
+            </div>
+            <form ref="form" @submit.stop.prevent="handleSubmit" class="mb-2">
+                <b-form-input
+                    class="form-control mb-2"
+                    v-model="title"
+                    placeholder="What is the title of your discussion?"
+                ></b-form-input>
+
+                <b-form-textarea
+                    id="textarea"
+                    v-model="body"
+                    placeholder="What do you want to discussion about?"
+                    rows="4s"
+                    max-rows="6"
+                    :state="bodyState"
+                    required
                 >
+                </b-form-textarea>
 
-                                    <b-form-input
-                        class="form-control mb-2"
-                        v-model="title"
-                        placeholder="What is the title of your discussion?"
-                    ></b-form-input>
+                <Loading v-if="is_loading"></Loading>
 
-                    <b-form-textarea
-                        id="textarea"
-                        v-model="body"
-                        placeholder="What do you want to discussion about?"
-                        rows="4s"
-                        max-rows="6"
-                        :state="bodyState"
-                        required
-                    >
-                    </b-form-textarea>
+                <div class="d-flex justify-content-center m-2">
+                    <img
+                        v-if="imgUrl"
+                        :src="imgUrl"
+                        style="max-width:460px; max-height:320px"
+                    />
+                </div>
 
-                    <div class="d-flex justify-content-center m-2">
-                        <img
-                            v-if="imgUrl"
-                            :src="imgUrl"
-                            style="max-width:460px; max-height:320px"
-                        />
-                    </div>
+                <!-- <ImageAutoResize @update:field="imgFile = $event" /> -->
 
-                    <!-- <ImageAutoResize @update:field="imgFile = $event" /> -->
-
-                    <b-form-file
-                        v-model="imgFile"
-                        accept="image/*"
-                        placeholder="Choose an image or drop it here..."
-                        drop-placeholder="Drop image here..."
-                        @change="onFileChange"
-                    ></b-form-file>
-                </form>
-            </b-modal>
+                <b-form-file
+                    v-model="imgFile"
+                    accept="image/*"
+                    placeholder="Choose an image or drop it here..."
+                    drop-placeholder="Drop image here..."
+                    @change="onFileChange"
+                ></b-form-file>
+            </form>
+        </b-modal>
         <!-- </div> -->
     </div>
 </template>
 
 <script>
 import UserPhoto from "../user/UserPhoto";
+import Loading from "@/components/Loading";
 // import ImageUploader from "vue-image-upload-resize";
 // import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
     name: "EditPostModal",
     components: {
-        UserPhoto
+        UserPhoto,
         // ImageAutoResize
-        // ImageUploader
+        // ImageUploader,
+        Loading
     },
     mounted: function() {},
     props: ["show", "post"],
@@ -95,12 +94,13 @@ export default {
     },
     data() {
         return {
-            title: this.post.title==null? "":this.post.title,
-            body: this.post.body==null? "":this.post.body,
+            title: this.post.title == null ? "" : this.post.title,
+            body: this.post.body == null ? "" : this.post.body,
             bodyState: null,
             imgUrl: null,
             imgFile: null,
             hasImage: false,
+            is_loading: false
         };
     },
     methods: {
@@ -121,21 +121,24 @@ export default {
                 formData.append("image", this.imgFile);
             }
 
-            formData.append("title", this.title==null? "":this.title);
-            formData.append("body", this.body==null? "":this.body);
+            formData.append("title", this.title == null ? "" : this.title);
+            formData.append("body", this.body == null ? "" : this.body);
 
             const packet = {
                 overhead: { post: this.post },
                 formData: formData
             };
 
+            this.is_loading = true;
             this.$store
                 .dispatch("updatePost", packet)
                 .then(() => {
                     this.hideEditPostModal();
                 })
                 .catch(() => {})
-                .finally();
+                .finally(() => {
+                    this.is_loading = false;
+                });
         },
 
         checkFormValidity() {
@@ -144,10 +147,10 @@ export default {
             return valid;
         },
         showModal() {
-            this.showData()
+            this.showData();
         },
         hideModal() {
-            this.clearData()
+            this.clearData();
         },
         clearData() {
             this.title = "";
@@ -157,8 +160,8 @@ export default {
             this.bodyState = null;
         },
         showData() {
-            this.body = this.post.body,
-            this.imgUrl = this.getApiUrl( this.post.image_url);
+            (this.body = this.post.body),
+                (this.imgUrl = this.getApiUrl(this.post.image_url));
             this.imgFile = null;
             this.bodyState = null;
         },
