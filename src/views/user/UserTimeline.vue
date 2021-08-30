@@ -1,7 +1,7 @@
 <template>
     <div>
 
-    <CreatePost class="mt-3" v-if="user.id == $store.getters.activeUser.id"/>
+    <CreateUserPost class="mt-3" v-if="user.id == $store.getters.activeUser.id"/>
 
         <Loading v-if="is_loading"></Loading>
 
@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import PostListItem from "../post/PostListItem";
+import PostListItem from "@/views/post/PostListItem";
 import Loading from "@/components/Loading";
-    import CreatePost from "@/views/post/CreatePost";
+import CreateUserPost from "@/views/user/CreateUserPost";
 
 export default {
     name: "UserTimeline",
@@ -35,7 +35,7 @@ export default {
             return this.$store.getters.postsResponse.data;
         }
     },
-    components: { PostListItem, Loading,CreatePost },
+    components: { PostListItem, Loading,CreateUserPost },
     data: () => {
         return {
             is_loading: true,

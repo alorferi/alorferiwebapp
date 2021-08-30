@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import GuestNav from "./views/navbars/GuestNav";
-import HomeNav from "./views/navbars/HomeNav.vue";
+import GuestNav from "@/views/navbars/GuestNav";
+import HomeNav from "@/views/navbars/HomeNav.vue";
 // import UserBadge from "./views/badges/UserBadge";
 // import HomeLeftMenu from "./views/menus/HomeLeftMenu";
 // import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";

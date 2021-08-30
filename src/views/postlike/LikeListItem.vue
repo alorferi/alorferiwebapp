@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import UserPhoto from "../user/UserPhoto";
+import UserPhoto from "@/views/user/UserPhoto";
 
 export default {
     name: "likeListItem",

@@ -33,13 +33,13 @@
 </template>
 
 <script>
-import UserPhoto from "../user/UserPhoto";
-import CreateUserPostModel from "./CreateOrEditPostModal.vue";
+import UserPhoto from "@/views/user/UserPhoto";
+import CreateUserPostModel from "@/views/post/CreateOrEditPostModal.vue";
 // import ImageUploader from "vue-image-upload-resize";
 // import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
-    name: "CreatePost",
+    name: "CreateUserPost",
     components: {
         UserPhoto,
         // ImageAutoResize

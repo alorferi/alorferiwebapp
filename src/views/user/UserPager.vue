@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import UserPhoto from "./UserPhoto";
-import UserTimeline from "./UserTimeline"
-import UserAbout from "./UserAbout"
+import UserPhoto from "@/views/user/UserPhoto";
+import UserTimeline from "@/views/user/UserTimeline"
+import UserAbout from "@/views/user/UserAbout"
 export default {
     name: "UserPager",
       props:["user"] ,

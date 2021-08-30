@@ -1,5 +1,5 @@
 import axios from "axios";
-import mixin from "../mixin";
+import mixin from "@/mixin";
 
 const state = {
     postsResponse: { data: [], links: null, meta: null },

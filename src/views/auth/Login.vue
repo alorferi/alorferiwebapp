@@ -66,8 +66,8 @@
 </template>
 
 <script>
-import MobileNumberField from "../../components/MobileNumberField";
-import EditTextField from "../../components/EditTextField";
+import MobileNumberField from "@/components/MobileNumberField";
+import EditTextField from "@/components/EditTextField";
 
 export default {
     name: "Login",

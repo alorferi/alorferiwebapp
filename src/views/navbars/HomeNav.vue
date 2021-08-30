@@ -85,9 +85,9 @@
 <script>
 // import Logout from './Logout'
 // import { mapGetters } from "vuex";
-import UserPhoto from "../user/UserPhoto";
-import Language from "../../components/Language";
-import NavBarSearch from './NavBarSearch.vue';
+import UserPhoto from "@/views/user/UserPhoto";
+import Language from "@/components/Language";
+import NavBarSearch from '@/views/navbars/NavBarSearch.vue';
 export default {
     name: "HomeNav",
     components: {

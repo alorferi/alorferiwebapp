@@ -1,7 +1,7 @@
 <template>
     <div >
 
-                <CreatePost></CreatePost>
+                <CreateUserPost></CreateUserPost>
 
                 <ShowPosts></ShowPosts>
     </div>
@@ -9,13 +9,13 @@
 
 <script>
 import ShowPosts from "@/views/post/ShowPosts";
-import CreatePost from "@/views/post/CreatePost";
+import CreateUserPost from "@/views/user/CreateUserPost";
 
 export default {
     name: "NewsFeeds",
     computed: {
     },
-    components: { CreatePost, ShowPosts },
+    components: { CreateUserPost, ShowPosts },
     data: () => {
         return {
         };

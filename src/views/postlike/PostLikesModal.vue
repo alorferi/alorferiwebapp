@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import LikeListItem from "../postlike/LikeListItem";
+import LikeListItem from "@/views/postlike/LikeListItem";
 import Loading from "@/components/Loading";
 
 export default {
