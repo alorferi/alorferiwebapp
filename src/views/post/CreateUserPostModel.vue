@@ -1,13 +1,11 @@
 <template>
     <div>
-        <!-- <div class="card"> -->
-            <b-modal
-                id="editPostModal"
+              <b-modal
+                id="createPostModal"
                 ref="modal"
-                title="Edit Post"
-                v-model="showLocal"
-                @show="showModal"
-                @hidden="hideModal"
+                title="Write a discussion"
+                @show="resetModal"
+                @hidden="resetModal"
                 ok-title="Post"
                 @ok="handleOk"
                 centered
@@ -16,8 +14,10 @@
                     <UserPhoto :user="activeUser" size="16"></UserPhoto>
 
                     <div class="ml-2">
-                        {{ activeUser.first_name }} {{ activeUser.surname }}
-                        {{ activeUser.nickname }}
+                        <h6>
+                            {{ activeUser.first_name }} {{ activeUser.surname }}
+                            {{ activeUser.nickname }}
+                        </h6>
                     </div>
                 </div>
                 <form
@@ -25,8 +25,7 @@
                     @submit.stop.prevent="handleSubmit"
                     class="mb-2"
                 >
-
-                                    <b-form-input
+                    <b-form-input
                         class="form-control mb-2"
                         v-model="title"
                         placeholder="What is the title of your discussion?"
@@ -45,7 +44,7 @@
 
                     <div class="d-flex justify-content-center m-2">
                         <img
-                            v-if="imgUrl"
+                            v-if="imgUrl && imgFile != null"
                             :src="imgUrl"
                             style="max-width:460px; max-height:320px"
                         />
@@ -62,24 +61,21 @@
                     ></b-form-file>
                 </form>
             </b-modal>
-        <!-- </div> -->
     </div>
 </template>
-
 <script>
 import UserPhoto from "../user/UserPhoto";
-// import ImageUploader from "vue-image-upload-resize";
-// import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
-    name: "EditPostModal",
+    name: "CreateUserPostModel",
     components: {
-        UserPhoto
+        UserPhoto,
+        // CreateUserPostModel
         // ImageAutoResize
         // ImageUploader
     },
     mounted: function() {},
-    props: ["show", "post"],
+    props: ["show"],
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
@@ -95,44 +91,40 @@ export default {
     },
     data() {
         return {
-            title: this.post.title==null? "":this.post.title,
-            body: this.post.body==null? "":this.post.body,
+            title: "",
+            body: "",
             bodyState: null,
             imgUrl: null,
             imgFile: null,
             hasImage: false,
         };
     },
-    methods: {
-        setImage: function(output) {
-            this.hasImage = true;
-            this.imgFile = output;
-            console.log("Info", output.info);
-            console.log("Exif", output.exif);
-        },
+
+       methods: {
+        // setImage: function(output) {
+        //     this.hasImage = true;
+        //     this.imgFile = output;
+        //     console.log("Info", output.info);
+        //     console.log("Exif", output.exif);
+        // },
         onFileChange(e) {
             const file = e.target.files[0];
             this.imgUrl = URL.createObjectURL(file);
         },
-        updatePostAction() {
+        storePostAction() {
             let formData = new FormData();
 
             if (this.imgFile) {
                 formData.append("image", this.imgFile);
             }
 
-            formData.append("title", this.title==null? "":this.title);
-            formData.append("body", this.body==null? "":this.body);
-
-            const packet = {
-                overhead: { post: this.post },
-                formData: formData
-            };
+            formData.append("title", this.title);
+            formData.append("body", this.body);
 
             this.$store
-                .dispatch("updatePost", packet)
+                .dispatch("storePost", formData)
                 .then(() => {
-                    this.hideEditPostModal();
+                    this.hideCreatePostModal();
                 })
                 .catch(() => {})
                 .finally();
@@ -143,22 +135,10 @@ export default {
             this.bodyState = valid;
             return valid;
         },
-        showModal() {
-            this.showData()
-        },
-        hideModal() {
-            this.clearData()
-        },
-        clearData() {
+        resetModal() {
             this.title = "";
             this.body = "";
             this.imgUrl = null;
-            this.imgFile = null;
-            this.bodyState = null;
-        },
-        showData() {
-            this.body = this.post.body,
-            this.imgUrl = this.getApiUrl( this.post.image_url);
             this.imgFile = null;
             this.bodyState = null;
         },
@@ -174,13 +154,13 @@ export default {
                 return;
             }
             // Subit data to backend server
-            this.updatePostAction();
+            this.storePostAction();
         },
 
-        hideEditPostModal() {
+        hideCreatePostModal() {
             // Hide the modal manually
             this.$nextTick(() => {
-                this.$bvModal.hide("editPostModal");
+                this.$bvModal.hide("createPostModal");
             });
         }
     }
@@ -211,3 +191,4 @@ a {
     margin-bottom: 4rem;
 }
 </style>
+

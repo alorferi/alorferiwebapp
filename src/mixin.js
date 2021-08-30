@@ -16,6 +16,11 @@ export default {
         },
 
         getApiUrl(endPoint, term = null, page = null) {
+
+            if(endPoint==null || undefined) {
+                return null;
+            }
+
             if (!endPoint.startsWith("/")) {
                 endPoint = "/" + endPoint;
             }
