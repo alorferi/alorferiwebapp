@@ -48,13 +48,14 @@
 <script>
 import LibraryLogo from "./LibraryLogo";
 import LibraryTimeline from "./LibraryTimeline"
+import LibraryBookIssuedHistory from "./LibraryBookIssuedHistory"
 import LibraryAbout from "./LibraryAbout"
 import ShowLibraryBooks from "../librarybook/ShowLibraryBooks"
 import ShowLibraryMembers from "../librarymember/ShowLibraryMembers"
 export default {
     name: "LibraryPager",
     components: {
-        LibraryLogo,LibraryTimeline,LibraryAbout,ShowLibraryMembers,ShowLibraryBooks
+        LibraryLogo,LibraryTimeline,LibraryAbout,ShowLibraryMembers,ShowLibraryBooks,LibraryBookIssuedHistory
     },
     mounted: function() {
         this.initTabItems();
@@ -77,6 +78,7 @@ export default {
             var library = this.$store.getters.library;
 
             this.tabs.push({ title: "Timeline", tabBody: LibraryTimeline , active: true});
+            this.tabs.push({ title: "Issued Books", tabBody: LibraryBookIssuedHistory , active: false});
             this.tabs.push({
                 title: "Books (" + library.total_books + ")",
                  tabBody: ShowLibraryBooks ,
