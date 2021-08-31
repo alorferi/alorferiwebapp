@@ -4,20 +4,30 @@ import moment from "moment";
 export default {
     methods: {
         momentFromNow: function(value) {
-          const ln = this.$store.getters.activeLanguage
-            var date = moment(value).locale(ln).fromNow(); // here u modify data
-           return date;
+            const ln = this.$store.getters.activeLanguage;
+            var date = moment(value)
+                .locale(ln)
+                .fromNow(); // here u modify data
+            return date;
         },
 
-        formatDate: function(value,expectedFormat="Do MMMM YYYY", language = null) {
+        formatDate: function(
+            value,
+            expectedFormat = "Do MMMM YYYY",
+            language = null
+        ) {
             var date = moment(value);
-            const ln = (language==null)? this.$store.getters.activeLanguage : language
-           return moment(date).locale(ln).format(expectedFormat);
+            const ln =
+                language == null
+                    ? this.$store.getters.activeLanguage
+                    : language;
+            return moment(date)
+                .locale(ln)
+                .format(expectedFormat);
         },
 
         getApiUrl(endPoint, term = null, page = null) {
-
-            if(endPoint==null || undefined) {
+            if (endPoint == null || undefined) {
                 return null;
             }
 
@@ -25,12 +35,11 @@ export default {
                 endPoint = "/" + endPoint;
             }
 
-            endPoint = this.getEndPointQueryString(endPoint,term,page);
+            endPoint = this.getEndPointQueryString(endPoint, term, page);
 
             return Vue.prototype.$apiServerBaseUrl + endPoint;
         },
         getEndPointQueryString(endPoint, term = null, page = null) {
-
             var queryObj = {
                 page: page == undefined ? null : page,
                 term: term == undefined ? null : term
@@ -40,12 +49,11 @@ export default {
 
             var qString = new URLSearchParams(queryObj).toString();
 
-            if(qString==""){
-                return endPoint
-            }else{
+            if (qString == "") {
+                return endPoint;
+            } else {
                 return endPoint + "?" + qString;
             }
-
         },
         cleanObject(obj) {
             for (var propName in obj) {
@@ -58,20 +66,19 @@ export default {
         getHeaderWithAuthorizationBearerToken() {
             return {
                 headers: {
-                    Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
+                    Authorization:
+                        "Bearer " + JSON.parse(localStorage.getItem("token"))
                 }
             };
         },
         getAuthorizationBearerToken() {
             return {
-                    Authorization: "Bearer " + JSON.parse(localStorage.getItem("token"))
-                }
-            ;
+                Authorization:
+                    "Bearer " + JSON.parse(localStorage.getItem("token"))
+            };
         },
         extractUrl(text) {
             var regex = /(https?:\/\/[^ ]*)/;
-            // var regex = /^(https?:\/\/[^/]+(\/[\w-]+)+)/;
-
             var matches = text.match(regex);
 
             if (matches && matches.length >= 1) {
@@ -79,6 +86,17 @@ export default {
             }
 
             return null;
+        },
+        isYouTubeVideoUrl(url) {
+            if (url) {
+                if (url.includes("www.youtube.com")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         },
         extractYouTubeVideoId(url) {
             var newval = "";
@@ -95,4 +113,4 @@ export default {
             return vid;
         }
     }
-}
+};

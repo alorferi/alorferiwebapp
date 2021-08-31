@@ -70,7 +70,7 @@
                  <h5 v-if="post.title" class="mr-5" style="text-align:justify" v-html="post.title" >
                 </h5>
 
-                <p v-if="post.body" v-html="post.body"   class="mr-5" style="text-align:justify">
+                <p v-if="post.body" v-html="body"   class="mr-5" style="text-align:justify">
                 </p>
 
                 <div v-if="post.image_url" class="mr-5">
@@ -125,14 +125,19 @@ export default {
         };
     },
     computed: {
+        body(){
+            return this.post.body.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        },
         getYouTubeEmbedUrl: function() {
             var url = this.extractUrl(this.post.body);
 
-            if (url) {
-                url =
+
+            if(this.isYouTubeVideoUrl(url)){
+ url =
                     "https://www.youtube.com/embed/" +
                     this.extractYouTubeVideoId(url);
             }
+
 
             return url;
         },
