@@ -1,24 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import Users from "@/stores/users"
-import PageTitle from "@/stores/page-title"
-import Auth from "@/stores/auth"
-import Libraries from "@/stores/libraries"
-import LibraryBooks from "@/stores/library-books"
-import LibraryMembers from "@/stores/library-members"
-import LibraryMemberIssues from "@/stores/library-book-issues"
-import UserPosts from "@/stores/user-posts"
-import Posts from "@/stores/posts"
-import Language from "@/stores/language"
-import Comments from "@/stores/comments";
-import Likes from "@/stores/likes";
+import UserStore from "@/stores/user-store"
+import PageTitleStore from "@/stores/page-title-store"
+import AuthStore from "@/stores/auth-store"
+import LibraryStore from "@/stores/library-store"
+import LibraryBookStore from "@/stores/library-book-store"
+import LibraryMemberStore from "@/stores/library-member-store"
+import LibraryMemberIssueStore from "@/stores/library-book-issue-store"
+import PostStore from "@/stores/post-store"
+import LanguageStore from "@/stores/language-store"
+import CommentStore from "@/stores/comment-store";
+import LikeStore from "@/stores/like-store";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules:{
-        Users, PageTitle, Auth,Libraries, LibraryBooks,LibraryMembers,LibraryMemberIssues,UserPosts,Language,Comments,Likes,
-        Posts
+        UserStore, PageTitleStore, AuthStore,LibraryStore, LibraryBookStore,LibraryMemberStore,LibraryMemberIssueStore,PostStore,LanguageStore,CommentStore,LikeStore,
     },
     state: {
     },

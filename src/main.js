@@ -1,7 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import store from "./store";
+import stores from "./stores";
 import axios from "axios";
 import VueAxios from "vue-axios";
 
@@ -62,6 +62,6 @@ Vue.config.productionTip = false;
 
 new Vue({
     router,
-    store,
+    stores,
     render: h => h(App)
 }).$mount("#app");
