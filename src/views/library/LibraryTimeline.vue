@@ -5,20 +5,16 @@
     />
 
         <Loading v-if="show_loading"></Loading>
-        <div v-else>
-            <WrapperListView
-                :dataWrapperList="dataWrappers"
-                :listItemComponent="listItemComponent"
-            />
-        </div>
+        <ShowLibraryPosts :library="library" v-else>
+
+        </ShowLibraryPosts>
     </div>
 </template>
 
 <script>
 
 import CreateLibraryPost from "@/views/library/CreateLibraryPost";
-import LibraryBookIssueTimelineItem from "@/views/librarybookissue/LibraryBookIssueTimelineItem";
-import WrapperListView from "@/components/WrapperListView";
+import ShowLibraryPosts from  "@/views/library/ShowLibraryPosts";
 import Loading from "@/components/Loading";
 
 export default {
@@ -26,7 +22,7 @@ export default {
      props:["library"],
     components: {
         Loading,
-        WrapperListView,
+        ShowLibraryPosts,
         CreateLibraryPost
     },
     mounted() {
@@ -37,7 +33,6 @@ export default {
             show_loading: true,
             term: null,
             page: null,
-            listItemComponent: LibraryBookIssueTimelineItem
         };
     },
     computed: {

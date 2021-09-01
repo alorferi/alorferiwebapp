@@ -15,36 +15,13 @@ const mutations = {
 
 const actions = {
 
-    fetchLibraryPosts(context, packet) {
+
+    storeUserPost(context, fromData) {
         return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl(
-                "/api/libraries/" + packet.overhead.library.id + "/posts"
-            );
-
-            const headers = mixin.methods.getAuthorizationBearerToken();
-
-            axios({
-                url: url,
-                headers: headers,
-                method: "GET"
-            })
-                .then(response => {
-                    context.commit("clearPostsResponse");
-                    context.commit("setPostsResponse", response.data);
-                    resolve(response);
-                })
-                .catch(err => {
-                    console.log("err:", err);
-                    reject(err);
-                });
-        });
-    },
-
-    storeLibraryPost(context, packet) {
-        return new Promise((resolve, reject) => {
+            // var url = mixin.methods.getApiUrl("/api/posts");
 
             var url = mixin.methods.getApiUrl(
-                "/api/libraries/" + packet.overhead.library.id + "/posts"
+                "/api/users/" + this.getters.activeUser.id + "/posts"
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
@@ -54,7 +31,7 @@ const actions = {
                 url: url,
                 headers: headers,
                 method: "POST",
-                data: packet.fromData
+                data: fromData
             })
                 .then(response => {
                     context.commit("setPost", response.data.data.attributes);
@@ -69,13 +46,13 @@ const actions = {
         });
     },
 
-    updateLibraryPost(context, packet) {
+    updateUserPost(context, packet) {
         return new Promise((resolve, reject) => {
             // var url = mixin.methods.getApiUrl("/api/posts");
 
             var url = mixin.methods.getApiUrl(
-                "/api/libraries/" +
-                packet.overhead.library.id +
+                "/api/users/" +
+                    this.getters.activeUser.id +
                     "/posts/" +
                     packet.overhead.post.id +
                     "?_method=PUT"
@@ -104,10 +81,10 @@ const actions = {
         });
     },
 
-    deleteLibraryPost(context, packet) {
+    deleteUserPost(context, post) {
         return new Promise((resolve, reject) => {
             var url = mixin.methods.getApiUrl(
-                "/api/libraries/" +  packet.overhead.library.id + "/posts/" +  packet.overhead.post.id
+                "/api/users/" + this.getters.activeUser.id + "/posts/" + post.id
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
@@ -118,7 +95,7 @@ const actions = {
                 method: "DELETE"
             })
                 .then(response => {
-                    context.commit("removePost",  packet.overhead.post);
+                    context.commit("removePost", post);
                     resolve(response);
                 })
                 .catch(err => {
@@ -127,7 +104,8 @@ const actions = {
                 });
         });
     }
-};
+
+}
 
 export default {
     state,

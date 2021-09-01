@@ -77,7 +77,7 @@ export default {
         Loading
     },
     mounted: function() {},
-    props: ["show", "post"],
+    props: ["show", "post",'postable_type'],
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
@@ -133,7 +133,7 @@ export default {
             this.is_loading = true;
             if (this.post) {
                 this.$store
-                    .dispatch("updatePost", packet)
+                    .dispatch("updateUserPost", packet)
                     .then(() => {
                         this.hidePostModal();
                     })
@@ -143,7 +143,7 @@ export default {
                     });
             } else {
                 this.$store
-                    .dispatch("storePost", formData)
+                    .dispatch("storeUserPost", formData)
                     .then(() => {
                         this.hidePostModal();
                     })

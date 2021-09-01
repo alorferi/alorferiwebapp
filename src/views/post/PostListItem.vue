@@ -49,7 +49,7 @@
                                     class="dropdown-item text-danger"
                                     v-if="isMyPost"
                                     role="button"
-                                    @click="deletePost(post)"
+                                    @click="deleteUserPost(post)"
                                     ><i class="far fa-trash-alt"></i> Delete
                                     this post</a
                                 >
@@ -148,8 +148,8 @@ export default {
     },
 
     methods: {
-        deletePost(post) {
-            this.$store.dispatch("deletePost", post);
+        deleteUserPost(post) {
+            this.$store.dispatch("deleteUserPost", post);
         }
     }
 };

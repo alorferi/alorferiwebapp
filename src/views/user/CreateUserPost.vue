@@ -22,6 +22,7 @@
             </div>
 
     <CreateOrEditPostModal :show="showCreaUserPostModel" @updateVisibleState="showCreaUserPostModel = $event"
+   postable_type="user"
     />
 
               <!-- <EditPostModal :show="showEditPostModal"

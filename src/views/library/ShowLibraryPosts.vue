@@ -24,7 +24,7 @@ import PostListItem from "@/views/post/PostListItem";
 import Loading from "@/components/Loading";
 
 export default {
-    name: "ShowPosts",
+    name: "ShowLibraryPosts",
     computed: {
         posts() {
             return this.$store.getters.postsResponse.data;
@@ -44,8 +44,14 @@ export default {
 
     methods: {
         fetchPostFeedAction() {
+
+            const packet = {
+                    overhead:{
+                        library:this.library,
+                    }
+                }
             this.$store
-                .dispatch("fetchPostFeed")
+                .dispatch("fetchLibraryPosts",packet)
                 .then(() => {})
                 .catch(() => {})
                 .finally(() => {
