@@ -22,6 +22,7 @@
             </div>
 
     <CreateOrEditPostModal :show="showCreaUserPostModel" @updateVisibleState="showCreaUserPostModel = $event"
+    postable_type="library"
     />
 
               <!-- <EditPostModal :show="showEditPostModal"
@@ -39,7 +40,7 @@ import CreateOrEditPostModal from "@/views/post/CreateOrEditPostModal.vue";
 // import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
-    name: "CreateUserPost",
+    name: "CreateLibraryPost",
     components: {
         UserPhoto,
         // ImageAutoResize

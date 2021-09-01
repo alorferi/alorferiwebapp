@@ -1,5 +1,9 @@
 <template>
     <div class="pt-2">
+
+    <CreateLibraryPost
+    />
+
         <Loading v-if="show_loading"></Loading>
         <div v-else>
             <WrapperListView
@@ -11,16 +15,19 @@
 </template>
 
 <script>
-import LibraryBookIssueTimelineItem from "../librarybookissue/LibraryBookIssueTimelineItem";
-import WrapperListView from "../../components/WrapperListView";
-import Loading from "../../components/Loading";
+
+import CreateLibraryPost from "@/views/library/CreateLibraryPost";
+import LibraryBookIssueTimelineItem from "@/views/librarybookissue/LibraryBookIssueTimelineItem";
+import WrapperListView from "@/components/WrapperListView";
+import Loading from "@/components/Loading";
 
 export default {
     name: "LibraryTimeline",
      props:["library"],
     components: {
         Loading,
-        WrapperListView
+        WrapperListView,
+        CreateLibraryPost
     },
     mounted() {
         this.fetchLibraryBookIssues();
