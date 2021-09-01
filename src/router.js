@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import stores from "./stores";
+import store from "./store";
 import Home from "./views/home/Home.vue";
 import About from "./views/about/About.vue";
 import Login from "./views/auth/Login.vue";
@@ -139,7 +139,7 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (stores.getters.isLoggedIn) {
+        if (store.getters.isLoggedIn) {
             next();
             return;
         }
