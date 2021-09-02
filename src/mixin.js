@@ -78,12 +78,16 @@ export default {
             };
         },
         extractUrl(text) {
-            var regex = /(https?:\/\/[^ ]*)/;
-            var matches = text.match(regex);
 
-            if (matches && matches.length >= 1) {
-                return matches[0];
+            if(text){
+                var regex = /(https?:\/\/[^ ]*)/;
+                var matches = text.match(regex);
+
+                if (matches && matches.length >= 1) {
+                    return matches[0];
+                }
             }
+
 
             return null;
         },

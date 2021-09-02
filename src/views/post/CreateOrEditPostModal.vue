@@ -77,7 +77,7 @@ export default {
         Loading
     },
     mounted: function() {},
-    props: ["show", "post",'postable_type'],
+    props: ["show", "post", "postable_type", "postable_id"],
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
@@ -115,42 +115,90 @@ export default {
             const file = e.target.files[0];
             this.imgUrl = URL.createObjectURL(file);
         },
-        updatePostAction() {
-            let formData = new FormData();
+        processUserPost(packet) {
+            const self = this;
 
-            if (this.imgFile) {
-                formData.append("image", this.imgFile);
-            }
-
-            formData.append("title", this.title == null ? "" : this.title);
-            formData.append("body", this.body == null ? "" : this.body);
-
-            const packet = {
-                overhead: { post: this.post },
-                formData: formData
-            };
-
-            this.is_loading = true;
-            if (this.post) {
-                this.$store
+            if (self.post) {
+                self.$store
                     .dispatch("updateUserPost", packet)
                     .then(() => {
-                        this.hidePostModal();
+                        self.hidePostModal();
                     })
                     .catch(() => {})
                     .finally(() => {
-                        this.is_loading = false;
+                        self.is_loading = false;
                     });
             } else {
-                this.$store
-                    .dispatch("storeUserPost", formData)
+                self.$store
+                    .dispatch("storeUserPost", packet)
                     .then(() => {
-                        this.hidePostModal();
+                        self.hidePostModal();
                     })
                     .catch(() => {})
                     .finally(() => {
-                        this.is_loading = false;
+                        self.is_loading = false;
                     });
+            }
+        },
+
+        processLibraryPost(packet) {
+              const self = this;
+            if (self.post) {
+                self.$store
+                    .dispatch("updateLibraryPost", packet)
+                    .then(() => {
+                        self.hidePostModal();
+                    })
+                    .catch(() => {})
+                    .finally(() => {
+                        self.is_loading = false;
+                    });
+            } else {
+                self.$store
+                    .dispatch("storeLibraryPost", packet)
+                    .then(() => {
+                        self.hidePostModal();
+                    })
+                    .catch(() => {})
+                    .finally(() => {
+                        self.is_loading = false;
+                    });
+            }
+        },
+        createOrUpdatePostAction() {
+            const self = this;
+
+            let formData = new FormData();
+
+            if (self.imgFile) {
+                formData.append("image", self.imgFile);
+            }
+
+            formData.append("title", self.title == null ? "" : self.title);
+            formData.append("body", self.body == null ? "" : self.body);
+
+            self.is_loading = true;
+
+            switch (self.postable_type) {
+                case "user":
+                    var packet = {
+                        overhead: { post: self.post },
+                        formData: formData
+                    };
+                    this.processUserPost(packet);
+                    break;
+                case "library":
+                    packet = {
+                        overhead: {
+                            postable_id: self.postable_id,
+                            post: self.post
+                        },
+                        formData: formData
+                    };
+
+                    this.processLibraryPost(packet);
+
+                    break;
             }
         },
 
@@ -192,7 +240,7 @@ export default {
                 return;
             }
             // Subit data to backend server
-            this.updatePostAction();
+            this.createOrUpdatePostAction();
         },
 
         hidePostModal() {

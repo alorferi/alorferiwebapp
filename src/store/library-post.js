@@ -20,7 +20,6 @@ const actions = {
             var url = mixin.methods.getApiUrl(
                 "/api/libraries/" + packet.overhead.library.id + "/posts"
             );
-
             const headers = mixin.methods.getAuthorizationBearerToken();
 
             axios({
@@ -44,17 +43,20 @@ const actions = {
         return new Promise((resolve, reject) => {
 
             var url = mixin.methods.getApiUrl(
-                "/api/libraries/" + packet.overhead.library.id + "/posts"
+                "/api/libraries/" + packet.overhead.postable_id + "/posts"
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
             headers["Content-Type"] = "multipart/form-data";
 
+
+           let formData = packet.formData
+
             axios({
                 url: url,
                 headers: headers,
                 method: "POST",
-                data: packet.fromData
+                data: formData
             })
                 .then(response => {
                     context.commit("setPost", response.data.data.attributes);
@@ -75,7 +77,7 @@ const actions = {
 
             var url = mixin.methods.getApiUrl(
                 "/api/libraries/" +
-                packet.overhead.library.id +
+                packet.overhead.postable_id +
                     "/posts/" +
                     packet.overhead.post.id +
                     "?_method=PUT"
@@ -84,7 +86,8 @@ const actions = {
             const headers = mixin.methods.getAuthorizationBearerToken();
             headers["Content-Type"] = "multipart/form-data";
 
-            const formData = packet.formData;
+
+            let formData = packet.formData
 
             axios({
                 url: url,

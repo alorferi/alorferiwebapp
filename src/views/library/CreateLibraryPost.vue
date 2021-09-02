@@ -23,6 +23,7 @@
 
     <CreateOrEditPostModal :show="showCreaUserPostModel" @updateVisibleState="showCreaUserPostModel = $event"
     postable_type="library"
+    :postable_id="library.id"
     />
 
               <!-- <EditPostModal :show="showEditPostModal"
@@ -47,6 +48,7 @@ export default {
         // ImageUploader,
         CreateOrEditPostModal
     },
+    props:["library"],
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;

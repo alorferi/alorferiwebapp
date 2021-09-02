@@ -16,7 +16,33 @@ const mutations = {
 const actions = {
 
 
-    storeUserPost(context, fromData) {
+    fetchUserPosts(context, payload) {
+        return new Promise((resolve, reject) => {
+            var url = mixin.methods.getApiUrl(
+                "/api/users/" + payload.user_id + "/posts"
+            );
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "GET"
+            })
+                .then(response => {
+                    context.commit("clearPostsResponse");
+                    context.commit("setPostsResponse", response.data);
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
+
+
+    storeUserPost(context, packet) {
         return new Promise((resolve, reject) => {
             // var url = mixin.methods.getApiUrl("/api/posts");
 
@@ -27,11 +53,13 @@ const actions = {
             const headers = mixin.methods.getAuthorizationBearerToken();
             headers["Content-Type"] = "multipart/form-data";
 
+          let  formData = packet.formData
+
             axios({
                 url: url,
                 headers: headers,
                 method: "POST",
-                data: fromData
+                data: formData
             })
                 .then(response => {
                     context.commit("setPost", response.data.data.attributes);

@@ -25,6 +25,7 @@ import Loading from "@/components/Loading";
 
 export default {
     name: "ShowLibraryPosts",
+      props:["library"],
     computed: {
         posts() {
             return this.$store.getters.postsResponse.data;
