@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="p-2">
-                    <img src="#" alt="Library QR Code" width="96" height="96" />
+                    <img src="#" alt="QR Code" width="96" height="96" />
                 </div>
             </div>
 

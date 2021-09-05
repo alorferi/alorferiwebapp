@@ -8,7 +8,7 @@
             />
         </router-link>
 
-<NavBarSearch/>
+<!-- <NavBarSearch/> -->
 
         <!-- Toggler/collapsibe Button -->
         <button
@@ -87,13 +87,13 @@
 // import { mapGetters } from "vuex";
 import UserPhoto from "@/views/user/UserPhoto";
 import Language from "@/components/Language";
-import NavBarSearch from '@/views/navbars/NavBarSearch.vue';
+// import NavBarSearch from '@/views/navbars/NavBarSearch.vue';
 export default {
     name: "HomeNav",
     components: {
         UserPhoto,
         Language, // Logout,
-        NavBarSearch
+        // NavBarSearch
     },
     data() {
         return {};
