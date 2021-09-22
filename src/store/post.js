@@ -66,12 +66,12 @@ const mutations = {
     pushPostComments(state, payload) {
         state.postsResponse.data.forEach(function(post) {
             if (post.attributes.id == payload.post.id) {
-                if (post.attributes.comments == null) {
-                    post.attributes.comments = payload.data;
+                if (post.attributes.comments_data == null) {
+                    post.attributes.comments_data = payload.data;
                 } else {
                     payload.data.data.forEach(function(comment) {
-                        post.attributes.comments.data.push(comment);
-                        post.attributes.comments.meta.total++;
+                        post.attributes.comments_data.data.push(comment);
+                        post.attributes.comments_data.meta.total++;
                     });
                 }
             }
@@ -81,12 +81,12 @@ const mutations = {
     pushPostLikes(state, payload) {
         state.postsResponse.data.forEach(function(post) {
             if (post.attributes.id == payload.post.id) {
-                if (post.attributes.likes == null) {
-                    post.attributes.likes = payload.data;
+                if (post.attributes.likes_data == null) {
+                    post.attributes.likes_data = payload.data;
                 } else {
                     payload.data.data.forEach(function(like) {
-                        post.attributes.likes.data.push(like);
-                        post.attributes.likes.meta.total++;
+                        post.attributes.likes_data.data.push(like);
+                        post.attributes.likes_data.meta.total++;
                     });
                 }
             }
@@ -105,7 +105,7 @@ const mutations = {
         state.postsResponse.data.forEach(function(post) {
             if (post.attributes.id == packet.overhead.post.id) {
                 if (post.attributes.my_like != null) {
-                    post.attributes.likes.data.forEach(function(
+                    post.attributes.likes_data.data.forEach(function(
                         likeItem,
                         index,
                         arr
@@ -126,7 +126,7 @@ const mutations = {
     removePostComment(state, packet) {
         state.postsResponse.data.forEach(function(postItem) {
             if (postItem.attributes.id == packet.overhead.post.id) {
-                postItem.attributes.comments.data.forEach(function(
+                postItem.attributes.comments_data.data.forEach(function(
                     commentItem,
                     index,
                     arr

@@ -122,10 +122,10 @@ export default {
     computed: {
 
         comments() {
-            return this.post.comments == null ? [] : this.post.comments.data;
+            return this.post.comments_data == null ? [] : this.post.comments_data.data;
         },
         likes() {
-            return this.post.likes == null ? [] : this.post.likes.data;
+            return this.post.likes_data == null ? [] : this.post.likes_data.data;
         },
         myLike() {
             return this.post.my_like;
