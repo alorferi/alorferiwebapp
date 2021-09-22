@@ -40,11 +40,11 @@ export default {
         },
 
         totalLikes() {
-            return this.post.likes == null ? 0 : this.post.likes.meta.total;
+            return this.post.likes_data == null ? 0 : this.post.likes_data.meta.total;
         },
 
         likes() {
-            return this.post.likes == null ? [] : this.post.likes.data;
+            return this.post.likes_data == null ? [] : this.post.likes_data.data;
         },
         myLike() {
             return this.post.my_like;
