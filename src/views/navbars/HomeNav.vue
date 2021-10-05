@@ -1,14 +1,22 @@
 <template>
     <div class="container-fluid">
-        <router-link :to="{ name: 'home' }" class="navbar-brand">
+        <!-- <router-link :to="{ name: 'home' }" class="navbar-brand"    @click="reload">
             <img
                 src="@/assets/images/defaults/alorferi_logo_brand.png"
                 height="24px"
                 alt="Alor Feri logo"
             />
-        </router-link>
+        </router-link> -->
 
-<!-- <NavBarSearch/> -->
+        <a href="/" class="navbar-brand" @click="reload">
+            <img
+                src="@/assets/images/defaults/alorferi_logo_brand.png"
+                height="24px"
+                alt="Alor Feri logo"
+            />
+        </a>
+
+        <!-- <NavBarSearch/> -->
 
         <!-- Toggler/collapsibe Button -->
         <button
@@ -21,21 +29,19 @@
         </button>
 
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="nav navbar-nav mr-auto">
-                <li>
-                    <router-link class="nav-link" :to="{ name: 'home' }">
-                      <i class="fas fa-home"></i>
-                    </router-link>
-                </li>
-
-                <li>
-                    <router-link class="nav-link" :to="{ name: 'users.me' }">
-                        <i class="far fa-user-circle"></i
-                    ></router-link>
-                </li>
-            </ul>
+            <ul class="nav navbar-nav mr-auto"></ul>
 
             <ul class="nav navbar-nav">
+                <li>
+                    <!-- <router-link class="nav-link" :to="{ name: 'home' }">
+                      <i class="fas fa-home"></i>
+                    </router-link> -->
+
+                    <a href="/" class="nav-link" @click="reload">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+
                 <li>
                     <Language></Language>
                 </li>
@@ -92,7 +98,7 @@ export default {
     name: "HomeNav",
     components: {
         UserPhoto,
-        Language, // Logout,
+        Language // Logout,
         // NavBarSearch
     },
     data() {
@@ -103,12 +109,15 @@ export default {
             return this.$store.getters.activeUser;
         }
     },
-  async mounted(){},
+    async mounted() {},
     methods: {
         logoutMe: function() {
             this.$store.dispatch("logout").then(() => {
                 this.$router.push({ name: "home" }).catch(() => {});
             });
+        },
+        reload: function() {
+            this.$router.go(this.$router.currentRoute);
         }
     }
 };
