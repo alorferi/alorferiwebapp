@@ -25,7 +25,7 @@ export default {
         ShowLibraryPosts,
         CreateLibraryPost
     },
-    mounted() {
+  async mounted(){
     },
     data: function() {
         return {

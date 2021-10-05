@@ -26,7 +26,7 @@
 export default {
     name: "SearchTextField",
     props: ["route"],
-    mounted() {},
+  async mounted(){},
     computed: {},
     data() {
         return {

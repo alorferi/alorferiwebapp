@@ -45,7 +45,7 @@
 export default {
     name: "GenderInputField",
     props: ["name", "label", "placeholder", "errors", "data"],
-    mounted() {},
+  async mounted(){},
     data: function() {
         return {
             value: ""

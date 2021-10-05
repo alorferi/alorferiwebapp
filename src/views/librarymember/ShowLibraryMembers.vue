@@ -33,7 +33,7 @@ export default {
         SearchTextField,
         Paginator,WrapperListView
     },
-    mounted() {
+  async mounted(){
         this.fetchLibraryMembers();
     },
     data: function() {

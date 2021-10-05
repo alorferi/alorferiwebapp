@@ -98,7 +98,7 @@ export default {
         };
     },
     computed: {},
-    mounted() {
+  async mounted(){
         axios
             .get(this.getApiUrl("/api/libraries/" + this.$route.params.id))
             .then(response => {

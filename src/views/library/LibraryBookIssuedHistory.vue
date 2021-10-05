@@ -22,7 +22,7 @@ export default {
         Loading,
         WrapperListView
     },
-    mounted() {
+  async mounted(){
         this.fetchLibraryBookIssues();
     },
     data: function() {

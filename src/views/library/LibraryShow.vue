@@ -19,7 +19,7 @@ export default {
     components: {
         Loading, LibraryPager
     },
-    mounted() {
+  async mounted(){
         this.fetchLibrary(this.$route.params.id)
     },
 

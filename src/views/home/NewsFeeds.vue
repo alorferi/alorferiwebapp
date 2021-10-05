@@ -20,7 +20,7 @@ export default {
         return {
         };
     },
-    mounted() {
+  async mounted(){
     },
 
     methods: {}

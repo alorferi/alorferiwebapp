@@ -200,7 +200,7 @@ export default {
             return text;
         }
     },
-    mounted() {
+  async mounted(){
         this.fetchPostCommentsAction();
         this.fetchPostLikesAction();
         this.fetchPostMyLikeAction();

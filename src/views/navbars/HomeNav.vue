@@ -103,7 +103,7 @@ export default {
             return this.$store.getters.activeUser;
         }
     },
-    mounted() {},
+  async mounted(){},
     methods: {
         logoutMe: function() {
             this.$store.dispatch("logout").then(() => {

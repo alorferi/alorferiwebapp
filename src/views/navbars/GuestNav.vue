@@ -39,7 +39,7 @@ export default {
     return {};
   },
   computed: {},
-  mounted() {},
+async mounted(){},
   methods: {},
 };
 </script>

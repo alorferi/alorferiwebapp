@@ -39,7 +39,7 @@ export default {
         SearchTextField,
         Paginator
     },
-    mounted() {
+  async mounted(){
         this.fetchLibraryBooks();
     },
     data: function() {

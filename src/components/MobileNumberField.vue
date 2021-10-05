@@ -40,7 +40,7 @@
 export default {
     name: "MobileNumberField",
     props: ["name", "label", "placeholder", "errors", "data", "icon"],
-    mounted() {},
+  async mounted(){},
     data: function() {
         return {
             countryCode: "+880",

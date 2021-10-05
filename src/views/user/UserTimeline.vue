@@ -42,7 +42,7 @@ export default {
             scrolledToBottom:false
         };
     },
-    mounted() {
+  async mounted(){
         this.fetchPost();
         this.scroll();
     },

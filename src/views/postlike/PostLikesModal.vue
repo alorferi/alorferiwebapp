@@ -50,7 +50,7 @@ export default {
             return this.post.my_like;
         }
     },
-    mounted() {},
+  async mounted(){},
 
     methods: {}
 };

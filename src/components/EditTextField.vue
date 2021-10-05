@@ -26,7 +26,7 @@
 export default {
     name: "EditTextField",
     props: ["name", "label", "placeholder", "type", "errors", "initval", "icon"],
-    mounted() {},
+   async mounted() {},
     data: function() {
         return {
             value: this.initval

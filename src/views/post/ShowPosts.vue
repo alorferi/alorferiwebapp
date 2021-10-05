@@ -37,7 +37,7 @@ export default {
             scrolledToBottom:false
         };
     },
-    mounted() {
+  async mounted(){
         this.fetchPostFeedAction();
         this.scroll();
     },
