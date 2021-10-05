@@ -78,14 +78,14 @@ let router = new Router({
             name: "users.me",
             component: ShowMe,
             leftMenu: HomeLeftMenu,
-            meta: { title: "Profile" }
+            meta: { title: "Profile", requiresAuth: true }
         },
         {
             path: "/users/:user_id",
             name: "users.show",
             component: ShowUser,
             leftMenu: HomeLeftMenu,
-            meta: { title: "User Profile" }
+            meta: { title: "User Profile", requiresAuth: true }
         },
         // {
         //     path: "/users/profile/edit",
@@ -98,7 +98,7 @@ let router = new Router({
             name: "my-libraries",
             component: ShowMyLibraries,
             leftMenu: HomeLeftMenu,
-            meta: { title: "My Libraries" }
+            meta: { title: "My Libraries", requiresAuth: true}
         },
         {
             path: "/libraries/autocomplete",
@@ -111,28 +111,38 @@ let router = new Router({
             path: "/libraries/create",
             name: "library-create",
             component: LibraryCreate,
-            leftMenu: HomeLeftMenu
+            leftMenu: HomeLeftMenu,
+            meta: { title: "Create Library", requiresAuth: true}
         },
         {
             path: "/libraries/:id",
             name: "library-show",
             component: LibraryShow,
-            leftMenu: HomeLeftMenu
-            // leftBadge: LibraryBadge
+            leftMenu: HomeLeftMenu,
+            // leftBadge: LibraryBadge,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: "/libraries/:id/edit",
             name: "library-edit",
             component: LibraryEdit,
-            leftMenu: HomeLeftMenu
-            // leftBadge: LibraryBadge
+            leftMenu: HomeLeftMenu,
+            // leftBadge: LibraryBadge,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: "/libraries/:id/about",
             name: "library-about",
             component: LibraryAbout,
             leftMenu: LibraryLeftMenu,
-            leftBadge: LibraryBadge
+            leftBadge: LibraryBadge,
+            meta: {
+                requiresAuth: true
+            }
         }
     ]
 });
@@ -143,7 +153,11 @@ router.beforeEach((to, from, next) => {
             next();
             return;
         }
-        next("/login");
+        // next("/auth/login");
+
+        const loginpath = window.location.pathname;
+        next({ name: 'login', query: { from: loginpath } });
+
     } else {
         next();
     }

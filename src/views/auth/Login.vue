@@ -94,6 +94,7 @@ export default {
     },
     methods: {
         login: function() {
+            const self = this;
             this.is_error = false;
             let username = this.username.replace(/^0+/, "");
             let password = this.password;
@@ -103,8 +104,9 @@ export default {
                     this.$store
                         .dispatch("fetchMe")
                         .then(() => {
-                            window.location.href = "/";
-                            console.log("success");
+                             self.$router.replace(self.$route.query.from);
+                            // window.location.href = "/";
+                            // console.log("success");
                         })
                         .catch(() => {
                             console.log("failed");
