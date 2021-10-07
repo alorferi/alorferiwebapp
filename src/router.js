@@ -4,7 +4,6 @@ import store from "./store";
 import Home from "./views/home/Home.vue";
 import About from "./views/about/About.vue";
 import Login from "./views/auth/Login.vue";
-import Secure from "./views/auth/Secure.vue";
 import Register from "./views/auth/Register.vue";
 // import NewsFeeds from "./views/home/NewsFeeds.vue";
 import ShowMyLibraries from "./views/library/ShowMyLibraries.vue";
@@ -50,14 +49,6 @@ let router = new Router({
             name: "reset-password",
             component: ResetPasswordWithOtc,
             meta: { title: "Reset password" }
-        },
-        {
-            path: "/secure",
-            name: "secure",
-            component: Secure,
-            meta: {
-                requiresAuth: true
-            }
         },
         {
             path: "/about",

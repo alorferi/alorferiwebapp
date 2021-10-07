@@ -24,6 +24,7 @@
                         :showOtcModal="showOtcModal"
                         :durationInSeconds="durationInSeconds"
                         @updateOtc="updateOtc"
+                        @onUpdateVisibleState="showOtcModal= $event"
                     ></AskForOtc>
 
                     <div class="form-group">

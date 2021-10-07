@@ -81,6 +81,7 @@
                             :showOtcModal="showOtcModal"
                             :durationInSeconds="durationInSeconds"
                             @updateOtc="updateOtc"
+                            @onUpdateVisibleState="showOtcModal= $event"
                         ></AskForOtc>
                         <button
                             type="submit"

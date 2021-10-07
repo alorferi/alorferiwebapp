@@ -11,6 +11,8 @@
             :hide-header="hideHeader"
             @ok="handleOk"
             centered
+            data-keyboard="false"
+            data-backdrop="static"
         >
             <div class="modal-header">
                 <h5 class="modal-title">One Time Code</h5>
@@ -61,7 +63,7 @@ export default {
                 return this.showOtcModal;
             },
             set: function(value) {
-                this.$emit("onUpdateVisibleState", value);
+                this.emitShowOtcModal(value);
             }
         }
     },
@@ -84,6 +86,9 @@ export default {
     methods: {
         emitOtc: function() {
             this.$emit("updateOtc", this.ot_code);
+        },
+        emitShowOtcModal: function(isShowModal) {
+             this.$emit("onUpdateVisibleState", isShowModal);
         },
         otcCountdownTimer: function() {
             this.oldSetInterval = setInterval(() => {
@@ -115,6 +120,7 @@ export default {
             if (this.oldSetInterval != null) {
                 clearInterval(this.oldSetInterval);
             }
+            this.emitShowOtcModal(false);
         },
         initModal() {
             this.ot_code = "";
