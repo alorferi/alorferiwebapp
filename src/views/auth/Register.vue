@@ -142,6 +142,7 @@ export default {
         },
 
         login: function() {
+            const self = this;
             let username = this.userData.mobile;
             let password = this.userData.password;
             this.$store
@@ -150,7 +151,7 @@ export default {
                     this.$store
                         .dispatch("fetchMe")
                         .then(() => {
-                            window.location.href = "/";
+                            self.$router.replace(self.$route.query.from);
                             console.log("success");
                         })
                         .catch(() => {
