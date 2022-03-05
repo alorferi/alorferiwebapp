@@ -41,7 +41,9 @@
                                     class="dropdown-item  text-primary"
                                     role="button"
                                     v-if="isMyPost"
-                                     @click="showEditPostModal = !showEditPostModal"
+                                    @click="
+                                        showEditPostModal = !showEditPostModal
+                                    "
                                     ><i class="far fa-edit"></i> Edit this
                                     post</a
                                 >
@@ -66,12 +68,19 @@
                     </div>
                 </div>
 
+                <h5
+                    v-if="post.title"
+                    class="mr-5"
+                    style="text-align:justify"
+                    v-html="post.title"
+                ></h5>
 
-                 <h5 v-if="post.title" class="mr-5" style="text-align:justify" v-html="post.title" >
-                </h5>
-
-                <p v-if="post.body" v-html="body"   class="mr-5" style="text-align:justify">
-                </p>
+                <p
+                    v-if="post.body"
+                    v-html="body"
+                    class="mr-5"
+                    style="text-align:justify"
+                ></p>
 
                 <div v-if="post.image_url" class="mr-5">
                     <img
@@ -93,16 +102,13 @@
                     ></iframe>
                 </div>
 
+                <ShowPostComments :post="post" />
 
-
-            <ShowPostComments :post="post"/>
-
-
-            <EditPostModal :show="showEditPostModal"
-            :post="post"
-             @updateVisibleState="showEditPostModal = $event"
-             />
-
+                <EditPostModal
+                    :show="showEditPostModal"
+                    :post="post"
+                    @updateVisibleState="showEditPostModal = $event"
+                />
             </div>
         </div>
     </div>
@@ -111,33 +117,29 @@
 <script>
 import UserPhoto from "../user/UserPhoto";
 import ShowPostComments from "../postcomment/ShowPostComments";
-import EditPostModal from "./CreateOrEditPostModal.vue"
+import EditPostModal from "./CreateOrEditPostModal.vue";
 
 export default {
     name: "PostListItem",
     props: ["post"],
-    components: { UserPhoto,  ShowPostComments,
-    EditPostModal
-    },
+    components: { UserPhoto, ShowPostComments, EditPostModal },
     data() {
         return {
-            showEditPostModal: false,
+            showEditPostModal: false
         };
     },
     computed: {
-        body(){
-            return this.post.body.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        body() {
+            return this.post.body.replace(/(?:\r\n|\r|\n)/g, "<br>");
         },
         getYouTubeEmbedUrl: function() {
             var url = this.extractUrl(this.post.body);
 
+            var vId = this.extractYouTubeVideoId(url);
 
-            if(this.isYouTubeVideoUrl(url)){
- url =
-                    "https://www.youtube.com/embed/" +
-                    this.extractYouTubeVideoId(url);
-            }
-
+              if(vId){
+                 url = "https://www.youtube.com/embed/" +  this.extractYouTubeVideoId(url);
+              }
 
             return url;
         },

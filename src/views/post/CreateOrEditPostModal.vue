@@ -20,11 +20,11 @@
                 </div>
             </div>
             <form ref="form" @submit.stop.prevent="handleSubmit" class="mb-2">
-                <b-form-input
+                <!-- <b-form-input
                     class="form-control mb-2"
                     v-model="title"
                     placeholder="What is the title of your discussion?"
-                ></b-form-input>
+                ></b-form-input> -->
 
                 <b-form-textarea
                     id="textarea"

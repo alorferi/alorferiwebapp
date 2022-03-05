@@ -103,18 +103,15 @@ export default {
             }
         },
         extractYouTubeVideoId(url) {
-            var newval = "";
-            var vid = "";
+            var videoid = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
 
-            if ((newval = url.match(/(\?|&)v=([^&#]+)/))) {
-                vid = newval.pop();
-            } else if ((newval = url.match(/(\.be\/)+([^\\/]+)/))) {
-                vid = newval.pop();
-            } else if ((newval = url.match(/(\\embed\/)+([^\\/]+)/))) {
-                vid = newval.pop().replace("?rel=0", "");
-            }
+            if(videoid != null) {
+                return videoid[1];
+             } else {
+                return null;
+             }
 
-            return vid;
+
         }
     }
 };
