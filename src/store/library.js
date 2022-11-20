@@ -75,6 +75,37 @@ const actions = {
                     reject(err);
                 });
         });
+    },
+    fetchAllLibraries(context, payload) {
+        var endpoint =
+            "/api/libraries";
+        return new Promise((resolve, reject) => {
+            var url = mixin.methods.getApiUrl(
+                endpoint,
+                payload.term,
+                payload.page
+            );
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "GET"
+            })
+                .then(response => {
+                    const myLibrariesResponse = response.data;
+                    context.commit(
+                        "setMyLibrariesResponse",
+                        myLibrariesResponse
+                    );
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
     }
 };
 

@@ -31,7 +31,7 @@ import SearchTextField from "../../components/SearchTextField";
 import Paginator from "../../components/Paginator";
 
 export default {
-    name: "ShowMyLibraries",
+    name: "MyLibraryListView",
     components: {
         Loading,
         WrapperListView,

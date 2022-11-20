@@ -29,17 +29,29 @@
         </button>
 
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="nav navbar-nav mr-auto"></ul>
+            <ul class="nav navbar-nav mr-auto">
+
+                <li>
+                    <a href="/" class="nav-link" @click="reload">
+                    <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/libraries" class="nav-link" @click="reload">
+                       Libraries
+                    </a>
+                </li>
+
+
+
+
+            </ul>
 
             <ul class="nav navbar-nav">
-                <li>
-                    <!-- <router-link class="nav-link" :to="{ name: 'home' }">
-                      <i class="fas fa-home"></i>
-                    </router-link> -->
 
-                    <a href="/" class="nav-link" @click="reload">
-                        <i class="fas fa-home"></i>
-                    </a>
+                <li>
+
+
                 </li>
 
                 <li>
@@ -72,7 +84,7 @@
                             Profile
                         </router-link>
 
-                        <a class="dropdown-item" href="#">Link 2</a>
+                        <!-- <a class="dropdown-item" href="#">Link 2</a> -->
                         <div class="dropdown-divider"></div>
                         <a
                             class="dropdown-item"
