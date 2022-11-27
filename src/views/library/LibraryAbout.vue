@@ -14,7 +14,7 @@
 <div class="p-2 m-3">
     <!-- @if(ValidX::canAccessLibrary($library,"library_edit")==null) -->
     <div class=" text-right">
-        <a href="#" class="btn btn-primary">Edit</a>
+        <!-- <a href="#" class="btn btn-primary">Edit</a> -->
     </div>
 
     <!-- @endif -->

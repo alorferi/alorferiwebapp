@@ -5,16 +5,16 @@
 
                 <LibraryLogo :library ="item" size="72"/>
 
-                <div>
+                <div class="pl-2">
                     <h4>{{ item.name }}</h4>
 
                     <p>
 
-                        <span v-if="  item.address.house != null ">
+                        <span v-if="  item.address.house != null && item.address.house.length!=0 ">
                             {{ item.address.house }},
                         </span>
 
-                        <span v-if="  item.address.village != null ">
+                        <span v-if="  item.address.village != null && item.address.village.length!=0">
                             {{ item.address.village }},
                         </span>
 

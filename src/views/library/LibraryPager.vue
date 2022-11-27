@@ -1,12 +1,12 @@
 <template>
     <div>
         <div
-            class="d-flex flex-column pt-2 pl-2 pr-2"
+            class="d-flex flex-column pt-2 pl-2 pr-2 bg-light card"
             :style="{
-                'background-image':
-                    'url(' +
-                    'https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80' +
-                    ')'
+                // 'background-image':
+                //     'url(' +
+                //     'https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80' +
+                //     ')'
             }"
         >
             <div class="d-flex">
@@ -16,33 +16,47 @@
 
                 <div class="flex-grow-1 p-2">
                     <h3 class="text-success">{{ library.name }}</h3>
+
                     <h5>
-                        <p>
-                            <span v-if=" library.address.house != null">
-                                {{ library.address.house }},
-                            </span>
+                        <span
+                            v-if="
+                                library.address.house != null &&
+                                    library.address.house.length != 0
+                            "
+                        >
+                            {{ library.address.house }},
+                        </span>
 
-                            <span v-if=" library.address.village != null">
-                                {{ library.address.village }},
-                            </span>
+                        <span
+                            v-if="
+                                library.address.village != null &&
+                                    library.address.village.length != 0
+                            "
+                        >
+                            {{ library.address.village }},
+                        </span>
 
-                            <span v-if=" library.address.police_station != null">
-                                {{ library.address.police_station.name }},
-                            </span>
+                        <span v-if="library.address.police_station != null">
+                            {{ library.address.police_station.name }},
+                        </span>
 
-                            <span v-if=" library.address.district != null">
-                                {{ library.address.district.name }}
-                            </span>
+                        <span v-if="library.address.district != null">
+                            {{ library.address.district.name }}
+                        </span>
 
-                            <span v-if=" library.address.post_code != null">
-                                - {{ library.address.post_code }}
-                            </span>
-                        </p>
+                        <span v-if="library.address.post_code != null">
+                            - {{ library.address.post_code }}
+                        </span>
                     </h5>
                 </div>
 
                 <div class="p-2">
-                    <img src="#" alt="QR Code" width="96" height="96" />
+                    <img
+                        :src="getQRCodeUrl(library)"
+                        alt="QR Code"
+                        width="64"
+                        height="64"
+                    />
                 </div>
             </div>
 
@@ -146,6 +160,12 @@ export default {
                 this.activeTab.active = false;
                 this.activeTab = tab;
             }
+        },
+        getQRCodeUrl(library) {
+
+            return this.getApiUrl(
+                "/qr-codes/library_qr_codes/lib_qr_" + library.id + ".svg"
+            );
         }
     },
     data: function() {

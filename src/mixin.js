@@ -78,8 +78,7 @@ export default {
             };
         },
         extractUrl(text) {
-
-            if(text){
+            if (text) {
                 var regex = /(https?:\/\/[^ ]*)/;
                 var matches = text.match(regex);
 
@@ -87,7 +86,6 @@ export default {
                     return matches[0];
                 }
             }
-
 
             return null;
         },
@@ -103,15 +101,17 @@ export default {
             }
         },
         extractYouTubeVideoId(url) {
-            var videoid = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+            if (url == null) return null;
 
-            if(videoid != null) {
+            var videoid = url.match(
+                /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
+            );
+
+            if (videoid != null) {
                 return videoid[1];
-             } else {
+            } else {
                 return null;
-             }
-
-
+            }
         }
     }
 };
