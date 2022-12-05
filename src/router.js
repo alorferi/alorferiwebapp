@@ -2,13 +2,13 @@ import Vue from "vue";
 import Router from "vue-router";
 import store from "./store";
 import Home from "./views/home/Home.vue";
+import SearchShow from "./views/home/SearchShow.vue";
 import About from "./views/about/About.vue";
 import Login from "./views/auth/Login.vue";
 import Register from "./views/auth/Register.vue";
 // import NewsFeeds from "./views/home/NewsFeeds.vue";
 import MyLibraryListView from "./views/library/MyLibraryListView.vue";
 import AllLibraryListView from "./views/library/AllLibraryListView.vue";
-import AutoCompleteTest from "./views/library/AutocompleteTest.vue";
 import LibraryCreate from "./views/library/LibraryCreate.vue";
 import LibraryEdit from "./views/library/LibraryEdit.vue";
 import LibraryShow from "./views/library/LibraryShow.vue";
@@ -33,6 +33,7 @@ let router = new Router({
             leftMenu: HomeLeftMenu,
             meta: { title: "Home" }
         },
+
         {
             path: "/libraries",
             name: "libraries",
@@ -99,13 +100,13 @@ let router = new Router({
             leftMenu: HomeLeftMenu,
             meta: { title: "My Libraries", requiresAuth: true}
         },
-        {
-            path: "/libraries/autocomplete",
-            name: "autocomplete",
-            component: AutoCompleteTest,
-            leftMenu: HomeLeftMenu,
-            meta: { title: "AutoCompleteTest" }
-        },
+        // {
+        //     path: "/libraries/autocomplete",
+        //     name: "autocomplete",
+        //     component: AutoCompleteTest,
+        //     leftMenu: HomeLeftMenu,
+        //     meta: { title: "AutoCompleteTest" }
+        // },
         {
             path: "/libraries/create",
             name: "library-create",
@@ -142,7 +143,18 @@ let router = new Router({
             meta: {
                 requiresAuth: true
             }
-        }
+        },
+        {
+            path: "/:username",
+            name: "unique-name",
+            component: SearchShow,
+            leftMenu: HomeLeftMenu,
+            // leftBadge: LibraryBadge,
+            meta: {
+                title: "",
+                requiresAuth: true
+            }
+        },
     ]
 });
 

@@ -45,6 +45,26 @@ const actions = {
         });
     },
 
+    fetchSearch(context, username) {
+        var url = mixin.methods.getApiUrl("/api/searches/" + username);
+        var headers = mixin.methods.getHeaderWithAuthorizationBearerToken();
+
+        return new Promise((resolve, reject) => {
+            axios
+                .get(url, headers)
+                .then(response => {
+                    const library = response.data.data.attributes;
+
+                    context.commit("setLibrary", library);
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
+
     fetchMyLibraries(context, payload) {
         var endpoint =
             "/api/users/" + this.getters.activeUser.id + "/libraries";
