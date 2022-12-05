@@ -46,7 +46,8 @@
 </template>
 
 <script>
-import Login from "@/views/auth/Login";
+// import Login from "@/views/auth/Login";
+import Login from "@/views/auth/LoginWithUserName";
 export default {
     name: "Welcome",
     components: {
