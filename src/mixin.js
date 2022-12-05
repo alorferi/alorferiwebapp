@@ -13,7 +13,7 @@ export default {
 
         formatDate: function(
             value,
-            expectedFormat = "Do MMMM YYYY",
+            expectedFormat = "DD MMMM YYYY",
             language = null
         ) {
             var date = moment(value);
@@ -112,6 +112,32 @@ export default {
             } else {
                 return null;
             }
+        },
+        formatBdMobileNumber(pMobileNumber) {
+            var mobileNumber = pMobileNumber;
+
+            mobileNumber = mobileNumber.replace("-", "");
+            mobileNumber = mobileNumber.replace(" ", "");
+
+            if (pMobileNumber.length == 10) {
+                mobileNumber = "+880" + mobileNumber;
+            } else if (pMobileNumber.length == 11) {
+                mobileNumber = "+88" + mobileNumber;
+            }
+
+            return mobileNumber;
+        },
+        isValidInternationalMobileNumber(pMobileNumber) {
+            var mobileNumber = pMobileNumber;
+            mobileNumber = mobileNumber.replace("-", "");
+            mobileNumber = mobileNumber.replace(" ", "");
+            var pattern = "^\\+(?:[0-9] ?){6,14}[0-9]\\$";
+            var matcher = mobileNumber.match(pattern);
+            return matcher;
+        },
+        isValidEmail(email) {
+            var re = /\S+@\S+\.\S+/;
+            return re.test(email);
         }
     }
 };

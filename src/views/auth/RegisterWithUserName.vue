@@ -38,7 +38,7 @@
                             placeholder="E-mail or Mobile"
                             icon="fas fa-at"
                             :errors="errors"
-                            @update:field="userName = $event"
+                            @update:field="username = $event"
                         />
                     </div>
 
@@ -132,7 +132,7 @@ export default {
                 dob: this.formatDate(new Date(), "YYYY-MM-DD", "en"),
                 gender: ""
             },
-            userName: "",
+            username: "",
             ot_code: "",
             errors: null,
             showOtcModal: false,
@@ -147,7 +147,7 @@ export default {
 
         login: function() {
             const self = this;
-            let username = this.userData.mobile;
+            let username = this.username;
             let password = this.userData.password;
             this.$store
                 .dispatch("loginBasic", { username, password })
@@ -176,6 +176,12 @@ export default {
             const headers = {
                 "ot-code": self.ot_code
             };
+
+            if(this.isValidEmail(this.username)){
+                this.userData.email = this.username;
+            }else{
+                this.userData.mobile = this.username;
+            }
 
             this.$axios
                 .post(url, this.userData, {

@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <UserNameField
                         name="username"
-                        placeholder="Email or Mobile"
+                        placeholder="E-mail or Mobile"
                         icon="fas fa-mobile-alt"
                         :errors="errors"
                         @update:field="username = $event"

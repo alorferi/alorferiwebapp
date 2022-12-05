@@ -6,7 +6,9 @@
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text" v-if="icon">
-                    <i class="fas fa-at"></i>&nbsp;/&nbsp;<i class="fas fa-mobile-alt"></i>
+                    <i class="fas fa-at"></i>&nbsp;/&nbsp;<i
+                        class="fas fa-mobile-alt"
+                    ></i>
                 </span>
             </div>
 
@@ -14,7 +16,7 @@
                 type="text"
                 :id="name"
                 class="form-control"
-                v-model="userName"
+                v-model="username"
                 @blur="onBlurUserName"
                 size="30"
                 maxlength="330"
@@ -35,12 +37,19 @@ export default {
     data: function() {
         return {
             countryCode: "+880",
-            userName: ""
+            username: ""
         };
     },
     computed: {
-        userNameWithCountryCode() {
-            return this.countryCode + this.userName;
+        getFormattedUserName() {
+            if (this.isValidEmail(this.username)) {
+                return this.username;
+            } else {
+                return this.formatBdMobileNumber(this.username);
+            }
+        },
+        usernameWithCountryCode() {
+            return this.countryCode + this.username;
         },
 
         hasError: function() {
@@ -54,7 +63,7 @@ export default {
     methods: {
         updateField: function() {
             this.clearErrors(this.name);
-            this.$emit("update:field", this.userNameWithCountryCode);
+            this.$emit("update:field", this.getFormattedUserName);
         },
         errorMessage: function() {
             if (this.hasError) {
@@ -72,44 +81,22 @@ export default {
             };
         },
         onBlurUserName(e) {
-            console.log("blur", e.target.value);
+            // console.log("blur", e.target.value);
 
             console.log("Mobile", this.formatBdMobileNumber(e.target.value));
 
             // if (e.target.value.startsWith("0", 0)) {
-            //     this.userName = e.target.value.substring(1);
+            //     this.username = e.target.value.substring(1);
             //     this.updateField();
             // }
 
             // var value = parseInt(e.target.value, 10);
             // if (isNaN(value) == false) {
-            //    this.userName = value;
+            //    this.username = value;
             //    this.updateField()
             // }
-        },
-
-        formatBdMobileNumber(pMobileNumber) {
-            var mobileNumber = pMobileNumber;
-
-            mobileNumber = mobileNumber.replace("-", "");
-            mobileNumber = mobileNumber.replace(" ", "");
-
-            if (pMobileNumber.length == 10) {
-                mobileNumber = "+880" + mobileNumber;
-            } else if (pMobileNumber.length == 11) {
-                mobileNumber = "+88" + mobileNumber;
-            }
-
-            return mobileNumber;
-        },
-        isValidInternationalMobileNumber(pMobileNumber) {
-            var mobileNumber = pMobileNumber;
-            mobileNumber = mobileNumber.replace("-", "");
-            mobileNumber = mobileNumber.replace(" ", "");
-            var pattern = "^\\+(?:[0-9] ?){6,14}[0-9]\\$";
-            var matcher = mobileNumber.match(pattern);
-            return matcher;
         }
+
     },
 
     watch: {
@@ -118,7 +105,7 @@ export default {
             immediate: true,
             handler(newVal, oldVal) {
                 if (newVal != oldVal) {
-                    this.userName = newVal;
+                    this.username = newVal;
                 }
             }
         }
