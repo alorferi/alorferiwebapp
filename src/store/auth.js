@@ -123,10 +123,7 @@ const actions = {
                                 "otc_token",
                                 JSON.stringify(otc_token)
                             );
-                            // Add the following line:
-                            // axios.defaults.headers.common[
-                            //     "Authorization"
-                            // ] = token;
+
                             commit("setOtcToken", otc_token);
                             resolve(response);
                             break;
@@ -155,13 +152,15 @@ const actions = {
                 });
         });
     },
-    resetPassword({ commit }, dataModel) {
+    resetPassword(context, dataModel) {
         return new Promise((resolve, reject) => {
             let login_url =
                 Vue.prototype.$apiServerBaseUrl + "/api/auth/reset-password";
+
+            const otc_token = JSON.parse(localStorage.getItem("otc_token") || null)
+
             let headers = {
-                Authorization: "Bearer " + localStorage.getItem("otc_token"),
-                "Content-Type": "application/json"
+                Authorization: "Bearer " + otc_token
             };
 
             axios({
@@ -173,28 +172,12 @@ const actions = {
                 .then(response => {
                     switch (response.data.status) {
                         case "OK":
-                            var otc_token = response.data.data.token;
-
-                            localStorage.setItem(
-                                "otc_token",
-                                JSON.stringify(otc_token)
-                            );
-                            // Add the following line:
-                            // axios.defaults.headers.common[
-                            //     "Authorization"
-                            // ] = token;
-                            commit("setOtcToken", otc_token);
-                            resolve(response);
-                            break;
-                        case "OTC_GENERATED":
-                        case "OTC_REJECTED":
-                            resolve(response);
+                            localStorage.removeItem("otc_token");
                             break;
                     }
+                    resolve(response);
                 })
                 .catch(error => {
-                    localStorage.removeItem("otc_token");
-
                     switch (error.response.data.error) {
                         case "invalid_grant":
                             reject("Mobile Number or Password does not match.");

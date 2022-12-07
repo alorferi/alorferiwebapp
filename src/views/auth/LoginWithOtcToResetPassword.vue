@@ -11,11 +11,11 @@
                     class="otc_enabled_form"
                     @submit.prevent="submitForm"
                 >
-                    <div class="form-group">
+                    <div class="form-group mt-4 mb-4">
 
                         <UserNameField
                             name="username"
-                            label="E-mail or Mobile"
+                            label=""
                             placeholder="Type E-mail or Mobile here"
                             icon="fas fa-at"
                             :errors="errors"
