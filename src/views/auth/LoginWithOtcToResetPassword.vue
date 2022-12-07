@@ -9,7 +9,7 @@
                 <form
                     id="loginWithOtcForm"
                     class="otc_enabled_form"
-                    @submit.prevent="submitForm"
+                    @submit.prevent="submitFormX"
                 >
                     <div class="form-group">
 
@@ -75,7 +75,7 @@ export default {
     methods: {
         updateOtc(value) {
             this.ot_code = value;
-            this.submitForm();
+            this.submitFormX();
         },
 
         submitForm: function() {
@@ -83,7 +83,8 @@ export default {
             const self = this;
 
             const headers = {
-                "ot-code": self.ot_code
+                "ot-code": self.ot_code,
+                "Content-Type": "application/json"
             };
 
             this.$axios
@@ -129,7 +130,54 @@ export default {
 
                     self.ot_code = null;
                 });
+        },
+        submitFormX: function() {
+            console.log(this.resetPasswordModel);
+            const self = this;
+
+            const headers = {
+                "ot-code": self.ot_code,
+                "Content-Type": "application/json"
+            };
+            this.$store
+                .dispatch("loginWithOtc", {headers: headers, data: this.resetPasswordModel})
+                .then(
+                    response => {
+                    console.log(response.data.data);
+
+                    switch (response.data.status) {
+                        case "OK":
+                            self.$router.replace({ name: "reset-password-with-token" });
+                            break;
+                        case "OTC_GENERATED":
+                        case "OTC_REJECTED":
+                            var otc_expired_after_in_seconds =
+                                response.data.data.otc_expired_after_in_seconds;
+                            self.durationInSeconds = otc_expired_after_in_seconds;
+                            self.showOtcModal = true;
+
+                            break;
+                    }
+
+                    // this.$router.push("/auth/login");
+                }
+                )
+                .catch(errors => {
+                    console.log(errors);
+
+                    try {
+                        if (errors.response.data.errors) {
+                            self.errors = errors.response.data.errors;
+                        }
+                    } catch (err) {
+                        self.errors = err;
+                    }
+
+                    self.ot_code = null;
+                });
+
         }
+
     }
 };
 </script>
