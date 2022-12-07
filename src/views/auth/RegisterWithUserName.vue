@@ -38,7 +38,7 @@
                             placeholder="E-mail or Mobile"
                             icon="fas fa-at"
                             :errors="errors"
-                            @update:field="username = $event"
+                            @update:field="userData.username = $event"
                         />
                     </div>
 
@@ -126,13 +126,14 @@ export default {
             userData: {
                 first_name: "",
                 surname: "",
-                mobile: "",
-                email: "",
+                // mobile: "",
+                // email: "",
+                username: "",
                 password: "",
                 dob: this.formatDate(new Date(), "YYYY-MM-DD", "en"),
                 gender: ""
             },
-            username: "",
+            // username: "",
             ot_code: "",
             errors: null,
             showOtcModal: false,
@@ -147,7 +148,7 @@ export default {
 
         login: function() {
             const self = this;
-            let username = this.username;
+            let username = this.userData.username;
             let password = this.userData.password;
             this.$store
                 .dispatch("loginBasic", { username, password })
@@ -155,7 +156,7 @@ export default {
                     this.$store
                         .dispatch("fetchMe")
                         .then(() => {
-                            self.$router.replace(self.$route.query.from);
+                            self.$router.replace({ name: "home" });
                             console.log("success");
                         })
                         .catch(() => {
@@ -171,17 +172,19 @@ export default {
 
         submitForm: function() {
             const self = this;
-            const url = this.$apiServerBaseUrl + "/api/auth/register";
+            const url = this.$apiServerBaseUrl + "/api/auth/register-with-username";
 
             const headers = {
                 "ot-code": self.ot_code
             };
 
-            if(this.isValidEmail(this.username)){
-                this.userData.email = this.username;
-            }else{
-                this.userData.mobile = this.username;
-            }
+            // if(this.isMobileNumber(this.username)){
+            //     this.userData.mobile = this.username;
+            //     this.userData.email = ""
+            // }else{
+            //     this.userData.email = this.username;
+            //     this.userData.mobile = "";
+            // }
 
             this.$axios
                 .post(url, this.userData, {

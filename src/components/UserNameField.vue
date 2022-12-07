@@ -42,10 +42,12 @@ export default {
     },
     computed: {
         getFormattedUserName() {
-            if (this.isValidEmail(this.username)) {
+            if (this.isNumber(this.username,"-"," ",",","+")) {
+                 return this.formatBdMobileNumber(this.username);
+            } else if (this.isValidEmail(this.username)) {
                 return this.username;
             } else {
-                return this.formatBdMobileNumber(this.username);
+                return this.username;
             }
         },
         usernameWithCountryCode() {

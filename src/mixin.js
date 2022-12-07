@@ -127,17 +127,40 @@ export default {
 
             return mobileNumber;
         },
-        isValidInternationalMobileNumber(pMobileNumber) {
+        isMobileNumber(pMobileNumber, countryCode = "*") {
             var mobileNumber = pMobileNumber;
             mobileNumber = mobileNumber.replace("-", "");
             mobileNumber = mobileNumber.replace(" ", "");
-            var pattern = "^\\+(?:[0-9] ?){6,14}[0-9]\\$";
+
+            var pattern = "";
+
+            switch (countryCode) {
+                case "US":
+                    break;
+
+                case "BD":
+                    break;
+                case "*":
+                default:
+                    pattern = "^\\+(?:[0-9] ?){6,14}[0-9]\\$";
+                    break;
+            }
+
             var matcher = mobileNumber.match(pattern);
             return matcher;
         },
         isValidEmail(email) {
             var re = /\S+@\S+\.\S+/;
             return re.test(email);
+        },
+        isNumber(value, ...ignoreChars) {
+            if (value == null || value == "") {
+                return false;
+            }
+            for (let char of ignoreChars) {
+                value = value.replace(char, "");
+            }
+            return !isNaN(value);
         }
     }
 };
