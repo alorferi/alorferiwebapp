@@ -1,11 +1,19 @@
 <template>
     <div>
 
-            <div class="modal-header">
-                <h5 class="modal-title">Reset Password</h5>
-            </div>
+        <div class="row pt-5">
+            <div class=" col-sm-4"></div>
 
-            <form ref="form" @submit.stop.prevent="handleSubmit" class="pt-4">
+            <div class=" col-sm-4 text-center card">
+                <h4>Reset Password</h4>
+
+                <form
+                    id="loginWithOtcForm"
+                    class="otc_enabled_form"
+                    @submit.prevent="submitForm"
+                >
+
+
                 <b-form-group
                     label=""
                     label-for="newPasswordInput"
@@ -57,7 +65,20 @@
                         {{ message }}
                     </div>
                 </b-form-group>
-            </form>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <ResetPasswordModal
+            :showResetPasswordModal="showResetPasswordModal"
+            />
+            <div class=" col-sm-4"></div>
+        </div>
     </div>
 </template>
 
