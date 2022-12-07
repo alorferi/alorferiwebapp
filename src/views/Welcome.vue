@@ -47,7 +47,7 @@
 
 <script>
 // import Login from "@/views/auth/Login";
-import Login from "@/views/auth/LoginWithUserName";
+import Login from "@/views/auth/Login";
 export default {
     name: "Welcome",
     components: {

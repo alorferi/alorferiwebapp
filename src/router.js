@@ -5,7 +5,7 @@ import Home from "./views/home/Home.vue";
 import SearchShow from "./views/home/SearchShow.vue";
 import About from "./views/about/About.vue";
 import Login from "./views/auth/Login.vue";
-import Register from "./views/auth/RegisterWithUserName.vue";
+import Register from "./views/auth/Register.vue";
 // import NewsFeeds from "./views/home/NewsFeeds.vue";
 import MyLibraryListView from "./views/library/MyLibraryListView.vue";
 import AllLibraryListView from "./views/library/AllLibraryListView.vue";

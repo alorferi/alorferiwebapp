@@ -32,13 +32,13 @@
                     </div>
 
                     <div class="form-group">
-                        <MobileNumberField
-                            name="mobile"
-                            label="Mobile"
-                            placeholder="Mobile"
-                            icon="fas fa-mobile-alt"
+                        <UserNameField
+                            name="username"
+                            label="E-mail or Mobile"
+                            placeholder="E-mail or Mobile"
+                            icon="fas fa-at"
                             :errors="errors"
-                            @update:field="userData.mobile = $event"
+                            @update:field="userData.username = $event"
                         />
                     </div>
 
@@ -100,7 +100,8 @@
 
 <script>
 import EditTextField from "../../components/EditTextField";
-import MobileNumberField from "../../components/MobileNumberField";
+// import MobileNumberField from "../../components/MobileNumberField";
+import UserNameField from "../../components/UserNameField";
 import GenderInputField from "../../components/GenderInputField";
 import AskForOtc from "../../components/AskForOtc";
 // import $ from 'jquery'
@@ -114,8 +115,9 @@ export default {
     },
     components: {
         EditTextField,
-        MobileNumberField,
+        // MobileNumberField,
         GenderInputField,
+        UserNameField,
         AskForOtc
     },
     computed: {},
@@ -124,11 +126,14 @@ export default {
             userData: {
                 first_name: "",
                 surname: "",
-                mobile: "",
+                // mobile: "",
+                // email: "",
+                username: "",
                 password: "",
                 dob: this.formatDate(new Date(), "YYYY-MM-DD", "en"),
                 gender: ""
             },
+            // username: "",
             ot_code: "",
             errors: null,
             showOtcModal: false,
@@ -143,7 +148,7 @@ export default {
 
         login: function() {
             const self = this;
-            let username = this.userData.mobile;
+            let username = this.userData.username;
             let password = this.userData.password;
             this.$store
                 .dispatch("loginBasic", { username, password })
@@ -151,7 +156,7 @@ export default {
                     this.$store
                         .dispatch("fetchMe")
                         .then(() => {
-                            self.$router.replace(self.$route.query.from);
+                            self.$router.replace({ name: "home" });
                             console.log("success");
                         })
                         .catch(() => {
@@ -167,11 +172,19 @@ export default {
 
         submitForm: function() {
             const self = this;
-            const url = this.$apiServerBaseUrl + "/api/auth/register";
+            const url = this.$apiServerBaseUrl + "/api/auth/register-with-username";
 
             const headers = {
                 "ot-code": self.ot_code
             };
+
+            // if(this.isMobileNumber(this.username)){
+            //     this.userData.mobile = this.username;
+            //     this.userData.email = ""
+            // }else{
+            //     this.userData.email = this.username;
+            //     this.userData.mobile = "";
+            // }
 
             this.$axios
                 .post(url, this.userData, {

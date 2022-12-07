@@ -4,9 +4,9 @@
         <div class="card-body">
             <form @submit.prevent="login">
                 <div class="form-group">
-                    <MobileNumberField
+                    <UserNameField
                         name="username"
-                        placeholder="Mobile Number"
+                        placeholder="E-mail or Mobile"
                         icon="fas fa-mobile-alt"
                         :errors="errors"
                         @update:field="username = $event"
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import MobileNumberField from "@/components/MobileNumberField";
+import UserNameField from "@/components/UserNameField";
 import EditTextField from "@/components/EditTextField";
 
 export default {
@@ -75,7 +75,7 @@ export default {
         msg: String
     },
     components: {
-        MobileNumberField,
+        UserNameField,
         EditTextField
     },
     mounted: function() {

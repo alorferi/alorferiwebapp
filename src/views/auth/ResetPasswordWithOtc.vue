@@ -12,12 +12,16 @@
                     @submit.prevent="submitForm"
                 >
                     <div class="form-group">
-                        <MobileNumberField
+
+                        <UserNameField
                             name="username"
-                            placeholder="Type mobile number here"
+                            label="E-mail or Mobile"
+                            placeholder="Type E-mail or Mobile here"
+                            icon="fas fa-at"
                             :errors="errors"
                             @update:field="resetPasswordModel.username = $event"
-                        ></MobileNumberField>
+                        />
+
                     </div>
 
                     <AskForOtc
@@ -40,13 +44,13 @@
     </div>
 </template>
 <script>
-import MobileNumberField from "../../components/MobileNumberField";
+import UserNameField from "../../components/UserNameField";
 import AskForOtc from "../../components/AskForOtc";
 
 export default {
     name: "ResetPasswordWithOtc",
     components: {
-        MobileNumberField,
+        UserNameField,
         AskForOtc
     },
     data() {
