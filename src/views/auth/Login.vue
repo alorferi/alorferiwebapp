@@ -41,7 +41,7 @@
                     <div class="text-center">
                         <router-link
                             class="btn btn-link"
-                            :to="{ name: 'reset-password' }"
+                            :to="{ name: 'login-with-otc-to-reset-password' }"
                         >
                             Forgot Your Password?
                         </router-link>

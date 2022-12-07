@@ -1,17 +1,6 @@
 <template>
     <div>
-        <b-modal
-            id="modal-prevent-closing"
-            ref="modal"
-            title="One Time Code"
-            @show="initModal"
-            @hidden="resetModal"
-            :ok-title="okTitleText"
-            v-model="showResetPasswordModal"
-            :hide-header="hideHeader"
-            @ok="handleOk"
-            centered
-        >
+
             <div class="modal-header">
                 <h5 class="modal-title">Reset Password</h5>
             </div>
@@ -69,13 +58,12 @@
                     </div>
                 </b-form-group>
             </form>
-        </b-modal>
     </div>
 </template>
 
 <script>
 export default {
-    name: "ResetPasswordModal",
+    name: "ResetPasswordWithToken",
     props: ["showResetPasswordModal"],
     computed: {},
     mounted: function() {},

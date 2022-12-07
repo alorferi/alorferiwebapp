@@ -28,8 +28,7 @@
                         :showOtcModal="showOtcModal"
                         :durationInSeconds="durationInSeconds"
                         @updateOtc="updateOtc"
-                        @onUpdateVisibleState="showOtcModal= $event"
-                    ></AskForOtc>
+                        @onUpdateVisibleState="showOtcModal= $event"/>
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-success btn-block">
@@ -39,19 +38,25 @@
                 </form>
             </div>
 
+            <ResetPasswordModal
+            :showResetPasswordModal="showResetPasswordModal"
+            />
             <div class=" col-sm-4"></div>
         </div>
     </div>
 </template>
+
 <script>
 import UserNameField from "../../components/UserNameField";
 import AskForOtc from "../../components/AskForOtc";
+import ResetPasswordModal from "./ResetPasswordModal.vue";
 
 export default {
-    name: "ResetPasswordWithOtc",
+    name: "LoginWithOtcToResetPassword",
     components: {
         UserNameField,
-        AskForOtc
+        AskForOtc,
+        ResetPasswordModal
     },
     data() {
         return {
@@ -62,6 +67,7 @@ export default {
             ot_code: "",
             durationInSeconds: 0,
             showOtcModal: false,
+            showResetPasswordModal: false,
             errors: null
         };
     },
@@ -93,7 +99,10 @@ export default {
 
                     switch (response.data.status) {
                         case "OK":
-                            window.location.href = "/";
+                            // window.location.href = "/";
+                            // self.showResetPasswordModal = true;
+
+                            self.$router.replace({ name: "reset-password-with-token" });
                             break;
                         case "OTC_GENERATED":
                         case "OTC_REJECTED":
