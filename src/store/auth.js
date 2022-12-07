@@ -3,8 +3,7 @@ import axios from "axios";
 
 const state = {
     token: JSON.parse(localStorage.getItem("token") || null),
-    otc_token: JSON.parse(localStorage.getItem("otc_token") || null),
-
+    otc_token: JSON.parse(localStorage.getItem("otc_token") || null)
 };
 const getters = {
     access_token: state => {
@@ -114,6 +113,62 @@ const actions = {
                 data: dataModel.data,
                 method: "POST",
                 headers: dataModel.headers
+            })
+                .then(response => {
+                    switch (response.data.status) {
+                        case "OK":
+                            var otc_token = response.data.data.token;
+
+                            localStorage.setItem(
+                                "otc_token",
+                                JSON.stringify(otc_token)
+                            );
+                            // Add the following line:
+                            // axios.defaults.headers.common[
+                            //     "Authorization"
+                            // ] = token;
+                            commit("setOtcToken", otc_token);
+                            resolve(response);
+                            break;
+                        case "OTC_GENERATED":
+                        case "OTC_REJECTED":
+                            resolve(response);
+                            break;
+                    }
+                })
+                .catch(error => {
+                    localStorage.removeItem("otc_token");
+
+                    switch (error.response.data.error) {
+                        case "invalid_grant":
+                            reject("Mobile Number or Password does not match.");
+                            break;
+
+                        case "invalid_request":
+                            reject(error.response.data.hint);
+                            break;
+
+                        default:
+                            reject(error);
+                            break;
+                    }
+                });
+        });
+    },
+    resetPassword({ commit }, dataModel) {
+        return new Promise((resolve, reject) => {
+            let login_url =
+                Vue.prototype.$apiServerBaseUrl + "/api/auth/reset-password";
+            let headers = {
+                Authorization: "Bearer " + localStorage.getItem("otc_token"),
+                "Content-Type": "application/json"
+            };
+
+            axios({
+                url: login_url,
+                data: dataModel,
+                method: "POST",
+                headers: headers
             })
                 .then(response => {
                     switch (response.data.status) {
