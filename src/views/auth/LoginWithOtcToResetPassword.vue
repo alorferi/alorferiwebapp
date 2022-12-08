@@ -49,6 +49,9 @@
 
             <AlertMessageModal
                 :showAlertModal="showAlertModal"
+                title="this is title"
+                message="this is message"
+                is_success="true"
             />
             <div class=" col-sm-4"></div>
         </div>

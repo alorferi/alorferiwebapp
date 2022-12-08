@@ -6,20 +6,23 @@
             title="One Time Code"
             @show="initModal"
             @hidden="resetModal"
-            :ok-title="okTitleText"
+            ok-title="OK"
+            cancel-title="Cancel"
             v-model="showAlertModalLocal"
             :hide-header="hideHeader"
             @ok="handleOk"
+            @cancel="handleOk"
             centered
             data-keyboard="false"
             data-backdrop="static"
         >
             <div class="modal-header">
-                <h5 class="modal-title">{{tittle}}</h5>
+                <h5 class="modal-title">{{title}}</h5>
             </div>
 
-            <div class="text-center text-danger">
-                {{ message }}
+            <div class="modal-body text-center text-danger">
+                <h6> {{ message }}</h6>
+
             </div>
         </b-modal>
     </div>
@@ -28,7 +31,7 @@
 <script>
 export default {
     name: "AlertMessageModal",
-    props: ["showAlertModal"],
+    props: ["showAlertModal", "title", "message","is_success" ],
     computed: {
         showAlertModalLocal: {
             get: function() {
@@ -44,10 +47,6 @@ export default {
         return {
             ot_code: "",
             otCodeState: null,
-            title: "",
-            message: "",
-            oldSetInterval: null,
-            okTitleText: "OK",
             hideHeader: true
         };
     },
@@ -58,23 +57,12 @@ export default {
         emitShowAlertModal: function(isShowModal) {
             this.$emit("onUpdateVisibleState", isShowModal);
         },
-        checkFormValidity() {
-            const valid = this.$refs.form.checkValidity();
-            this.otCodeState = valid;
-            return valid;
-        },
         resetModal() {
             this.ot_code = "";
             this.otCodeState = null;
-            if (this.oldSetInterval != null) {
-                clearInterval(this.oldSetInterval);
-            }
             this.emitShowAlertModal(false);
         },
         initModal() {
-            this.ot_code = "";
-            this.message = "";
-            this.okTitleText = "OK";
             this.otCodeState = null;
         },
         handleOk(bvModalEvt) {
@@ -84,10 +72,6 @@ export default {
             this.handleSubmit();
         },
         handleSubmit() {
-            // Exit when the form isn't valid
-            if (!this.checkFormValidity()) {
-                return;
-            }
 
             this.emitOtc();
             // Push the name to submitted names
