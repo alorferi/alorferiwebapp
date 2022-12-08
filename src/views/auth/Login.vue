@@ -24,6 +24,9 @@
                     />
                 </div>
 
+                <div class="text-center text-danger mb-2" v-if="error_message">
+                    {{ error_message }}
+                </div>
                 <div class="form-group">
                     <input type="checkbox" name="remember" />
                     Remember Me
@@ -56,10 +59,6 @@
                 >
                     Create New Account
                 </router-link>
-                <!-- </div> -->
-                <div class="text-center text-danger" v-if="error_message">
-                    {{ error_message }}
-                </div>
             </form>
         </div>
     </div>
@@ -104,7 +103,7 @@ export default {
                     this.$store
                         .dispatch("fetchMe")
                         .then(() => {
-                             self.$router.replace(self.$route.query.from);
+                            self.$router.replace(self.$route.query.from);
                             // window.location.href = "/";
                             // console.log("success");
                         })
@@ -112,9 +111,20 @@ export default {
                             console.log("failed");
                         });
                 })
-                .catch(err => {
-                    this.error_message = err;
-                    console.log(err);
+                .catch(errors => {
+                    // this.error_message = errors;
+                    console.log(errors);
+
+                    try {
+                        if (errors.response.data.errors) {
+                            self.errors = errors.response.data.errors;
+                        }else if(errors.response.data.message){
+                            this.error_message = errors.response.data.message;
+                        }
+                    } catch (err) {
+                        self.errors = err;
+                    }
+
                     this.is_error = true;
                 });
         },

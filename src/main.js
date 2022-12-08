@@ -52,7 +52,7 @@ Vue.use(IconsPlugin);
 
 //  Vue.prototype.$http = axios;
 
-const access_token = localStorage.getItem("access_token");
+const access_token =  JSON.parse(localStorage.getItem("otc_token") || null)
 if (access_token) {
     Vue.prototype.$http.defaults.headers.common["Authorization"] =
         "Bearer " + access_token;
