@@ -77,12 +77,12 @@
                     </div>
 
                     <div class="form-group">
-                        <AskForOtc
+                        <AskForOtcModal
                             :showOtcModal="showOtcModal"
                             :durationInSeconds="durationInSeconds"
                             @updateOtc="updateOtc"
                             @onUpdateVisibleState="showOtcModal= $event"
-                        ></AskForOtc>
+                        ></AskForOtcModal>
                         <button
                             type="submit"
                             class="btn btn-primary"
@@ -103,7 +103,7 @@ import EditTextField from "../../components/EditTextField";
 // import MobileNumberField from "../../components/MobileNumberField";
 import UserNameField from "../../components/UserNameField";
 import GenderInputField from "../../components/GenderInputField";
-import AskForOtc from "../../components/AskForOtc";
+import AskForOtcModal from "../../components/AskForOtcModal";
 // import $ from 'jquery'
 
 // import jQuery from 'jquery'
@@ -118,7 +118,7 @@ export default {
         // MobileNumberField,
         GenderInputField,
         UserNameField,
-        AskForOtc
+        AskForOtcModal
     },
     computed: {},
     data() {

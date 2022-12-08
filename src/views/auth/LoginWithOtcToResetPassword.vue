@@ -29,7 +29,7 @@
                         {{ error_message }}
                     </div>
 
-                    <AskForOtc
+                    <AskForOtcModal
                         :showOtcModal="showOtcModal"
                         :durationInSeconds="durationInSeconds"
                         @updateOtc="updateOtc"
@@ -44,8 +44,12 @@
                 </form>
             </div>
 
-            <ResetPasswordModal
-                :showResetPasswordModal="showResetPasswordModal"
+            <Loading :showLoadingModal="showLoadingModal"
+            @onUpdateVisibleState="showAlertMessage = $event"
+            ></Loading>
+
+            <AlertMessageModal
+                :showAlertMessage="showAlertMessage"
             />
             <div class=" col-sm-4"></div>
         </div>
@@ -54,13 +58,17 @@
 
 <script>
 import UserNameField from "../../components/UserNameField";
-import AskForOtc from "../../components/AskForOtc";
+import AskForOtcModal from "../../components/AskForOtcModal";
+import AlertMessageModal from "../../components/AlertMessageModal";
+import Loading from "@/components/LoadingModal";
 
 export default {
     name: "LoginWithOtcToResetPassword",
     components: {
         UserNameField,
-        AskForOtc
+        AskForOtcModal,
+        AlertMessageModal,
+        Loading
     },
     data() {
         return {
@@ -71,7 +79,8 @@ export default {
             ot_code: "",
             durationInSeconds: 0,
             showOtcModal: false,
-            showResetPasswordModal: false,
+            showAlertMessage: false,
+            showLoadingModal: false,
             errors: null,
             error_message: null
         };
@@ -90,12 +99,15 @@ export default {
                 "ot-code": self.ot_code,
                 "Content-Type": "application/json"
             };
+
+            self.showLoadingModal = true
             this.$store
                 .dispatch("loginWithOtc", {
                     headers: headers,
                     data: this.resetPasswordModel
                 })
                 .then(response => {
+                    self.showLoadingModal = false
                     console.log(response.data.data);
 
                     switch (response.data.status) {
@@ -115,6 +127,7 @@ export default {
                     // this.$router.push("/auth/login");
                 })
                 .catch(errors => {
+                    self.showLoadingModal = false
                     console.log(errors);
 
                     try {

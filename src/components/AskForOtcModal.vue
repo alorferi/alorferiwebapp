@@ -55,7 +55,7 @@
 
 <script>
 export default {
-    name: "AskForOtc",
+    name: "AskForOtcModal",
     props: ["showOtcModal", "durationInSeconds"],
       computed: {
         showOtcModalLocal: {
