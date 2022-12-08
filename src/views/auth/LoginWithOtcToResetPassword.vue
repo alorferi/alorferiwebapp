@@ -44,12 +44,11 @@
                 </form>
             </div>
 
-            <Loading :showLoadingModal="showLoadingModal"
-            @onUpdateVisibleState="showAlertMessage = $event"
-            ></Loading>
+            <LoadingModal :showLoadingModal="showLoadingModal"
+            @onUpdateVisibleState="showLoadingModal = $event"/>
 
             <AlertMessageModal
-                :showAlertMessage="showAlertMessage"
+                :showAlertModal="showAlertModal"
             />
             <div class=" col-sm-4"></div>
         </div>
@@ -60,7 +59,7 @@
 import UserNameField from "../../components/UserNameField";
 import AskForOtcModal from "../../components/AskForOtcModal";
 import AlertMessageModal from "../../components/AlertMessageModal";
-import Loading from "@/components/LoadingModal";
+import LoadingModal from "@/components/LoadingModal";
 
 export default {
     name: "LoginWithOtcToResetPassword",
@@ -68,7 +67,7 @@ export default {
         UserNameField,
         AskForOtcModal,
         AlertMessageModal,
-        Loading
+        LoadingModal
     },
     data() {
         return {
@@ -79,7 +78,7 @@ export default {
             ot_code: "",
             durationInSeconds: 0,
             showOtcModal: false,
-            showAlertMessage: false,
+            showAlertModal: true,
             showLoadingModal: false,
             errors: null,
             error_message: null

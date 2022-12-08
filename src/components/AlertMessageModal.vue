@@ -7,7 +7,7 @@
             @show="initModal"
             @hidden="resetModal"
             :ok-title="okTitleText"
-            v-model="showAlertMessageLocal"
+            v-model="showAlertModalLocal"
             :hide-header="hideHeader"
             @ok="handleOk"
             centered
@@ -28,14 +28,14 @@
 <script>
 export default {
     name: "AlertMessageModal",
-    props: ["showAlertMessage"],
+    props: ["showAlertModal"],
     computed: {
-        showAlertMessageLocal: {
+        showAlertModalLocal: {
             get: function() {
-                return this.showAlertMessage;
+                return this.showAlertModal;
             },
             set: function(value) {
-                this.emitShowAlertMessage(value);
+                this.emitShowAlertModal(value);
             }
         }
     },
@@ -55,7 +55,7 @@ export default {
         emitOtc: function() {
             this.$emit("updateOtc", this.ot_code);
         },
-        emitShowAlertMessage: function(isShowModal) {
+        emitShowAlertModal: function(isShowModal) {
             this.$emit("onUpdateVisibleState", isShowModal);
         },
         checkFormValidity() {
@@ -69,7 +69,7 @@ export default {
             if (this.oldSetInterval != null) {
                 clearInterval(this.oldSetInterval);
             }
-            this.emitShowAlertMessage(false);
+            this.emitShowAlertModal(false);
         },
         initModal() {
             this.ot_code = "";
