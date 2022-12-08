@@ -44,14 +44,9 @@
                 </form>
             </div>
 
-            <LoadingModal :showLoadingModal="showLoadingModal"
-            @onUpdateVisibleState="showLoadingModal = $event"/>
-
-            <AlertMessageModal
-                :showAlertModal="showAlertModal"
-                title="this is title"
-                message="this is message"
-                is_success="true"
+            <LoadingModal
+                :showLoadingModal="showLoadingModal"
+                @onUpdateVisibleState="showLoadingModal = $event"
             />
             <div class=" col-sm-4"></div>
         </div>
@@ -61,7 +56,7 @@
 <script>
 import UserNameField from "../../components/UserNameField";
 import AskForOtcModal from "../../components/AskForOtcModal";
-import AlertMessageModal from "../../components/AlertMessageModal";
+
 import LoadingModal from "@/components/LoadingModal";
 
 export default {
@@ -69,7 +64,6 @@ export default {
     components: {
         UserNameField,
         AskForOtcModal,
-        AlertMessageModal,
         LoadingModal
     },
     data() {
@@ -102,18 +96,19 @@ export default {
                 "Content-Type": "application/json"
             };
 
-            self.showLoadingModal = true
+            self.showLoadingModal = true;
             this.$store
                 .dispatch("loginWithOtc", {
                     headers: headers,
                     data: this.resetPasswordModel
                 })
                 .then(response => {
-                    self.showLoadingModal = false
+                    self.showLoadingModal = false;
                     console.log(response.data.data);
 
                     switch (response.data.status) {
                         case "OK":
+                        self.ot_code = ""
                             self.$router.replace({ name: "reset-password" });
                             break;
                         case "OTC_GENERATED":
@@ -126,10 +121,11 @@ export default {
                             break;
                     }
 
-                    // this.$router.push("/auth/login");
+                    self.ot_code = ""
                 })
                 .catch(errors => {
-                    self.showLoadingModal = false
+                    self.showLoadingModal = false;
+                    self.ot_code = ""
                     console.log(errors);
 
                     try {

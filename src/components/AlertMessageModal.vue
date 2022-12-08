@@ -5,25 +5,29 @@
             ref="modal"
             title="One Time Code"
             @show="initModal"
-            @hidden="resetModal"
+            @hidden="hideModal"
             ok-title="OK"
             cancel-title="Cancel"
             v-model="showAlertModalLocal"
             :hide-header="hideHeader"
             @ok="handleOk"
-            @cancel="handleOk"
+            @cancel="handleCancel"
             centered
             data-keyboard="false"
             data-backdrop="static"
         >
             <div class="modal-header">
-                <h5 class="modal-title">{{title}}</h5>
+                <h5 class="modal-title">{{alertMessageTitle}}</h5>
             </div>
 
-            <div class="modal-body text-center text-danger">
-                <h6> {{ message }}</h6>
-
+            <div class="modal-body text-center text-success" v-if=" isSuccessfulMessage == true ">
+                <h6> {{ alertMessageBody }}</h6>
             </div>
+
+            <div class="modal-body text-center text-danger" v-if=" isSuccessfulMessage == false ">
+                <h6> {{ alertMessageBody }}</h6>
+            </div>
+
         </b-modal>
     </div>
 </template>
@@ -31,7 +35,7 @@
 <script>
 export default {
     name: "AlertMessageModal",
-    props: ["showAlertModal", "title", "message","is_success" ],
+    props: ["showAlertModal", "alertMessageTitle", "alertMessageBody","isSuccessfulMessage" ],
     computed: {
         showAlertModalLocal: {
             get: function() {
@@ -45,22 +49,24 @@ export default {
     mounted: function() {},
     data() {
         return {
-            ot_code: "",
             otCodeState: null,
             hideHeader: true
         };
     },
     methods: {
-        emitOtc: function() {
-            this.$emit("updateOtc", this.ot_code);
+        emitOkClick: function() {
+            this.$emit("onClickOk");
+        },
+        emitCancelClick: function() {
+            this.$emit("onClickCancel");
         },
         emitShowAlertModal: function(isShowModal) {
             this.$emit("onUpdateVisibleState", isShowModal);
         },
-        resetModal() {
-            this.ot_code = "";
+        hideModal() {
             this.otCodeState = null;
             this.emitShowAlertModal(false);
+            this.emitCancelClick();
         },
         initModal() {
             this.otCodeState = null;
@@ -69,11 +75,18 @@ export default {
             // Prevent modal from closing
             bvModalEvt.preventDefault();
             // Trigger submit handler
-            this.handleSubmit();
+            this.emitOkClick();
+            // Push the name to submitted names
+            // Hide the modal manually
+            this.$nextTick(() => {
+                this.$bvModal.hide("modal-prevent-closing");
+            });
         },
-        handleSubmit() {
-
-            this.emitOtc();
+        handleCancel(bvModalEvt) {
+            // Prevent modal from closing
+            bvModalEvt.preventDefault();
+            // Trigger submit handler
+            this.hideModal();
             // Push the name to submitted names
             // Hide the modal manually
             this.$nextTick(() => {

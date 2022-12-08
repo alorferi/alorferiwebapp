@@ -11,7 +11,7 @@
             </div>
 
 
-            <label class="radio-inline pl-2">
+            <label class="radio-inline pl-2  pt-2">
                 <input
                     type="radio"
                     :name="name"
@@ -23,7 +23,7 @@
                 />
                 Male
             </label>
-            <label class="radio-inline  pl-2">
+            <label class="radio-inline  pl-2  pt-2">
                 <input
                     type="radio"
                     :name="name"
@@ -34,6 +34,18 @@
                     @change="updateField()"
                 />
                 Female
+            </label>
+            <label class="radio-inline  pl-2  pt-2">
+                <input
+                    type="radio"
+                    :name="name"
+                    v-model="value"
+                    value="o"
+                    :placeholder="placeholder"
+                    :class="errorClassObject()"
+                    @change="updateField()"
+                />
+                Other
             </label>
         </div>
 

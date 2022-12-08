@@ -52,6 +52,16 @@
                         </div>
                     </div>
                 </form>
+
+                <AlertMessageModal
+                :alertMessageTitle="alertMessageTitle"
+                :alertMessageBody="alertMessageBody"
+                :isSuccessfulMessage="isSuccessfulMessage"
+                :showAlertModal="showAlertModal"
+                @onClickOk="onClickOkButton"
+                @onClickCancel="onClickCancelButton"
+            />
+
             </div>
             <div class="col-sm-3"></div>
         </div>
@@ -60,6 +70,7 @@
 
 <script>
 import EditTextField from "../../components/EditTextField";
+import AlertMessageModal from "../../components/AlertMessageModal";
 
 export default {
     name: "ResetPassword",
@@ -70,7 +81,7 @@ export default {
         this.redirectIfNoOtcToken();
     },
     components: {
-        EditTextField
+        EditTextField, AlertMessageModal
     },
     computed: {},
     data() {
@@ -79,8 +90,11 @@ export default {
                 new_password: "",
                 confirm_new_password: ""
             },
-            // username: "",
+             alertMessageBody: "",
+             alertMessageTitle: "",
             errors: null,
+            showAlertModal:false,
+            isSuccessfulMessage:false
         };
     },
     methods: {
@@ -95,6 +109,12 @@ export default {
                 self.$router.replace({ name: "home" });
             }
         },
+        onClickOkButton() {
+            this.$router.replace({ name: "home" });
+        },
+        onClickCancelButton() {
+            this.$router.replace({ name: "home" });
+        },
         submitForm: function() {
             console.log(this.dataModel);
             const self = this;
@@ -106,7 +126,9 @@ export default {
 
                     switch (response.data.status) {
                         case "OK":
-                            self.$router.replace({ name: "home" });
+                            self.showAlertModal = true;
+                            self.isSuccessfulMessage = true;
+                            self.alertMessageBody = response.data.message
                             break;
                     }
 
