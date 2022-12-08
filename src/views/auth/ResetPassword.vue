@@ -62,7 +62,7 @@
 import EditTextField from "../../components/EditTextField";
 
 export default {
-    name: "ResetPasswordWithToken",
+    name: "ResetPassword",
     props: {
         msg: String
     },

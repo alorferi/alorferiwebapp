@@ -20,7 +20,7 @@ import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
 import LibraryBadge from "./views/badges/LibraryBadge";
 // import UserBadge from "./views/badges/UserBadge";
 import LoginWithOtcToResetPassword from "./views/auth/LoginWithOtcToResetPassword";
-import ResetPasswordWithToken from "./views/auth/ResetPasswordWithToken";
+import ResetPassword from "./views/auth/ResetPassword";
 
 Vue.use(Router);
 
@@ -61,9 +61,9 @@ let router = new Router({
             meta: { title: "Reset password" }
         },
         {
-            path: "/auth/reset-password-with-token",
-            name: "reset-password-with-token",
-            component: ResetPasswordWithToken,
+            path: "/auth/reset-password",
+            name: "reset-password",
+            component: ResetPassword,
             meta: { title: "Reset password" }
         },
         {
