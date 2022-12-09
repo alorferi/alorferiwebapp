@@ -68,12 +68,11 @@
                     type="checkbox"
                     id="iAgreeCheckbox"
                     name="iAgreeCheckbox"
-
-                    @click="(iAgree = !iAgree)"
+                    @click="iAgree = !iAgree"
                 />
                 &nbsp;
                 <label for="iAgreeCheckbox">
-                  I agree the terms and conditions</label
+                    I agree the terms and conditions</label
                 >
             </div>
         </b-modal>
@@ -107,12 +106,13 @@ export default {
             iAgree: false,
             errors: null,
             is_error: false,
-            error_message: null
+            error_message: null,
+            myLibraryMemberRequest: null
         };
     },
     methods: {
         emitOkClick: function() {
-            this.$emit("onClickOk");
+            this.$emit("onClickOk", this.myLibraryMemberRequest);
         },
         emitCancelClick: function() {
             this.$emit("onClickCancel");
@@ -130,47 +130,37 @@ export default {
             this.iAgree = false;
         },
         handleOk(bvModalEvt) {
-
             const self = this;
 
             // Prevent modal from closing
             bvModalEvt.preventDefault();
 
-            if(!self.iAgree){
+            if (!self.iAgree) {
                 return;
             }
 
-            const payload = { library_id : self.library.id }
+            const payload = { library_id: self.library.id };
 
             self.$store
                 .dispatch("createLibraryMemberRequest", payload)
-                .then(() => {
+                .then(response => {
+                    console.log(response);
+                    self.myLibraryMemberRequest =
+                        self.$store.getters.myLibraryMemberRequest;
 
+                    this.emitOkClick();
+                    this.$nextTick(() => {
+                        this.$bvModal.hide("modal-prevent-closing");
+                    });
                 })
                 .catch(errors => {
-                    // this.error_message = errors;
                     console.log(errors);
 
-                    try {
-                        if (errors.response.data.errors) {
-                            self.errors = errors.response.data.errors;
-                        }else if(errors.response.data.message){
-                            self.error_message = errors.response.data.message;
-                        }
-                    } catch (err) {
-                        self.errors = err;
-                    }
-
-                    self.is_error = true;
+                    this.emitOkClick();
+                    this.$nextTick(() => {
+                        this.$bvModal.hide("modal-prevent-closing");
+                    });
                 });
-
-            // Trigger submit handler
-            this.emitOkClick();
-            // Push the name to submitted names
-            // Hide the modal manually
-            this.$nextTick(() => {
-                this.$bvModal.hide("modal-prevent-closing");
-            });
         },
         handleCancel(bvModalEvt) {
             // Prevent modal from closing

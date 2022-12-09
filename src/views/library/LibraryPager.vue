@@ -54,7 +54,7 @@
                         class="btn btn-danger"
                         v-if="
                             myLibraryMembership == null &&
-                                myLibraryMemberRequest == null
+                            computeMyLibraryMemberRequest == null
                         "
                         @click="showMemberRequestModal = true"
                     >
@@ -64,7 +64,9 @@
                     <button
                         type="button"
                         class="btn btn-secondary"
-                        v-if="myLibraryMemberRequest != null"
+                        v-if="
+                            computeMyLibraryMemberRequest != null
+                        "
                         disabled
                     >
                         Member request sent
@@ -104,7 +106,7 @@
             :showMemberRequestModal="showMemberRequestModal"
             @onUpdateVisibleState="showMemberRequestModal = $event"
             :library="library"
-            @onClickOk="onClickOkButtonForMemberRequest"
+            @onClickOk="myLibraryMemberRequest = $event"
         />
         <component :is="tabBody" :library="library"></component>
     </div>
@@ -140,8 +142,12 @@ export default {
         myLibraryMembership() {
             return this.getMyLibraryMembership(this.library.id);
         },
-        myLibraryMemberRequest() {
-            return this.getMyLibraryMemberRequest(this.library.id);
+        computeMyLibraryMemberRequest() {
+            if (this.myLibraryMemberRequest) {
+                return this.myLibraryMemberRequest;
+            } else {
+                return this.getMyLibraryMemberRequest(this.library.id);
+            }
         },
         getTabs() {
             return this.tabs;
@@ -154,7 +160,8 @@ export default {
         return {
             tabs: [],
             activeTab: {},
-            showMemberRequestModal: false
+            showMemberRequestModal: false,
+            myLibraryMemberRequest: null
         };
     },
     methods: {
@@ -207,7 +214,7 @@ export default {
                 "/qr-codes/library_qr_codes/lib_qr_" + library.id + ".svg"
             );
         }
-    },
+    }
 };
 </script>
 
