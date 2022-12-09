@@ -49,18 +49,26 @@
                         </span>
                     </h5>
 
-                    <button type="button" class="btn btn-danger"
-                    v-if="(myLibraryMembership == null) && (myLibraryMemberRequest == null)"
-                    @click="( showMemberRequestModal = true)"
-                    >Request to be member</button>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        v-if="
+                            myLibraryMembership == null &&
+                                myLibraryMemberRequest == null
+                        "
+                        @click="showMemberRequestModal = true"
+                    >
+                        Request to be member
+                    </button>
 
-
-                    <button type="button" class="btn btn-secondary"
-                    v-if="myLibraryMemberRequest !=null"
-                    disabled
-                    >Member request sent</button>
-
-
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        v-if="myLibraryMemberRequest != null"
+                        disabled
+                    >
+                        Member request sent
+                    </button>
                 </div>
 
                 <div class="p-2">
@@ -93,9 +101,10 @@
         </div>
 
         <CreateLibraryMemberRequestModal
-        :showMemberRequestModal = "showMemberRequestModal"
-        @onUpdateVisibleState=" showMemberRequestModal = $event "
-        :library="library"
+            :showMemberRequestModal="showMemberRequestModal"
+            @onUpdateVisibleState="showMemberRequestModal = $event"
+            :library="library"
+            @onClickOk="onClickOkButtonForMemberRequest"
         />
         <component :is="tabBody" :library="library"></component>
     </div>
@@ -129,18 +138,24 @@ export default {
             return this.$store.getters.library;
         },
         myLibraryMembership() {
-            return  this.getMyLibraryMembership(this.library.id);
+            return this.getMyLibraryMembership(this.library.id);
         },
         myLibraryMemberRequest() {
-            return  this.getMyLibraryMemberRequest(this.library.id);
+            return this.getMyLibraryMemberRequest(this.library.id);
         },
-
         getTabs() {
             return this.tabs;
         },
         tabBody() {
             return this.activeTab.tabBody;
         }
+    },
+    data: function() {
+        return {
+            tabs: [],
+            activeTab: {},
+            showMemberRequestModal: false
+        };
     },
     methods: {
         initTabItems() {
@@ -193,13 +208,6 @@ export default {
             );
         }
     },
-    data: function() {
-        return {
-            tabs: [],
-            activeTab: {},
-            showMemberRequestModal:false,
-        };
-    }
 };
 </script>
 
