@@ -40,14 +40,11 @@ export default {
             self.$store
                 .dispatch("fetchLibrary", libraryId)
                 .then(() => {
-                    let myLibraryMembership =
-                        self.$store.getters.myLibraryMembership;
+                    const myLibraryMembership = self.getMyLibraryMembership(
+                        libraryId
+                    );
 
-                    if (
-                        myLibraryMembership != null &&
-                        myLibraryMembership.library_id == libraryId &&
-                        myLibraryMembership.user_id == self.$store.getters.activeUser.id
-                    ) {
+                    if (myLibraryMembership != null) {
                         self.loading = false;
                     } else {
                         self.$store
@@ -56,7 +53,17 @@ export default {
                                 self.loading = false;
                             })
                             .catch(() => {
-                                self.loading = false;
+                                self.$store
+                                    .dispatch(
+                                        "fetchMyLibraryMemberRequest",
+                                        libraryId
+                                    )
+                                    .then(() => {
+                                        self.loading = false;
+                                    })
+                                    .catch(() => {
+                                        self.loading = false;
+                                    });
                             });
                     }
                 })

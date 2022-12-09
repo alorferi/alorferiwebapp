@@ -112,15 +112,10 @@ export default {
             return this.$store.getters.library;
         },
         myLibraryMembership() {
-
-            const self = this;
-
-            let myLibraryMembership = self.$store.getters.myLibraryMembership;
-
-            if ( myLibraryMembership != null && myLibraryMembership.library_id == self.library.id &&  myLibraryMembership.user_id == self.$store.getters.activeUser.id) {
-                return myLibraryMembership;
-            }
-            return null;
+            return  this.getMyLibraryMembership(this.library.id);
+        },
+        myLibraryMemberRequest() {
+            return  this.getMyLibraryMemberRequest(this.library.id);
         },
 
         getTabs() {

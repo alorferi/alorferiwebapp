@@ -162,9 +162,26 @@ export default {
             }
             return !isNaN(value);
         },
-        getActiveUser(){
-            const activeUser =  JSON.parse(localStorage.getItem("activeUser") || null)
-            return activeUser;
-        }
+        getMyLibraryMembership(libraryId) {
+
+            const activeUser = this.$store.getters.activeUser;
+            const myLibraryMembership = this.$store.getters.myLibraryMembership;
+
+            if ( myLibraryMembership != null && myLibraryMembership.library_id == libraryId &&  myLibraryMembership.user_id == activeUser.id) {
+                return myLibraryMembership;
+            }
+            return null;
+        },
+        getMyLibraryMemberRequest(libraryId) {
+
+            const activeUser = this.$store.getters.activeUser;
+            const myLibraryMemberRequest = this.$store.getters.myLibraryMemberRequest;
+
+            if ( myLibraryMemberRequest != null && myLibraryMemberRequest.library_id == libraryId &&  myLibraryMemberRequest.user_id == activeUser.id) {
+                return myLibraryMemberRequest;
+            }
+            return null;
+        },
+
     }
 };
