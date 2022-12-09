@@ -161,6 +161,10 @@ export default {
                 value = value.replace(char, "");
             }
             return !isNaN(value);
+        },
+        getActiveUser(){
+            const activeUser =  JSON.parse(localStorage.getItem("activeUser") || null)
+            return activeUser;
         }
     }
 };

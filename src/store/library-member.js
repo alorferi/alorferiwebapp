@@ -6,6 +6,7 @@ const state = {
     libraryMember: JSON.parse(localStorage.getItem("libraryMember") || null),
     activeLibraryMember: JSON.parse(localStorage.getItem("activeLibraryMember") || null),
     myLibraryMembership: JSON.parse(localStorage.getItem("myLibraryMembership") || null),
+    myLibraryMemberRequest: JSON.parse(localStorage.getItem("myLibraryMemberRequest") || null),
     libraryMembersResponse:null,
     libraryStatus: null
 };
@@ -15,6 +16,7 @@ const getters = {
     activeLibraryMember: state => state.activeLibraryMember,
     libraryMembersResponse: state => state.libraryMembersResponse,
     myLibraryMembership: state => state.myLibraryMembership,
+    myLibraryMemberRequest: state => state.myLibraryMemberRequest,
 };
 
 const mutations = {
@@ -29,6 +31,9 @@ const mutations = {
     },
     setMyLibraryMembership(state, myLibraryMembership) {
         state.myLibraryMembership = myLibraryMembership;
+    } ,
+     setMyLibraryMemberRequest(state, myLibraryMemberRequest) {
+        state.myLibraryMemberRequest = myLibraryMemberRequest;
     }
 };
 
@@ -98,6 +103,30 @@ const actions = {
         })
         .catch(err => {
             context.commit("setMyLibraryMembership", null);
+            console.log("err:", err);
+                    reject(err);
+        });
+    });
+    },
+
+    fetchMyLibraryMemberRequest(context,libraryId) {
+
+        const endPoint = "/api/libraries/"+libraryId+"//member-requests/my-request"
+
+        var url = mixin.methods.getApiUrl(endPoint)
+        var headers = mixin.methods.getHeaderWithAuthorizationBearerToken()
+
+        return new Promise((resolve, reject) => {
+        axios
+        .get(url,headers)
+        .then(response => {
+            const libraryMember = response.data.data.attributes;
+            context.commit("setMyLibraryMemberRequest", libraryMember);
+            resolve(response);
+
+        })
+        .catch(err => {
+            context.commit("setMyLibraryMemberRequest", null);
             console.log("err:", err);
                     reject(err);
         });

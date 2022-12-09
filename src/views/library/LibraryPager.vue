@@ -113,10 +113,12 @@ export default {
         },
         myLibraryMembership() {
 
-            let myLibraryMember = this.$store.getters.myLibraryMembership;
+            const self = this;
 
-            if ( myLibraryMember != null && myLibraryMember.library_id == this.library.id) {
-                return myLibraryMember;
+            let myLibraryMembership = self.$store.getters.myLibraryMembership;
+
+            if ( myLibraryMembership != null && myLibraryMembership.library_id == self.library.id &&  myLibraryMembership.user_id == self.$store.getters.activeUser.id) {
+                return myLibraryMembership;
             }
             return null;
         },
