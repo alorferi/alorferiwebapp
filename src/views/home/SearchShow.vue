@@ -36,13 +36,40 @@ export default {
     },
     methods: {
         fetchSearch(username){
-                this.$store
+            const self = this;
+            self.$store
                 .dispatch("fetchSearch", username)
                 .then(() => {
-                    this.loading = false;
+
+                    const myLibraryMembership = self.getMyLibraryMembership(
+                        self.library.id
+                    );
+
+                    if (myLibraryMembership != null) {
+                        self.loading = false;
+                    } else {
+                        self.$store
+                            .dispatch("fetchMyLibraryMembership",  self.library.id)
+                            .then(() => {
+                                self.loading = false;
+                            })
+                            .catch(() => {
+                                self.$store
+                                    .dispatch(
+                                        "fetchMyLibraryMemberRequest",
+                                        self.library.id
+                                    )
+                                    .then(() => {
+                                        self.loading = false;
+                                    })
+                                    .catch(() => {
+                                        self.loading = false;
+                                    });
+                            });
+                    }
                 })
                 .catch(() => {
-                    this.loading = false;
+                    self.loading = false;
                 });
 
         },
