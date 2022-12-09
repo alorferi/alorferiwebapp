@@ -2,8 +2,7 @@
     <div class="">
         <Loading v-if="loading" />
         <div v-else>
-
-            <LibraryPager/>
+            <LibraryPager />
         </div>
     </div>
 </template>
@@ -11,41 +10,48 @@
 <script>
 import Loading from "../../components/Loading";
 import axios from "axios";
-import LibraryPager from "./LibraryPager"
-
+import LibraryPager from "./LibraryPager";
 
 export default {
     name: "LibraryShow",
     components: {
-        Loading, LibraryPager
+        Loading,
+        LibraryPager
     },
-  async mounted(){
-        this.fetchLibrary(this.$route.params.id)
+    async mounted() {
+        this.fetchLibrary(this.$route.params.id);
     },
 
     computed: {
-        library(){
-           return this.$store.getters.library;
-        },
-
+        library() {
+            return this.$store.getters.library;
+        }
     },
     data: function() {
         return {
             loading: true,
-            delete_modal: false,
+            delete_modal: false
         };
     },
     methods: {
-        fetchLibrary(libraryId){
-                this.$store
+        fetchLibrary(libraryId) {
+            let self = this;
+
+            self.$store
                 .dispatch("fetchLibrary", libraryId)
                 .then(() => {
-                    this.loading = false;
+                    self.$store
+                        .dispatch("fetchMyLibraryMembership", libraryId)
+                        .then(() => {
+                            self.loading = false;
+                        })
+                        .catch(() => {
+                            self.loading = false;
+                        });
                 })
                 .catch(() => {
-                    this.loading = false;
+                    self.loading = false;
                 });
-
         },
         destroy: function() {
             axios

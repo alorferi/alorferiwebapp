@@ -48,6 +48,9 @@
                             - {{ library.address.post_code }}
                         </span>
                     </h5>
+
+                    <button type="button" class="btn btn-danger" v-if=" myLibraryMembership == null ">Request to be member</button>
+
                 </div>
 
                 <div class="p-2">
@@ -108,6 +111,15 @@ export default {
         library() {
             return this.$store.getters.library;
         },
+        myLibraryMembership() {
+
+            let myLibraryMember = this.$store.getters.myLibraryMembership;
+
+            if ( myLibraryMember != null && myLibraryMember.library_id == this.library.id) {
+                return myLibraryMember;
+            }
+            return null;
+        },
 
         getTabs() {
             return this.tabs;
@@ -162,7 +174,6 @@ export default {
             }
         },
         getQRCodeUrl(library) {
-
             return this.getApiUrl(
                 "/qr-codes/library_qr_codes/lib_qr_" + library.id + ".svg"
             );

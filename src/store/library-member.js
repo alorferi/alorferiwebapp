@@ -5,6 +5,7 @@ import mixin from '../mixin'
 const state = {
     libraryMember: JSON.parse(localStorage.getItem("libraryMember") || null),
     activeLibraryMember: JSON.parse(localStorage.getItem("activeLibraryMember") || null),
+    myLibraryMembership: JSON.parse(localStorage.getItem("myLibraryMembership") || null),
     libraryMembersResponse:null,
     libraryStatus: null
 };
@@ -12,21 +13,22 @@ const state = {
 const getters = {
     libraryMember: state => state.libraryMember,
     activeLibraryMember: state => state.activeLibraryMember,
-    libraryMembersResponse: state => state.libraryMembersResponse
+    libraryMembersResponse: state => state.libraryMembersResponse,
+    myLibraryMembership: state => state.myLibraryMembership,
 };
 
 const mutations = {
     setLibraryBook(state, libraryMember) {
         state.libraryMember = libraryMember;
-        // localStorage.setItem("libraryMember", JSON.stringify(libraryMember));
     },
     setActiveLibraryBook(state, newLibraryMember) {
         state.setActiveLibraryBook = newLibraryMember;
-        // localStorage.setItem("libraryMember", JSON.stringify(libraryMember));
     },
     setLibraryMembersResponse(state, libraryMembersResponse) {
         state.libraryMembersResponse = libraryMembersResponse;
-        // localStorage.setItem("libraryMembersResponse", JSON.stringify(libraryMembersResponse));
+    },
+    setMyLibraryMembership(state, myLibraryMembership) {
+        state.myLibraryMembership = myLibraryMembership;
     }
 };
 
@@ -77,7 +79,30 @@ const actions = {
                     reject(err);
                 });
         });
-    }
+    },
+    fetchMyLibraryMembership(context,libraryId) {
+
+        const endPoint = "/api/libraries/"+libraryId+"/members/my-membership"
+
+        var url = mixin.methods.getApiUrl(endPoint)
+        var headers = mixin.methods.getHeaderWithAuthorizationBearerToken()
+
+        return new Promise((resolve, reject) => {
+        axios
+        .get(url,headers)
+        .then(response => {
+            const libraryMember = response.data.data.attributes;
+            context.commit("setMyLibraryMembership", libraryMember);
+            resolve(response);
+
+        })
+        .catch(err => {
+            context.commit("setMyLibraryMembership", null);
+            console.log("err:", err);
+                    reject(err);
+        });
+    });
+    },
 };
 
 export default {
