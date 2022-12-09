@@ -26,9 +26,9 @@ const mutations = {
 
 const actions = {
 
-    fetchLibraryBookIssue(context,libraryId) {
+    fetchLibraryBookIssue(context,library_id) {
 
-        var url = mixin.methods.getApiUrl("/api/libraries/"+libraryId)
+        var url = mixin.methods.getApiUrl("/api/libraries/"+library_id)
         var headers = mixin.methods.getHeaderWithAuthorizationBearerToken()
 
         return new Promise((resolve, reject) => {
@@ -52,7 +52,7 @@ const actions = {
 
         return new Promise((resolve, reject) => {
 
-            const endPoint = "/api/libraries/"+payload.libraryId+"/book-issues"
+            const endPoint = "/api/libraries/"+payload.library_id+"/book-issues"
 
         var url = mixin.methods.getApiUrl(endPoint,payload.term,payload.page)
 

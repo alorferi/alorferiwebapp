@@ -49,7 +49,9 @@
                         </span>
                     </h5>
 
-                    <button type="button" class="btn btn-danger" v-if=" myLibraryMembership == null ">Request to be member</button>
+                    <button type="button" class="btn btn-danger" v-if=" myLibraryMembership == null "
+                    @click="( showMemberRequestModal = true)"
+                    >Request to be member</button>
 
                 </div>
 
@@ -82,6 +84,11 @@
             </div>
         </div>
 
+        <CreateLibraryMemberRequestModal
+        :showMemberRequestModal = "showMemberRequestModal"
+        @onUpdateVisibleState=" showMemberRequestModal = $event "
+        :library="library"
+        />
         <component :is="tabBody" :library="library"></component>
     </div>
 </template>
@@ -93,6 +100,7 @@ import LibraryBookIssuedHistory from "./LibraryBookIssuedHistory";
 import LibraryAbout from "./LibraryAbout";
 import ShowLibraryBooks from "../librarybook/ShowLibraryBooks";
 import ShowLibraryMembers from "../librarymember/ShowLibraryMembers";
+import CreateLibraryMemberRequestModal from "../librarymember/CreateLibraryMemberRequestModal";
 export default {
     name: "LibraryPager",
     components: {
@@ -101,7 +109,8 @@ export default {
         LibraryAbout,
         ShowLibraryMembers,
         ShowLibraryBooks,
-        LibraryBookIssuedHistory
+        LibraryBookIssuedHistory,
+        CreateLibraryMemberRequestModal
     },
     mounted: function() {
         this.initTabItems();
@@ -179,7 +188,8 @@ export default {
     data: function() {
         return {
             tabs: [],
-            activeTab: {}
+            activeTab: {},
+            showMemberRequestModal:false,
         };
     }
 };

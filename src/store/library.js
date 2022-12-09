@@ -25,8 +25,8 @@ const mutations = {
 };
 
 const actions = {
-    fetchLibrary(context, libraryId) {
-        var url = mixin.methods.getApiUrl("/api/libraries/" + libraryId);
+    fetchLibrary(context, library_id) {
+        var url = mixin.methods.getApiUrl("/api/libraries/" + library_id);
         var headers = mixin.methods.getHeaderWithAuthorizationBearerToken();
 
         return new Promise((resolve, reject) => {

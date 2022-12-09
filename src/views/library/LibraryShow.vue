@@ -34,21 +34,21 @@ export default {
         };
     },
     methods: {
-        fetchLibrary(libraryId) {
+        fetchLibrary(library_id) {
             let self = this;
 
             self.$store
-                .dispatch("fetchLibrary", libraryId)
+                .dispatch("fetchLibrary", library_id)
                 .then(() => {
                     const myLibraryMembership = self.getMyLibraryMembership(
-                        libraryId
+                        library_id
                     );
 
                     if (myLibraryMembership != null) {
                         self.loading = false;
                     } else {
                         self.$store
-                            .dispatch("fetchMyLibraryMembership", libraryId)
+                            .dispatch("fetchMyLibraryMembership", library_id)
                             .then(() => {
                                 self.loading = false;
                             })
@@ -56,7 +56,7 @@ export default {
                                 self.$store
                                     .dispatch(
                                         "fetchMyLibraryMemberRequest",
-                                        libraryId
+                                        library_id
                                     )
                                     .then(() => {
                                         self.loading = false;

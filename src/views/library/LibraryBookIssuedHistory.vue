@@ -51,7 +51,7 @@ export default {
             var payload = {
                 term: pTerm,
                 page: pPage,
-                libraryId: this.library.id
+                library_id: this.library.id
             };
 
             this.$store

@@ -162,22 +162,22 @@ export default {
             }
             return !isNaN(value);
         },
-        getMyLibraryMembership(libraryId) {
+        getMyLibraryMembership(library_id) {
 
             const activeUser = this.$store.getters.activeUser;
             const myLibraryMembership = this.$store.getters.myLibraryMembership;
 
-            if ( myLibraryMembership != null && myLibraryMembership.library_id == libraryId &&  myLibraryMembership.user_id == activeUser.id) {
+            if ( myLibraryMembership != null && myLibraryMembership.library_id == library_id &&  myLibraryMembership.user_id == activeUser.id) {
                 return myLibraryMembership;
             }
             return null;
         },
-        getMyLibraryMemberRequest(libraryId) {
+        getMyLibraryMemberRequest(library_id) {
 
             const activeUser = this.$store.getters.activeUser;
             const myLibraryMemberRequest = this.$store.getters.myLibraryMemberRequest;
 
-            if ( myLibraryMemberRequest != null && myLibraryMemberRequest.library_id == libraryId &&  myLibraryMemberRequest.user_id == activeUser.id) {
+            if ( myLibraryMemberRequest != null && myLibraryMemberRequest.library_id == library_id &&  myLibraryMemberRequest.user_id == activeUser.id) {
                 return myLibraryMemberRequest;
             }
             return null;

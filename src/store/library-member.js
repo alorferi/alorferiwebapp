@@ -64,7 +64,7 @@ const actions = {
 
         return new Promise((resolve, reject) => {
 
-            const endPoint = "/api/libraries/"+payload.libraryId+"/members"
+            const endPoint = "/api/libraries/"+payload.library_id+"/members"
 
         var url = mixin.methods.getApiUrl(endPoint,payload.term,payload.page)
         const  headers = mixin.methods.getAuthorizationBearerToken()
@@ -85,9 +85,9 @@ const actions = {
                 });
         });
     },
-    fetchMyLibraryMembership(context,libraryId) {
+    fetchMyLibraryMembership(context,library_id) {
 
-        const endPoint = "/api/libraries/"+libraryId+"/members/my-membership"
+        const endPoint = "/api/libraries/"+library_id+"/members/my-membership"
 
         var url = mixin.methods.getApiUrl(endPoint)
         var headers = mixin.methods.getHeaderWithAuthorizationBearerToken()
@@ -109,9 +109,9 @@ const actions = {
     });
     },
 
-    fetchMyLibraryMemberRequest(context,libraryId) {
+    fetchMyLibraryMemberRequest(context,library_id) {
 
-        const endPoint = "/api/libraries/"+libraryId+"//member-requests/my-request"
+        const endPoint = "/api/libraries/"+library_id+"//member-requests/my-request"
 
         var url = mixin.methods.getApiUrl(endPoint)
         var headers = mixin.methods.getHeaderWithAuthorizationBearerToken()
@@ -127,6 +127,27 @@ const actions = {
         })
         .catch(err => {
             context.commit("setMyLibraryMemberRequest", null);
+            console.log("err:", err);
+                    reject(err);
+        });
+    });
+    },
+    createLibraryMemberRequest(context,payload) {
+
+        var url = mixin.methods.getApiUrl("/api/libraries/"+payload.library_id+"/member-requests")
+
+        var headers = mixin.methods.getHeaderWithAuthorizationBearerToken()
+
+        return new Promise((resolve, reject) => {
+        axios
+        .post(url,headers,payload)
+        .then(response => {
+            const myLibraryMemberRequest = response.data.data.attributes;
+            context.commit("setMyLibraryMemberRequest", myLibraryMemberRequest);
+            resolve(response);
+
+        })
+        .catch(err => {
             console.log("err:", err);
                     reject(err);
         });
