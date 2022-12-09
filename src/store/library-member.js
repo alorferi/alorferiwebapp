@@ -6,7 +6,6 @@ const state = {
     libraryMember: JSON.parse(localStorage.getItem("libraryMember") || null),
     activeLibraryMember: JSON.parse(localStorage.getItem("activeLibraryMember") || null),
     myLibraryMembership: JSON.parse(localStorage.getItem("myLibraryMembership") || null),
-    myLibraryMemberRequest: JSON.parse(localStorage.getItem("myLibraryMemberRequest") || null),
     libraryMembersResponse:null,
     libraryStatus: null
 };
@@ -16,25 +15,21 @@ const getters = {
     activeLibraryMember: state => state.activeLibraryMember,
     libraryMembersResponse: state => state.libraryMembersResponse,
     myLibraryMembership: state => state.myLibraryMembership,
-    myLibraryMemberRequest: state => state.myLibraryMemberRequest,
 };
 
 const mutations = {
-    setLibraryBook(state, libraryMember) {
-        state.libraryMember = libraryMember;
-    },
-    setActiveLibraryBook(state, newLibraryMember) {
-        state.setActiveLibraryBook = newLibraryMember;
-    },
+    // setLibraryBook(state, libraryMember) {
+    //     state.libraryMember = libraryMember;
+    // },
+    // setActiveLibraryBook(state, newLibraryMember) {
+    //     state.setActiveLibraryBook = newLibraryMember;
+    // },
     setLibraryMembersResponse(state, libraryMembersResponse) {
         state.libraryMembersResponse = libraryMembersResponse;
     },
     setMyLibraryMembership(state, myLibraryMembership) {
         state.myLibraryMembership = myLibraryMembership;
     } ,
-     setMyLibraryMemberRequest(state, myLibraryMemberRequest) {
-        state.myLibraryMemberRequest = myLibraryMemberRequest;
-    }
 };
 
 const actions = {
@@ -103,51 +98,6 @@ const actions = {
         })
         .catch(err => {
             context.commit("setMyLibraryMembership", null);
-            console.log("err:", err);
-                    reject(err);
-        });
-    });
-    },
-
-    fetchMyLibraryMemberRequest(context,library_id) {
-
-        const endPoint = "/api/libraries/"+library_id+"//member-requests/my-request"
-
-        var url = mixin.methods.getApiUrl(endPoint)
-        var headers = mixin.methods.getHeaderWithAuthorizationBearerToken()
-
-        return new Promise((resolve, reject) => {
-        axios
-        .get(url,headers)
-        .then(response => {
-            const libraryMember = response.data.data.attributes;
-            context.commit("setMyLibraryMemberRequest", libraryMember);
-            resolve(response);
-
-        })
-        .catch(err => {
-            context.commit("setMyLibraryMemberRequest", null);
-            console.log("err:", err);
-                    reject(err);
-        });
-    });
-    },
-    createLibraryMemberRequest(context,payload) {
-
-        var url = mixin.methods.getApiUrl("/api/libraries/"+payload.library_id+"/member-requests")
-
-        var headers = mixin.methods.getHeaderWithAuthorizationBearerToken()
-
-        return new Promise((resolve, reject) => {
-        axios
-        .post(url,headers,payload)
-        .then(response => {
-            const myLibraryMemberRequest = response.data.data.attributes;
-            context.commit("setMyLibraryMemberRequest", myLibraryMemberRequest);
-            resolve(response);
-
-        })
-        .catch(err => {
             console.log("err:", err);
                     reject(err);
         });

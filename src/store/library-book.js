@@ -16,11 +16,9 @@ const getters = {
 const mutations = {
     setLibraryBook(state, libraryBook) {
         state.libraryBook = libraryBook;
-        // localStorage.setItem("libraryBook", JSON.stringify(libraryBook));
     },
     setLibraryBooksResponse(state, libraryBooksResponse) {
         state.libraryBooksResponse = libraryBooksResponse;
-        // localStorage.setItem("libraryBooksResponse", JSON.stringify(libraryBooksResponse));
     }
 };
 

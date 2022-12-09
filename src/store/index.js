@@ -6,6 +6,7 @@ import Auth from "@/store/auth"
 import Library from "@/store/library"
 import LibraryBook from "@/store/library-book"
 import LibraryMember from "@/store/library-member"
+import LibraryMemberRequest from "@/store/library-member-request"
 import LibraryMemberIssue from "@/store/library-book-issue"
 import Post from "@/store/post"
 import Language from "@/store/language"
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     modules:{
         User, PageTitle, Auth,Library,
         LibraryBook,LibraryMember,
+        LibraryMemberRequest,
         LibraryMemberIssue,Post,
         Language,Comment,Like,
         UserPost,
