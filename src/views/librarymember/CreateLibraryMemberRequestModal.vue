@@ -105,6 +105,9 @@ export default {
             otCodeState: null,
             hideHeader: true,
             iAgree: false,
+            errors: null,
+            is_error: false,
+            error_message: null
         };
     },
     methods: {
@@ -127,12 +130,39 @@ export default {
             this.iAgree = false;
         },
         handleOk(bvModalEvt) {
+
+            const self = this;
+
             // Prevent modal from closing
             bvModalEvt.preventDefault();
 
-            if(!this.iAgree){
+            if(!self.iAgree){
                 return;
             }
+
+            const payload = { library_id : self.library.id }
+
+            self.$store
+                .dispatch("createLibraryMemberRequest", payload)
+                .then(() => {
+
+                })
+                .catch(errors => {
+                    // this.error_message = errors;
+                    console.log(errors);
+
+                    try {
+                        if (errors.response.data.errors) {
+                            self.errors = errors.response.data.errors;
+                        }else if(errors.response.data.message){
+                            self.error_message = errors.response.data.message;
+                        }
+                    } catch (err) {
+                        self.errors = err;
+                    }
+
+                    self.is_error = true;
+                });
 
             // Trigger submit handler
             this.emitOkClick();

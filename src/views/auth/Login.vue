@@ -97,10 +97,10 @@ export default {
             this.is_error = false;
             let username = this.username.replace(/^0+/, "");
             let password = this.password;
-            this.$store
+            self.$store
                 .dispatch("loginBasic", { username, password })
                 .then(() => {
-                    this.$store
+                    self.$store
                         .dispatch("fetchMe")
                         .then(() => {
                             self.$router.replace(self.$route.query.from);
@@ -119,13 +119,13 @@ export default {
                         if (errors.response.data.errors) {
                             self.errors = errors.response.data.errors;
                         }else if(errors.response.data.message){
-                            this.error_message = errors.response.data.message;
+                            self.error_message = errors.response.data.message;
                         }
                     } catch (err) {
                         self.errors = err;
                     }
 
-                    this.is_error = true;
+                    self.is_error = true;
                 });
         },
         onBlurMobileNumber(e) {

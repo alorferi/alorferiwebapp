@@ -20,7 +20,7 @@ const actions = {
 
     fetchMyLibraryMemberRequest(context,library_id) {
 
-        const endPoint = "/api/libraries/"+library_id+"//member-requests/my-request"
+        const endPoint = "/api/libraries/"+library_id+"/member-requests/my-request"
 
         var url = mixin.methods.getApiUrl(endPoint)
         var headers = mixin.methods.getHeaderWithAuthorizationBearerToken()
@@ -49,7 +49,7 @@ const actions = {
 
         return new Promise((resolve, reject) => {
         axios
-        .post(url,headers,payload)
+        .post(url,payload,headers)
         .then(response => {
             const myLibraryMemberRequest = response.data.data.attributes;
             context.commit("setMyLibraryMemberRequest", myLibraryMemberRequest);

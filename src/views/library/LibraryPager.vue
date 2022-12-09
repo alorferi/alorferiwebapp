@@ -49,9 +49,17 @@
                         </span>
                     </h5>
 
-                    <button type="button" class="btn btn-danger" v-if=" myLibraryMembership == null "
+                    <button type="button" class="btn btn-danger"
+                    v-if="(myLibraryMembership == null) && (myLibraryMemberRequest == null)"
                     @click="( showMemberRequestModal = true)"
                     >Request to be member</button>
+
+
+                    <button type="button" class="btn btn-secondary"
+                    v-if="myLibraryMemberRequest !=null"
+                    disabled
+                    >Member request sent</button>
+
 
                 </div>
 
