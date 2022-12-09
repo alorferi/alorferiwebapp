@@ -51,7 +51,7 @@
 
                     <button
                         type="button"
-                        class="btn btn-danger"
+                        class="btn btn-success"
                         v-if="
                             myLibraryMembership == null &&
                             computeMyLibraryMemberRequest == null

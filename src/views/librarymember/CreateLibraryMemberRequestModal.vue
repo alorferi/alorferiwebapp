@@ -61,18 +61,18 @@
             </div>
 
             <div class="modal-body text-center text-success">
-                <h3 class="modal-title">Send member request</h3>
-                <h6>Privacy Policy here</h6>
-
+                <h4 class="modal-title text-primary">সদস্য অনুরোধ পাঠান</h4>
+                <!-- <h6>Privacy Policy here</h6> -->
+<br>
                 <input
                     type="checkbox"
                     id="iAgreeCheckbox"
                     name="iAgreeCheckbox"
                     @click="iAgree = !iAgree"
                 />
-                &nbsp;
+                &nbsp;   &nbsp;
                 <label for="iAgreeCheckbox">
-                    I agree the terms and conditions</label
+                   আমি এই পাঠাগারের শর্তাবলী মেনে সদস্য হতে রাজি।</label
                 >
             </div>
         </b-modal>
