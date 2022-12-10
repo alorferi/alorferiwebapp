@@ -108,6 +108,7 @@
                     :show="showEditPostModal"
                     :post="post"
                     @updateVisibleState="showEditPostModal = $event"
+                    :postable_type="post.postable_type"
                 />
             </div>
         </div>

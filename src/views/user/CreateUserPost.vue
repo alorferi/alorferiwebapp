@@ -2,15 +2,14 @@
     <div>
         <div class="card">
             <div class="card-body d-flex  align-items-center">
-
-                       <router-link
-                :to="{
-                    name: 'users.show',
-                    params: { user_id: this.activeUser.id }
-                }"
-            >
-                <UserPhoto :user="activeUser" size="32"> </UserPhoto>
-                       </router-link>
+                <router-link
+                    :to="{
+                        name: 'users.show',
+                        params: { user_id: this.activeUser.id }
+                    }"
+                >
+                    <UserPhoto :user="activeUser" size="32"> </UserPhoto>
+                </router-link>
 
                 <button
                     type="button"
@@ -21,11 +20,13 @@
                 </button>
             </div>
 
-    <CreateOrEditPostModal :show="showCreaUserPostModel" @updateVisibleState="showCreaUserPostModel = $event"
-   postable_type="user"
-    />
+            <CreateOrEditPostModal
+                :show="showCreaUserPostModel"
+                @updateVisibleState="showCreaUserPostModel = $event"
+                postable_type="User"
+            />
 
-              <!-- <EditPostModal :show="showEditPostModal"
+            <!-- <EditPostModal :show="showEditPostModal"
             :post="post"
              @updateVisibleState="showEditPostModal = $event"
              /> -->
@@ -60,13 +61,11 @@ export default {
             imgUrl: null,
             imgFile: null,
             hasImage: false,
-            showCreaUserPostModel:false,
+            showCreaUserPostModel: false
             // image: null
         };
     },
-    methods: {
-
-    }
+    methods: {}
 };
 </script>
 

@@ -178,16 +178,18 @@ export default {
             formData.append("body", self.body == null ? "" : self.body);
 
             self.is_loading = true;
-
+            console.log(this.post)
             switch (self.postable_type) {
-                case "user":
+                case "User":
+                case "App\\Models\\User":
                     var packet = {
                         overhead: { post: self.post },
                         formData: formData
                     };
                     this.processUserPost(packet);
                     break;
-                case "library":
+                    case "Library":
+                case "App\\Models\\Library":
                     packet = {
                         overhead: {
                             postable_id: self.postable_id,
