@@ -63,6 +63,15 @@
                                     ><i class="fas fa-exclamation-triangle"></i>
                                     Report this post</a
                                 >
+
+                                <a
+                                    class="dropdown-item text-danger"
+                                    v-if="!isMyPost"
+                                    role="button"
+                                    ><i class="fas fa-exclamation-triangle"></i>
+                                    Block this post</a
+                                >
+
                             </div>
                         </div>
                     </div>
@@ -138,9 +147,11 @@ export default {
 
             var vId = this.extractYouTubeVideoId(url);
 
-              if(vId){
-                 url = "https://www.youtube.com/embed/" +  this.extractYouTubeVideoId(url);
-              }
+            if (vId) {
+                url =
+                    "https://www.youtube.com/embed/" +
+                    this.extractYouTubeVideoId(url);
+            }
 
             return url;
         },
