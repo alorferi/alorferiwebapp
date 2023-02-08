@@ -69,7 +69,8 @@ let router = new Router({
         {
             path: "/about",
             name: "about",
-            component: About
+            component: About,
+            meta: { title: "About" }
         },
 
         // {

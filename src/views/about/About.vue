@@ -1,79 +1,115 @@
 <template>
-  <div class="about">
-
-<div class="d-flex justify-content-around">
-
-    <div class="text-center p-2">
-        <img src="@/assets/images/defaults/logo_large_bn.png" height="180" alt="Alor Feri logo">
-        <!-- <div class="text-center" style="font-size:13pt">
+    <div class="about">
+        <div class="d-flex justify-content-around">
+            <div class="text-center p-2">
+                <img
+                    src="@/assets/images/defaults/logo_large_en.png"
+                    height="180"
+                    alt="Alor Feri logo"
+                />
+                <!-- <div class="text-center" style="font-size:13pt">
             আলোকিত সমাজের প্রত্যয়
         </div> -->
+            </div>
+            <div class="text-center p-2">
+                <img
+                    src="@/assets/images/defaults/af_mobile_app.png"
+                    height="200"
+                    alt="Alor Feri logo"
+                />
+            </div>
+            <div class="text-center p-2">
+                <img
+                    src="@/assets/images/defaults/af_model_car.png"
+                    height="200"
+                    alt="Alor Feri logo"
+                />
+            </div>
+        </div>
+
+        <p style="text-align:justify">
+            <span style="font-weight:bold">
+                Alor Feri Limited
+            </span>
+
+            is a promising Bangladeshi technology startup founded in 2021 by Md
+            Babul Mirdha. The company's mission is to empower libraries and
+            connect readers with books and knowledge to improve the quality of
+            education and enlighten society. With the Alor Feri app, the company
+            provides a smart library management system that streamlines library
+            operations and enhances the reading experience for users.
+
+            <br />
+            <br />
+            Md Babul Mirdha started researching and developing the Alor Feri app
+            back in 2015 while working as a software engineer at a private
+            company. Today, the app is used by over 160 libraries and serves
+            over 2,800 readers.
+            <br />
+            <br />
+            Headquartered in Mirpur, Dhaka, Alor Feri Limited is dedicated to
+            building a knowledge-based society through technology. With its
+            innovative library management app, the company is making a
+            significant impact in the local community by improving access to
+            books and learning resources.
+        </p>
+        <!-- <h5>
+            আলোর ফেরীর লক্ষ্য ও উদ্দেশ্য:
+        </h5> -->
+
+        <p style="text-align:justify">
+            <b> Mission:</b>
+            <br />
+            To empower libraries and connect readers with books and knowledge to
+            improve the quality of education and enlighten society.
+        </p>
+
+        <p>
+            <b>
+                Vision:
+            </b>
+
+            <br />
+            To revolutionize the library experience for patrons and institutions
+            alike, fostering stronger bonds between libraries and their
+            communities, and promoting literacy, education, and social
+            enrichment.
+        </p>
+
+        <p>
+            <b>
+                Goals:
+            </b>
+
+            <br />
+
+
+            <ul>
+
+                <li>
+                    Streamline library tasks
+                </li>
+
+                <li>
+                    Enhance library-reader connection
+                </li>
+
+                <li>
+                    Provide valuable performance metrics
+                </li>
+                <li>
+                    Measure library success
+                </li>
+                <li>
+                    Improve the library experience for patrons
+                </li>
+                <li>
+                    Improve the quality of education and enlighten society.
+                </li>
+
+
+            </ul>
+        </p>
+
     </div>
-    <div class="text-center p-2">
-        <img src="@/assets/images/defaults/af_mobile_app.png" height="200" alt="Alor Feri logo">
-    </div>
-    <div class="text-center p-2">
-        <img src="@/assets/images/defaults/af_model_car.png" height="200" alt="Alor Feri logo">
-    </div>
-
-</div>
-
-<p style="text-align:justify">
-
-    <span style="font-weight:bold">
-        আলোর ফেরী
-    </span>
-
-একটি অ্যাপ ভিত্তিক ভ্রাম্যমাণ মডেল পাঠাগার। যার একটি সোশ্যাল নেটওয়ার্কিং ভিত্তিক পাঠাগার ব্যবস্থাপনা অ্যাপ রয়েছে। যার মাধ্যমে কিউআর কোড ভিত্তিক ডিজিটাল পদ্ধতিতে বই, পাঠক ও পাঠাগারের পূর্ণ ব্যবস্থাপনা করা যায়। এই অ্যাপটি খুব সহজেই পাঠক ও পাঠাগারের মধ্যে সংযোগ ঘটাতে সাহায্য করে। যেখানে পাঠক ঘরে বসে অ্যাপের মাধ্যমে GPS ব্যবহার করে তার নিকটবর্তী পাঠাগারের বই ও পাঠক সহ যাবতীয় তথ্য সম্পর্কে জানতে পারে। পাঠক ঘরে থেকেই অ্যাপটির মাধ্যমে তার পছন্দের পাঠাগারে যুক্ত হয়ে পছন্দের বইটি খুঁজে পড়তে চেয়ে অনুরোধ পাঠাতে পারে। অতঃপর পাঠাগার নিজ ব্যবস্থাপনায় পাঠকের কাছে বইটি পৌঁছে দিবে এবং পড়া শেষে ফেরত নিবে।
-</p>
-<h5>
-    আলোর ফেরীর লক্ষ্য ও উদ্দেশ্য:
-</h5>
-
-<p style="text-align:justify">
-জ্ঞানে সমৃদ্ধ জাতিই উন্নত জাতি। তাই উন্নত জাতি ও আলোকিত সমাজ গঠনের ক্ষেত্রে পাঠাগার ভিত্তিক জ্ঞান চর্চার বিকল্প নাই। বর্তমান সময়ে বাংলাদেশে প্রচুর পাঠাগার রয়েছে। তবে বড় সমস্যা হলো কোন পাঠাগারের অবস্থান কোথায়, কোন পাঠাগারে কি পরিমান এবং কি কি বই আছে সে সম্পর্কে পাঠকরা অবহিত নয়। অর্থাৎ পাঠাগার গুলোর সাথে পাঠকদের কোনো সংযোগ নেই। এই সমস্যা সমাধানের ভাবনা থেকে ডিজিটাল পদ্ধতিতে পাঠাগার এবং পাঠকদের মধ্যে সংযোগ সাধনের লক্ষ্যে আলোর ফেরীর যাত্রা।
-</p>
-
-<h5>
-    আলোর ফেরীর যাত্রা:
-</h5>
-<p style="text-align:justify">
-২০১৫ সালের ১০ ই মার্চ পটুয়াখালী জেলার বাউফল থানাধীন কালিশুরী ইউনিয়নের সিংহেরাকাঠী গ্রামে আলোর ফেরীর প্রাথমিক পাঠাগার কার্যক্রম শুরু হয়। পাশাপাশি অ্যাপটি ডেভলপমেন্ট ও পাইলটিং কার্যক্রম শুরু করে। বর্তমানে বাংলাদেশের বিভিন্ন প্রান্ত থেকে ৫০ টিরও অধিক পাঠাগার আলোর ফেরীর অ্যাপের সাথে যুক্ত হয়েছে।
-</p>
-<h5>
-আলোর ফেরী অ্যাপ এর বিশেষ ফিচার সমূহ:
-</h5>
-<h5>
-    পাঠক:
-</h5>
-
-<ul>
-    <li>
-      ঘরে বসে ডিজিটাল পদ্ধতিতে লাইব্রেরিতে মেম্বারশিপ নিবন্ধন।
-    </li>
-    <li>জিপিএস পদ্ধতি ব্যবহার করে খুব সহজেই পাঠাগার ও বই খুঁজে বের করা।</li>
-    <li>বই পড়তে চেয়ে অনুরোধ।</li>
-    <li>রিভিউ ও মতামত প্রকাশ।</li>
-    <li>বই পড়ার মেয়াদ উত্তীর্ণের নোটিফিকেশন।</li>
-</ul>
-
-
-
-
-
-<h5>
-পাঠাগার:
-</h5>
-<ul>
-
-        <li>QR পদ্ধতিতে পাঠাগার, পাঠক ও বইয়ের তথ্য দ্রুত একসেস।  </li>
-        <li>ইভেন্ট ব্যবস্থাপনা ও নোটিফিকেশন।  </li>
-        <li>বই ইস্যু,  সংগ্রহ, বই ও সদস্য ব্যবস্থাপনা।  </li>
-        <li>মেম্বার রিকোয়েস্ট নোটিফিকেশন।  </li>
-        <li>অনলাইন পেমেন্ট এর মাধ্যমে সদস্য ও দাতাদের থেকে অর্থ সংগ্রহ ও আর্থিক ব্যবস্থাপনা।  </li>
-        <li>দৈনিক, মাসিক এবং বাৎসরিক বই ইস্যু ও সংগ্রহের স্ট্যাটিসটিকস।  </li>
-        <li>পাঠাগার, পাঠকের পারফরম্যান্স নির্ণয় এবং প্রয়োজনীয় নোটিফিকেশন ইত্যাদি।  </li>
-
-</ul>
-  </div>
 </template>
