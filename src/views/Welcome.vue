@@ -3,7 +3,7 @@
         <div class="col-sm-4">
             <img
                 src="../assets/slider_imgs/img_02.png"
-                alt="Los Angeles"
+                alt="Book is distributed to the reader by bicycle."
                 width="360px"
             />
         </div>
@@ -11,7 +11,7 @@
         <div class="col-sm-4 text-center">
             <!-- <img src="" width="250" alt="Alor Feri logo"> -->
             <img
-                alt="Alor Feri logo"
+                alt="Logo of Alor Feri"
                 src="../assets/images/defaults/logo_large.png"
                 width="255"
             />
