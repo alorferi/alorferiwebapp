@@ -55,7 +55,7 @@
                 </li>
 
                 <li>
-                    <Language></Language>
+                    <Language/>
                 </li>
 
                 <!-- Dropdown -->
@@ -110,8 +110,7 @@ export default {
     name: "HomeNav",
     components: {
         UserPhoto,
-        Language // Logout,
-        // NavBarSearch
+        Language
     },
     data() {
         return {};

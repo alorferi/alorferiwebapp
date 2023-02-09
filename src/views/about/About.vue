@@ -111,5 +111,32 @@
             </ul>
         </p>
 
+        <BottomBar />
     </div>
 </template>
+
+
+
+<script>
+
+import BottomBar from "@/views/navbars/BottomBar";
+export default {
+    name: "Welcome",
+    components: {
+        BottomBar
+    },
+    mounted: function() {},
+    computed: {},
+    props: {
+
+    }
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+
+
+

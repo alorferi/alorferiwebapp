@@ -49,9 +49,8 @@
                             Forgot Your Password?
                         </router-link>
                     </div>
-                </div>
 
-                <!-- <div class="form-group"> -->
+                       <!-- <div class="form-group"> -->
                 <router-link
                     class="btn btn-success"
                     :to="{ name: 'register' }"
@@ -59,6 +58,10 @@
                 >
                     Create New Account
                 </router-link>
+
+                </div>
+
+
             </form>
         </div>
     </div>

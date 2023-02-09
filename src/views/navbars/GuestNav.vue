@@ -24,6 +24,9 @@
       </ul>
 
       <ul class="navbar-nav ml-auto">
+            <li>
+                    <Language/>
+                </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
         </li>
@@ -33,8 +36,12 @@
 </template>
 
 <script>
+import Language from "@/components/Language";
 export default {
   name: "GuestNav",
+  components: {
+        Language
+    },
   data() {
     return {};
   },

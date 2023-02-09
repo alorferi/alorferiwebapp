@@ -1,100 +1,105 @@
 <template>
-    <div class="row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-6 card">
-            <h4 class="text-center mt-2">Create New Account</h4>
-            <form class="card-body" @submit.prevent="submitForm">
-                <div class="col-md-12">
-                    <div class="d-flex">
-                        <div class="form-group flex-fill pr-2">
-                            <EditTextField
-                                type="text"
-                                name="first_name"
-                                label="First Name"
-                                placeholder="First Name"
-                                icon=" "
+    <div>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6 card">
+                <h4 class="text-center mt-2">Create New Account</h4>
+                <form class="card-body" @submit.prevent="submitForm">
+                    <div class="col-md-12">
+                        <div class="d-flex">
+                            <div class="form-group flex-fill pr-2">
+                                <EditTextField
+                                    type="text"
+                                    name="first_name"
+                                    label="First Name"
+                                    placeholder="First Name"
+                                    icon=" "
+                                    :errors="errors"
+                                    @update:field="userData.first_name = $event"
+                                />
+                            </div>
+
+                            <div class="form-group  flex-fill pl-2">
+                                <EditTextField
+                                    type="text"
+                                    name="surname"
+                                    label="Last Name"
+                                    placeholder="Last Name"
+                                    icon=" "
+                                    :errors="errors"
+                                    @update:field="userData.surname = $event"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <UserNameField
+                                name="username"
+                                label="E-mail or Mobile"
+                                placeholder="E-mail or Mobile"
+                                icon="fas fa-at"
                                 :errors="errors"
-                                @update:field="userData.first_name = $event"
+                                @update:field="userData.username = $event"
                             />
                         </div>
 
-                        <div class="form-group  flex-fill pl-2">
+                        <div class="form-group">
                             <EditTextField
-                                type="text"
-                                name="surname"
-                                label="Last Name"
-                                placeholder="Last Name"
-                                icon=" "
+                                type="password"
+                                name="password"
+                                label="Password"
+                                placeholder="Password"
+                                icon="fas fa-key"
                                 :errors="errors"
-                                @update:field="userData.surname = $event"
+                                @update:field="userData.password = $event"
                             />
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <UserNameField
-                            name="username"
-                            label="E-mail or Mobile"
-                            placeholder="E-mail or Mobile"
-                            icon="fas fa-at"
-                            :errors="errors"
-                            @update:field="userData.username = $event"
-                        />
-                    </div>
+                        <div class="form-group">
+                            <EditTextField
+                                type="date"
+                                name="dob"
+                                :initval="this.userData.dob"
+                                label="Date of birth"
+                                placeholder="DD/MM/YYYY"
+                                icon="fas fa-birthday-cake"
+                                :errors="errors"
+                                @update:field="userData.dob = $event"
+                            />
+                        </div>
 
-                    <div class="form-group">
-                        <EditTextField
-                            type="password"
-                            name="password"
-                            label="Password"
-                            placeholder="Password"
-                            icon="fas fa-key"
-                            :errors="errors"
-                            @update:field="userData.password = $event"
-                        />
-                    </div>
+                        <div>
+                            <GenderInputField
+                                name="gender"
+                                label="Gender"
+                                :errors="errors"
+                                @update:field="userData.gender = $event"
+                            />
+                        </div>
 
-                    <div class="form-group">
-                        <EditTextField
-                            type="date"
-                            name="dob"
-                            :initval="this.userData.dob"
-                            label="Date of birth"
-                            placeholder="DD/MM/YYYY"
-                            icon="fas fa-birthday-cake"
-                            :errors="errors"
-                            @update:field="userData.dob = $event"
-                        />
+                        <div class="form-group">
+                            <AskForOtcModal
+                                :showOtcModal="showOtcModal"
+                                :durationInSeconds="durationInSeconds"
+                                @updateOtc="updateOtc"
+                                @onUpdateVisibleState="showOtcModal = $event"
+                            ></AskForOtcModal>
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                style="width:100%"
+                            >
+                                Submit
+                            </button>
+                        </div>
                     </div>
-
-                    <div>
-                        <GenderInputField
-                            name="gender"
-                            label="Gender"
-                            :errors="errors"
-                            @update:field="userData.gender = $event"
-                        />
-                    </div>
-
-                    <div class="form-group">
-                        <AskForOtcModal
-                            :showOtcModal="showOtcModal"
-                            :durationInSeconds="durationInSeconds"
-                            @updateOtc="updateOtc"
-                            @onUpdateVisibleState="showOtcModal= $event"
-                        ></AskForOtcModal>
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                            style="width:100%"
-                        >
-                            Submit
-                        </button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="col-sm-3"></div>
         </div>
-        <div class="col-sm-3"></div>
+        <br>
+        <br>
+        <BottomBar />
     </div>
 </template>
 
@@ -104,6 +109,7 @@ import EditTextField from "../../components/EditTextField";
 import UserNameField from "../../components/UserNameField";
 import GenderInputField from "../../components/GenderInputField";
 import AskForOtcModal from "../../components/AskForOtcModal";
+import BottomBar from "@/views/navbars/BottomBar";
 // import $ from 'jquery'
 
 // import jQuery from 'jquery'
@@ -118,7 +124,13 @@ export default {
         // MobileNumberField,
         GenderInputField,
         UserNameField,
-        AskForOtcModal
+        AskForOtcModal,
+        BottomBar
+    },
+    mounted: function() {
+        if (this.$store.getters.isLoggedIn) {
+             this.$router.push({ name: "home" });
+        }
     },
     computed: {},
     data() {
@@ -172,7 +184,8 @@ export default {
 
         submitForm: function() {
             const self = this;
-            const url = this.$apiServerBaseUrl + "/api/auth/register-with-username";
+            const url =
+                this.$apiServerBaseUrl + "/api/auth/register-with-username";
 
             const headers = {
                 "ot-code": self.ot_code

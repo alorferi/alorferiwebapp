@@ -1,57 +1,70 @@
 <template>
-    <div class="row" style="padding-top: 60pt">
-        <div class="col-sm-4">
-            <img
-                src="../assets/slider_imgs/img_02.png"
-                alt="Book is distributed to the reader by bicycle."
-                width="360px"
-            />
-        </div>
-
-        <div class="col-sm-4 text-center">
-            <!-- <img src="" width="250" alt="Alor Feri logo"> -->
-            <img
-                alt="Logo of Alor Feri"
-                src="../assets/images/defaults/logo_large.png"
-                width="255"
-            />
-
-
-   <br />
-   <br />
-   <br />
-
-                 <a
-                href="https://play.google.com/store/apps/details?id=com.provatsoft.alorferi"
-                target="_blank"
-            >
+    <div>
+        <div class="row" style="padding-top: 60pt">
+            <div class="col-sm-4">
                 <img
-                    src="../assets/images/defaults/google_play_get_on.png"
-                    width="250"
-                    alt="Alor Feri logo"
+                    src="../assets/slider_imgs/img_02.png"
+                    alt="Book is distributed to the reader by bicycle."
+                    width="360px"
                 />
-            </a>
+            </div>
 
-            <br />
-            <br />
+            <div class="col-sm-4 text-center">
+                <!-- <img src="" width="250" alt="Alor Feri logo"> -->
+                <img
+                    alt="Logo of Alor Feri"
+                    src="../assets/images/defaults/logo_large.png"
+                    width="255"
+                />
 
+                <br />
+                <br />
+                <br />
 
+                <a
+                    href="https://play.google.com/store/apps/details?id=com.provatsoft.alorferi"
+                    target="_blank"
+                >
+                    <img
+                        src="../assets/images/defaults/google_play_get_on.png"
+                        width="250"
+                        alt="Alor Feri logo"
+                    />
+                </a>
 
+                <br />
+                <br />
+            </div>
+
+            <div class="col-sm-4">
+                <Login />
+            </div>
         </div>
 
-        <div class="col-sm-4">
-            <Login />
-        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="mt-auto">
+            <BottomBar  />
+        </div >
+
     </div>
 </template>
 
 <script>
 // import Login from "@/views/auth/Login";
 import Login from "@/views/auth/Login";
+import BottomBar from "@/views/navbars/BottomBar";
 export default {
     name: "Welcome",
     components: {
-        Login
+        Login,
+        BottomBar
     },
     mounted: function() {},
     computed: {},
