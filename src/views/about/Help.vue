@@ -121,7 +121,7 @@
 
 import BottomBar from "@/views/navbars/BottomBar";
 export default {
-    name: "About",
+    name: "Help",
     components: {
         BottomBar
     },

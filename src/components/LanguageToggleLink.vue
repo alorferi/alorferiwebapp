@@ -3,25 +3,25 @@
         <!-- <b-button variant="success" size="sm">বাং</b-button>   <b-button variant="secondary" size="sm">EN</b-button> -->
 
         <ul class="pagination justify-content-center">
-            <li class="page-item"   :class="{ active: activeLanguage == 'bn' }"
+            <li class="page-itemx"   :class="{ active: activeLanguage == 'bn' }"
              @click="setLanguage('bn')"
             >
-                <a role="button" aria-label="Bangla" class="page-link"
+                <a role="button" aria-label="Bangla" class="page-linkx"
 
 
 
-                    ><span aria-hidden="true">বাং</span
+                    ><span aria-hidden="true">বাংলা</span
                     ><span class="sr-only">Bangla</span></a
                 >
             </li>
 
-            <li aria-label="Engilish" class="page-item"    :class="{ active: activeLanguage == 'en' }"
+            <li aria-label="English" class="page-itemx"    :class="{ active: activeLanguage == 'en' }"
               @click="setLanguage('en')"
             >
-                <a role="button" class="page-link"
+                <a role="button" class="page-linkx"
 
 
-                    ><span aria-hidden="true">EN</span
+                    ><span aria-hidden="true">English</span
                     ><span class="sr-only">English</span></a
                 >
             </li>

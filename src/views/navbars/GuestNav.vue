@@ -25,8 +25,14 @@
 
       <ul class="navbar-nav ml-auto">
             <li>
-                    <Language/>
+                    <!-- <LanguageToggleButton/> -->
                 </li>
+                <li class="nav-item">
+          <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{ name: 'register' }">Sign Up</router-link>
+        </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
         </li>
@@ -36,11 +42,11 @@
 </template>
 
 <script>
-import Language from "@/components/Language";
+// import LanguageToggleButton from "@/components/LanguageToggleButton";
 export default {
   name: "GuestNav",
   components: {
-        Language
+    // LanguageToggleButton
     },
   data() {
     return {};

@@ -4,6 +4,7 @@ import store from "./store";
 import Home from "./views/home/Home.vue";
 import SearchShow from "./views/home/SearchShow.vue";
 import About from "./views/about/About.vue";
+import Pricing from "./views/about/Pricing.vue";
 // import Login from "./views/auth/Login.vue";
 import LoginContainer from "./views/auth/LoginContainer.vue";
 import Register from "./views/auth/Register.vue";
@@ -72,6 +73,12 @@ let router = new Router({
             name: "about",
             component: About,
             meta: { title: "About" }
+        },
+        {
+            path: "/pricing",
+            name: "pricing",
+            component: Pricing,
+            meta: { title: "Pricing" }
         },
 
         // {
