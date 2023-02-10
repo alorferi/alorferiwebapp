@@ -129,7 +129,10 @@
                 </a>
 
 
-                <div class="">
+                <div class="mt-1">
+
+                    Get us on:
+
                     <a
                     class="p-1"
                     href="https://fb.com/alorferi"
