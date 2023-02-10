@@ -4,6 +4,7 @@ import store from "./store";
 import Home from "./views/home/Home.vue";
 import SearchShow from "./views/home/SearchShow.vue";
 import About from "./views/about/About.vue";
+import Awards from "./views/about/Awards.vue";
 import Pricing from "./views/about/Pricing.vue";
 // import Login from "./views/auth/Login.vue";
 import LoginContainer from "./views/auth/LoginContainer.vue";
@@ -73,6 +74,12 @@ let router = new Router({
             name: "about",
             component: About,
             meta: { title: "About" }
+        }
+        ,  {
+            path: "/awards",
+            name: "awards",
+            component: Awards,
+            meta: { title: "Awards" }
         },
         {
             path: "/pricing",

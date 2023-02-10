@@ -15,13 +15,15 @@
                     Alor Feri
                 </div>
 
-                <div class="pl-1" v-if="showPrivacyPolicy">
-                    Privacy Policy
+                <div class="pl-1" v-if="showPricing">
+                    <router-link :to="{ name: 'login' }">
+                        Login</router-link
+                    >
                 </div>
 
                 <div class="pl-1" v-if="showPricing">
-                    <router-link :to="{ name: 'pricing' }">
-                        Pricing</router-link
+                    <router-link :to="{ name: 'register' }">
+                        Sign Up</router-link
                     >
                 </div>
 
@@ -34,7 +36,8 @@
                 </div>
 
                 <div class="pl-1">
-                    Awards
+
+                    <router-link :to="{ name: 'awards' }">Awards</router-link>
                 </div>
                 <div class="pl-1">
                     Research
@@ -160,12 +163,6 @@
                 </div>
 
             </div>
-        </div>
-
-        <div>
-            <div></div>
-            <div></div>
-            <div></div>
         </div>
     </div>
 </template>

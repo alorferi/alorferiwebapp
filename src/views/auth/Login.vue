@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <button
                         type="submit"
-                        class="btn btn-primary"
+                        class="btn btn-success"
                         style="width:100%"
                     >
                         Login
@@ -50,9 +50,11 @@
                         </router-link>
                     </div>
 
-                       <!-- <div class="form-group"> -->
+                    <hr>
+
+
                 <router-link
-                    class="btn btn-success"
+                    class="btn btn-primary"
                     :to="{ name: 'register' }"
                     style="width:100%"
                 >
