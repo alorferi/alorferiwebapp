@@ -58,13 +58,13 @@
 
             <tfoot>
                 <tr>
-                    <td>
+                    <th>
                         {{ price.name }}
-                    </td>
-                    <td class="text-center text-primary">{{ price.pac0 }}</td>
-                    <td class="text-center text-primary">{{ price.pac1 }}</td>
-                    <td class="text-center text-primary">{{ price.pac2 }}</td>
-                    <td class="text-center text-primary">{{ price.pac3 }}</td>
+                    </th>
+                    <th class="text-center text-primary">{{ price.pac0 }}</th>
+                    <th class="text-center text-primary">{{ price.pac1 }}</th>
+                    <th class="text-center text-primary">{{ price.pac2 }}</th>
+                    <th class="text-center text-primary">{{ price.pac3 }}</th>
                 </tr>
             </tfoot>
         </table>

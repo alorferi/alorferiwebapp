@@ -1,7 +1,7 @@
 <template>
     <div class="card card-default">
-        <div class="card-header">Login</div>
-        <div class="card-body">
+        <!-- <div class="card-header">Login</div> -->
+        <div class="card-body mt-3">
             <form @submit.prevent="login">
                 <div class="form-group">
                     <UserNameField

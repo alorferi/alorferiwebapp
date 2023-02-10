@@ -33,9 +33,6 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'register' }">Sign Up</router-link>
         </li>
-        <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
-        </li>
       </ul>
     </div>
   </div>

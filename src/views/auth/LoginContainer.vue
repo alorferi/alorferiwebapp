@@ -13,12 +13,6 @@
         <br>
         <br>
         <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
         <BottomBar />
     </div>
 </template>

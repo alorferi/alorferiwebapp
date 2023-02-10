@@ -1,14 +1,13 @@
 <template>
     <div id="app" class="">
-
-
-        <nav class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white">
+        <nav
+            class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white"
+            v-if="isLoggedIn"
+        >
             <div class="container">
-
-
-            <HomeNav v-if="isLoggedIn"></HomeNav>
-            <GuestNav v-else></GuestNav>
-              </div>
+                <HomeNav v-if="isLoggedIn"></HomeNav>
+                <!-- <GuestNav v-else></GuestNav> -->
+            </div>
         </nav>
 
         <div class="container" style="margin-top:70px;">
@@ -19,7 +18,7 @@
                         <component :is="leftMenu"></component>
                     </div>
                     <!-- style="overflow-y: scroll;" -->
-                    <div class="col-sm-8" >
+                    <div class="col-sm-8">
                         <router-view></router-view>
                     </div>
                     <div class="col-sm-2"></div>
@@ -34,7 +33,7 @@
 </template>
 
 <script>
-import GuestNav from "@/views/navbars/GuestNav";
+// import GuestNav from "@/views/navbars/GuestNav";
 import HomeNav from "@/views/navbars/HomeNav.vue";
 // import UserBadge from "./views/badges/UserBadge";
 // import HomeLeftMenu from "./views/menus/HomeLeftMenu";
@@ -43,7 +42,7 @@ import HomeNav from "@/views/navbars/HomeNav.vue";
 export default {
     name: "App",
     components: {
-        GuestNav,
+        // GuestNav,
         HomeNav
     },
     computed: {
