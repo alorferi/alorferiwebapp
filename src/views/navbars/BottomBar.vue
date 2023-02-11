@@ -1,113 +1,105 @@
 <template>
     <div class="border-top p-2">
-
         <div class="d-flex  justify-content-between">
             <div class="text-center p-3">
-
-
-                <router-link :to="{ name: 'home' }">  <img
-                    alt="Logo of Alor Feri"
-                    src="@/assets/images/defaults/logo_large.png"
-                    width="128"
+                <router-link :to="{ name: 'home' }">
+                    <img
+                        alt="Logo of Alor Feri"
+                        src="@/assets/images/defaults/logo_large.png"
+                        width="128"
                 /></router-link>
-
-
             </div>
 
             <div class="flex-fill">
-
-
                 <div class="mr-4  border-bottom font-weight-bold">
-                        Alor Feri
+                    Alor Feri
                 </div>
 
-                <div >
+                <div>
                     <router-link :to="{ name: 'about' }">About</router-link>
                 </div>
 
-
-                <div >
-                    <router-link :to="{ name: 'about' }">Products</router-link>
+                <div>
+                    <router-link :to="{ name: 'products' }">Products</router-link>
                 </div>
 
-
-                <div >
+                <div>
                     <router-link :to="{ name: 'pricing' }">Pricing</router-link>
                 </div>
 
                 <div>
                     <router-link :to="{ name: 'awards' }">Awards</router-link>
                 </div>
-                <div >
-                    <router-link :to="{ name: 'research' }">Research</router-link>
+                <div>
+                    <router-link :to="{ name: 'research' }"
+                        >Research</router-link
+                    >
                 </div>
-
-
-
             </div>
 
             <div class="flex-fill">
                 <div class=" mr-4  border-bottom font-weight-bold">
-                   Employers
+                    Employers
                 </div>
 
-                <div >
-                   Post a job
+                <div>
+                    Post a job
                 </div>
 
-                <div >
-                 Get a free Employer
+                <div>
+                    Get a free Employer
                 </div>
 
+                <div class="mt-2 mr-4  border-bottom font-weight-bold">
+                    Library Admins
+                </div>
+
+                <div>
+                    <a href="https://backoffice.alorferi.com" target="_blank">
+                        Back Office
+                    </a>
+                </div>
             </div>
 
             <div class="flex-fill">
-
                 <div class="mr-4  border-bottom font-weight-bold">
-                   Community
+                    Community
                 </div>
 
-
-                <div >
+                <div>
                     Privacy Policy
                 </div>
 
-                <div  >
+                <div>
                     Terms
                 </div>
 
-                <div >
+                <div>
                     Help
                 </div>
 
-                <div >
-                   Contact us
+                <div>
+                    Contact us
                 </div>
-
             </div>
-
-
 
             <div class="flex-fill">
                 <div class=" mr-4 border-bottom font-weight-bold">
-                   Work with us
+                    Work with us
                 </div>
 
-                <div >
+                <div>
                     Advertisers
                 </div>
 
-                <div >
+                <div>
                     Developers
                 </div>
 
-                <div >
+                <div>
                     Careers
                 </div>
-
-
             </div>
-
 
             <div>
                 <div class="ml-2">
@@ -125,37 +117,33 @@
                     />
                 </a>
 
-
                 <div class="mt-1">
-
                     Get us on:
 
                     <a
-                    class="p-1"
-                    href="https://fb.com/alorferi"
-                    target="_blank"
-                >
-                    <img
-                        src="@/assets/images/icons/ic_facebook.png"
-                        width="32"
-                        alt="Alor Feri logo"
-                    />
-                </a>
+                        class="p-1"
+                        href="https://fb.com/alorferi"
+                        target="_blank"
+                    >
+                        <img
+                            src="@/assets/images/icons/ic_facebook.png"
+                            width="32"
+                            alt="Alor Feri logo"
+                        />
+                    </a>
 
-                <a
-                class="p-1"
-                    href="https://youtube.com/@alorferi"
-                    target="_blank"
-                >
-                    <img
-                        src="@/assets/images/icons/ic_youtube.png"
-                        width="32"
-                        alt="Alor Feri logo"
-                    />
-                </a>
-
+                    <a
+                        class="p-1"
+                        href="https://youtube.com/@alorferi"
+                        target="_blank"
+                    >
+                        <img
+                            src="@/assets/images/icons/ic_youtube.png"
+                            width="32"
+                            alt="Alor Feri logo"
+                        />
+                    </a>
                 </div>
-
             </div>
         </div>
     </div>
@@ -174,8 +162,7 @@ export default {
     },
     mounted: function() {},
     data() {
-        return {
-        };
+        return {};
     },
     methods: {}
 };
