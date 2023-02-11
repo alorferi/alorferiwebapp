@@ -20,7 +20,9 @@
                 </div>
 
                 <div>
-                    <router-link :to="{ name: 'products' }">Products</router-link>
+                    <router-link :to="{ name: 'products' }"
+                        >Products</router-link
+                    >
                 </div>
 
                 <div>
@@ -67,28 +69,23 @@
                 </div>
 
                 <div>
-
-
-                       <router-link :to="{ name: 'privacy-policy' }"
-                        >  Privacy Policy</router-link
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <router-link :to="{ name: 'help' }"
-                        >Help</router-link
+                    <router-link :to="{ name: 'privacy-policy' }">
+                        Privacy Policy</router-link
                     >
                 </div>
 
                 <div>
-                    Contact us
+                    <router-link :to="{ name: 'help' }">Help</router-link>
+                </div>
+
+                <div>
+                    <router-link :to="{ name: 'contact-us' }">
+                        Contact Us</router-link
+                    >
                 </div>
             </div>
 
-            <div class="flex-fill">
+            <!-- <div class="flex-fill">
                 <div class=" mr-4 border-bottom font-weight-bold">
                     Work with us
                 </div>
@@ -104,7 +101,7 @@
                 <div>
                     Careers
                 </div>
-            </div>
+            </div> -->
 
             <div>
                 <div class="ml-2">

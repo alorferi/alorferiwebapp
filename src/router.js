@@ -10,6 +10,7 @@ import Awards from "./views/about/Awards.vue";
 import Pricing from "./views/about/Pricing.vue";
 import Help from "./views/about/Help.vue";
 import PrivacyPolicy from "./views/about/PrivacyPolicy.vue";
+import ContactUs from "./views/about/ContactUs.vue";
 // import Login from "./views/auth/Login.vue";
 import LoginContainer from "./views/auth/LoginContainer.vue";
 import Register from "./views/auth/Register.vue";
@@ -112,17 +113,16 @@ let router = new Router({
             path: "/privacy-policy",
             name: "privacy-policy",
             component: PrivacyPolicy,
-            meta: { title: "PrivacyPolicy" }
+            meta: { title: "Privacy Policy" }
         },
 
-        // {
-        //     path: "/newsfeeds",
-        //     name: "newsfeeds",
-        //     component: NewsFeeds,
-        //     leftMenu: HomeLeftMenu,
-        //     meta:{title: "News Feed"}
+        {
+            path: "/contact-us",
+            name: "contact-us",
+            component: ContactUs,
+            meta:{title: "Contact Us"}
 
-        // },
+        },
         {
             path: "/users/me",
             name: "users.me",
