@@ -1,39 +1,19 @@
 <template>
     <div class="about">
-        <div class="d-flex justify-content-around">
-            <div class="text-center p-2">
+        <div class="text-left p-2">
                 <img
-                    src="@/assets/images/defaults/logo_large_en.png"
-                    height="180"
+                    src="@/assets/images/defaults/alor-feri-limited-logo-en-green.png"
+                    height="256"
                     alt="Alor Feri logo"
                 />
-                <!-- <div class="text-center" style="font-size:13pt">
-            আলোকিত সমাজের প্রত্যয়
-        </div> -->
-            </div>
-            <div class="text-center p-2">
-                <img
-                    src="@/assets/images/defaults/af_mobile_app.png"
-                    height="200"
-                    alt="Alor Feri logo"
-                />
-            </div>
-            <div class="text-center p-2">
-                <img
-                    src="@/assets/images/defaults/af_model_car.png"
-                    height="200"
-                    alt="Alor Feri logo"
-                />
-            </div>
-        </div>
 
+            </div>
         <p style="text-align:justify">
             <span style="font-weight:bold">
                 Alor Feri Limited
             </span>
 
-            is a promising Bangladeshi technology startup founded in 2021 by Md
-            Babul Mirdha. The company's mission is to empower libraries and
+            is a promising Bangladeshi technology startup founded in 2021. The company's mission is to empower libraries and
             connect readers with books and knowledge to improve the quality of
             education and enlighten society. With the Alor Feri app, the company
             provides a smart library management system that streamlines library
@@ -41,7 +21,7 @@
 
             <br />
             <br />
-            Md Babul Mirdha started researching and developing the Alor Feri app
+            Md Babul Mirdha, founder, started researching and developing the Alor Feri app
             back in 2015 while working as a software engineer at a private
             company. Today, the app is used by over 160 libraries and serves
             over 2,800 readers.
@@ -111,7 +91,6 @@
             </ul>
         </p>
 
-        <BottomBar />
     </div>
 </template>
 
@@ -119,11 +98,9 @@
 
 <script>
 
-import BottomBar from "@/views/navbars/BottomBar";
 export default {
     name: "About",
     components: {
-        BottomBar
     },
     mounted: function() {},
     computed: {},

@@ -5,10 +5,22 @@
             v-if="isLoggedIn"
         >
             <div class="container">
-                <HomeNav v-if="isLoggedIn"></HomeNav>
-                <!-- <GuestNav v-else></GuestNav> -->
+                 <HomeNav/>
+
             </div>
         </nav>
+
+
+        <nav
+            class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white"
+            v-else
+        >
+            <div class="container">
+                 <GuestNav/>
+
+            </div>
+        </nav>
+
 
         <div class="container" style="margin-top:70px;">
             <div v-if="isLoggedIn">
@@ -28,22 +40,30 @@
             <div v-else class="">
                 <router-view></router-view>
             </div>
+
+            <br>
+            <br>
+            <br>
+            <BottomBar />
+
         </div>
     </div>
 </template>
 
 <script>
-// import GuestNav from "@/views/navbars/GuestNav";
+import GuestNav from "@/views/navbars/GuestNav";
 import HomeNav from "@/views/navbars/HomeNav.vue";
 // import UserBadge from "./views/badges/UserBadge";
 // import HomeLeftMenu from "./views/menus/HomeLeftMenu";
 // import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
+import BottomBar from "@/views/navbars/BottomBar";
 
 export default {
     name: "App",
     components: {
-        // GuestNav,
-        HomeNav
+        GuestNav,
+        HomeNav,
+        BottomBar
     },
     computed: {
         isLoggedIn: function() {

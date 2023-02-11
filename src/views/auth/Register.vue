@@ -109,7 +109,6 @@ import EditTextField from "../../components/EditTextField";
 import UserNameField from "../../components/UserNameField";
 import GenderInputField from "../../components/GenderInputField";
 import AskForOtcModal from "../../components/AskForOtcModal";
-import BottomBar from "@/views/navbars/BottomBar";
 // import $ from 'jquery'
 
 // import jQuery from 'jquery'
@@ -125,7 +124,6 @@ export default {
         GenderInputField,
         UserNameField,
         AskForOtcModal,
-        BottomBar
     },
     mounted: function() {
         if (this.$store.getters.isLoggedIn) {

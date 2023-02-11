@@ -22,20 +22,13 @@
 
         21 and 22 December 2022 AD by District Administration, Patuakhali under the initiative of A2I and Information and Communication Technology Department. "Alor Pheri Pathagar" won the first place in the open category in the project exhibition competition of the Digital Innovation Olympiad at the Digital Innovation Fair-2022 organized on
 
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <BottomBar />
     </div>
 </template>
 
 <script>
-import BottomBar from "@/views/navbars/BottomBar";
 export default {
     name: "Awards",
     components: {
-        BottomBar
     },
     mounted: function() {},
     computed: {},

@@ -7,9 +7,7 @@
                     height="180"
                     alt="Alor Feri logo"
                 />
-                <!-- <div class="text-center" style="font-size:13pt">
-            আলোকিত সমাজের প্রত্যয়
-        </div> -->
+
             </div>
             <div class="text-center p-2">
                 <img
@@ -119,7 +117,7 @@
 <script>
 
 export default {
-    name: "Help",
+    name: "Products",
     components: {
     },
     mounted: function() {},

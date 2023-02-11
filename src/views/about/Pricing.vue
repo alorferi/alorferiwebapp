@@ -69,17 +69,14 @@
             </tfoot>
         </table>
 
-        <BottomBar />
     </div>
 </template>
 
 <script>
-import BottomBar from "@/views/navbars/BottomBar";
 
 export default {
     name: "Pricing",
     components: {
-        BottomBar
     },
     mounted: function() {},
     computed: {},

@@ -3,111 +3,105 @@
 
         <div class="d-flex  justify-content-between">
             <div class="text-center p-3">
-                <img
+
+
+                <router-link :to="{ name: 'home' }">  <img
                     alt="Logo of Alor Feri"
                     src="@/assets/images/defaults/logo_large.png"
                     width="128"
-                />
+                /></router-link>
+
+
             </div>
 
-            <div class="">
-                <div class="pl-1">
-                    Alor Feri
+            <div class="flex-fill">
+
+
+                <div class="mr-4  border-bottom font-weight-bold">
+                        Alor Feri
                 </div>
 
-                <div class="pl-1" v-if="showPricing">
-                    <router-link :to="{ name: 'login' }">
-                        Login</router-link
-                    >
-                </div>
-
-                <div class="pl-1" v-if="showPricing">
-                    <router-link :to="{ name: 'register' }">
-                        Sign Up</router-link
-                    >
-                </div>
-
-                <div class="pl-1" v-if="showTerms">
-                    Terms
-                </div>
-
-                <div class="pl-1" v-if="showHelp">
-                    Help
-                </div>
-
-                <div class="pl-1">
-
-                    <router-link :to="{ name: 'awards' }">Awards</router-link>
-                </div>
-                <div class="pl-1">
-                    Research
-                </div>
-
-                <div class="pl-1">
+                <div >
                     <router-link :to="{ name: 'about' }">About</router-link>
                 </div>
+
+
+                <div >
+                    <router-link :to="{ name: 'about' }">Products</router-link>
+                </div>
+
+
+                <div >
+                    <router-link :to="{ name: 'pricing' }">Pricing</router-link>
+                </div>
+
+                <div>
+                    <router-link :to="{ name: 'awards' }">Awards</router-link>
+                </div>
+                <div >
+                    <router-link :to="{ name: 'research' }">Research</router-link>
+                </div>
+
+
+
             </div>
 
-            <div class="">
-                <div class="pl-1">
+            <div class="flex-fill">
+                <div class=" mr-4  border-bottom font-weight-bold">
                    Employers
                 </div>
 
-                <div class="pl-1">
+                <div >
                    Post a job
                 </div>
 
-                <div class="pl-1">
+                <div >
                  Get a free Employer
                 </div>
 
             </div>
 
-            <div class="">
-                <div class="pl-1">
+            <div class="flex-fill">
+
+                <div class="mr-4  border-bottom font-weight-bold">
                    Community
                 </div>
 
 
-
-                <div class="pl-1">
+                <div >
                     Privacy Policy
                 </div>
 
-                <div class="pl-1">
-                   Contact us
-                </div>
-
-                <div class="pl-1" >
+                <div  >
                     Terms
                 </div>
 
-                <div class="pl-1">
+                <div >
                     Help
                 </div>
 
-
+                <div >
+                   Contact us
+                </div>
 
             </div>
 
 
 
-            <div class="">
-                <div class="pl-1">
+            <div class="flex-fill">
+                <div class=" mr-4 border-bottom font-weight-bold">
                    Work with us
                 </div>
 
-
-
-                <div class="pl-1">
+                <div >
                     Advertisers
                 </div>
 
-                <div class="pl-1" v-if="showPricing">
+                <div >
                     Developers
                 </div>
 
-                <div class="pl-1">
+                <div >
                     Careers
                 </div>
 
@@ -181,10 +175,6 @@ export default {
     mounted: function() {},
     data() {
         return {
-            showPrivacyPolicy: false,
-            showPricing: true,
-            showTerms: false,
-            showHelp: false
         };
     },
     methods: {}

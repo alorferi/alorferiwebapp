@@ -2,23 +2,21 @@
     <div>
         <div class="row">
             <div class="col-sm-3"></div>
-            <div class="col-sm-6">
-<br>
-<br>
-                <Login/>
+            <div class="col-sm-6 pl-5 pr-5 ">
+                <br />
+                <br />
+                <Login class="ml-4 mr-4"/>
             </div>
             <div class="col-sm-3"></div>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <BottomBar />
+        <br />
+        <br />
+        <br />
+        <br />
     </div>
 </template>
 
 <script>
-import BottomBar from "@/views/navbars/BottomBar";
 import Login from "@/views/auth/Login";
 // import $ from 'jquery'
 
@@ -30,23 +28,18 @@ export default {
         msg: String
     },
     components: {
-        BottomBar,
         Login
     },
     mounted: function() {
         if (this.$store.getters.isLoggedIn) {
-             this.$router.push({ name: "home" });
+            this.$router.push({ name: "home" });
         }
     },
     computed: {},
     data() {
-        return {
-
-        };
+        return {};
     },
-    methods: {
-
-    }
+    methods: {}
 };
 </script>
 

@@ -4,6 +4,7 @@ import store from "./store";
 import Home from "./views/home/Home.vue";
 import SearchShow from "./views/home/SearchShow.vue";
 import About from "./views/about/About.vue";
+import Research from "./views/about/Research.vue";
 import Awards from "./views/about/Awards.vue";
 import Pricing from "./views/about/Pricing.vue";
 // import Login from "./views/auth/Login.vue";
@@ -43,7 +44,7 @@ let router = new Router({
             name: "libraries",
             component: AllLibraryListView,
             leftMenu: HomeLeftMenu,
-            meta: { title: "My Libraries", requiresAuth: true}
+            meta: { title: "My Libraries", requiresAuth: true }
         },
         {
             path: "/login",
@@ -74,12 +75,18 @@ let router = new Router({
             name: "about",
             component: About,
             meta: { title: "About" }
-        }
-        ,  {
+        },
+        {
             path: "/awards",
             name: "awards",
             component: Awards,
             meta: { title: "Awards" }
+        },
+        {
+            path: "/research",
+            name: "research",
+            component: Research,
+            meta: { title: "Research" }
         },
         {
             path: "/pricing",
@@ -121,7 +128,7 @@ let router = new Router({
             name: "my-libraries",
             component: MyLibraryListView,
             leftMenu: HomeLeftMenu,
-            meta: { title: "My Libraries", requiresAuth: true}
+            meta: { title: "My Libraries", requiresAuth: true }
         },
         // {
         //     path: "/libraries/autocomplete",
@@ -135,7 +142,7 @@ let router = new Router({
             name: "library-create",
             component: LibraryCreate,
             leftMenu: HomeLeftMenu,
-            meta: { title: "Create Library", requiresAuth: true}
+            meta: { title: "Create Library", requiresAuth: true }
         },
         {
             path: "/libraries/:id",
@@ -177,7 +184,7 @@ let router = new Router({
                 title: "",
                 requiresAuth: true
             }
-        },
+        }
     ]
 });
 
@@ -190,8 +197,7 @@ router.beforeEach((to, from, next) => {
         // next("/auth/login");
 
         const loginpath = window.location.pathname;
-        next({ name: 'login', query: { from: loginpath } });
-
+        next({ name: "login", query: { from: loginpath } });
     } else {
         next();
     }
