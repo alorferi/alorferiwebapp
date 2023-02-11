@@ -1,139 +1,76 @@
 <template>
-    <div class="about">
-        <div class="d-flex justify-content-around">
-            <div class="text-center p-2">
-                <img
-                    src="@/assets/images/defaults/logo_large_en.png"
-                    height="180"
-                    alt="Alor Feri logo"
-                />
-                <!-- <div class="text-center" style="font-size:13pt">
-            আলোকিত সমাজের প্রত্যয়
-        </div> -->
-            </div>
-            <div class="text-center p-2">
-                <img
-                    src="@/assets/images/defaults/af_mobile_app.png"
-                    height="200"
-                    alt="Alor Feri logo"
-                />
-            </div>
-            <div class="text-center p-2">
-                <img
-                    src="@/assets/images/defaults/af_model_car.png"
-                    height="200"
-                    alt="Alor Feri logo"
-                />
-            </div>
+    <div class="">
+
+        <h1>Video Tutorials</h1>
+            <div v-for="item in videos" :key="item.vid">
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="card-title">
+
+                            <h4>   {{  item .caption }}</h4>
+
+                        </div>
+                        <iframe width="480" height="320" :src="getYouTubeEmbedUrl(item.vid)"> </iframe>
+
+                        <!-- <img :src="getYouTubeThumbUrl(item.vid)" alt=""> -->
+                    </div>
+
+                </div>
+
         </div>
-
-        <p style="text-align:justify">
-            <span style="font-weight:bold">
-                Alor Feri Limited
-            </span>
-
-            is a promising Bangladeshi technology startup founded in 2021 by Md
-            Babul Mirdha. The company's mission is to empower libraries and
-            connect readers with books and knowledge to improve the quality of
-            education and enlighten society. With the Alor Feri app, the company
-            provides a smart library management system that streamlines library
-            operations and enhances the reading experience for users.
-
-            <br />
-            <br />
-            Md Babul Mirdha started researching and developing the Alor Feri app
-            back in 2015 while working as a software engineer at a private
-            company. Today, the app is used by over 160 libraries and serves
-            over 2,800 readers.
-            <br />
-            <br />
-            Headquartered in Mirpur, Dhaka, Alor Feri Limited is dedicated to
-            building a knowledge-based society through technology. With its
-            innovative library management app, the company is making a
-            significant impact in the local community by improving access to
-            books and learning resources.
-        </p>
-        <!-- <h5>
-            আলোর ফেরীর লক্ষ্য ও উদ্দেশ্য:
-        </h5> -->
-
-        <p style="text-align:justify">
-            <b> Mission:</b>
-            <br />
-            To empower libraries and connect readers with books and knowledge to
-            improve the quality of education and enlighten society.
-        </p>
-
-        <p>
-            <b>
-                Vision:
-            </b>
-
-            <br />
-            To revolutionize the library experience for patrons and institutions
-            alike, fostering stronger bonds between libraries and their
-            communities, and promoting literacy, education, and social
-            enrichment.
-        </p>
-
-        <p>
-            <b>
-                Goals:
-            </b>
-
-            <br />
-
-
-            <ul>
-
-                <li>
-                    Streamline library tasks
-                </li>
-
-                <li>
-                    Enhance library-reader connection
-                </li>
-
-                <li>
-                    Provide valuable performance metrics
-                </li>
-                <li>
-                    Measure library success
-                </li>
-                <li>
-                    Improve the library experience for patrons
-                </li>
-                <li>
-                    Improve the quality of education and enlighten society.
-                </li>
-
-
-            </ul>
-        </p>
 
     </div>
 </template>
 
-
-
 <script>
-
 export default {
     name: "Help",
-    components: {
-    },
+    components: {},
     mounted: function() {},
-    computed: {},
-    props: {
+    computed: {
 
+    },
+    props: {},
+    data() {
+        return {
+            videos: [
+                {
+                    vid:
+                        "sbLFUISqMOk?list=PLzsrT--VduaZif4IN0vbTXnjBJG_4Qc8C",
+                    caption:
+                        "Tutorial-01: How to Install Alor Feri App & Create Your User Account using Mobile Number?"
+                },
+                {
+                    vid:
+                        "NtI0i-3gA70",
+                    caption:
+                        "Tutorial-02: How to Create Your User Account Using Email Address?"
+                }, {
+                    caption:
+                        "Tutorial-03: How to Create Your Library in Alor Feri App?",
+                    url:
+                        "kXW38I0wa88",
+
+                }, {  caption:
+                        "Tutorial-04: How to add book to your library using Alor Feri App?",
+                        vid:
+                        "PnUrXnrxrn0",
+
+                }
+            ]
+        };
+    },
+    methods:{
+        getYouTubeEmbedUrl: function(vid) {
+            return   "https://www.youtube.com/embed/" + vid;
+        },
+        getYouTubeThumbUrl: function(vid) {
+            return   "https://img.youtube.com/vi/"+vid+"/default.jpg";
+        },
     }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
-
-
-
+<style scoped></style>

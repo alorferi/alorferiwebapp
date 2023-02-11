@@ -27,56 +27,20 @@
 
         <p style="text-align:justify">
             <span style="font-weight:bold">
-                Alor Feri Limited
+                Alor Feri
             </span>
 
-            is a promising Bangladeshi technology startup founded in 2021 by Md
-            Babul Mirdha. The company's mission is to empower libraries and
-            connect readers with books and knowledge to improve the quality of
-            education and enlighten society. With the Alor Feri app, the company
-            provides a smart library management system that streamlines library
-            operations and enhances the reading experience for users.
+         is a cutting-edge technology solution that revolutionizes the way libraries manage their operations and connect with their readers. With over 160 libraries utilizing the app, it has proven to be an effective tool for streamlining tasks such as attendance tracking, book management, reader management, and financial management. Furthermore, Alor Feri provides a platform for readers to engage with their local libraries and each other, with features such as book requests, social networking, and the ability to express opinions through posts, comments, likes, and reviews. With a user base of over 2,800 readers, Alor Feri is fostering a stronger bond between libraries and their communities, making the library experience more accessible and enjoyable for all.
 
-            <br />
-            <br />
-            Md Babul Mirdha started researching and developing the Alor Feri app
-            back in 2015 while working as a software engineer at a private
-            company. Today, the app is used by over 160 libraries and serves
-            over 2,800 readers.
-            <br />
-            <br />
-            Headquartered in Mirpur, Dhaka, Alor Feri Limited is dedicated to
-            building a knowledge-based society through technology. With its
-            innovative library management app, the company is making a
-            significant impact in the local community by improving access to
-            books and learning resources.
-        </p>
-        <!-- <h5>
-            আলোর ফেরীর লক্ষ্য ও উদ্দেশ্য:
-        </h5> -->
+            <br>
+            <br>
+With Alor Feri, libraries have access to a wealth of performance metrics, allowing them to measure their success on a daily, monthly, and yearly basis. This includes important statistics such as the number of books issued and collected, the number of new members joining the library, and the number of new books enrolled in the library's collection. These metrics give libraries valuable insight into their operations, enabling them to make data-driven decisions and continually improve their performance. With Alor Feri, libraries can confidently manage their operations, measure their success, and provide the best possible experience for their patrons.
 
-        <p style="text-align:justify">
-            <b> Mission:</b>
-            <br />
-            To empower libraries and connect readers with books and knowledge to
-            improve the quality of education and enlighten society.
         </p>
 
         <p>
             <b>
-                Vision:
-            </b>
-
-            <br />
-            To revolutionize the library experience for patrons and institutions
-            alike, fostering stronger bonds between libraries and their
-            communities, and promoting literacy, education, and social
-            enrichment.
-        </p>
-
-        <p>
-            <b>
-                Goals:
+                The advantages of using Alor Feri app in libraries include:
             </b>
 
             <br />
@@ -85,24 +49,21 @@
             <ul>
 
                 <li>
-                    Streamline library tasks
+                    Streamlining library tasks and processes
                 </li>
 
                 <li>
-                    Enhance library-reader connection
+                    Improving the connection between the library and its readers
                 </li>
 
                 <li>
-                    Provide valuable performance metrics
+                    Providing valuable performance metrics to measure the success
                 </li>
                 <li>
-                    Measure library success
+                    Improving the overall experience for library patrons
                 </li>
                 <li>
-                    Improve the library experience for patrons
-                </li>
-                <li>
-                    Improve the quality of education and enlighten society.
+                    Enhancing the quality of education and promoting societal enlightenment.
                 </li>
 
 

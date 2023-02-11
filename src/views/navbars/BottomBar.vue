@@ -38,7 +38,7 @@
             </div>
 
             <div class="flex-fill">
-                <div class=" mr-4  border-bottom font-weight-bold">
+                <!-- <div class=" mr-4  border-bottom font-weight-bold">
                     Employers
                 </div>
 
@@ -46,11 +46,11 @@
                     Post a job
                 </div>
 
-                <div>
+                <div class="mb-2">
                     Get a free Employer
-                </div>
+                </div> -->
 
-                <div class="mt-2 mr-4  border-bottom font-weight-bold">
+                <div class=" mr-4  border-bottom font-weight-bold">
                     Library Admins
                 </div>
 
@@ -67,15 +67,20 @@
                 </div>
 
                 <div>
-                    Privacy Policy
+
+
+                       <router-link :to="{ name: 'privacy-policy' }"
+                        >  Privacy Policy</router-link
+                    >
+
                 </div>
 
-                <div>
-                    Terms
-                </div>
 
                 <div>
-                    Help
+
+                    <router-link :to="{ name: 'help' }"
+                        >Help</router-link
+                    >
                 </div>
 
                 <div>

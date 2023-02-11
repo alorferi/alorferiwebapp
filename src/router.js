@@ -8,6 +8,8 @@ import Products from "./views/about/Products.vue";
 import Research from "./views/about/Research.vue";
 import Awards from "./views/about/Awards.vue";
 import Pricing from "./views/about/Pricing.vue";
+import Help from "./views/about/Help.vue";
+import PrivacyPolicy from "./views/about/PrivacyPolicy.vue";
 // import Login from "./views/auth/Login.vue";
 import LoginContainer from "./views/auth/LoginContainer.vue";
 import Register from "./views/auth/Register.vue";
@@ -78,6 +80,12 @@ let router = new Router({
             meta: { title: "About" }
         },
         {
+            path: "/help",
+            name: "help",
+            component: Help,
+            meta: { title: "Help" }
+        },
+        {
             path: "/awards",
             name: "awards",
             component: Awards,
@@ -100,6 +108,11 @@ let router = new Router({
             name: "pricing",
             component: Pricing,
             meta: { title: "Pricing" }
+        }, {
+            path: "/privacy-policy",
+            name: "privacy-policy",
+            component: PrivacyPolicy,
+            meta: { title: "PrivacyPolicy" }
         },
 
         // {
