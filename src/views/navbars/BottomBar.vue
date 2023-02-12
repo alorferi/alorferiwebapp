@@ -143,7 +143,7 @@
                     />
                 </a>
 
-                <div class="mt-1">
+                <div class="mt-1 ml-2">
                     Get us on:
 
                     <a
