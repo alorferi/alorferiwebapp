@@ -40,17 +40,27 @@
             </div>
 
             <div class="flex-fill">
-                <!-- <div class=" mr-4  border-bottom font-weight-bold">
+                <div class=" mr-4  border-bottom font-weight-bold">
                     Employers
                 </div>
 
                 <div>
-                    Post a job
+
+
+                    <router-link :to="{ name: 'advertisers' }">
+                        Post a job</router-link
+                    >
+
                 </div>
 
                 <div class="mb-2">
-                    Get a free Employer
-                </div> -->
+
+                    <router-link :to="{ name: 'careers' }">
+                        Get a free Employer</router-link
+                    >
+
+
+                </div>
 
                 <div class=" mr-4  border-bottom font-weight-bold">
                     Library Admins
@@ -85,23 +95,29 @@
                 </div>
             </div>
 
-            <!-- <div class="flex-fill">
+            <div class="flex-fill">
                 <div class=" mr-4 border-bottom font-weight-bold">
                     Work with us
                 </div>
 
                 <div>
-                    Advertisers
+                    <router-link :to="{ name: 'advertisers' }">
+                        Advertisers</router-link
+                    >
                 </div>
 
                 <div>
-                    Developers
+                    <router-link :to="{ name: 'careers' }">
+                        Careers</router-link
+                    >
                 </div>
 
                 <div>
-                    Careers
+                    <router-link :to="{ name: 'api-overview' }">
+                        Developers</router-link
+                    >
                 </div>
-            </div> -->
+            </div>
 
             <div>
                 <div class="ml-2">

@@ -2,7 +2,7 @@
     <div>
         <div class="row" style="padding-top: 50pt">
             <div class="col-sm-7 pl-2">
-                <div class="mt-5">
+                <div class="mt-5 ml-auto mr-auto">
                     <div class="text-success">
                         <h1>Alor Feri</h1>
                     </div>

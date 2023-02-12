@@ -1,7 +1,9 @@
 <template>
     <div class="">
 
-        <h1>Video Tutorials</h1>
+
+        <h1>Help</h1>
+
             <div v-for="item in videos" :key="item.vid">
 
                 <div class="card mb-4">
