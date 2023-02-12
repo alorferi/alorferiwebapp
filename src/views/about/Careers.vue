@@ -2,7 +2,7 @@
     <div class="">
 
 
-        <h2>Careers</h2>
+        <h2>Careers (Upcoming)</h2>
         <ul>
             <li>
                Build resume
@@ -16,7 +16,17 @@
             </li>
 
         </ul>
-
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </div>
 </template>
 

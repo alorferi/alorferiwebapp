@@ -40,7 +40,24 @@
             </div>
 
             <div class="flex-fill">
-                <div class=" mr-4  border-bottom font-weight-bold">
+
+
+                <div class=" mr-4 border-bottom font-weight-bold">
+                    Libraries
+                </div>
+
+                <div>
+
+                       <router-link :to="{ name: 'help' }"> Create & Manage</router-link>
+                </div>
+
+                <div>
+                    <a href="https://backoffice.alorferi.com" target="_blank">
+                        Back Office
+                    </a>
+                </div>
+
+                <div class=" mr-4  mt-2 border-bottom font-weight-bold">
                     Employers
                 </div>
 
@@ -62,15 +79,6 @@
 
                 </div>
 
-                <div class=" mr-4  border-bottom font-weight-bold">
-                    Library Admins
-                </div>
-
-                <div>
-                    <a href="https://backoffice.alorferi.com" target="_blank">
-                        Back Office
-                    </a>
-                </div>
             </div>
 
             <div class="flex-fill">
@@ -100,7 +108,7 @@
                     Work with us
                 </div>
 
-                <div>
+                <!-- <div>
                     <router-link :to="{ name: 'advertisers' }">
                         Advertisers</router-link
                     >
@@ -110,7 +118,7 @@
                     <router-link :to="{ name: 'careers' }">
                         Careers</router-link
                     >
-                </div>
+                </div> -->
 
                 <div>
                     <router-link :to="{ name: 'api-overview' }">
