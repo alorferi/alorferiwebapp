@@ -14,16 +14,20 @@ export default {
         formatDate: function(
             value,
             expectedFormat = "DD MMMM YYYY",
-            language = null
+            language = "en"
         ) {
-            var date = moment(value);
-            const ln =
-                language == null
-                    ? this.$store.getters.activeLanguage
-                    : language;
-            return moment(date)
-                .locale(ln)
-                .format(expectedFormat);
+            try {
+                var date = moment(value);
+                const ln =
+                    language == null
+                        ? this.$store.getters.activeLanguage
+                        : language;
+                return moment(date)
+                    .locale(ln)
+                    .format(expectedFormat);
+            } catch (e) {
+                return value;
+            }
         },
 
         getApiUrl(endPoint, term = null, page = null) {
@@ -163,29 +167,35 @@ export default {
             return !isNaN(value);
         },
         getMyLibraryMembership(library_id) {
-
             const activeUser = this.$store.getters.activeUser;
             const myLibraryMembership = this.$store.getters.myLibraryMembership;
 
-            if ( myLibraryMembership != null && myLibraryMembership.library_id == library_id &&  myLibraryMembership.user_id == activeUser.id) {
+            if (
+                myLibraryMembership != null &&
+                myLibraryMembership.library_id == library_id &&
+                myLibraryMembership.user_id == activeUser.id
+            ) {
                 return myLibraryMembership;
             }
             return null;
         },
         getMyLibraryMemberRequest(library_id) {
-
             const activeUser = this.$store.getters.activeUser;
-            const myLibraryMemberRequest = this.$store.getters.myLibraryMemberRequest;
+            const myLibraryMemberRequest = this.$store.getters
+                .myLibraryMemberRequest;
 
-            if ( myLibraryMemberRequest != null && myLibraryMemberRequest.library_id == library_id &&  myLibraryMemberRequest.user_id == activeUser.id) {
+            if (
+                myLibraryMemberRequest != null &&
+                myLibraryMemberRequest.library_id == library_id &&
+                myLibraryMemberRequest.user_id == activeUser.id
+            ) {
                 return myLibraryMemberRequest;
             }
             return null;
         },
 
         isItMe(user) {
-            return  this.$store.getters.activeUser.id == user.id;
+            return this.$store.getters.activeUser.id == user.id;
         }
-
     }
 };

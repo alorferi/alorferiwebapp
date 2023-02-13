@@ -21,25 +21,6 @@
                 <Loading v-if="is_loading" />
                 <br />
 
-                <div class="p-2 text-center">
-                    <UserPhoto :user="user" size="96" />
-                    <br />
-                    <a
-                        class="text-danger bg-white pl-1 pr-1 rounded"
-                        v-if="isItMe(user)"
-                        @click="
-                            showUploadMyPhotoModal = !showUploadMyPhotoModal
-                        "
-                    >
-                        <i class="fa fa-camera"></i>
-                    </a>
-
-                    <UploadMyPhotoModal
-                        :show="showUploadMyPhotoModal"
-                        @updateVisibleState="showUploadMyPhotoModal = $event"
-                    />
-                </div>
-
                 <form @submit.prevent="submitForm">
                     <div class="col-md-12">
                         <div class="d-flex">
@@ -96,19 +77,11 @@
                             />
                         </div>
 
-                        <!-- {{ this.formatDate(new Date( userData.dob), "YYYY-MM-DD", "en") }} -->
-
                         <div class="form-group">
                             <EditTextField
                                 type="date"
                                 name="dob"
-                                :initval="
-                                    this.formatDate(
-                                        new Date(userData.dob),
-                                        'YYYY-MM-DD',
-                                        'en'
-                                    )
-                                "
+                                initval="2009-02-13"
                                 label="Date of birth"
                                 placeholder="DD/MM/YYYY"
                                 icon="fas fa-birthday-cake"
@@ -146,9 +119,7 @@
 <script>
 import EditTextField from "../../components/EditTextField";
 import GenderInputField from "../../components/GenderInputField";
-import UserPhoto from "@/views/user/UserPhoto";
 import Loading from "../../components/Loading";
-import UploadMyPhotoModal from "@/views/user/UploadMyPhotoModal.vue";
 
 export default {
     name: "EditMyProfile",
@@ -160,16 +131,23 @@ export default {
         // MobileNumberField,
         GenderInputField,
         // AskForOtcModal,
-        Loading,
-        UserPhoto,
-        UploadMyPhotoModal
+        Loading
+        // UserPhoto,
+        // UploadMyPhotoModal
     },
     async mounted() {
-        this.userData.first_name = this.user.first_name;
-        this.userData.mobile = this.user.mobile;
-        this.userData.email = this.user.email;
-        this.userData.dob = this.user.dob;
-        this.userData.gender = this.user.gender;
+        const self = this;
+
+        self.userData.first_name = self.user.first_name;
+        self.userData.mobile = self.user.mobile;
+        self.userData.email = self.user.email;
+        self.userData.dob = self.formatDate(
+            new Date(self.user.dob),
+            "YYYY-MM-DD",
+            "en"
+        );
+        self.userData.gender = self.user.gender;
+
         // this.fetchMe();
     },
     computed: {
@@ -192,6 +170,27 @@ export default {
         };
     },
     methods: {
+        fetchMe() {
+            // const self = this;
+            // this.$store
+            //     .dispatch("fetchMe")
+            //     .then(() => {
+            //         // self.userData = self.$store.getters.activeUser;
+            // self.userData.first_name = self.user.first_name;
+            //         self.userData.mobile = self.user.mobile;
+            //         self.userData.email = self.user.email;
+            //         self.userData.dob = self.formatDate(
+            //             new Date(self.user.dob),
+            //             "YYYY-MM-DD",
+            //             "en"
+            //         );
+            //         self.userData.gender = self.user.gender;
+            //         this.is_loading = false;
+            //     })
+            //     .catch(() => {
+            //         this.is_loading = false;
+            //     });
+        },
         submitForm: function() {
             const self = this;
             self.is_loading = true;

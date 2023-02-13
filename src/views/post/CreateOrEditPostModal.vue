@@ -38,7 +38,6 @@
                 </b-form-textarea>
 
                 <Loading v-if="is_loading"></Loading>
-                {{ this.imgUrl }}
                 <div class="d-flex justify-content-center m-2">
                     <img
                         v-if="imgUrl"
