@@ -10,8 +10,23 @@
             }"
         >
             <div class="d-flex">
-                <div class="p-2">
+                <div class="p-2 text-center">
                     <UserPhoto :user="user" size="96" />
+                    <br>
+                    <a class="text-danger bg-white pl-1 pr-1 rounded"
+                    v-if=" isItMe(user) "
+                    @click="showUploadMyPhotoModal = !showUploadMyPhotoModal"
+                    >
+                        <i class="fa fa-camera"></i>
+                    </a>
+
+
+                    <UploadMyPhotoModal
+                :show="showUploadMyPhotoModal"
+                @updateVisibleState="showUploadMyPhotoModal = $event"
+            />
+
+
                 </div>
 
                 <div class="flex-grow-1 p-2">
@@ -86,13 +101,15 @@
 import UserPhoto from "@/views/user/UserPhoto";
 import UserTimeline from "@/views/user/UserTimeline";
 import UserAbout from "@/views/user/UserAbout";
+import UploadMyPhotoModal from "@/views/user/UploadMyPhotoModal.vue";
 export default {
     name: "UserPager",
     props: ["user"],
     components: {
         UserPhoto,
         UserTimeline,
-        UserAbout
+        UserAbout,
+        UploadMyPhotoModal
     },
     mounted: function() {
         this.initTabItems();
@@ -140,7 +157,8 @@ export default {
     data: function() {
         return {
             tabs: [],
-            activeTab: {}
+            activeTab: {},
+            showUploadMyPhotoModal: false
         };
     }
 };

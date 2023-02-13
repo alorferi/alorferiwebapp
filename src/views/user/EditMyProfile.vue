@@ -1,8 +1,5 @@
 <template>
     <div>
-
-
-
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
@@ -21,8 +18,27 @@
                     </router-link>
                 </div>
 
-                <Loading v-if="is_loading"/>
+                <Loading v-if="is_loading" />
                 <br />
+
+                <div class="p-2 text-center">
+                    <UserPhoto :user="user" size="96" />
+                    <br />
+                    <a
+                        class="text-danger bg-white pl-1 pr-1 rounded"
+                        v-if="isItMe(user)"
+                        @click="
+                            showUploadMyPhotoModal = !showUploadMyPhotoModal
+                        "
+                    >
+                        <i class="fa fa-camera"></i>
+                    </a>
+
+                    <UploadMyPhotoModal
+                        :show="showUploadMyPhotoModal"
+                        @updateVisibleState="showUploadMyPhotoModal = $event"
+                    />
+                </div>
 
                 <form @submit.prevent="submitForm">
                     <div class="col-md-12">
@@ -130,8 +146,9 @@
 <script>
 import EditTextField from "../../components/EditTextField";
 import GenderInputField from "../../components/GenderInputField";
-
+import UserPhoto from "@/views/user/UserPhoto";
 import Loading from "../../components/Loading";
+import UploadMyPhotoModal from "@/views/user/UploadMyPhotoModal.vue";
 
 export default {
     name: "EditMyProfile",
@@ -143,7 +160,9 @@ export default {
         // MobileNumberField,
         GenderInputField,
         // AskForOtcModal,
-        Loading
+        Loading,
+        UserPhoto,
+        UploadMyPhotoModal
     },
     async mounted() {
         this.userData.first_name = this.user.first_name;
@@ -168,11 +187,11 @@ export default {
                 gender: ""
             },
             errors: null,
-            is_loading: false
+            is_loading: false,
+            showUploadMyPhotoModal: false
         };
     },
     methods: {
-
         submitForm: function() {
             const self = this;
             self.is_loading = true;
