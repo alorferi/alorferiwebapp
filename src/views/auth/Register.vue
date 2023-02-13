@@ -97,9 +97,6 @@
             </div>
             <div class="col-sm-3"></div>
         </div>
-        <br>
-        <br>
-        <BottomBar />
     </div>
 </template>
 
@@ -136,8 +133,6 @@ export default {
             userData: {
                 first_name: "",
                 surname: "",
-                // mobile: "",
-                // email: "",
                 username: "",
                 password: "",
                 dob: this.formatDate(new Date(), "YYYY-MM-DD", "en"),

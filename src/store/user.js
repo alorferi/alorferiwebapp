@@ -45,6 +45,37 @@ const actions = {
                 });
         });
     },
+    updateMe(context, packet) {
+        return new Promise((resolve, reject) => {
+
+            var url = mixin.methods.getApiUrl(
+                "/api/users/" +
+                    this.getters.activeUser.id +
+                    "?_method=PUT"
+            );
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+
+            const formData = packet.formData;
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "POST",
+                data: formData
+            })
+                .then(response => {
+
+                    const user = response.data.data.attributes;
+                    context.commit("setActiveUser", user);
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
     fetchUser(context,payload) {
         return new Promise((resolve, reject) => {
             var url = mixin.methods.getApiUrl("/api/users/"+payload);

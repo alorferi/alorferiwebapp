@@ -24,13 +24,18 @@
                     </h5>
 
                     <div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary">
-                                Follow
-                            </button>
+
+                    </div>
+                </div>
+
+                <div class="p-2">
+                    <!-- <img src="#" alt="QR Code" width="96" height="96" /> -->
+                    <div class="btn-group">
+                            <!-- <button type="button" class="btn btn-primary">
+                            </button> -->
                             <button
                                 type="button"
-                                class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                class="dropdown-toggle dropdown-toggle-split btn btn-outline-light"
                                 data-toggle="dropdown"
                                 aria-haspopup="true"
                                 aria-expanded="false"
@@ -38,10 +43,10 @@
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#"
-                                    >Another action</a
-                                >
+                                <a class="dropdown-item" href="#" v-if=" ! isItMe(user) " >Follow</a>
+
+                                <router-link class="dropdown-item" v-if=" isItMe(user) "  :to="{ name: 'users.edit-me' }"> Edit My Profile </router-link>
+
                                 <a class="dropdown-item" href="#"
                                     >Something else here</a
                                 >
@@ -51,11 +56,6 @@
                                 >
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="p-2">
-                    <img src="#" alt="QR Code" width="96" height="96" />
                 </div>
             </div>
 

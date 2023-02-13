@@ -12,7 +12,15 @@
             <div class="media-body pl-3">
                 <div class="d-flex justify-content-between">
                     <h6>
-                        {{ post.user.first_name }} {{ post.user.surname }}
+                        <router-link
+                        class="text-dark"
+                            :to="{
+                                name: 'users.show',
+                                params: { user_id: this.post.user.id }
+                            }"
+                        >
+                            {{ post.user.first_name }} {{ post.user.surname }}
+                        </router-link>
                         <small
                             ><i class="text-text-secondary">
                                 {{ this.momentFromNow(post.created_at) }}</i
@@ -23,7 +31,7 @@
                     <div>
                         <div class="dropdown show">
                             <a
-                                class="dropdown-toggle"
+                                class="dropdown-toggle dropdown-toggle-split btn btn-light"
                                 role="button"
                                 id="dropdownMenuLink"
                                 data-toggle="dropdown"
@@ -71,7 +79,6 @@
                                     ><i class="fas fa-exclamation-triangle"></i>
                                     Block this post</a
                                 >
-
                             </div>
                         </div>
                     </div>

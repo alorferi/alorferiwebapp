@@ -183,5 +183,9 @@ export default {
             return null;
         },
 
+        isItMe(user) {
+            return  this.$store.getters.activeUser.id == user.id;
+        }
+
     }
 };

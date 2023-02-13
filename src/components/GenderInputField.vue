@@ -56,11 +56,11 @@
 <script>
 export default {
     name: "GenderInputField",
-    props: ["name", "label", "placeholder", "errors", "data"],
+    props: ["name", "label", "placeholder", "errors", "data","initval"],
   async mounted(){},
     data: function() {
         return {
-            value: ""
+            value: this.initval
         };
     },
     computed: {
