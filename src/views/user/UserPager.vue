@@ -34,9 +34,32 @@
                         {{ user.first_name }} {{ user.surname }}
                         {{ user.nickname }}
                     </h3>
-                    <h5>
+                    <!-- <h5>
                         {{ user.address }}
-                    </h5>
+                    </h5> -->
+
+
+
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-primary">
+                            Followers (100)
+                    </button>
+                            <button
+                                type="button"
+                                class="dropdown-toggle dropdown-toggle-split btn btn-primary"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" v-if=" ! isItMe(user) " >Follow</a>
+
+                                <router-link class="dropdown-item" v-if=" isItMe(user) "  :to="{ name: 'users.edit-me' }"> Edit My Profile </router-link>
+
+                            </div>
+                        </div>
 
                     <div>
 
@@ -50,7 +73,7 @@
                             </button> -->
                             <button
                                 type="button"
-                                class="dropdown-toggle dropdown-toggle-split btn btn-outline-light"
+                                class="dropdown-toggle dropdown-toggle-split btn btn-small btn-outline-light"
                                 data-toggle="dropdown"
                                 aria-haspopup="true"
                                 aria-expanded="false"
@@ -61,13 +84,13 @@
                                 <a class="dropdown-item" href="#" v-if=" ! isItMe(user) " >Follow</a>
 
                                 <router-link class="dropdown-item" v-if=" isItMe(user) "  :to="{ name: 'users.edit-me' }"> Edit My Profile </router-link>
-
-                                <a class="dropdown-item" href="#"
-                                    >Something else here</a
-                                >
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"
-                                    >Separated link</a
+                                <a class="dropdown-item"  href="#" v-if=" ! isItMe(user) "
+                                    >Report this user</a
+                                >
+
+                                <a class="dropdown-item"  href="#" v-if=" ! isItMe(user) "
+                                    >Block this user</a
                                 >
                             </div>
                         </div>

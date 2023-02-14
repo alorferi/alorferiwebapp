@@ -31,15 +31,6 @@
 
             <!-- <a href="#" class="list-group-item list-group-item-action">Messages</a> -->
         </div>
-
-        <div
-            class="d-flex align-items-start flex-column"
-            style="height: 550px;"
-        >
-            <div class="mt-auto p-2 border-top">  <router-link :to="{ name: 'about' }">About</router-link>
-            |  <router-link :to="{ name: 'help' }">Help</router-link>
-            </div>
-        </div>
     </div>
 </template>
 

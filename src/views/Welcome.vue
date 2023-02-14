@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class="row" style="padding-top: 50pt">
-            <div class="col-sm-7 pl-2">
-                <div class="mt-5 ml-auto mr-auto">
-                    <div class="text-success">
+            <div class="col-sm-7 pl-2 text-center">
+                <div class="mt-5 ml-auto mr-auto p-5">
+                    <div class="text-success text-left">
                         <h1>Alor Feri</h1>
                     </div>
 
-                    <div style="font-size: 30px">
+                    <div class="text-left" style="font-size: 30px">
                         Connects readers, and libraries and enlightens society.
                     </div>
                 </div>
