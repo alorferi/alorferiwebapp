@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="form-group">
-                            <EditTextField
+                            <!-- <EditTextField
                                 type="password"
                                 name="password"
                                 label="Password"
@@ -52,6 +52,15 @@
                                 icon="fas fa-key"
                                 :errors="errors"
                                 @update:field="userData.password = $event"
+                            /> -->
+
+                            <PasswordField
+                                name="password"
+                                label="Password"
+                                placeholder="Password"
+                                icon="fas fa-key"
+                                :errors="errors"
+                                @update:field="password = $event"
                             />
                         </div>
 
@@ -102,7 +111,7 @@
 
 <script>
 import EditTextField from "../../components/EditTextField";
-// import MobileNumberField from "../../components/MobileNumberField";
+import PasswordField from "../../components/PasswordField";
 import UserNameField from "../../components/UserNameField";
 import GenderInputField from "../../components/GenderInputField";
 import AskForOtcModal from "../../components/AskForOtcModal";
@@ -117,14 +126,14 @@ export default {
     },
     components: {
         EditTextField,
-        // MobileNumberField,
+        PasswordField,
         GenderInputField,
         UserNameField,
-        AskForOtcModal,
+        AskForOtcModal
     },
     mounted: function() {
         if (this.$store.getters.isLoggedIn) {
-             this.$router.push({ name: "home" });
+            this.$router.push({ name: "home" });
         }
     },
     computed: {},

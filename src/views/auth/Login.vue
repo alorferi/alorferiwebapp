@@ -14,8 +14,7 @@
                 </div>
 
                 <div class="form-group">
-                    <EditTextField
-                        type="password"
+                     <PasswordField
                         name="password"
                         placeholder="Password"
                         icon="fas fa-key"
@@ -71,7 +70,7 @@
 
 <script>
 import UserNameField from "@/components/UserNameField";
-import EditTextField from "@/components/EditTextField";
+import PasswordField from "@/components/PasswordField";
 
 export default {
     name: "Login",
@@ -80,7 +79,7 @@ export default {
     },
     components: {
         UserNameField,
-        EditTextField
+        PasswordField
     },
     mounted: function() {
         if (this.$store.getters.isLoggedIn) {
