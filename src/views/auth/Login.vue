@@ -13,7 +13,7 @@
                     />
                 </div>
 
-                <div class="form-group">
+                <div class="form-group pt-1">
                      <PasswordField
                         name="password"
                         placeholder="Password"
