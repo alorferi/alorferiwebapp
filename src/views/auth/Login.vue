@@ -7,7 +7,7 @@
                     <UserNameField
                         name="username"
                         placeholder="E-mail or Mobile"
-                        icon="fas fa-mobile-alt"
+                        icon="fas fa-user-alt"
                         :errors="errors"
                         @update:field="username = $event"
                     />

@@ -6,9 +6,11 @@
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text" v-if="icon">
-                    <i class="fas fa-at"></i>&nbsp;/&nbsp;<i
+                    <i class="fas fa-user-alt"></i>
+
+                    <!-- &nbsp;/&nbsp;<i
                         class="fas fa-mobile-alt"
-                    ></i>
+                    ></i> -->
                 </span>
             </div>
 
