@@ -65,7 +65,7 @@ export default {
 
         titleTotalFollowings() {
             return (
-                "Followings (" +
+                "Following (" +
                 this.totalFollowings +
                 ")"
             );

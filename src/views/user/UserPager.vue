@@ -1,200 +1,140 @@
 <template>
     <div>
         <div
-            class="d-flex flex-column pt-2 pl-2 pr-2"
+            class="d-flex pt-2 pl-2 pr-2 pb-2 rounded"
+            style="height: 200px;"
             :style="{
                 'background-image':
                     'url(' +
                     'https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80' +
-                    ')'
+                    ')',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center'
             }"
         >
-
-
-        <img height="200" src="https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80"/>
-
-            <div class="d-flex">
-                <div class="p-2 text-center">
-                    <!-- <UserPhoto :user="user" size="96" />
-                    <br />
-                    <a
-                        class="text-danger bg-white pl-1 pr-1 rounded"
-                        v-if="isItMe(user)"
-                        @click="
-                            showUploadMyPhotoModal = !showUploadMyPhotoModal
-                        "
-                    >
-                        <i class="fa fa-camera"></i>
-                    </a>
-
-                    <UploadMyPhotoModal
-                        :show="showUploadMyPhotoModal"
-                        @updateVisibleState="showUploadMyPhotoModal = $event"
-                    /> -->
-                </div>
-
-                <div class="flex-grow-1 p-2">
-
-                </div>
-
-                <div class="p-2">
-                    <!-- <img src="#" alt="QR Code" width="96" height="96" /> -->
-                </div>
-            </div>
-
-
+            <a class="text-danger bg-white pl-1 pr-1 rounded ml-auto mt-auto"
+            v-if="this.isItMe(this.user)"
+            >
+                <i class="fa fa-camera"></i>
+            </a>
         </div>
-
 
         <div class="d-flex">
-
             <div class="p-2 text-center">
-                    <UserPhoto :user="user" size="72" />
-                    <br />
-                    <a
-                        class="text-danger bg-white pl-1 pr-1 rounded"
-                        v-if="isItMe(user)"
-                        @click="
-                            showUploadMyPhotoModal = !showUploadMyPhotoModal
-                        "
-                    >
-                        <i class="fa fa-camera"></i>
-                    </a>
-
-                    <UploadMyPhotoModal
-                        :show="showUploadMyPhotoModal"
-                        @updateVisibleState="showUploadMyPhotoModal = $event"
-                    />
-                </div>
+                <UserPhotoWithUpload :user="user" size="96" />
+            </div>
 
             <div class="flex-grow-1 p-2">
-                    <h3 class="text-success">
-                        {{ user.first_name }} {{ user.surname }}
-                        {{ user.nickname }}
-                    </h3>
+                <h3 class="text-success m-2">
+                    {{ user.first_name }} {{ user.surname }}
+                    {{ user.nickname }}
+                </h3>
 
-                    <UserFollowerModal
-                        :show="showUserFollowers"
-                        @updateVisibleState="showUserFollowers = $event"
-                        :user="user"
-                    />
+                <UserFollowerModal
+                    :show="showUserFollowers"
+                    @updateVisibleState="showUserFollowers = $event"
+                    :user="user"
+                />
 
-                    <UserFollowingModal
-                        :show="showUserFollowings"
-                        @updateVisibleState="showUserFollowings = $event"
-                        :user="user"
-                    />
+                <UserFollowingModal
+                    :show="showUserFollowings"
+                    @updateVisibleState="showUserFollowings = $event"
+                    :user="user"
+                />
 
-                    <div class="btn-group">
-                        <!-- <button type="button" class="btn btn-primary">
-                            </button> -->
+                <div class="btn-group">
+                    <button
+                        class="btn btn-sm btn-link  mt-1 mb-1 mr-1"
+                        @click="showUserFollowings = !showUserFollowings"
+                    >
+                        {{ totalFollowings }}
+                    </button>
 
-                        <button
-                            class="btn btn-sm btn-link  mt-1 mb-1 mr-1"
-                            @click="showUserFollowings = !showUserFollowings"
+                    <button
+                        class="btn btn-sm btn-link   mt-1 mb-1  mr-1"
+                        @click="showUserFollowers = !showUserFollowers"
+                    >
+                        {{ totalFollowers }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" v-if="!isItMe(user)"
+                            >Follow</a
                         >
-                            {{ totalFollowings }}
-                        </button>
 
-
-                        <button
-                            class="btn btn-sm btn-link   mt-1 mb-1  mr-1"
-                            @click="showUserFollowers = !showUserFollowers"
+                        <router-link
+                            class="dropdown-item"
+                            v-if="isItMe(user)"
+                            :to="{ name: 'users.edit-me' }"
                         >
-                            {{ totalFollowers }}
-                        </button>
-
-                        <button
-                            type="button"
-                            class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
+                            Edit My Profile
+                        </router-link>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" v-if="!isItMe(user)"
+                            >Report this user</a
                         >
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                v-if="!isItMe(user)"
-                                >Follow</a
-                            >
 
-                            <router-link
-                                class="dropdown-item"
-                                v-if="isItMe(user)"
-                                :to="{ name: 'users.edit-me' }"
-                            >
-                                Edit My Profile
-                            </router-link>
-                            <div class="dropdown-divider"></div>
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                v-if="!isItMe(user)"
-                                >Report this user</a
-                            >
-
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                v-if="!isItMe(user)"
-                                >Block this user</a
-                            >
-                        </div>
+                        <a class="dropdown-item" href="#" v-if="!isItMe(user)"
+                            >Block this user</a
+                        >
                     </div>
-
-                    <div></div>
                 </div>
 
+                <div></div>
+            </div>
         </div>
 
-
         <div class="pt-1">
-                <ul class="nav nav-tabs nav-justified">
-                    <li
-                        class="nav-item"
-                        v-for="(tab, index) in getTabs"
-                        v-bind:key="index"
+            <ul class="nav nav-tabs nav-justified">
+                <li
+                    class="nav-item"
+                    v-for="(tab, index) in getTabs"
+                    v-bind:key="index"
+                >
+                    <a
+                        class="nav-link"
+                        href="#"
+                        :class="{ active: tab.active }"
+                        @click="clickTabItem(tab)"
+                        >{{ tab.title }}</a
                     >
-                        <a
-                            class="nav-link"
-                            href="#"
-                            :class="{ active: tab.active }"
-                            @click="clickTabItem(tab)"
-                            >{{ tab.title }}</a
-                        >
-                    </li>
-                </ul>
-            </div>
+                </li>
+            </ul>
+        </div>
 
         <component :is="tabBody" :user="user"></component>
     </div>
 </template>
 
 <script>
-import UserPhoto from "@/views/user/UserPhoto";
+import UserPhotoWithUpload from "@/views/user/UserPhotoWithUpload";
 import UserTimeline from "@/views/user/UserTimeline";
 import UserAbout from "@/views/user/UserAbout";
-import UploadMyPhotoModal from "@/views/user/UploadMyPhotoModal.vue";
+
 import UserFollowerModal from "@/views/follower/UserFollowerModal.vue";
 import UserFollowingModal from "@/views/follower/UserFollowingModal.vue";
 export default {
     name: "UserPager",
     props: ["user"],
     components: {
-        UserPhoto,
+        UserPhotoWithUpload,
         UserTimeline,
         UserAbout,
-        UploadMyPhotoModal,
         UserFollowerModal,
         UserFollowingModal
     },
     async mounted() {
         this.fetchUserFollowerAction();
         this.fetchUserFollowingAction();
-
         this.initTabItems();
         this.$store.dispatch("setPageTitle", this.user.first_name);
     },
@@ -220,7 +160,7 @@ export default {
                 total = this.$store.getters.followingsResponse.meta.total;
             }
 
-            return "Followers (" + total + ")";
+            return "Following (" + total + ")";
         }
     },
     methods: {
@@ -285,7 +225,7 @@ export default {
         return {
             tabs: [],
             activeTab: {},
-            showUploadMyPhotoModal: false,
+
             showUserFollowers: false,
             showUserFollowings: false
         };

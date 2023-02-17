@@ -91,7 +91,7 @@ const actions = {
             })
                 .then(response => {
                     const photo_url =
-                        response.data.data + "?tick=" + new Date();
+                        response.data.data + "?tick=" + Date.now();
 
                     const user = self.getters.activeUser;
                     user.photo_url = photo_url;

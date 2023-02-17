@@ -25,6 +25,9 @@
                     <img
                         :src="imgUrl"
                         style="max-width:460px; max-height:460px"
+                        class="rounded-circle"
+                        width="96px"
+                        height="96px"
                     />
                 </div>
                 <b-form-file
@@ -78,7 +81,7 @@ export default {
             imgFile: null,
             hasImage: false,
             is_loading: false,
-            modalTile: "Upload your photo from computer."
+            modalTile: "Upload photo from computer."
         };
     },
     methods: {

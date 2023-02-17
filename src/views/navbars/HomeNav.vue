@@ -49,15 +49,6 @@
 
             <ul class="nav navbar-nav">
 
-                <li>
-
-
-                </li>
-
-                <li>
-                    <!-- <LanguageToggleButton/> -->
-                </li>
-
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
                     <a
@@ -84,7 +75,6 @@
                             Profile
                         </router-link>
 
-                        <!-- <a class="dropdown-item" href="#">Link 2</a> -->
                         <div class="dropdown-divider"></div>
                         <a
                             class="dropdown-item"
