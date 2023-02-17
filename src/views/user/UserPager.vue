@@ -9,9 +9,47 @@
                     ')'
             }"
         >
+
+
+        <img height="200" src="https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80"/>
+
             <div class="d-flex">
                 <div class="p-2 text-center">
-                    <UserPhoto :user="user" size="96" />
+                    <!-- <UserPhoto :user="user" size="96" />
+                    <br />
+                    <a
+                        class="text-danger bg-white pl-1 pr-1 rounded"
+                        v-if="isItMe(user)"
+                        @click="
+                            showUploadMyPhotoModal = !showUploadMyPhotoModal
+                        "
+                    >
+                        <i class="fa fa-camera"></i>
+                    </a>
+
+                    <UploadMyPhotoModal
+                        :show="showUploadMyPhotoModal"
+                        @updateVisibleState="showUploadMyPhotoModal = $event"
+                    /> -->
+                </div>
+
+                <div class="flex-grow-1 p-2">
+
+                </div>
+
+                <div class="p-2">
+                    <!-- <img src="#" alt="QR Code" width="96" height="96" /> -->
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="d-flex">
+
+            <div class="p-2 text-center">
+                    <UserPhoto :user="user" size="72" />
                     <br />
                     <a
                         class="text-danger bg-white pl-1 pr-1 rounded"
@@ -29,7 +67,7 @@
                     />
                 </div>
 
-                <div class="flex-grow-1 p-2">
+            <div class="flex-grow-1 p-2">
                     <h3 class="text-success">
                         {{ user.first_name }} {{ user.surname }}
                         {{ user.nickname }}
@@ -52,7 +90,7 @@
                             </button> -->
 
                         <button
-                            class="btn btn-sm btn-primary  mt-1 mb-1 mr-1"
+                            class="btn btn-sm btn-link  mt-1 mb-1 mr-1"
                             @click="showUserFollowings = !showUserFollowings"
                         >
                             {{ totalFollowings }}
@@ -60,7 +98,7 @@
 
 
                         <button
-                            class="btn btn-sm btn-primary   mt-1 mb-1  mr-1"
+                            class="btn btn-sm btn-link   mt-1 mb-1  mr-1"
                             @click="showUserFollowers = !showUserFollowers"
                         >
                             {{ totalFollowers }}
@@ -68,7 +106,7 @@
 
                         <button
                             type="button"
-                            class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-primary mt-1 mb-1"
+                            class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1"
                             data-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false"
@@ -110,12 +148,10 @@
                     <div></div>
                 </div>
 
-                <div class="p-2">
-                    <!-- <img src="#" alt="QR Code" width="96" height="96" /> -->
-                </div>
-            </div>
+        </div>
 
-            <div class="pt-1">
+
+        <div class="pt-1">
                 <ul class="nav nav-tabs nav-justified">
                     <li
                         class="nav-item"
@@ -132,7 +168,6 @@
                     </li>
                 </ul>
             </div>
-        </div>
 
         <component :is="tabBody" :user="user"></component>
     </div>
