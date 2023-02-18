@@ -4,12 +4,16 @@ import mixin from "../mixin";
 const state = {
     user: JSON.parse(localStorage.getItem("user") || null),
     activeUser: JSON.parse(localStorage.getItem("activeUser") || null),
+    activeUserCoverUrl: JSON.parse(
+        localStorage.getItem("activeUserCoverUrl") || null
+    ),
     userStatus: null
 };
 
 const getters = {
     user: state => state.user,
-    activeUser: state => state.activeUser
+    activeUser: state => state.activeUser,
+    activeUserCoverUrl: state => state.activeUserCoverUrl
 };
 
 const mutations = {
@@ -20,6 +24,11 @@ const mutations = {
     setActiveUser(state, newUser) {
         state.activeUser = newUser;
         localStorage.setItem("activeUser", JSON.stringify(newUser));
+    },
+
+    setActiveUserCoverUrl(state, newCoverUrl) {
+        state.activeUserCoverUrl = newCoverUrl;
+        localStorage.setItem("activeUserCoverUrl", JSON.stringify(newCoverUrl));
     }
 };
 
@@ -90,6 +99,7 @@ const actions = {
                 data: formData
             })
                 .then(response => {
+
                     const photo_url =
                         response.data.data + "?tick=" + Date.now();
 
@@ -99,6 +109,36 @@ const actions = {
 
                     context.commit("setUser", user);
 
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
+    uploadMyCoverPhoto(context, packet) {
+        return new Promise((resolve, reject) => {
+            var url = mixin.methods.getApiUrl(
+                "/api/users/upload-my-cover-photo"
+            );
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+            headers["Content-Type"] = "multipart/form-data";
+
+            const formData = packet.formData;
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "POST",
+                data: formData
+            })
+                .then(response => {
+                    const cover_url =
+                        response.data.data + "?tick=" + Date.now();
+
+                    context.commit("setActiveUserCoverUrl", cover_url);
                     resolve(response);
                 })
                 .catch(err => {

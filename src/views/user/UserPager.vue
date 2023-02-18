@@ -124,12 +124,10 @@ export default {
         this.fetchUserFollowingAction();
         this.initTabItems();
         this.$store.dispatch("setPageTitle", this.user.first_name);
+        this.$store.dispatch("setUserCoverUrl",   "/users/" + this.user.id + "/cover_photo");
     },
 
     computed: {
-        userCoverUrl(){
-           return this.getApiUrl('/users/' + this.user.id +'/cover_photo' )
-        },
         getTabs() {
             return this.tabs;
         },

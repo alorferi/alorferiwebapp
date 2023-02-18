@@ -5,8 +5,6 @@
             style="height: 312px;"
             :style="{
                 'background-image': 'url(' + this.userCoverUrl + ')',
-                // 'background-repeat': 'no-repeat',
-                // 'background-position': 'center',
                 'background-size': 'cover'
             }"
         >
@@ -21,6 +19,7 @@
             <UploadMyCoverModal
                 :show="showUploadMyCoverModal"
                 @updateVisibleState="showUploadMyCoverModal = $event"
+                @onFinishedUploadingCoverPhoto="isUploadedCoverPhoto = $event"
             />
         </div>
     </div>
@@ -31,18 +30,25 @@ import UploadMyCoverModal from "@/views/user/UploadMyCoverModal";
 export default {
     name: "UserCoverPhotoWithUpload",
     props: ["user"],
-    components: {UploadMyCoverModal},
+    components: { UploadMyCoverModal },
     async mounted() {},
 
     computed: {
         userCoverUrl() {
-            return this.getApiUrl("/users/" + this.user.id + "/cover_photo");
+            var coverUrl =
+                this.isItMe(this.user) &&
+                this.$store.getters.activeUserCoverUrl == null
+                    ? "/users/" + this.user.id + "cover_photo"
+                    : this.$store.getters.activeUserCoverUrl;
+
+            return this.getApiUrl(coverUrl);
         }
     },
     methods: {},
     data: function() {
         return {
-            showUploadMyCoverModal: false
+            showUploadMyCoverModal: false,
+            isUploadedCoverPhoto: false
         };
     }
 };

@@ -1,6 +1,7 @@
 <template>
     <div>
         <b-modal
+        size="xl"
             ref="modal"
             :title="modalTile"
             v-model="showLocal"
@@ -10,21 +11,19 @@
             @ok="handleOk"
             centered
         >
-
             <form ref="form" @submit.stop.prevent="handleSubmit" class="mb-2">
                 <Loading v-if="is_loading"></Loading>
 
-                <div class="d-flex justify-content-center m-2">
-                    <img
-                        :src="imgUrl"
-                        style="max-width:460px; max-height:460px"
-                        class="rounded-circle"
-                        width="96px"
-                        height="96px"
-                    />
+                <div class="d-flex justify-content-center m-2"
+                style="height: 450px;"
+            :style="{
+                'background-image': 'url(' + this.coverUrl + ')',
+                'background-size': 'cover'
+            }"
+                >
                 </div>
                 <b-form-file
-                    v-model="imgFile"
+                    v-model="coverFile"
                     accept="image/*"
                     placeholder="Choose an image or drop it here..."
                     drop-placeholder="Drop your image here..."
@@ -37,25 +36,16 @@
 </template>
 
 <script>
-// import UserPhoto from "../user/UserPhoto";
 import Loading from "@/components/Loading";
-// import ImageUploader from "vue-image-upload-resize";
-// import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
     name: "UploadMyCoverModal",
     components: {
-        // UserPhoto,
-        // ImageAutoResize
-        // ImageUploader,
         Loading
     },
     mounted: function() {},
-    props: ["show"],
+    props: ["show", "cover_url"],
     computed: {
-        user() {
-            return this.$store.getters.activeUser;
-        },
         activeUser() {
             return this.$store.getters.activeUser;
         },
@@ -70,8 +60,8 @@ export default {
     },
     data() {
         return {
-            imgUrl: null,
-            imgFile: null,
+            coverUrl: null,
+            coverFile: null,
             hasImage: false,
             is_loading: false,
             modalTile: "Upload cover photo from computer."
@@ -80,27 +70,26 @@ export default {
     methods: {
         onFileChange(e) {
             const file = e.target.files[0];
-            this.imgUrl = URL.createObjectURL(file);
+            this.coverUrl = URL.createObjectURL(file);
         },
 
         updateUserPhoto() {
             const self = this;
-
+            self.is_loading = true;
             let formData = new FormData();
 
-            if (self.imgFile) {
-                formData.append("photo", self.imgFile);
+            if (self.coverFile) {
+                formData.append("cover", self.coverFile);
             }
-
-            self.is_loading = true;
 
             var packet = {
                 formData: formData
             };
 
             self.$store
-                .dispatch("uploadMyPhoto", packet)
+                .dispatch("uploadMyCoverPhoto", packet)
                 .then(() => {
+                    self.$emit("onFinishedUploadingCoverPhoto", true);
                     self.hideThisModal();
                 })
                 .catch(() => {})
@@ -120,12 +109,17 @@ export default {
             this.clearData();
         },
         clearData() {
-            this.imgUrl = null;
-            this.imgFile = null;
+            this.coverUrl = null;
+            this.coverFile = null;
         },
         showData() {
-            this.imgUrl = this.getApiUrl(this.user.photo_url);
-            this.imgFile = null;
+            this.coverUrl = this.getApiUrl(
+                "users/" +
+                    this.activeUser.id +
+                    "/cover_photo?tick=" +
+                    Date.now()
+            );
+            this.coverFile = null;
         },
         handleOk(bvModalEvt) {
             // Prevent modal from closing
