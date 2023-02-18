@@ -1,27 +1,11 @@
 <template>
     <div>
-        <div
-            class="d-flex pt-2 pl-2 pr-2 pb-2 rounded"
-            style="height: 200px;"
-            :style="{
-                'background-image':
-                    'url(' +
-                    'https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80' +
-                    ')',
-                'background-repeat': 'no-repeat',
-                'background-position': 'center'
-            }"
-        >
-            <a class="text-danger bg-white pl-1 pr-1 rounded ml-auto mt-auto"
-            v-if="this.isItMe(this.user)"
-            >
-                <i class="fa fa-camera"></i>
-            </a>
-        </div>
+
+        <UserCoverPhotoWithUpload :user="user"/>
 
         <div class="d-flex">
             <div class="p-2 text-center">
-                <UserPhotoWithUpload :user="user" size="96" />
+                <UserPhotoWithUpload :user="user" size="120" />
             </div>
 
             <div class="flex-grow-1 p-2">
@@ -120,8 +104,10 @@ import UserPhotoWithUpload from "@/views/user/UserPhotoWithUpload";
 import UserTimeline from "@/views/user/UserTimeline";
 import UserAbout from "@/views/user/UserAbout";
 
+
 import UserFollowerModal from "@/views/follower/UserFollowerModal.vue";
 import UserFollowingModal from "@/views/follower/UserFollowingModal.vue";
+import UserCoverPhotoWithUpload from "@/views/user/UserCoverPhotoWithUpload.vue";
 export default {
     name: "UserPager",
     props: ["user"],
@@ -130,7 +116,8 @@ export default {
         UserTimeline,
         UserAbout,
         UserFollowerModal,
-        UserFollowingModal
+        UserFollowingModal,
+        UserCoverPhotoWithUpload
     },
     async mounted() {
         this.fetchUserFollowerAction();
@@ -140,6 +127,9 @@ export default {
     },
 
     computed: {
+        userCoverUrl(){
+           return this.getApiUrl('/users/' + this.user.id +'/cover_photo' )
+        },
         getTabs() {
             return this.tabs;
         },
@@ -225,7 +215,7 @@ export default {
         return {
             tabs: [],
             activeTab: {},
-
+            showUploadMyCoverModal:false,
             showUserFollowers: false,
             showUserFollowings: false
         };
