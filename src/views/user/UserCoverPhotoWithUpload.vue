@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            class="d-flex pt-2 pl-2 pr-2 pb-2 rounded bg-dark"
+            class="d-flex pt-2 pl-2 pr-2 pb-2 rounded bg-secondary border-top border-right border-left border-bottom"
             style="height: 312px;"
             :style="{
                 'background-image': 'url(' + this.userCoverUrl + ')',
@@ -35,11 +35,16 @@ export default {
 
     computed: {
         userCoverUrl() {
-            var coverUrl =
-                this.isItMe(this.user) &&
-                this.$store.getters.activeUserCoverUrl == null
-                    ? "/users/" + this.user.id + "cover_photo"
-                    : this.$store.getters.activeUserCoverUrl;
+            var coverUrl = null;
+            if (this.isItMe(this.user)) {
+                if (this.$store.getters.activeUserCoverUrl == null) {
+                    coverUrl = "/users/" + this.user.id + "/cover_photo";
+                } else {
+                    coverUrl = this.$store.getters.activeUserCoverUrl;
+                }
+            } else {
+                coverUrl = "/users/" + this.user.id + "/cover_photo";
+            }
 
             return this.getApiUrl(coverUrl);
         }

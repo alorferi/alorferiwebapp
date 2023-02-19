@@ -14,7 +14,7 @@
             <form ref="form" @submit.stop.prevent="handleSubmit" class="mb-2">
                 <Loading v-if="is_loading"></Loading>
 
-                <div class="d-flex justify-content-center m-2"
+                <div class="d-flex justify-content-center m-2 rounded bg-muted border-top border-right border-left border-bottom"
                 style="height: 450px;"
             :style="{
                 'background-image': 'url(' + this.coverUrl + ')',

@@ -3,7 +3,7 @@
 
         <UserCoverPhotoWithUpload :user="user"/>
 
-        <div class="d-flex">
+        <div class="d-flex border-left border-right">
             <div class="p-2 text-center">
                 <UserPhotoWithUpload :user="user" size="120" />
             </div>
@@ -124,7 +124,6 @@ export default {
         this.fetchUserFollowingAction();
         this.initTabItems();
         this.$store.dispatch("setPageTitle", this.user.first_name);
-        this.$store.dispatch("setUserCoverUrl",   "/users/" + this.user.id + "/cover_photo");
     },
 
     computed: {
