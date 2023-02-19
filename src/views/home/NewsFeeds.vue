@@ -1,7 +1,7 @@
 <template>
     <div >
 
-                <CreateUserPost></CreateUserPost>
+                <CreateUserPost class="mt-2 mb-3"></CreateUserPost>
 
                 <ShowPosts></ShowPosts>
     </div>

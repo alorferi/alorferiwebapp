@@ -2,11 +2,13 @@ import axios from "axios";
 import mixin from "@/mixin";
 
 const state = {
-    followingsResponse: { data: [], links: null, meta: null }
+    followingsResponse: { data: [], links: null, meta: null },
+    followingByMe:null
 };
 
 const getters = {
-    followingsResponse: state => state.followingsResponse
+    followingsResponse: state => state.followingsResponse,
+    followingByMe: state => state.followingByMe
 };
 
 const mutations = {
@@ -27,6 +29,14 @@ const mutations = {
         state.followingsResponse = { data: [], links: null, meta: null };
     },
 
+    setFollowingByMe(state, newFollowingByMe) {
+        state.followingByMe = newFollowingByMe;
+    },
+
+    clearFollowingByMe(state) {
+        state.followingByMe = null;
+    },
+
 };
 
 const actions = {
@@ -37,7 +47,6 @@ const actions = {
             var url = mixin.methods.getApiUrl(
                 "/api/users/" + payload.user_id + "/followings"
             );
-            console.log("url", url);
             const headers = mixin.methods.getAuthorizationBearerToken();
 
             axios({
@@ -48,13 +57,64 @@ const actions = {
                 .then(response => {
                     context.commit("clearFollowingResponse");
 
-                    console.log("setFollowingsResponse", response.data);
 
                     context.commit("setFollowingsResponse", response.data);
                     resolve(response);
                 })
                 .catch(err => {
-                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
+
+    fetchUserFollowingByMe(context, payload) {
+        return new Promise((resolve, reject) => {
+            var url = mixin.methods.getApiUrl(
+                "/api/users/" + payload.user_id + "/following-by-me"
+            );
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "GET"
+            })
+                .then(response => {
+                    context.commit("clearFollowingByMe");
+                    context.commit("setFollowingByMe", response.data.data.attributes);
+                    resolve(response);
+                })
+                .catch(err => {
+                    context.commit("clearFollowingByMe");
+                    reject(err);
+                });
+        });
+    },
+
+    unFollowUserByMe(context, payload) {
+        return new Promise((resolve, reject) => {
+
+            var url = mixin.methods.getApiUrl(
+                "/api/users/" + payload.user_id + "/unfollow"
+            );
+
+            console.log("url",url)
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "DELETE"
+            })
+                .then(response => {
+                    console.log("unFollowUserByMe:clearFollowingByMe")
+                    context.commit("clearFollowingByMe");
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log(err)
                     reject(err);
                 });
         });

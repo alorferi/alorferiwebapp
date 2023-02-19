@@ -1,7 +1,7 @@
 <template>
     <div>
 
-    <CreateUserPost class="mt-3" v-if="user.id == $store.getters.activeUser.id"/>
+    <CreateUserPost class="mb-3" v-if="user.id == $store.getters.activeUser.id"/>
 
         <Loading v-if="is_loading"></Loading>
 

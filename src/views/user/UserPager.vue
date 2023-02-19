@@ -1,18 +1,17 @@
 <template>
     <div>
-
-        <UserCoverPhotoWithUpload :user="user"/>
+        <UserCoverPhotoWithUpload :user="user" />
 
         <div class="d-flex border-left border-right">
-            <div class="p-2 text-center">
-                <UserPhotoWithUpload :user="user" size="120" />
+            <div class="pl-3 pt-2 pb-2 text-center">
+                <UserPhotoWithUpload :user="user" size="96" />
             </div>
 
             <div class="flex-grow-1 p-2">
-                <h3 class="text-success m-2">
+                <h2 class="text-dark m-2">
                     {{ user.first_name }} {{ user.surname }}
                     {{ user.nickname }}
-                </h3>
+                </h2>
 
                 <UserFollowerModal
                     :show="showUserFollowers"
@@ -51,9 +50,17 @@
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#" v-if="!isItMe(user)"
+                        <a
+                            class="dropdown-item"
+                            href="#"
+                            v-if="!isItMe(user) && !isFollowingByMe"
+
                             >Follow</a
                         >
+
+                        <a class="dropdown-item" v-else
+                        @click = "unFollowUserByMeAction()"
+                        >Unfollow</a>
 
                         <router-link
                             class="dropdown-item"
@@ -104,7 +111,6 @@ import UserPhotoWithUpload from "@/views/user/UserPhotoWithUpload";
 import UserTimeline from "@/views/user/UserTimeline";
 import UserAbout from "@/views/user/UserAbout";
 
-
 import UserFollowerModal from "@/views/follower/UserFollowerModal.vue";
 import UserFollowingModal from "@/views/follower/UserFollowingModal.vue";
 import UserCoverPhotoWithUpload from "@/views/user/UserCoverPhotoWithUpload.vue";
@@ -122,11 +128,15 @@ export default {
     async mounted() {
         this.fetchUserFollowerAction();
         this.fetchUserFollowingAction();
+        this.fetchUserFollowingByMeAction();
         this.initTabItems();
         this.$store.dispatch("setPageTitle", this.user.first_name);
     },
 
     computed: {
+        isFollowingByMe() {
+            return this.$store.getters.followingByMe != null;
+        },
         getTabs() {
             return this.tabs;
         },
@@ -198,12 +208,29 @@ export default {
 
             this.$store
                 .dispatch("fetchUserFollowings", { user_id: self.user.id })
-                .then(() => {
-                    console.log(
-                        "fetchUserFollowings",
-                        this.$store.getters.followingsResponse.meta.total
-                    );
-                })
+                .then(() => {})
+                .catch(() => {})
+                .finally(() => {});
+        },
+        unFollowUserByMeAction() {
+
+            console.log("unFollowUserByMeAction")
+
+            const self = this;
+
+            this.$store
+                .dispatch("unFollowUserByMe", { user_id: self.user.id })
+                .then(() => {})
+                .catch(() => {})
+                .finally(() => {});
+
+        },
+        fetchUserFollowingByMeAction() {
+            const self = this;
+
+            this.$store
+                .dispatch("fetchUserFollowingByMe", { user_id: self.user.id })
+                .then(() => {})
                 .catch(() => {})
                 .finally(() => {});
         }
@@ -212,7 +239,7 @@ export default {
         return {
             tabs: [],
             activeTab: {},
-            showUploadMyCoverModal:false,
+            showUploadMyCoverModal: false,
             showUserFollowers: false,
             showUserFollowings: false
         };

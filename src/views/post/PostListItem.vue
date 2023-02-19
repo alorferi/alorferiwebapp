@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="media border p-3 mt-3">
+        <div class="media border p-3 mb-3">
             <router-link
                 :to="{
                     name: 'users.show',
