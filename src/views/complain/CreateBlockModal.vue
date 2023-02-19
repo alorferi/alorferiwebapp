@@ -6,7 +6,8 @@
             v-model="showLocal"
             @show="showModal"
             @hidden="hideModal"
-            ok-title="Submit"
+            ok-title="Yes"
+            cancel-title="No"
             @ok="handleOk"
             centered
         >
@@ -28,27 +29,15 @@
                 {{ errorMessage }}
             </div>
 
-            <form ref="form" @submit.stop.prevent="handleSubmit" class="mb-2">
-                <b-form-select
-                    v-model="dataModel.subject"
-                    :options="options"
-                    :state="subjectState"
-                    required
-                ></b-form-select>
 
-                <b-form-textarea
-                    id="textarea"
-                    v-model="dataModel.body"
-                    placeholder="What do you want to discussion about?"
-                    rows="4s"
-                    max-rows="6"
-                    :state="bodyState"
-                    required
-                >
-                </b-form-textarea>
+            <div class="text-center">
+                Do you want to block this {{blockable_type}}?
+            </div>
 
-                <Loading v-if="is_loading"></Loading>
-            </form>
+
+            <Loading v-if="is_loading"></Loading>
+
+
         </b-modal>
     </div>
 </template>
@@ -58,13 +47,13 @@ import UserPhoto from "../user/UserPhoto";
 import Loading from "@/components/Loading";
 
 export default {
-    name: "CreateReportModal",
+    name: "CreateBlockModal",
     components: {
         UserPhoto,
         Loading
     },
     async mounted() {},
-    props: ["show", "complainable_type", "complainable_id", "user"],
+    props: ["show", "blockable_type", "blockable_id", "user"],
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
@@ -77,60 +66,34 @@ export default {
                 this.$emit("updateVisibleState", value);
             }
         },
-        options() {
-            var options = [];
 
-            options.push({ value: null, text: "Please select an option" });
-
-            this.$store.getters.complainTypesResponse.data.forEach(function(
-                item
-            ) {
-                options.push({ value: item, text: item });
-            });
-
-            return options;
-        }
     },
     data() {
         return {
             dataModel: {
-                subject: null,
-                body: null,
-                complainable_id: null,
-                complainable_type: null
+                blockable_id: null,
+                blockable_type: null
             },
-            subjectState: null,
-            bodyState: null,
 
             is_loading: false,
-            modalTile: "Report user",
+            modalTile: "Block user",
             errorMessage: null
         };
     },
     methods: {
-        fetchComplainTypesAction() {
-            const self = this;
-            self.$store
-                .dispatch("fetchComplainTypes", self.complainable_type)
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {
-                    self.is_loading = false;
-                });
-        },
         createReportAction() {
             const self = this;
 
             self.is_loading = true;
 
-            self.dataModel.complainable_type = self.complainable_type;
+            self.dataModel.blockable_type = self.blockable_type;
 
-            self.dataModel.complainable_id = self.complainable_id;
+            self.dataModel.blockable_id = self.blockable_id;
 
             console.log("dataModel", self.dataModel);
 
             self.$store
-                .dispatch("createReport", self.dataModel)
+                .dispatch("createBlock", self.dataModel)
                 .then(() => {
                     self.hidePostModal();
                 })
@@ -148,24 +111,13 @@ export default {
                 });
         },
 
-        checkFormValidity() {
-            const valid = this.$refs.form.checkValidity();
-            this.subjectState = valid;
-            this.bodyState = valid;
 
-            return valid;
-        },
         showModal() {
-            this.fetchComplainTypesAction();
         },
         hideModal() {
             this.clearData();
         },
         clearData() {
-            this.dataModel.subject = "";
-            this.dataModel.body = "";
-            this.subjectState = null;
-            this.bodyState = null;
             this.errorMessage = null;
         },
         handleOk(bvModalEvt) {
@@ -175,11 +127,8 @@ export default {
             this.handleSubmit();
         },
         handleSubmit() {
-            // Exit when the form isn't valid
-            if (!this.checkFormValidity()) {
-                return;
-            }
-            // Subit data to backend server
+
+            // Submit data to backend server
             this.createReportAction();
         },
 

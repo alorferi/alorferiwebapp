@@ -82,6 +82,7 @@
                         >
 
                         <a class="dropdown-item" href="#" v-if="!isItMe(user)"
+                        @click="showCreateBlockModel = !showCreateBlockModel"
                             >Block this user</a
                         >
                     </div>
@@ -97,6 +98,14 @@
             :user="user"
             complainable_type="User"
             :complainable_id="user.id"
+        />
+
+        <CreateBlockModal
+            :show="showCreateBlockModel"
+            @updateVisibleState="showCreateBlockModel = $event"
+            :user="user"
+            blockable_type="User"
+            :blockable_id="user.id"
         />
 
         <div class="pt-1">
@@ -130,6 +139,7 @@ import UserFollowerModal from "@/views/follower/UserFollowerModal.vue";
 import UserFollowingModal from "@/views/follower/UserFollowingModal.vue";
 import UserCoverPhotoWithUpload from "@/views/user/UserCoverPhotoWithUpload.vue";
 import CreateReportModal from "@/views/complain/CreateReportModal.vue";
+import CreateBlockModal from "@/views/complain/CreateBlockModal.vue";
 export default {
     name: "UserPager",
     props: ["user"],
@@ -140,7 +150,8 @@ export default {
         UserFollowerModal,
         UserFollowingModal,
         UserCoverPhotoWithUpload,
-        CreateReportModal
+        CreateReportModal,
+        CreateBlockModal
     },
     async mounted() {
         this.fetchUserFollowerAction();
@@ -267,6 +278,7 @@ export default {
             showUserFollowers: false,
             showUserFollowings: false,
             showCreateReportModel:false,
+            showCreateBlockModel:false,
         };
     }
 };
