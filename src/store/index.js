@@ -16,6 +16,7 @@ import UserPost from "@/store/user-post";
 import UserFollower from "@/store/user-follower";
 import UserFollowing from "@/store/user-following";
 import LibraryPost from "@/store/library-post";
+import Complain from "@/store/complain";
 
 Vue.use(Vuex);
 
@@ -36,7 +37,8 @@ export default new Vuex.Store({
         UserPost,
         LibraryPost,
         UserFollower,
-        UserFollowing
+        UserFollowing,
+        Complain
     },
     state: {},
     getters: {},

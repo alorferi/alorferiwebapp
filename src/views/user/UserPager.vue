@@ -56,15 +56,17 @@
                             class="dropdown-item"
                             href="#"
                             v-if="!isItMe(user) && !isFollowingByMe"
-                            @click = "followUserByMeAction()"
+                            @click="followUserByMeAction()"
                             >Follow</a
                         >
 
-                        <a class="dropdown-item"
-                        v-if="!isItMe(user) && isFollowingByMe"
-                        href="#"
-                        @click = "unFollowUserByMeAction()"
-                        >Unfollow</a>
+                        <a
+                            class="dropdown-item"
+                            v-if="!isItMe(user) && isFollowingByMe"
+                            href="#"
+                            @click="unFollowUserByMeAction()"
+                            >Unfollow</a
+                        >
 
                         <router-link
                             class="dropdown-item"
@@ -75,6 +77,7 @@
                         </router-link>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" v-if="!isItMe(user)"
+                        @click="showCreateReportModel = !showCreateReportModel"
                             >Report this user</a
                         >
 
@@ -87,6 +90,14 @@
                 <div></div>
             </div>
         </div>
+
+        <CreateReportModal
+            :show="showCreateReportModel"
+            @updateVisibleState="showCreateReportModel = $event"
+            :user="user"
+            complainable_type="User"
+            :complainable_id="user.id"
+        />
 
         <div class="pt-1">
             <ul class="nav nav-tabs nav-justified">
@@ -118,6 +129,7 @@ import UserAbout from "@/views/user/UserAbout";
 import UserFollowerModal from "@/views/follower/UserFollowerModal.vue";
 import UserFollowingModal from "@/views/follower/UserFollowingModal.vue";
 import UserCoverPhotoWithUpload from "@/views/user/UserCoverPhotoWithUpload.vue";
+import CreateReportModal from "@/views/complain/CreateReportModal.vue";
 export default {
     name: "UserPager",
     props: ["user"],
@@ -127,7 +139,8 @@ export default {
         UserAbout,
         UserFollowerModal,
         UserFollowingModal,
-        UserCoverPhotoWithUpload
+        UserCoverPhotoWithUpload,
+        CreateReportModal
     },
     async mounted() {
         this.fetchUserFollowerAction();
@@ -224,10 +237,9 @@ export default {
                 .then(() => {})
                 .catch(() => {})
                 .finally(() => {});
-
-        },   unFollowUserByMeAction() {
-
-            console.log("unFollowUserByMeAction")
+        },
+        unFollowUserByMeAction() {
+            console.log("unFollowUserByMeAction");
 
             const self = this;
 
@@ -236,7 +248,6 @@ export default {
                 .then(() => {})
                 .catch(() => {})
                 .finally(() => {});
-
         },
         fetchUserFollowingByMeAction() {
             const self = this;
@@ -254,7 +265,8 @@ export default {
             activeTab: {},
             showUploadMyCoverModal: false,
             showUserFollowers: false,
-            showUserFollowings: false
+            showUserFollowings: false,
+            showCreateReportModel:false,
         };
     }
 };
