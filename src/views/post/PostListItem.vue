@@ -31,7 +31,9 @@
                     <div>
                         <div class="dropdown show">
                             <a
-                                class="dropdown-toggle dropdown-toggle-split btn btn-light"
+                                class="dropdown-toggle dropdown-toggle-split btn btn-link
+                                border-top border-left border-right border-bottom
+                                "
                                 role="button"
                                 id="dropdownMenuLink"
                                 data-toggle="dropdown"

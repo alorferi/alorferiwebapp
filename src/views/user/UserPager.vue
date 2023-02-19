@@ -42,7 +42,9 @@
 
                     <button
                         type="button"
-                        class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1"
+                        class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1
+                        border-top border-left border-right border-bottom
+                        "
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
@@ -54,11 +56,13 @@
                             class="dropdown-item"
                             href="#"
                             v-if="!isItMe(user) && !isFollowingByMe"
-
+                            @click = "followUserByMeAction()"
                             >Follow</a
                         >
 
-                        <a class="dropdown-item" v-else
+                        <a class="dropdown-item"
+                        v-if="!isItMe(user) && isFollowingByMe"
+                        href="#"
                         @click = "unFollowUserByMeAction()"
                         >Unfollow</a>
 
@@ -212,7 +216,16 @@ export default {
                 .catch(() => {})
                 .finally(() => {});
         },
-        unFollowUserByMeAction() {
+        followUserByMeAction() {
+            const self = this;
+
+            this.$store
+                .dispatch("followUserByMe", { user_id: self.user.id })
+                .then(() => {})
+                .catch(() => {})
+                .finally(() => {});
+
+        },   unFollowUserByMeAction() {
 
             console.log("unFollowUserByMeAction")
 
