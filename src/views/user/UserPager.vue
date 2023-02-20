@@ -2,7 +2,11 @@
     <div>
         <UserCoverPhotoWithUpload :user="user" />
 
-        <div class="d-flex border-left border-right">
+
+        <div class="bg-light">
+
+
+            <div class="d-flex  border-left border-right">
             <div class="pl-3 pt-2 pb-2 text-center">
                 <UserPhotoWithUpload :user="user" size="96" />
             </div>
@@ -106,23 +110,6 @@
             </div>
         </div>
 
-        <CreateReportModal
-            :show="showCreateReportModel"
-            @updateVisibleState="showCreateReportModel = $event"
-            :user="user"
-            complainable_type="User"
-            :complainable_id="user.id"
-        />
-
-        <CreateBlockModal
-            :show="showCreateBlockModel"
-            @updateVisibleState="showCreateBlockModel = $event"
-            :user="user"
-            blockable_type="User"
-            :blockable_id="user.id"
-
-            @didFinish="didFinishBlockingUser"
-        />
 
         <div class="pt-1">
             <ul class="nav nav-tabs nav-justified">
@@ -141,6 +128,28 @@
                 </li>
             </ul>
         </div>
+
+        </div>
+
+
+        <CreateReportModal
+            :show="showCreateReportModel"
+            @updateVisibleState="showCreateReportModel = $event"
+            :user="user"
+            complainable_type="User"
+            :complainable_id="user.id"
+        />
+
+        <CreateBlockModal
+            :show="showCreateBlockModel"
+            @updateVisibleState="showCreateBlockModel = $event"
+            :user="user"
+            blockable_type="User"
+            :blockable_id="user.id"
+
+            @didFinish="didFinishBlockingUser"
+        />
+
 
         <component :is="tabBody" :user="user"></component>
     </div>

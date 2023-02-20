@@ -5,18 +5,23 @@ import mixin from "../mixin";
 const state = {
     library: JSON.parse(localStorage.getItem("library") || null),
     myLibrariesResponse: null,
+    libraryCoverUrl: null,
     libraryStatus: null
 };
 
 const getters = {
     library: state => state.library,
-    myLibrariesResponse: state => state.myLibrariesResponse
+    myLibrariesResponse: state => state.myLibrariesResponse,
+    libraryCoverUrl: state => state.libraryCoverUrl
 };
 
 const mutations = {
     setLibrary(state, library) {
         state.library = library;
         // localStorage.setItem("library", JSON.stringify(library));
+    },
+    setLibraryCoverUrl(state, libraryCoverUrl) {
+        state.libraryCoverUrl = libraryCoverUrl;
     },
     setMyLibrariesResponse(state, myLibrariesResponse) {
         state.myLibrariesResponse = myLibrariesResponse;
@@ -126,7 +131,36 @@ const actions = {
                     reject(err);
                 });
         });
-    }
+    },
+    uploadLibraryCoverPhoto(context, packet) {
+        return new Promise((resolve, reject) => {
+            var url = mixin.methods.getApiUrl(
+                "/api/libraries/" + packet.library_id + "/upload-cover-photo"
+            );
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+            headers["Content-Type"] = "multipart/form-data";
+
+            const formData = packet.formData;
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "POST",
+                data: formData
+            })
+                .then(response => {
+                    const cover_url =
+                        response.data.data + "?tick=" + Date.now();
+                    context.commit("setLibraryCoverUrl", cover_url);
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
 };
 
 export default {

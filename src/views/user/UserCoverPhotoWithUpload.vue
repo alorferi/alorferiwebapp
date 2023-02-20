@@ -19,7 +19,6 @@
             <UploadMyCoverModal
                 :show="showUploadMyCoverModal"
                 @updateVisibleState="showUploadMyCoverModal = $event"
-                @onFinishedUploadingCoverPhoto="isUploadedCoverPhoto = $event"
             />
         </div>
     </div>
@@ -38,12 +37,12 @@ export default {
             var coverUrl = null;
             if (this.isItMe(this.user)) {
                 if (this.$store.getters.activeUserCoverUrl == null) {
-                    coverUrl = "/users/" + this.user.id + "/cover_photo";
+                    coverUrl = "/users/" + this.user.id + "/cover-photo";
                 } else {
                     coverUrl = this.$store.getters.activeUserCoverUrl;
                 }
             } else {
-                coverUrl = "/users/" + this.user.id + "/cover_photo";
+                coverUrl = "/users/" + this.user.id + "/cover-photo";
             }
 
             return this.getApiUrl(coverUrl);
@@ -53,7 +52,6 @@ export default {
     data: function() {
         return {
             showUploadMyCoverModal: false,
-            isUploadedCoverPhoto: false
         };
     }
 };

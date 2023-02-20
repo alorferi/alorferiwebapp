@@ -1,13 +1,11 @@
 <template>
     <div>
+
+
+        <LibraryCoverPhotoWithUpload :user="this.$store.getters.activeUser" :library="library" />
+
         <div
             class="d-flex flex-column pt-2 pl-2 pr-2 bg-light card"
-            :style="{
-                // 'background-image':
-                //     'url(' +
-                //     'https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80' +
-                //     ')'
-            }"
         >
             <div class="d-flex">
                 <div class="p-2">
@@ -49,28 +47,67 @@
                         </span>
                     </h5>
 
-                    <button
-                        type="button"
-                        class="btn btn-success"
-                        v-if="
-                            myLibraryMembership == null &&
-                            computeMyLibraryMemberRequest == null
-                        "
-                        @click="showMemberRequestModal = true"
-                    >
-                        Request to be member
-                    </button>
+                    <!-- <UserFollowerModal
+                        :show="showUserFollowers"
+                        @updateVisibleState="showUserFollowers = $event"
+                        :user="user"
+                    /> -->
 
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        v-if="
-                            computeMyLibraryMemberRequest != null
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-link   mt-1 mb-1  mr-1">
+                            {{ totalFollowers }}
+                        </button>
+
+                        <button
+                            type="button"
+                            class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1
+                        border-top border-left border-right border-bottom
                         "
-                        disabled
-                    >
-                        Member request sent
-                    </button>
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                        >
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                @click="followUserByMeAction()"
+                                >Follow</a
+                            >
+
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                @click="unFollowUserByMeAction()"
+                                >Unfollow</a
+                            >
+
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                v-if="
+                                    myLibraryMembership == null &&
+                                        computeMyLibraryMemberRequest == null
+                                "
+                                @click="showMemberRequestModal = true"
+                            >
+                                Request to be member
+                            </a>
+
+
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                v-if="computeMyLibraryMemberRequest != null"
+                            >
+                            Member request sent
+                            </a>
+
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="p-2">
@@ -113,13 +150,16 @@
 </template>
 
 <script>
-import LibraryLogo from "./LibraryLogo";
-import LibraryTimeline from "./LibraryTimeline";
-import LibraryBookIssuedHistory from "./LibraryBookIssuedHistory";
-import LibraryAbout from "./LibraryAbout";
-import ShowLibraryBooks from "../librarybook/ShowLibraryBooks";
-import ShowLibraryMembers from "../librarymember/ShowLibraryMembers";
-import CreateLibraryMemberRequestModal from "../librarymember/CreateLibraryMemberRequestModal";
+import LibraryLogo from "@/views/library/LibraryLogo";
+import LibraryTimeline from "@/views/library/LibraryTimeline";
+import LibraryBookIssuedHistory from "@/views/library/LibraryBookIssuedHistory";
+import LibraryAbout from "@/views/library/LibraryAbout";
+import ShowLibraryBooks from "@/views/librarybook/ShowLibraryBooks";
+import ShowLibraryMembers from "@/views/librarymember/ShowLibraryMembers";
+import CreateLibraryMemberRequestModal from "@/views/librarymember/CreateLibraryMemberRequestModal";
+import LibraryCoverPhotoWithUpload from "@/views/library/LibraryCoverPhotoWithUpload";
+// import UserFollowerModal from "@/views/follower/UserFollowerModal.vue";
+
 export default {
     name: "LibraryPager",
     components: {
@@ -129,13 +169,20 @@ export default {
         ShowLibraryMembers,
         ShowLibraryBooks,
         LibraryBookIssuedHistory,
-        CreateLibraryMemberRequestModal
+        CreateLibraryMemberRequestModal,
+        // UserFollowerModal,
+        LibraryCoverPhotoWithUpload
     },
     mounted: function() {
         this.initTabItems();
         this.$store.dispatch("setPageTitle", this.library.name);
     },
     computed: {
+        totalFollowers() {
+            var total = 0;
+
+            return "Followers (" + total + ")";
+        },
         library() {
             return this.$store.getters.library;
         },
@@ -161,10 +208,13 @@ export default {
             tabs: [],
             activeTab: {},
             showMemberRequestModal: false,
-            myLibraryMemberRequest: null
+            myLibraryMemberRequest: null,
+            showUserFollowers: false
         };
     },
     methods: {
+        unFollowUserByMeAction() {},
+        followUserByMeAction() {},
         initTabItems() {
             var library = this.$store.getters.library;
 

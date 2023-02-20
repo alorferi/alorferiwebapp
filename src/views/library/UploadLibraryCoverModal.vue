@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-modal
-        size="xl"
+            size="xl"
             ref="modal"
             :title="modalTile"
             v-model="showLocal"
@@ -14,14 +14,14 @@
             <form ref="form" @submit.stop.prevent="handleSubmit" class="mb-2">
                 <Loading v-if="is_loading"></Loading>
 
-                <div class="d-flex justify-content-center m-2 rounded bg-muted border-top border-right border-left border-bottom"
-                style="height: 450px;"
-            :style="{
-                'background-image': 'url(' + this.coverUrl + ')',
-                'background-size': 'cover'
-            }"
-                >
-                </div>
+                <div
+                    class="d-flex justify-content-center m-2 rounded bg-muted border-top border-right border-left border-bottom"
+                    style="height: 450px;"
+                    :style="{
+                        'background-image': 'url(' + this.coverUrl + ')',
+                        'background-size': 'cover'
+                    }"
+                ></div>
                 <b-form-file
                     v-model="coverFile"
                     accept="image/*"
@@ -39,12 +39,12 @@
 import Loading from "@/components/Loading";
 
 export default {
-    name: "UploadMyCoverModal",
+    name: "UploadLibraryCoverModal",
     components: {
         Loading
     },
     mounted: function() {},
-    props: ["show", "cover_url"],
+    props: ["show", "library"],
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
@@ -73,7 +73,7 @@ export default {
             this.coverUrl = URL.createObjectURL(file);
         },
 
-        updateUserPhoto() {
+        updateLibraryCoverPhoto() {
             const self = this;
             self.is_loading = true;
             let formData = new FormData();
@@ -83,13 +83,14 @@ export default {
             }
 
             var packet = {
+                library_id: self.library.id,
                 formData: formData
             };
 
             self.$store
-                .dispatch("uploadMyCoverPhoto", packet)
+                .dispatch("uploadLibraryCoverPhoto", packet)
                 .then(() => {
-                    self.$emit("onFinishedUploadingCoverPhoto", true);
+                    self.$emit("didFinishedUpload",true);
                     self.hideThisModal();
                 })
                 .catch(() => {})
@@ -114,8 +115,8 @@ export default {
         },
         showData() {
             this.coverUrl = this.getApiUrl(
-                "users/" +
-                    this.activeUser.id +
+                "libraries/" +
+                    this.library.id +
                     "/cover-photo?tick=" +
                     Date.now()
             );
@@ -133,7 +134,7 @@ export default {
                 return;
             }
             // Subit data to backend server
-            this.updateUserPhoto();
+            this.updateLibraryCoverPhoto();
         },
 
         hideThisModal() {
