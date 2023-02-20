@@ -2,30 +2,30 @@ import axios from "axios";
 import mixin from "@/mixin";
 
 const state = {
-    followingsResponse: { data: [], links: null, meta: null },
+    userFollowingsResponse: { data: [], links: null, meta: null },
 
 };
 
 const getters = {
-    followingsResponse: state => state.followingsResponse,
+    userFollowingsResponse: state => state.userFollowingsResponse,
 };
 
 const mutations = {
 
-    setFollowingsResponse(state, newFollowingsResponse) {
-        if (state.followingsResponse.data.length == 0) {
-            state.followingsResponse.data = newFollowingsResponse.data;
+    setUserFollowingsResponse(state, newUserFollowingsResponse) {
+        if (state.userFollowingsResponse.data.length == 0) {
+            state.userFollowingsResponse.data = newUserFollowingsResponse.data;
         } else {
-            newFollowingsResponse.data.forEach(function(item) {
-                state.followingsResponse.data.push(item);
+            newUserFollowingsResponse.data.forEach(function(item) {
+                state.userFollowingsResponse.data.push(item);
             });
         }
 
-        state.followingsResponse.links = newFollowingsResponse.links;
-        state.followingsResponse.meta = newFollowingsResponse.meta;
+        state.userFollowingsResponse.links = newUserFollowingsResponse.links;
+        state.userFollowingsResponse.meta = newUserFollowingsResponse.meta;
     },
     clearFollowingResponse(state) {
-        state.followingsResponse = { data: [], links: null, meta: null };
+        state.userFollowingsResponse = { data: [], links: null, meta: null };
     },
 
 
@@ -50,7 +50,7 @@ const actions = {
                 .then(response => {
                     context.commit("clearFollowingResponse");
 
-                    context.commit("setFollowingsResponse", response.data);
+                    context.commit("setUserFollowingsResponse", response.data);
                     resolve(response);
                 })
                 .catch(err => {

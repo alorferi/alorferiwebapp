@@ -43,7 +43,7 @@ export default {
     },
     computed: {
         followers() {
-            return this.$store.getters.followersResponse.data;
+            return this.$store.getters.userFollowersResponse.data;
         },
         showLocal: {
             get: function() {
@@ -56,8 +56,8 @@ export default {
 
         totalFollowers() {
 
-            if(this.$store.getters.followersResponse.meta){
-                return this.$store.getters.followersResponse.meta.total;
+            if(this.$store.getters.userFollowersResponse.meta){
+                return this.$store.getters.userFollowersResponse.meta.total;
             }else{
                 return 0;
             }

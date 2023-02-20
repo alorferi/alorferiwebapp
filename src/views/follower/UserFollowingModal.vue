@@ -42,7 +42,7 @@ export default {
     },
     computed: {
         followings() {
-            return this.$store.getters.followingsResponse.data;
+            return this.$store.getters.userFollowingsResponse.data;
         },
         showLocal: {
             get: function() {
@@ -55,8 +55,8 @@ export default {
 
         totalFollowings() {
 
-            if(this.$store.getters.followingsResponse.meta){
-                return this.$store.getters.followingsResponse.meta.total;
+            if(this.$store.getters.userFollowingsResponse.meta){
+                return this.$store.getters.userFollowingsResponse.meta.total;
             }else{
                 return 0;
             }

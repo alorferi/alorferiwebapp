@@ -201,16 +201,16 @@ export default {
         },
         totalFollowers() {
             var total = 0;
-            if (this.$store.getters.followersResponse.meta) {
-                total = this.$store.getters.followersResponse.meta.total;
+            if (this.$store.getters.userFollowersResponse.meta) {
+                total = this.$store.getters.userFollowersResponse.meta.total;
             }
 
             return "Followers (" + total + ")";
         },
         totalFollowings() {
             var total = 0;
-            if (this.$store.getters.followingsResponse.meta) {
-                total = this.$store.getters.followingsResponse.meta.total;
+            if (this.$store.getters.userFollowingsResponse.meta) {
+                total = this.$store.getters.userFollowingsResponse.meta.total;
             }
 
             return "Following (" + total + ")";
@@ -253,7 +253,7 @@ export default {
                 .then(() => {
                     console.log(
                         "fetchUserFollowers",
-                        this.$store.getters.followersResponse.meta.total
+                        this.$store.getters.userFollowersResponse.meta.total
                     );
                 })
                 .catch(() => {})

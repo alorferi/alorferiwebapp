@@ -2,43 +2,43 @@ import axios from "axios";
 import mixin from "@/mixin";
 
 const state = {
-    userFollowersResponse: { data: [], links: null, meta: null },
-    userFollower: null,
-    userFollowingByMe: null
+    libraryFollowersResponse: { data: [], links: null, meta: null },
+    libraryFollower: null,
+    libraryFollowingByMe: null
 };
 
 const getters = {
-    userFollower: state => state.userFollower,
-    userFollowersResponse: state => state.userFollowersResponse,
-    userFollowingByMe: state => state.userFollowingByMe
+    libraryFollower: state => state.libraryFollower,
+    libraryFollowersResponse: state => state.libraryFollowersResponse,
+    libraryFollowingByMe: state => state.libraryFollowingByMe
 };
 
 const mutations = {
-    setUserFollowersResponse(state, newUserFollowersResponse) {
-        if (state.userFollowersResponse.data.length == 0) {
-            state.userFollowersResponse.data = newUserFollowersResponse.data;
+    setLibraryFollowersResponse(state, newFollowersResponse) {
+        if (state.libraryFollowersResponse.data.length == 0) {
+            state.libraryFollowersResponse.data = newFollowersResponse.data;
         } else {
-            newUserFollowersResponse.data.forEach(function(item) {
-                state.userFollowersResponse.data.push(item);
+            newFollowersResponse.data.forEach(function(item) {
+                state.libraryFollowersResponse.data.push(item);
             });
         }
-        state.userFollowersResponse.links = newUserFollowersResponse.links;
-        state.userFollowersResponse.meta = newUserFollowersResponse.meta;
+        state.libraryFollowersResponse.links = newFollowersResponse.links;
+        state.libraryFollowersResponse.meta = newFollowersResponse.meta;
     },
-    clearUserFollowersResponse(state) {
-        state.userFollowersResponse = { data: [], links: null, meta: null };
-    },
-
-    insertUserFollower(state, followerData) {
-        state.userFollowersResponse.data.splice(0, 0, followerData);
-        state.userFollowersResponse.meta.total =
-            state.userFollowersResponse.meta.total + 1;
+    clearLibraryFollowersResponse(state) {
+        state.libraryFollowersResponse = { data: [], links: null, meta: null };
     },
 
-    removeMeFromFollowers(state) {
+    insertLibraryFollower(state, followerData) {
+        state.libraryFollowersResponse.data.splice(0, 0, followerData);
+        state.libraryFollowersResponse.meta.total =
+            state.libraryFollowersResponse.meta.total + 1;
+    },
+
+    removeMeLibraryFromFollowers(state) {
         var activeUserId = this.getters.activeUser.id;
 
-        state.userFollowersResponse.data.forEach(function(
+        state.libraryFollowersResponse.data.forEach(function(
             followerItem,
             index,
             arr
@@ -48,16 +48,16 @@ const mutations = {
             }
         });
 
-        state.userFollowersResponse.meta.total =
-            state.userFollowersResponse.meta.total - 1;
+        state.libraryFollowersResponse.meta.total =
+            state.libraryFollowersResponse.meta.total - 1;
     },
 
-    setUserFollowingByMe(state, newFollowingByMe) {
-        state.userFollowingByMe = newFollowingByMe;
+    setLibraryFollowingByMe(state, newFollowingByMe) {
+        state.libraryFollowingByMe = newFollowingByMe;
     },
 
-    clearUserFollowingByMe(state) {
-        state.userFollowingByMe = null;
+    clearLibraryFollowingByMe(state) {
+        state.libraryFollowingByMe = null;
     }
 };
 
@@ -76,9 +76,9 @@ const actions = {
                 method: "GET"
             })
                 .then(response => {
-                    context.commit("clearUserFollowersResponse");
+                    context.commit("clearFollowersResponse");
 
-                    context.commit("setUserFollowersResponse", response.data);
+                    context.commit("setFollowersResponse", response.data);
                     resolve(response);
                 })
                 .catch(err => {
@@ -102,15 +102,15 @@ const actions = {
                 method: "GET"
             })
                 .then(response => {
-                    context.commit("clearUserFollowingByMe");
+                    context.commit("clearFollowingByMe");
                     context.commit(
-                        "setUserFollowingByMe",
+                        "setFollowingByMe",
                         response.data.data.attributes
                     );
                     resolve(response);
                 })
                 .catch(err => {
-                    context.commit("clearUserFollowingByMe");
+                    context.commit("clearFollowingByMe");
                     reject(err);
                 });
         });
@@ -130,12 +130,12 @@ const actions = {
                 method: "POST"
             })
                 .then(response => {
-                    context.commit("clearUserFollowingByMe");
+                    context.commit("clearFollowingByMe");
                     context.commit(
-                        "setUserFollowingByMe",
+                        "setFollowingByMe",
                         response.data.data.attributes
                     );
-                    context.commit("insertUserFollower", response.data.data);
+                    context.commit("insertFollower", response.data.data);
 
                     resolve(response);
                 })
@@ -163,7 +163,7 @@ const actions = {
             })
                 .then(response => {
                     context.commit("removeMeFromFollowers");
-                    context.commit("clearUserFollowingByMe");
+                    context.commit("clearFollowingByMe");
                     resolve(response);
                 })
                 .catch(err => {
