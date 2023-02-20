@@ -10,14 +10,14 @@
             @ok="handleOk"
             centered
         >
-            <div class="d-flex align-items-center mb-3">
+            <!-- <div class="d-flex align-items-center mb-3">
                 <UserPhoto :user="user" size="16"></UserPhoto>
 
                 <div class="ml-2">
                     {{ user.first_name }} {{ user.surname }}
                     {{ user.nickname }}
                 </div>
-            </div>
+            </div> -->
 
             <div class="alert alert-danger alert-dismissible" v-if="errorMessage"
             >
@@ -54,13 +54,13 @@
 </template>
 
 <script>
-import UserPhoto from "../user/UserPhoto";
+// import UserPhoto from "../user/UserPhoto";
 import Loading from "@/components/Loading";
 
 export default {
     name: "CreateReportModal",
     components: {
-        UserPhoto,
+        // UserPhoto,
         Loading
     },
     async mounted() {},
@@ -103,7 +103,7 @@ export default {
             bodyState: null,
 
             is_loading: false,
-            modalTile: "Report user",
+            modalTile: "Report!",
             errorMessage: null
         };
     },

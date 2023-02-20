@@ -77,23 +77,27 @@
                         </router-link>
                         <div class="dropdown-divider"></div>
                         <a
-                            class="dropdown-item"
+                            class="dropdown-item text-danger"
                             href="#"
                             v-if="!isItMe(user)"
                             @click="
                                 showCreateReportModel = !showCreateReportModel
                             "
-                            >Report this user</a
+                            >
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Report this user</a
                         >
 
                         <a
-                            class="dropdown-item"
+                            class="dropdown-item text-danger"
                             href="#"
                             v-if="!isItMe(user)"
                             @click="
                                 showCreateBlockModel = !showCreateBlockModel
                             "
-                            >Block this user</a
+                            >
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Block this user</a
                         >
                     </div>
                 </div>

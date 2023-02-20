@@ -11,14 +11,14 @@
             @ok="handleOk"
             centered
         >
-            <div class="d-flex align-items-center mb-3">
+            <!-- <div class="d-flex align-items-center mb-3">
                 <UserPhoto :user="user" size="16"></UserPhoto>
 
                 <div class="ml-2">
                     {{ user.first_name }} {{ user.surname }}
                     {{ user.nickname }}
                 </div>
-            </div>
+            </div> -->
 
             <div
                 class="alert alert-danger alert-dismissible"
@@ -41,13 +41,13 @@
 </template>
 
 <script>
-import UserPhoto from "../user/UserPhoto";
+// import UserPhoto from "../user/UserPhoto";
 import Loading from "@/components/Loading";
 
 export default {
     name: "CreateBlockModal",
     components: {
-        UserPhoto,
+        // UserPhoto,
         Loading
     },
     async mounted() {},
@@ -73,7 +73,7 @@ export default {
             },
 
             is_loading: false,
-            modalTile: "Block user",
+            modalTile: "Block!",
             errorMessage: null
         };
     },

@@ -13,7 +13,7 @@
                 <div class="d-flex justify-content-between">
                     <h6>
                         <router-link
-                        class="text-dark"
+                            class="text-dark"
                             :to="{
                                 name: 'users.show',
                                 params: { user_id: this.post.user.id }
@@ -70,6 +70,9 @@
                                     class="dropdown-item text-danger"
                                     v-if="!isMyPost"
                                     role="button"
+                                    @click="
+                                        showCreateReportModel = !showCreateReportModel
+                                    "
                                     ><i class="fas fa-exclamation-triangle"></i>
                                     Report this post</a
                                 >
@@ -78,6 +81,9 @@
                                     class="dropdown-item text-danger"
                                     v-if="!isMyPost"
                                     role="button"
+                                    @click="
+                                        showCreateBlockModel = !showCreateBlockModel
+                                    "
                                     ><i class="fas fa-exclamation-triangle"></i>
                                     Block this post</a
                                 >
@@ -85,6 +91,23 @@
                         </div>
                     </div>
                 </div>
+
+                <CreateReportModal
+                    :show="showCreateReportModel"
+                    @updateVisibleState="showCreateReportModel = $event"
+                    :user="post.user"
+                    complainable_type="Post"
+                    :complainable_id="post.id"
+                />
+
+                <CreateBlockModal
+                    :show="showCreateBlockModel"
+                    @updateVisibleState="showCreateBlockModel = $event"
+                    :user="post.user"
+                    blockable_type="Post"
+                    :blockable_id="post.id"
+                    @didFinish="didFinishBlockingUser"
+                />
 
                 <h5
                     v-if="post.title"
@@ -137,14 +160,24 @@
 import UserPhoto from "../user/UserPhoto";
 import ShowPostComments from "../postcomment/ShowPostComments";
 import EditPostModal from "./CreateOrEditPostModal.vue";
+import CreateReportModal from "@/views/complain/CreateReportModal.vue";
+import CreateBlockModal from "@/views/complain/CreateBlockModal.vue";
 
 export default {
     name: "PostListItem",
     props: ["post"],
-    components: { UserPhoto, ShowPostComments, EditPostModal },
+    components: {
+        UserPhoto,
+        ShowPostComments,
+        EditPostModal,
+        CreateReportModal,
+        CreateBlockModal
+    },
     data() {
         return {
-            showEditPostModal: false
+            showEditPostModal: false,
+            showCreateReportModel: false,
+            showCreateBlockModel: false
         };
     },
     computed: {
@@ -173,6 +206,9 @@ export default {
     methods: {
         deleteUserPost(post) {
             this.$store.dispatch("deleteUserPost", post);
+        },
+        didFinishBlockingUser() {
+            this.$store.dispatch("removeUserPost", this.post);
         }
     }
 };

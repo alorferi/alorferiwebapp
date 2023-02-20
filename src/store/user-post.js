@@ -109,6 +109,9 @@ const actions = {
         });
     },
 
+    removeUserPost(context, post) {
+        context.commit("removePost", post);
+    },
     deleteUserPost(context, post) {
         return new Promise((resolve, reject) => {
             var url = mixin.methods.getApiUrl(
