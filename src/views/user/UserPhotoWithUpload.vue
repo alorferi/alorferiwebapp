@@ -7,8 +7,8 @@
                 // 'background-repeat': 'no-repeat',
                 'background-position': 'center',
                 // 'background-position': '50px 50px 50px 50px',
-                'width': width + 'px',
-                'height': height + 'px'
+                width: width + 'px',
+                height: height + 'px'
             }"
         >
             <a

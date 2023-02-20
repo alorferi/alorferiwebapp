@@ -9,7 +9,7 @@
         >
             <div class="d-flex">
                 <div class="p-2">
-                    <LibraryLogo :library="library" size="96" />
+                    <LibraryLogoWithUpload :library="library" size="96" />
                 </div>
 
                 <div class="flex-grow-1 p-2">
@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import LibraryLogo from "@/views/library/LibraryLogo";
+import LibraryLogoWithUpload from "@/views/library/LibraryLogoWithUpload";
 import LibraryTimeline from "@/views/library/LibraryTimeline";
 import LibraryBookIssuedHistory from "@/views/library/LibraryBookIssuedHistory";
 import LibraryAbout from "@/views/library/LibraryAbout";
@@ -163,7 +163,7 @@ import LibraryCoverPhotoWithUpload from "@/views/library/LibraryCoverPhotoWithUp
 export default {
     name: "LibraryPager",
     components: {
-        LibraryLogo,
+        LibraryLogoWithUpload,
         LibraryTimeline,
         LibraryAbout,
         ShowLibraryMembers,

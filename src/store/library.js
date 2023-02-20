@@ -161,6 +161,41 @@ const actions = {
                 });
         });
     },
+    uploadLibraryLogo(context, packet) {
+        return new Promise((resolve, reject) => {
+            const self = this;
+
+            var url = mixin.methods.getApiUrl("/api/libraries/"+packet.library_id+"/upload-logo");
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+            headers["Content-Type"] = "multipart/form-data";
+
+            const formData = packet.formData;
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "POST",
+                data: formData
+            })
+                .then(response => {
+
+                    const logo_url =
+                        response.data.data + "?tick=" + Date.now();
+
+                    const library = self.getters.library;
+                    library.logo_url = logo_url;
+
+                    context.commit("setLibrary", library);
+
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
 };
 
 export default {
