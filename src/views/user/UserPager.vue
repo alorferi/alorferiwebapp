@@ -2,135 +2,129 @@
     <div>
         <UserCoverPhotoWithUpload :user="user" />
 
-
         <div class="bg-light">
-
-
             <div class="d-flex  border-left border-right">
-            <div class="pl-3 pt-2 pb-2 text-center">
-                <UserPhotoWithUpload :user="user" size="96" />
-            </div>
-
-            <div class="flex-grow-1 p-2">
-                <h2 class="text-dark m-2">
-                    {{ user.first_name }} {{ user.surname }}
-                    {{ user.nickname }}
-                </h2>
-
-                <UserFollowerModal
-                    :show="showUserFollowers"
-                    @updateVisibleState="showUserFollowers = $event"
-                    :user="user"
-                />
-
-                <UserFollowingModal
-                    :show="showUserFollowings"
-                    @updateVisibleState="showUserFollowings = $event"
-                    :user="user"
-                />
-
-                <div class="btn-group">
-                    <button
-                        class="btn btn-sm btn-link  mt-1 mb-1 mr-1"
-                        @click="showUserFollowings = !showUserFollowings"
-                    >
-                        {{ totalFollowings }}
-                    </button>
-
-                    <button
-                        class="btn btn-sm btn-link   mt-1 mb-1  mr-1"
-                        @click="showUserFollowers = !showUserFollowers"
-                    >
-                        {{ totalFollowers }}
-                    </button>
-
-                    <button
-                        type="button"
-                        class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1
-                        border-top border-left border-right border-bottom
-                        "
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a
-                            class="dropdown-item"
-                            href="#"
-                            v-if="!isItMe(user) && !isFollowingByMe"
-                            @click="followUserByMeAction()"
-                            >Follow</a
-                        >
-
-                        <a
-                            class="dropdown-item"
-                            v-if="!isItMe(user) && isFollowingByMe"
-                            href="#"
-                            @click="unFollowUserByMeAction()"
-                            >Unfollow</a
-                        >
-
-                        <router-link
-                            class="dropdown-item"
-                            v-if="isItMe(user)"
-                            :to="{ name: 'users.edit-me' }"
-                        >
-                            Edit My Profile
-                        </router-link>
-                        <div class="dropdown-divider"></div>
-                        <a
-                            class="dropdown-item text-danger"
-                            href="#"
-                            v-if="!isItMe(user)"
-                            @click="
-                                showCreateReportModel = !showCreateReportModel
-                            "
-                            >
-                            <i class="fas fa-exclamation-triangle"></i>
-                            Report this user</a
-                        >
-
-                        <a
-                            class="dropdown-item text-danger"
-                            href="#"
-                            v-if="!isItMe(user)"
-                            @click="
-                                showCreateBlockModel = !showCreateBlockModel
-                            "
-                            >
-                            <i class="fas fa-exclamation-triangle"></i>
-                            Block this user</a
-                        >
-                    </div>
+                <div class="pl-3 pt-2 pb-2 text-center">
+                    <UserPhotoWithUpload :user="user" size="96" />
                 </div>
 
-                <div></div>
+                <div class="flex-grow-1 p-2">
+                    <h2 class="text-dark m-2">
+                        {{ user.first_name }} {{ user.surname }}
+                        {{ user.nickname }}
+                    </h2>
+
+                    <UserFollowerModal
+                        :show="showUserFollowers"
+                        @updateVisibleState="showUserFollowers = $event"
+                        :user="user"
+                    />
+
+                    <UserFollowingModal
+                        :show="showUserFollowings"
+                        @updateVisibleState="showUserFollowings = $event"
+                        :user="user"
+                    />
+
+                    <div class="btn-group">
+                        <button
+                            class="btn btn-sm btn-link  mt-1 mb-1 mr-1"
+                            @click="showUserFollowings = !showUserFollowings"
+                        >
+                            {{ totalFollowings }}
+                        </button>
+
+                        <button
+                            class="btn btn-sm btn-link   mt-1 mb-1  mr-1"
+                            @click="showUserFollowers = !showUserFollowers"
+                        >
+                            {{ totalFollowers }}
+                        </button>
+
+                        <button
+                            type="button"
+                            class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1
+                        border-top border-left border-right border-bottom
+                        "
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                        >
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                v-if="!isItMe(user) && !isFollowingByMe"
+                                @click="followUserByMeAction()"
+                                >Follow</a
+                            >
+
+                            <a
+                                class="dropdown-item"
+                                v-if="!isItMe(user) && isFollowingByMe"
+                                href="#"
+                                @click="unFollowUserByMeAction()"
+                                >Unfollow</a
+                            >
+
+                            <router-link
+                                class="dropdown-item"
+                                v-if="isItMe(user)"
+                                :to="{ name: 'users.edit-me' }"
+                            >
+                                Edit My Profile
+                            </router-link>
+                            <div class="dropdown-divider"></div>
+                            <a
+                                class="dropdown-item text-danger"
+                                href="#"
+                                v-if="!isItMe(user)"
+                                @click="
+                                    showCreateReportModel = !showCreateReportModel
+                                "
+                            >
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Report this user</a
+                            >
+
+                            <a
+                                class="dropdown-item text-danger"
+                                href="#"
+                                v-if="!isItMe(user)"
+                                @click="
+                                    showCreateBlockModel = !showCreateBlockModel
+                                "
+                            >
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Block this user</a
+                            >
+                        </div>
+                    </div>
+
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="pt-1">
+                <ul class="nav nav-tabs nav-justified">
+                    <li
+                        class="nav-item"
+                        v-for="(tab, index) in getTabs"
+                        v-bind:key="index"
+                    >
+                        <a
+                            class="nav-link"
+                            href="#"
+                            :class="{ active: tab.active }"
+                            @click="clickTabItem(tab)"
+                            >{{ tab.title }}</a
+                        >
+                    </li>
+                </ul>
             </div>
         </div>
-
-
-        <div class="pt-1">
-            <ul class="nav nav-tabs nav-justified">
-                <li
-                    class="nav-item"
-                    v-for="(tab, index) in getTabs"
-                    v-bind:key="index"
-                >
-                    <a
-                        class="nav-link"
-                        href="#"
-                        :class="{ active: tab.active }"
-                        @click="clickTabItem(tab)"
-                        >{{ tab.title }}</a
-                    >
-                </li>
-            </ul>
-        </div>
-
-        </div>
-
 
         <CreateReportModal
             :show="showCreateReportModel"
@@ -146,10 +140,8 @@
             :user="user"
             blockable_type="User"
             :blockable_id="user.id"
-
             @didFinish="didFinishBlockingUser"
         />
-
 
         <component :is="tabBody" :user="user"></component>
     </div>
@@ -179,7 +171,6 @@ export default {
         CreateBlockModal
     },
     async mounted() {
-
         const self = this;
 
         self.fetchUserFollowerAction();
@@ -191,7 +182,7 @@ export default {
 
     computed: {
         isFollowingByMe() {
-            return this.$store.getters.followingByMe != null;
+            return this.$store.getters.userFollowingByMe != null;
         },
         getTabs() {
             return this.tabs;
@@ -297,7 +288,7 @@ export default {
                 .catch(() => {})
                 .finally(() => {});
         },
-        didFinishBlockingUser(){
+        didFinishBlockingUser() {
             this.$store.dispatch("removePostsOfUser", this.user);
             this.$router.push({ name: "home" });
         }

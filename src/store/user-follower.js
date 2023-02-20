@@ -35,7 +35,7 @@ const mutations = {
             state.userFollowersResponse.meta.total + 1;
     },
 
-    removeMeFromFollowers(state) {
+    removeMeFromUserFollowers(state) {
         var activeUserId = this.getters.activeUser.id;
 
         state.userFollowersResponse.data.forEach(function(
@@ -162,7 +162,7 @@ const actions = {
                 method: "DELETE"
             })
                 .then(response => {
-                    context.commit("removeMeFromFollowers");
+                    context.commit("removeMeFromUserFollowers");
                     context.commit("clearUserFollowingByMe");
                     resolve(response);
                 })

@@ -35,7 +35,7 @@ const mutations = {
             state.libraryFollowersResponse.meta.total + 1;
     },
 
-    removeMeLibraryFromFollowers(state) {
+    removeMeFromLibraryFollowers(state) {
         var activeUserId = this.getters.activeUser.id;
 
         state.libraryFollowersResponse.data.forEach(function(
@@ -76,9 +76,9 @@ const actions = {
                 method: "GET"
             })
                 .then(response => {
-                    context.commit("clearFollowersResponse");
+                    context.commit("clearLibraryFollowersResponse");
 
-                    context.commit("setFollowersResponse", response.data);
+                    context.commit("setLibraryFollowersResponse", response.data);
                     resolve(response);
                 })
                 .catch(err => {
@@ -102,15 +102,15 @@ const actions = {
                 method: "GET"
             })
                 .then(response => {
-                    context.commit("clearFollowingByMe");
+                    context.commit("clearLibraryFollowingByMe");
                     context.commit(
-                        "setFollowingByMe",
+                        "setLibraryFollowingByMe",
                         response.data.data.attributes
                     );
                     resolve(response);
                 })
                 .catch(err => {
-                    context.commit("clearFollowingByMe");
+                    context.commit("clearLibraryFollowingByMe");
                     reject(err);
                 });
         });
@@ -130,9 +130,9 @@ const actions = {
                 method: "POST"
             })
                 .then(response => {
-                    context.commit("clearFollowingByMe");
+                    context.commit("clearLibraryFollowingByMe");
                     context.commit(
-                        "setFollowingByMe",
+                        "setLibraryFollowingByMe",
                         response.data.data.attributes
                     );
                     context.commit("insertFollower", response.data.data);
@@ -162,8 +162,8 @@ const actions = {
                 method: "DELETE"
             })
                 .then(response => {
-                    context.commit("removeMeFromFollowers");
-                    context.commit("clearFollowingByMe");
+                    context.commit("removeMeFromLibraryFollowers");
+                    context.commit("clearLibraryFollowingByMe");
                     resolve(response);
                 })
                 .catch(err => {
