@@ -12,6 +12,8 @@
             <a
                 class="text-danger bg-white pl-1 pr-1 rounded mt-auto"
                 @click="showUploadLogoModal = !showUploadLogoModal"
+
+                v-if="this.hasMemberPermissioin('library_edit')"
             >
                 <i class="fa fa-camera"></i>
             </a>

@@ -168,12 +168,6 @@ let router = new Router({
             leftMenu: HomeLeftMenu,
             meta: { title: "User Profile", requiresAuth: true }
         },
-        // {
-        //     path: "/users/profile/edit",
-        //     name: "user-profile-edit",
-        //     component: UserProfile,
-        //     leftBadge: UserBadge
-        // },
         {
             path: "/libraries/my-libraries",
             name: "my-libraries",
@@ -181,13 +175,6 @@ let router = new Router({
             leftMenu: HomeLeftMenu,
             meta: { title: "My Libraries", requiresAuth: true }
         },
-        // {
-        //     path: "/libraries/autocomplete",
-        //     name: "autocomplete",
-        //     component: AutoCompleteTest,
-        //     leftMenu: HomeLeftMenu,
-        //     meta: { title: "AutoCompleteTest" }
-        // },
         {
             path: "/libraries/create",
             name: "library-create",

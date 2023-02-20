@@ -3,7 +3,6 @@
 
 
         <LibraryCoverPhotoWithUpload :user="this.$store.getters.activeUser" :library="library" />
-
         <div
             class="d-flex flex-column pt-2 pl-2 pr-2 bg-light card"
         >

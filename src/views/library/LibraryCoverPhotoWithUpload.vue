@@ -10,8 +10,9 @@
         >
             <a
                 class="text-danger bg-white pl-1 pr-1 rounded ml-auto mt-auto"
-                v-if="this.isItMe(this.user)"
+                v-if="this.hasMemberPermissioin('library_edit')"
                 @click="showUploadLibraryCoverModal = !showUploadLibraryCoverModal"
+
             >
                 <i class="fa fa-camera"></i>
             </a>

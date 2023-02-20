@@ -6,27 +6,25 @@ const state = {
     library: JSON.parse(localStorage.getItem("library") || null),
     myLibrariesResponse: null,
     libraryCoverUrl: null,
-    libraryStatus: null
+    libraryStatus: null,
 };
 
 const getters = {
     library: state => state.library,
     myLibrariesResponse: state => state.myLibrariesResponse,
-    libraryCoverUrl: state => state.libraryCoverUrl
+    libraryCoverUrl: state => state.libraryCoverUrl,
 };
 
 const mutations = {
     setLibrary(state, library) {
         state.library = library;
-        // localStorage.setItem("library", JSON.stringify(library));
     },
     setLibraryCoverUrl(state, libraryCoverUrl) {
         state.libraryCoverUrl = libraryCoverUrl;
     },
     setMyLibrariesResponse(state, myLibrariesResponse) {
         state.myLibrariesResponse = myLibrariesResponse;
-        // localStorage.setItem("myLibrariesResponse", JSON.stringify(myLibrariesResponse));
-    }
+    },
 };
 
 const actions = {

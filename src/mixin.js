@@ -196,6 +196,24 @@ export default {
 
         isItMe(user) {
             return this.$store.getters.activeUser.id == user.id;
+        },
+
+        hasMemberPermissioin(permissiioin_name) {
+            var hasPermission = false;
+
+            if( this.$store.getters.myLibraryMembership == null ) {
+                return hasPermission;
+            }
+
+            this.$store.getters.myLibraryMembership.roles.forEach(role => {
+                role.permissions.forEach(permission => {
+                    if (permission.name == permissiioin_name) {
+                        hasPermission = true;
+                    }
+                });
+            });
+
+            return hasPermission;
         }
     }
 };
