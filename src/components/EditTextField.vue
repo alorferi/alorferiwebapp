@@ -28,7 +28,7 @@ export default {
     props: ["name", "label", "placeholder", "type", "errors", "initval", "icon"],
    async mounted() {},
     data: function() {
-        this.updateField()
+        // this.updateField()
         return {
             value: this.initval
         };

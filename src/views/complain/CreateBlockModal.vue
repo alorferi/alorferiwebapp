@@ -20,7 +20,9 @@
                 </div>
             </div>
 
-            <div class="alert alert-danger alert-dismissible" v-if="errorMessage"
+            <div
+                class="alert alert-danger alert-dismissible"
+                v-if="errorMessage"
             >
                 <button type="button" class="close" data-dismiss="alert">
                     &times;
@@ -29,15 +31,11 @@
                 {{ errorMessage }}
             </div>
 
-
             <div class="text-center">
-                Do you want to block this {{blockable_type}}?
+                Do you want to block this {{ blockable_type }}?
             </div>
 
-
             <Loading v-if="is_loading"></Loading>
-
-
         </b-modal>
     </div>
 </template>
@@ -65,8 +63,7 @@ export default {
             set: function(value) {
                 this.$emit("updateVisibleState", value);
             }
-        },
-
+        }
     },
     data() {
         return {
@@ -81,6 +78,9 @@ export default {
         };
     },
     methods: {
+        didFinish: function() {
+            this.$emit("didFinish");
+        },
         createReportAction() {
             const self = this;
 
@@ -94,9 +94,7 @@ export default {
                 .dispatch("createBlock", self.dataModel)
                 .then(() => {
                     self.hidePostModal();
-
-                    // self.$router.push({ name: "home" });
-
+                    self.didFinish();
                 })
                 .catch(errors => {
                     try {
@@ -112,9 +110,7 @@ export default {
                 });
         },
 
-
-        showModal() {
-        },
+        showModal() {},
         hideModal() {
             this.clearData();
         },
@@ -128,7 +124,6 @@ export default {
             this.handleSubmit();
         },
         handleSubmit() {
-
             // Submit data to backend server
             this.createReportAction();
         },

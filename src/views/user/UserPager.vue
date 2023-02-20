@@ -116,6 +116,8 @@
             :user="user"
             blockable_type="User"
             :blockable_id="user.id"
+
+            @didFinish="didFinishBlockingUser"
         />
 
         <div class="pt-1">
@@ -281,6 +283,10 @@ export default {
                 .then(() => {})
                 .catch(() => {})
                 .finally(() => {});
+        },
+        didFinishBlockingUser(){
+            this.$store.dispatch("removePostsOfUser", this.user);
+            this.$router.push({ name: "home" });
         }
     },
     data: function() {

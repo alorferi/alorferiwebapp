@@ -44,15 +44,6 @@
                         </div>
 
                         <div class="form-group">
-                            <!-- <EditTextField
-                                type="password"
-                                name="password"
-                                label="Password"
-                                placeholder="Password"
-                                icon="fas fa-key"
-                                :errors="errors"
-                                @update:field="userData.password = $event"
-                            /> -->
 
                             <PasswordField
                                 name="password"
@@ -60,7 +51,7 @@
                                 placeholder="Password"
                                 icon="fas fa-key"
                                 :errors="errors"
-                                @update:field="password = $event"
+                                @update:field="userData.password = $event"
                             />
                         </div>
 
@@ -200,6 +191,8 @@ export default {
             //     this.userData.email = this.username;
             //     this.userData.mobile = "";
             // }
+
+            console.log("this.userData",this.userData);
 
             this.$axios
                 .post(url, this.userData, {

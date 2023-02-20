@@ -134,14 +134,7 @@ let router = new Router({
             component: PrivacyPolicy,
             meta: { title: "Privacy Policy" }
         },
-
-        {
-            path: "/contact-us",
-            name: "contact-us",
-            component: ContactUs,
-            meta:{title: "Contact Us"}
-
-        }, {
+      {
             path: "/contact-us",
             name: "contact-us",
             component: ContactUs,
