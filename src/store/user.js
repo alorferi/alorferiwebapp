@@ -147,9 +147,9 @@ const actions = {
                 });
         });
     },
-    fetchUser(context, payload) {
+    fetchUser(context, userId) {
         return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl("/api/users/" + payload);
+            var url = mixin.methods.getApiUrl("/api/users/" + userId);
             const headers = mixin.methods.getAuthorizationBearerToken();
 
             axios({

@@ -90,12 +90,13 @@ export default {
 
             self.dataModel.blockable_id = self.blockable_id;
 
-            console.log("dataModel", self.dataModel);
-
             self.$store
                 .dispatch("createBlock", self.dataModel)
                 .then(() => {
                     self.hidePostModal();
+
+                    // self.$router.push({ name: "home" });
+
                 })
                 .catch(errors => {
                     try {

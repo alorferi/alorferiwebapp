@@ -76,13 +76,23 @@
                             Edit My Profile
                         </router-link>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" v-if="!isItMe(user)"
-                        @click="showCreateReportModel = !showCreateReportModel"
+                        <a
+                            class="dropdown-item"
+                            href="#"
+                            v-if="!isItMe(user)"
+                            @click="
+                                showCreateReportModel = !showCreateReportModel
+                            "
                             >Report this user</a
                         >
 
-                        <a class="dropdown-item" href="#" v-if="!isItMe(user)"
-                        @click="showCreateBlockModel = !showCreateBlockModel"
+                        <a
+                            class="dropdown-item"
+                            href="#"
+                            v-if="!isItMe(user)"
+                            @click="
+                                showCreateBlockModel = !showCreateBlockModel
+                            "
                             >Block this user</a
                         >
                     </div>
@@ -154,11 +164,14 @@ export default {
         CreateBlockModal
     },
     async mounted() {
-        this.fetchUserFollowerAction();
-        this.fetchUserFollowingAction();
-        this.fetchUserFollowingByMeAction();
-        this.initTabItems();
-        this.$store.dispatch("setPageTitle", this.user.first_name);
+
+        const self = this;
+
+        self.fetchUserFollowerAction();
+        self.fetchUserFollowingAction();
+        self.fetchUserFollowingByMeAction();
+        self.initTabItems();
+        self.$store.dispatch("setPageTitle", self.user.first_name);
     },
 
     computed: {
@@ -277,8 +290,9 @@ export default {
             showUploadMyCoverModal: false,
             showUserFollowers: false,
             showUserFollowings: false,
-            showCreateReportModel:false,
-            showCreateBlockModel:false,
+            showCreateReportModel: false,
+            showCreateBlockModel: false,
+            is_loading: false
         };
     }
 };

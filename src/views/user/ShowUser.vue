@@ -1,8 +1,7 @@
 <template>
-     <div class="">
-        <Loading v-if="loading" />
+    <div class="">
+        <Loading v-if="is_loading" />
         <div v-else>
-
             <UserPager :user="user" />
         </div>
     </div>
@@ -10,42 +9,42 @@
 
 <script>
 import Loading from "../../components/Loading";
-import UserPager from "./UserPager"
-
+import UserPager from "./UserPager";
 
 export default {
     name: "ShowUser",
     components: {
-        Loading, UserPager
+        Loading,
+        UserPager
     },
-  async mounted(){
-        this.fetchUser()
+    async mounted() {
+        this.fetchUser();
     },
 
     computed: {
-        user(){
-           return this.$store.getters.user;
-        },
-
+        user() {
+            return this.$store.getters.user;
+        }
     },
     data: function() {
         return {
-            loading: true,
-            delete_modal: false,
+            is_loading: true,
         };
     },
     methods: {
-        fetchUser(){
-                this.$store
+        fetchUser() {
+            const self = this;
+            self.is_loading = true;
+            this.$store
                 .dispatch("fetchUser", this.$route.params.user_id)
-                .then(() => {
-                    this.loading = false;
-                })
+                .then(() => {})
                 .catch(() => {
-                    this.loading = false;
+                    self.$router.push({ name: "home" });
+                })
+                .finally(() => {
+                    self.is_loading = false;
                 });
-
-        },
+        }
     }
 };
 </script>
