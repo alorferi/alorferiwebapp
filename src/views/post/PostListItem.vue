@@ -7,26 +7,48 @@
                     params: { user_id: this.post.user.id }
                 }"
             >
-                <UserPhoto :user="post.user" size="24"></UserPhoto>
+                <UserPhoto :user="post.user" size="48"></UserPhoto>
             </router-link>
             <div class="media-body pl-3">
                 <div class="d-flex justify-content-between">
-                    <h6>
-                        <router-link
-                            class="text-dark"
-                            :to="{
-                                name: 'users.show',
-                                params: { user_id: this.post.user.id }
-                            }"
-                        >
-                            {{ post.user.first_name }} {{ post.user.surname }}
-                        </router-link>
+                    <div>
+                        <div>
+                            <router-link
+                                class="text-dark"
+                                :to="{
+                                    name: 'users.show',
+                                    params: { user_id: this.post.user.id }
+                                }"
+                            >
+                                <b>
+                                    {{ post.user.first_name }}
+                                    {{ post.user.surname }}
+                                </b>
+                            </router-link>
+
+                            <span v-if=" post.postable_type == 'App\\Models\\Library' ">
+                                &gt;
+
+                                <router-link
+                                    class="text-dark"
+                                    :to="{
+                                        name: 'library-show',
+                                        params: { id: post.postable.id }
+                                    }"
+                                >
+                                    <b>
+                                        {{ post.postable.name }}
+                                    </b>
+                                </router-link>
+                            </span>
+                        </div>
+
                         <small
                             ><i class="text-text-secondary">
                                 {{ this.momentFromNow(post.created_at) }}</i
                             ></small
                         >
-                    </h6>
+                    </div>
 
                     <div>
                         <div class="dropdown show">
@@ -40,7 +62,6 @@
                                 aria-haspopup="true"
                                 aria-expanded="false"
                             >
-                                <!-- <i class="fas fa-ellipsis-v"></i> -->
                             </a>
 
                             <div

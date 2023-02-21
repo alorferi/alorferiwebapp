@@ -27,7 +27,7 @@
             over 2,800 readers.
             <br />
             <br />
-            Headquartered in Mirpur, Dhaka, Alor Feri Limited is dedicated to
+            Alor Feri is dedicated to
             building a knowledge-based society through technology. With its
             innovative library management app, the company is making a
             significant impact in the local community by improving access to
