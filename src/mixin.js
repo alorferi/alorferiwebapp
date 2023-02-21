@@ -198,7 +198,7 @@ export default {
             return this.$store.getters.activeUser.id == user.id;
         },
 
-        hasMemberPermissioin(permissiioin_name) {
+        hasMemberPermission(permission_name) {
             var hasPermission = false;
 
             if( this.$store.getters.myLibraryMembership == null ) {
@@ -207,7 +207,7 @@ export default {
 
             this.$store.getters.myLibraryMembership.roles.forEach(role => {
                 role.permissions.forEach(permission => {
-                    if (permission.name == permissiioin_name) {
+                    if (permission.name == permission_name) {
                         hasPermission = true;
                     }
                 });

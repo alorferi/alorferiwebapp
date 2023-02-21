@@ -10,7 +10,7 @@
         >
             <a
                 class="text-danger bg-white pl-1 pr-1 rounded ml-auto mt-auto"
-                v-if="this.hasMemberPermissioin('library_edit')"
+                v-if="this.hasMemberPermission('library_edit')"
                 @click="showUploadLibraryCoverModal = !showUploadLibraryCoverModal"
 
             >

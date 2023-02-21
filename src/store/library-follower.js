@@ -1,23 +1,17 @@
 import axios from "axios";
 import mixin from "@/mixin";
 
-const state = {
+const state = {};
 
-};
+const getters = {};
 
-const getters = {
-
-};
-
-const mutations = {
-
-};
+const mutations = {};
 
 const actions = {
-    fetchUserFollowers(context, payload) {
+    fetchLibraryFollowers(context, payload) {
         return new Promise((resolve, reject) => {
             var url = mixin.methods.getApiUrl(
-                "/api/users/" + payload.user_id + "/followers"
+                "/api/libraries/" + payload.library_id + "/followers"
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
@@ -28,9 +22,12 @@ const actions = {
                 method: "GET"
             })
                 .then(response => {
-                    context.commit("clearLibraryFollowersResponse");
+                    context.commit("clearFollowersResponse");
 
-                    context.commit("setLibraryFollowersResponse", response.data);
+                    context.commit(
+                        "setFollowersResponse",
+                        response.data
+                    );
                     resolve(response);
                 })
                 .catch(err => {
@@ -40,10 +37,10 @@ const actions = {
         });
     },
 
-    fetchUserFollowingByMe(context, payload) {
+    fetchLibraryFollowingByMe(context, payload) {
         return new Promise((resolve, reject) => {
             var url = mixin.methods.getApiUrl(
-                "/api/users/" + payload.user_id + "/following-by-me"
+                "/api/libraries/" + payload.library_id + "/following-by-me"
             );
 
             const headers = mixin.methods.getAuthorizationBearerToken();
@@ -54,25 +51,27 @@ const actions = {
                 method: "GET"
             })
                 .then(response => {
-                    context.commit("clearLibraryFollowingByMe");
+                    context.commit("clearFollowingByMe");
                     context.commit(
-                        "setLibraryFollowingByMe",
+                        "setFollowingByMe",
                         response.data.data.attributes
                     );
                     resolve(response);
                 })
                 .catch(err => {
-                    context.commit("clearLibraryFollowingByMe");
+                    context.commit("clearFollowingByMe");
                     reject(err);
                 });
         });
     },
 
-    followUserByMe(context, payload) {
+    followLibraryByMe(context, payload) {
         return new Promise((resolve, reject) => {
             var url = mixin.methods.getApiUrl(
-                "/api/users/" + payload.user_id + "/follow"
+                "/api/libraries/" + payload.library_id + "/follow"
             );
+
+            console.log("url", url);
 
             const headers = mixin.methods.getAuthorizationBearerToken();
 
@@ -82,9 +81,9 @@ const actions = {
                 method: "POST"
             })
                 .then(response => {
-                    context.commit("clearLibraryFollowingByMe");
+                    context.commit("clearFollowingByMe");
                     context.commit(
-                        "setLibraryFollowingByMe",
+                        "setFollowingByMe",
                         response.data.data.attributes
                     );
                     context.commit("insertFollower", response.data.data);
@@ -98,10 +97,10 @@ const actions = {
         });
     },
 
-    unFollowUserByMe(context, payload) {
+    unFollowLibraryByMe(context, payload) {
         return new Promise((resolve, reject) => {
             var url = mixin.methods.getApiUrl(
-                "/api/users/" + payload.user_id + "/unfollow"
+                "/api/libraries/" + payload.library_id + "/unfollow"
             );
 
             console.log("url", url);
@@ -114,8 +113,8 @@ const actions = {
                 method: "DELETE"
             })
                 .then(response => {
-                    context.commit("removeMeFromLibraryFollowers");
-                    context.commit("clearLibraryFollowingByMe");
+                    context.commit("removeMeFromFollowers");
+                    context.commit("clearFollowingByMe");
                     resolve(response);
                 })
                 .catch(err => {

@@ -14,7 +14,7 @@
                         {{ user.nickname }}
                     </h2>
 
-                    <UserFollowerModal
+                    <UserFollowersModal
                         :show="showUserFollowers"
                         @updateVisibleState="showUserFollowers = $event"
                         :user="user"
@@ -152,8 +152,8 @@ import UserPhotoWithUpload from "@/views/user/UserPhotoWithUpload";
 import UserTimeline from "@/views/user/UserTimeline";
 import UserAbout from "@/views/user/UserAbout";
 
-import UserFollowerModal from "@/views/follower/UserFollowerModal.vue";
-import UserFollowingModal from "@/views/follower/UserFollowingModal.vue";
+import UserFollowersModal from "@/views/follower/UserFollowersModal.vue";
+import UserFollowingListModal from "@/views/follower/UserFollowingListModal.vue";
 import UserCoverPhotoWithUpload from "@/views/user/UserCoverPhotoWithUpload.vue";
 import CreateReportModal from "@/views/complain/CreateReportModal.vue";
 import CreateBlockModal from "@/views/complain/CreateBlockModal.vue";
@@ -164,8 +164,8 @@ export default {
         UserPhotoWithUpload,
         UserTimeline,
         UserAbout,
-        UserFollowerModal,
-        UserFollowingModal,
+        UserFollowersModal,
+        UserFollowingListModal,
         UserCoverPhotoWithUpload,
         CreateReportModal,
         CreateBlockModal
@@ -173,7 +173,7 @@ export default {
     async mounted() {
         const self = this;
 
-        self.fetchUserFollowerAction();
+        self.fetchUserFollowersAction();
         self.fetchUserFollowingAction();
         self.fetchUserFollowingByMeAction();
         self.initTabItems();
@@ -236,7 +236,7 @@ export default {
                 this.activeTab = tab;
             }
         },
-        fetchUserFollowerAction() {
+        fetchUserFollowersAction() {
             const self = this;
 
             this.$store
@@ -269,7 +269,6 @@ export default {
                 .finally(() => {});
         },
         unFollowUserByMeAction() {
-            console.log("unFollowUserByMeAction");
 
             const self = this;
 

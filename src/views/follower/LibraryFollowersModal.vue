@@ -2,7 +2,7 @@
     <div>
         <b-modal
             ref="modal"
-            :title="titleTotalFollowings"
+            :title="titleTotalFollowers"
             v-model="showLocal"
             ok-only
             centered
@@ -14,11 +14,12 @@
             <Loading v-if="is_loading"></Loading>
             <UserFollowerListItem
                 v-else
-                v-for="follower in followings"
-                :user="follower.attributes.followable"
+                v-for="follower in followers"
+                :user="follower.attributes.user"
                 v-bind:key="follower.attributes.id"
             />
 
+            <!-- <div class=" text-right">Total: {{ totalFollowers }}</div> -->
         </b-modal>
     </div>
 </template>
@@ -28,8 +29,8 @@ import UserFollowerListItem from "@/views/follower/UserFollowerListItem";
 import Loading from "@/components/Loading";
 
 export default {
-    name: "UserFollowingModal",
-    props: ["user", "show"],
+    name: "LibraryFollowersModal",
+    props: ["library", "show"],
     components: {
         UserFollowerListItem,
         Loading
@@ -41,8 +42,8 @@ export default {
         };
     },
     computed: {
-        followings() {
-            return this.$store.getters.userFollowingsResponse.data;
+        followers() {
+            return this.$store.getters.followersResponse.data;
         },
         showLocal: {
             get: function() {
@@ -53,27 +54,24 @@ export default {
             }
         },
 
-        totalFollowings() {
+        totalFollowers() {
 
-            if(this.$store.getters.userFollowingsResponse.meta){
-                return this.$store.getters.userFollowingsResponse.meta.total;
+            if(this.$store.getters.followersResponse.meta){
+                return this.$store.getters.followersResponse.meta.total;
             }else{
                 return 0;
             }
 
         },
 
-        titleTotalFollowings() {
+        titleTotalFollowers() {
             return (
-                "Following (" +
-                this.totalFollowings +
+                "Followers (" +
+                this.totalFollowers +
                 ")"
             );
         },
 
-        myLike() {
-            return this.user.my_like;
-        }
     },
     async mounted() {},
 
@@ -87,7 +85,7 @@ export default {
             const self = this;
             self.is_loading = true;
             this.$store
-                .dispatch("fetchUserFollowings", { user_id: this.user.id })
+                .dispatch("fetchLibraryFollowers", { library_id: this.library.id })
                 .then(() => {})
                 .catch(() => {})
                 .finally(() => {

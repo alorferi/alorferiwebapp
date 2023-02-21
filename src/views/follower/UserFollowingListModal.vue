@@ -2,7 +2,7 @@
     <div>
         <b-modal
             ref="modal"
-            :title="titleTotalFollowers"
+            :title="titleTotalFollowings"
             v-model="showLocal"
             ok-only
             centered
@@ -14,12 +14,11 @@
             <Loading v-if="is_loading"></Loading>
             <UserFollowerListItem
                 v-else
-                v-for="follower in followers"
-                :user="follower.attributes.user"
+                v-for="follower in followings"
+                :user="follower.attributes.followable"
                 v-bind:key="follower.attributes.id"
             />
 
-            <!-- <div class=" text-right">Total: {{ totalFollowers }}</div> -->
         </b-modal>
     </div>
 </template>
@@ -29,7 +28,7 @@ import UserFollowerListItem from "@/views/follower/UserFollowerListItem";
 import Loading from "@/components/Loading";
 
 export default {
-    name: "UserFollowerModal",
+    name: "UserFollowingListModal",
     props: ["user", "show"],
     components: {
         UserFollowerListItem,
@@ -42,8 +41,8 @@ export default {
         };
     },
     computed: {
-        followers() {
-            return this.$store.getters.followersResponse.data;
+        followings() {
+            return this.$store.getters.userFollowingsResponse.data;
         },
         showLocal: {
             get: function() {
@@ -54,20 +53,20 @@ export default {
             }
         },
 
-        totalFollowers() {
+        totalFollowings() {
 
-            if(this.$store.getters.followersResponse.meta){
-                return this.$store.getters.followersResponse.meta.total;
+            if(this.$store.getters.userFollowingsResponse.meta){
+                return this.$store.getters.userFollowingsResponse.meta.total;
             }else{
                 return 0;
             }
 
         },
 
-        titleTotalFollowers() {
+        titleTotalFollowings() {
             return (
-                "Followers (" +
-                this.totalFollowers +
+                "Following (" +
+                this.totalFollowings +
                 ")"
             );
         },
@@ -88,7 +87,7 @@ export default {
             const self = this;
             self.is_loading = true;
             this.$store
-                .dispatch("fetchUserFollowers", { user_id: this.user.id })
+                .dispatch("fetchUserFollowings", { user_id: this.user.id })
                 .then(() => {})
                 .catch(() => {})
                 .finally(() => {
