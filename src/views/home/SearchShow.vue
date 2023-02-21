@@ -19,7 +19,7 @@ export default {
         Loading, LibraryPager
     },
   async mounted(){
-        this.fetchSearch(this.$route.params.username)
+        this.fetchSearchLibrary(this.$route.params.username)
     },
 
     computed: {
@@ -38,7 +38,7 @@ export default {
         fetchSearch(username){
             const self = this;
             self.$store
-                .dispatch("fetchSearch", username)
+                .dispatch("fetchSearchLibrary", username)
                 .then(() => {
 
                     const myLibraryMembership = self.getMyLibraryMembership(

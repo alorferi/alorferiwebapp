@@ -7,19 +7,24 @@ const state = {
     activeUserCoverUrl: JSON.parse(
         localStorage.getItem("activeUserCoverUrl") || null
     ),
+    usersResponse: null,
     userStatus: null
 };
 
 const getters = {
     user: state => state.user,
     activeUser: state => state.activeUser,
-    activeUserCoverUrl: state => state.activeUserCoverUrl
+    activeUserCoverUrl: state => state.activeUserCoverUrl,
+    usersResponse: state => state.usersResponse
 };
 
 const mutations = {
     setUser(state, user) {
         state.user = user;
         localStorage.setItem("user", JSON.stringify(user));
+    },
+    setUsersResponse(state, newResponse) {
+        state.usersResponse = newResponse;
     },
     setActiveUser(state, newUser) {
         state.activeUser = newUser;
@@ -33,6 +38,35 @@ const mutations = {
 };
 
 const actions = {
+    searchUsers(context, payload) {
+        var endpoint = "/api/users";
+        return new Promise((resolve, reject) => {
+            var url = mixin.methods.getApiUrl(
+                endpoint,
+                payload.term,
+                payload.page
+            );
+
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+
+            axios({
+                url: url,
+                headers: headers,
+                method: "GET"
+            })
+                .then(response => {
+                    const usersResponse = response.data;
+                    console.log("usersResponse", usersResponse)
+                    context.commit("setUsersResponse", usersResponse);
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
     fetchMe(context) {
         return new Promise((resolve, reject) => {
             var url = mixin.methods.getApiUrl("/api/auth/me");
@@ -99,7 +133,6 @@ const actions = {
                 data: formData
             })
                 .then(response => {
-
                     const photo_url =
                         response.data.data + "?tick=" + Date.now();
 

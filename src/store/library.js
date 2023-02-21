@@ -48,7 +48,7 @@ const actions = {
         });
     },
 
-    fetchSearch(context, username) {
+    fetchSearchLibrary(context, username) {
         var url = mixin.methods.getApiUrl("/api/searches/" + username);
         var headers = mixin.methods.getHeaderWithAuthorizationBearerToken();
 

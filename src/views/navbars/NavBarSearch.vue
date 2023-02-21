@@ -3,9 +3,9 @@
               <form class="form-inline">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">
+                    <!-- <span class="input-group-text">
                         <i class="fas fa-mobile-alt"></i>
-                    </span>
+                    </span> -->
 
                     <select class="form-control">
                         <option value="Library" selected>Library</option>
@@ -15,7 +15,7 @@
                     </select>
                 </div>
 
-                <input class="form-control" type="text" placeholder="SearchX" />
+                <input class="form-control" type="text" placeholder="Search" />
 
                 <div class="input-group-prepend">
                     <span class="input-group-text">

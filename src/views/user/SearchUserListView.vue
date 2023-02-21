@@ -1,82 +1,76 @@
 <template>
     <div>
-        <h4 class="text-secondary">Libraries</h4>
+        <h4 class="text-secondary">Users</h4>
 
         <SearchTextField @update:term="term = $event" />
 
-        <Loading v-if="libraries.length == 0"></Loading>
+        <Loading v-if="this.$store.getters.usersResponse == null"></Loading>
+
         <div v-else>
             <Paginator
                 :meta="meta"
-                route="my-libraries"
+                route="users"
                 @update:page="page = $event"
             />
 
-            <WrapperListView :dataWrapperList="libraries" :listItemComponent="libraryListItem" />
-
-                   <Paginator
-                :meta="meta"
-                @update:page="page = $event"
+            <WrapperListView
+                :dataWrapperList="users"
+                :listItemComponent="userListItem"
             />
 
+            <Paginator :meta="meta" @update:page="page = $event" />
         </div>
     </div>
 </template>
 
 <script>
-import LibraryListItem from "./LibraryListItem";
-import WrapperListView from "../../components/WrapperListView";
-import Loading from "../../components/Loading";
-import SearchTextField from "../../components/SearchTextField";
-import Paginator from "../../components/Paginator";
+import UserListItem from "@/views/user/UserListItem";
+import WrapperListView from "@/components/WrapperListView";
+import Loading from "@/components/Loading";
+import SearchTextField from "@/components/SearchTextField";
+import Paginator from "@/components/Paginator";
 
 export default {
-    name: "AllLibraryListView",
+    name: "SearchUserListView",
     components: {
         Loading,
         WrapperListView,
         SearchTextField,
         Paginator
     },
-  async mounted(){
-        this.fetchAllLibraries();
+    async mounted() {
+        this.searchUsers();
     },
     data: function() {
         return {
             show_loading: true,
             term: null,
             page: null,
-            libraryListItem: LibraryListItem,
-
+            userListItem: UserListItem
         };
     },
     computed: {
-        libraries() {
-            return this.$store.getters.myLibrariesResponse == null
-                ? []
-                : this.$store.getters.myLibrariesResponse.data;
+        users() {
+            return this.$store.getters.usersResponse == null
+                    ? []
+                    : this.$store.getters.usersResponse.data;
         },
 
         meta() {
-            return this.$store.getters.myLibrariesResponse == null
+            return this.$store.getters.usersResponse == null
                 ? null
-                : this.$store.getters.myLibrariesResponse.meta;
+                : this.$store.getters.usersResponse.meta;
         }
     },
     methods: {
-        editUrl: function(library) {
-            return this.getApiUrl("/api/libraries/" + library.id + "/edit");
-        },
-        //
-        fetchAllLibraries: function(pTerm = null, pPage = null) {
-
+        searchUsers: function(pTerm = null, pPage = null) {
             var payload = {
                 term: pTerm,
-                page: pPage,
+                page: pPage
             };
 
             this.$store
-                .dispatch("fetchAllLibraries", payload)
+                .dispatch("searchUsers", payload)
                 .then(() => {
                     this.show_loading = false;
                 })
@@ -92,7 +86,7 @@ export default {
             immediate: true,
             handler(newVal, oldVal) {
                 if (newVal != oldVal) {
-                    this.fetchAllLibraries(this.term, this.page);
+                    this.searchUsers(this.term, this.page);
                 }
             }
         },
@@ -102,7 +96,7 @@ export default {
             immediate: true,
             handler(newVal, oldVal) {
                 if (newVal != oldVal) {
-                    this.fetchAllLibraries(this.term, this.page);
+                    this.searchUsers(this.term, this.page);
                 }
             }
         }

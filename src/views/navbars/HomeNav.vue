@@ -16,7 +16,6 @@
             />
         </a>
 
-        <!-- <NavBarSearch/> -->
 
         <!-- Toggler/collapsibe Button -->
         <button
@@ -29,25 +28,29 @@
         </button>
 
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="nav navbar-nav mr-auto">
+            <ul class="nav navbar-nav">
 
-                <li>
+                <li class="pl-2 pr-1">
                     <a href="/" class="nav-link" @click="reload">
-                    <i class="fas fa-home"></i>
+                    <i class="fas fa-home"></i> <span class="pl-1">Home</span>
                     </a>
                 </li>
-                <li>
+                <li class="pl-1 pr-1">
                     <a href="/libraries" class="nav-link" @click="reload">
                        Libraries
                     </a>
                 </li>
 
-
+                <li class="pl-1 pr-1">
+                    <a href="/users" class="nav-link" @click="reload">
+                       Users
+                    </a>
+                </li>
 
 
             </ul>
-
-            <ul class="nav navbar-nav">
+            <!-- <NavBarSearch class="ml-4"/> -->
+            <ul class="nav navbar-nav ml-auto">
 
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
@@ -100,6 +103,7 @@ export default {
     name: "HomeNav",
     components: {
         UserPhoto,
+        // NavBarSearch
         // LanguageToggleButton
     },
     data() {

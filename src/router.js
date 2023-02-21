@@ -21,7 +21,8 @@ import LoginContainer from "@/views/auth/LoginContainer.vue";
 import Register from "@/views/auth/Register.vue";
 // import NewsFeeds from "@/views/home/NewsFeeds.vue";
 import MyLibraryListView from "@/views/library/MyLibraryListView.vue";
-import AllLibraryListView from "@/views/library/AllLibraryListView.vue";
+import SearchLibraryListView from "@/views/library/SearchLibraryListView.vue";
+import SearchUserListView from "@/views/user/SearchUserListView.vue";
 import LibraryCreate from "@/views/library/LibraryCreate.vue";
 import LibraryEdit from "@/views/library/LibraryEdit.vue";
 import LibraryShow from "@/views/library/LibraryShow.vue";
@@ -52,9 +53,16 @@ let router = new Router({
         {
             path: "/libraries",
             name: "libraries",
-            component: AllLibraryListView,
+            component: SearchLibraryListView,
             leftMenu: HomeLeftMenu,
             meta: { title: "My Libraries", requiresAuth: true }
+        },
+        {
+            path: "/users",
+            name: "users",
+            component: SearchUserListView,
+            leftMenu: HomeLeftMenu,
+            meta: { title: "Users", requiresAuth: true }
         },
         {
             path: "/login",
