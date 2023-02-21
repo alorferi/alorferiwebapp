@@ -141,7 +141,7 @@ export default {
         },
 
         processLibraryPost(packet) {
-              const self = this;
+            const self = this;
             if (self.post) {
                 self.$store
                     .dispatch("updateLibraryPost", packet)
@@ -176,9 +176,12 @@ export default {
             formData.append("title", self.title == null ? "" : self.title);
             formData.append("body", self.body == null ? "" : self.body);
 
+            console.log("formData",  self.title, self.body);
+            console.log("self.postable_type", self.postable_type);
+
             self.is_loading = true;
-            console.log(this.post)
             switch (self.postable_type) {
+                case "user":
                 case "User":
                 case "App\\Models\\User":
                     var packet = {
@@ -187,7 +190,8 @@ export default {
                     };
                     this.processUserPost(packet);
                     break;
-                    case "Library":
+                case "library":
+                case "Library":
                 case "App\\Models\\Library":
                     packet = {
                         overhead: {

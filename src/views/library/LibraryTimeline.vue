@@ -2,6 +2,7 @@
     <div class="pt-2">
 
     <CreateLibraryPost :library="library"
+    v-if="this.hasMemberPermission('library_edit')"
     />
 
         <Loading v-if="show_loading"></Loading>

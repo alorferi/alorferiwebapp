@@ -15,13 +15,13 @@
                 <button
                     type="button"
                     class="ml-3 form-control btn btn-outline-info"
-                    @click="showCreaUserPostModel = !showCreaUserPostModel"
+                    @click="showCreateUserPostModel = !showCreateUserPostModel"
                 >
                     Start a discussion
                 </button>
             </div>
 
-    <CreateOrEditPostModal :show="showCreaUserPostModel" @updateVisibleState="showCreaUserPostModel = $event"
+    <CreateOrEditPostModal :show="showCreateUserPostModel" @updateVisibleState="showCreateUserPostModel = $event"
     postable_type="library"
     :postable_id="library.id"
     />
@@ -62,7 +62,7 @@ export default {
             imgUrl: null,
             imgFile: null,
             hasImage: false,
-            showCreaUserPostModel:false,
+            showCreateUserPostModel:false,
             // image: null
         };
     },
