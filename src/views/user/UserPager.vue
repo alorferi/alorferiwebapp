@@ -182,7 +182,7 @@ export default {
 
     computed: {
         isFollowingByMe() {
-            return this.$store.getters.userFollowingByMe != null;
+            return this.$store.getters.followingByMe != null;
         },
         getTabs() {
             return this.tabs;
@@ -192,8 +192,8 @@ export default {
         },
         totalFollowers() {
             var total = 0;
-            if (this.$store.getters.userFollowersResponse.meta) {
-                total = this.$store.getters.userFollowersResponse.meta.total;
+            if (this.$store.getters.followersResponse.meta) {
+                total = this.$store.getters.followersResponse.meta.total;
             }
 
             return "Followers (" + total + ")";
@@ -244,7 +244,7 @@ export default {
                 .then(() => {
                     console.log(
                         "fetchUserFollowers",
-                        this.$store.getters.userFollowersResponse.meta.total
+                        this.$store.getters.followersResponse.meta.total
                     );
                 })
                 .catch(() => {})

@@ -2,63 +2,15 @@ import axios from "axios";
 import mixin from "@/mixin";
 
 const state = {
-    libraryFollowersResponse: { data: [], links: null, meta: null },
-    libraryFollower: null,
-    libraryFollowingByMe: null
+
 };
 
 const getters = {
-    libraryFollower: state => state.libraryFollower,
-    libraryFollowersResponse: state => state.libraryFollowersResponse,
-    libraryFollowingByMe: state => state.libraryFollowingByMe
+
 };
 
 const mutations = {
-    setLibraryFollowersResponse(state, newFollowersResponse) {
-        if (state.libraryFollowersResponse.data.length == 0) {
-            state.libraryFollowersResponse.data = newFollowersResponse.data;
-        } else {
-            newFollowersResponse.data.forEach(function(item) {
-                state.libraryFollowersResponse.data.push(item);
-            });
-        }
-        state.libraryFollowersResponse.links = newFollowersResponse.links;
-        state.libraryFollowersResponse.meta = newFollowersResponse.meta;
-    },
-    clearLibraryFollowersResponse(state) {
-        state.libraryFollowersResponse = { data: [], links: null, meta: null };
-    },
 
-    insertLibraryFollower(state, followerData) {
-        state.libraryFollowersResponse.data.splice(0, 0, followerData);
-        state.libraryFollowersResponse.meta.total =
-            state.libraryFollowersResponse.meta.total + 1;
-    },
-
-    removeMeFromLibraryFollowers(state) {
-        var activeUserId = this.getters.activeUser.id;
-
-        state.libraryFollowersResponse.data.forEach(function(
-            followerItem,
-            index,
-            arr
-        ) {
-            if (followerItem.attributes.user.id == activeUserId) {
-                arr.splice(index, 1);
-            }
-        });
-
-        state.libraryFollowersResponse.meta.total =
-            state.libraryFollowersResponse.meta.total - 1;
-    },
-
-    setLibraryFollowingByMe(state, newFollowingByMe) {
-        state.libraryFollowingByMe = newFollowingByMe;
-    },
-
-    clearLibraryFollowingByMe(state) {
-        state.libraryFollowingByMe = null;
-    }
 };
 
 const actions = {

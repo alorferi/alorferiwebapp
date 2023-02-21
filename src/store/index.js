@@ -14,6 +14,7 @@ import Comment from "@/store/comment";
 import Like from "@/store/like";
 import UserPost from "@/store/user-post";
 import UserFollower from "@/store/user-follower";
+import Follower from "@/store/follower";
 import LibraryFollower from "@/store/library-follower";
 import UserFollowing from "@/store/user-following";
 import LibraryPost from "@/store/library-post";
@@ -38,6 +39,7 @@ export default new Vuex.Store({
         Like,
         UserPost,
         LibraryPost,
+        Follower,
         UserFollower,
         UserFollowing,
         Complain,
