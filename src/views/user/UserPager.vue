@@ -20,7 +20,7 @@
                         :user="user"
                     />
 
-                    <UserFollowingModal
+                    <UserFollowingListModal
                         :show="showUserFollowings"
                         @updateVisibleState="showUserFollowings = $event"
                         :user="user"
