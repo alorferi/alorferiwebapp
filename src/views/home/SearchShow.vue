@@ -19,7 +19,7 @@ export default {
         Loading, LibraryPager
     },
   async mounted(){
-        this.fetchSearchLibrary(this.$route.params.username)
+        this.fetchSearch(this.$route.params.username)
     },
 
     computed: {
