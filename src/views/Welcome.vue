@@ -4,11 +4,11 @@
             <div class="col-sm-7 pl-2 text-center">
                 <div class="mt-5 ml-auto mr-auto p-5">
                     <div class="text-success text-left">
-                        <h1>Alor Feri</h1>
+                        <h1>{{ $t("alorferi") }}</h1>
                     </div>
 
                     <div class="text-left" style="font-size: 30px">
-                        Connects readers, and libraries and enlightens society.
+                        {{ $t("motto") }}
                     </div>
                 </div>
             </div>
@@ -17,7 +17,6 @@
                 <Login />
             </div>
         </div>
-
     </div>
 </template>
 
@@ -26,7 +25,7 @@ import Login from "@/views/auth/Login";
 export default {
     name: "Welcome",
     components: {
-        Login,
+        Login
     },
     mounted: function() {},
     computed: {},

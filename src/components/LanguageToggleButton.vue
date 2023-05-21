@@ -40,6 +40,7 @@ computed: {
 },
     methods: {
         setLanguage(lang){
+            this.$i18n.locale = lang
             this.$store.dispatch("setActiveLanguage",lang);
         }
     }

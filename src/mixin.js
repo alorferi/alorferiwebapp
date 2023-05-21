@@ -10,7 +10,9 @@ export default {
                 .fromNow(); // here u modify data
             return date;
         },
-
+        getLang:function(){
+            return this.$store.getters.activeLanguage;
+        },
         formatDate: function(
             value,
             expectedFormat = "DD MMMM YYYY",

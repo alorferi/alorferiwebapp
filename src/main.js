@@ -34,6 +34,7 @@ Vue.prototype.$axios = axios;
 Vue.use(PortalVue);
 
 import moment from "moment";
+import i18n from './i18n'
 
 Vue.prototype.moment = moment;
 
@@ -63,5 +64,6 @@ Vue.config.productionTip = false;
 new Vue({
     router,
     store,
+    i18n,
     render: h => h(App)
 }).$mount("#app");

@@ -1,5 +1,5 @@
 const state = {
-    activeLanguage: "bn"
+    activeLanguage: localStorage.getItem("lang") || "bn"
 };
 const getters = {
     activeLanguage: state => {
@@ -9,7 +9,8 @@ const getters = {
 
 const mutations = {
     setActiveLanguage: (state, newLanguage) => {
-        state.activeLanguage = newLanguage;
+        state.activeLanguage = newLanguage
+        localStorage.setItem("lang", newLanguage);
     }
 };
 

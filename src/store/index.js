@@ -18,7 +18,7 @@ import Follower from "@/store/follower";
 import LibraryFollower from "@/store/library-follower";
 import UserFollowing from "@/store/user-following";
 import LibraryPost from "@/store/library-post";
-import Complain from "@/store/complain";
+import Complain from "@/store/complain.js";
 import Block from "@/store/block";
 
 Vue.use(Vuex);
