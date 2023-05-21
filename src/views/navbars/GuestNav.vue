@@ -28,8 +28,8 @@
             </ul>
 
             <ul class="navbar-nav ml-auto">
-                <li>
-                    <!-- <LanguageToggleButton/> -->
+                <li class="nav-item">
+                    <LanguageToggleButton/>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" :to="{ name: 'login' }"
@@ -47,9 +47,10 @@
 </template>
 
 <script>
+import LanguageToggleButton from "@/components/LanguageToggleButton";
 export default {
     name: "GuestNav",
-    components: {},
+    components: {LanguageToggleButton},
     data() {
         return {};
     },
