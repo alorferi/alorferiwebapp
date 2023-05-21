@@ -21,7 +21,7 @@
                     :class="errorClassObject()"
                     @change="updateField()"
                 />
-                {{ $t('register.male') }}
+                {{ $t('male') }}
             </label>
             <label class="radio-inline  pl-2  pt-2">
                 <input
@@ -33,7 +33,7 @@
                     :class="errorClassObject()"
                     @change="updateField()"
                 />
-                {{ $t('register.female') }}
+                {{ $t('female') }}
             </label>
             <label class="radio-inline  pl-2  pt-2">
                 <input
@@ -46,7 +46,7 @@
                     @change="updateField()"
                 />
 
-                {{ $t('register.other') }}
+                {{ $t('other') }}
             </label>
         </div>
 

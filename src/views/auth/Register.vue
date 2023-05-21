@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-3"></div>
             <div class="col-sm-6 card">
-                <h4 class="text-center mt-2"> {{ $t('auth.create_new_account') }} </h4>
+                <h4 class="text-center mt-2"> {{ $t('create_new_account') }} </h4>
                 <form class="card-body" @submit.prevent="submitForm">
                     <div class="col-md-12">
                         <div class="d-flex">
@@ -11,8 +11,8 @@
                                 <EditTextField
                                     type="text"
                                     name="first_name"
-                                    :label="$t('register.first_name')"
-                                    :placeholder="$t('register.first_name')"
+                                    :label="$t('first_name')"
+                                    :placeholder="$t('first_name')"
                                     icon=" "
                                     :errors="errors"
                                     @update:field="userData.first_name = $event"
@@ -23,8 +23,8 @@
                                 <EditTextField
                                     type="text"
                                     name="surname"
-                                    :label="$t('register.last_name')"
-                                    :placeholder="$t('register.last_name')"
+                                    :label="$t('last_name')"
+                                    :placeholder="$t('last_name')"
                                     icon=" "
                                     :errors="errors"
                                     @update:field="userData.surname = $event"
@@ -35,8 +35,8 @@
                         <div class="form-group">
                             <UserNameField
                                 name="username"
-                                :label="$t('auth.email_or_mobile')"
-                                :placeholder="$t('auth.email_or_mobile')"
+                                :label="$t('email_or_mobile')"
+                                :placeholder="$t('email_or_mobile')"
                                 icon="fas fa-at"
                                 :errors="errors"
                                 @update:field="userData.username = $event"
@@ -47,8 +47,8 @@
 
                             <PasswordField
                                 name="password"
-                                :label="$t('auth.password')"
-                                :placeholder="$t('auth.password')"
+                                :label="$t('password')"
+                                :placeholder="$t('password')"
                                 icon="fas fa-key"
                                 :errors="errors"
                                 @update:field="userData.password = $event"
@@ -60,7 +60,7 @@
                                 type="date"
                                 name="dob"
                                 :initval="this.userData.dob"
-                                :label="$t('register.dob')"
+                                :label="$t('dob')"
                                 placeholder="DD/MM/YYYY"
                                 icon="fas fa-birthday-cake"
                                 :errors="errors"
@@ -71,7 +71,7 @@
                         <div>
                             <GenderInputField
                                 name="gender"
-                                :label="$t('register.gender')"
+                                :label="$t('gender')"
                                 :errors="errors"
                                 @update:field="userData.gender = $event"
                             />
@@ -89,7 +89,7 @@
                                 class="btn btn-primary"
                                 style="width:100%"
                             >
-                                {{$t('register.submit')}}
+                                {{$t('submit')}}
                             </button>
                         </div>
                     </div>

@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <UserNameField
                         name="username"
-                        :placeholder="$t('auth.email_or_mobile')"
+                        :placeholder="$t('email_or_mobile')"
                         icon="fas fa-user-alt"
                         :errors="errors"
                         @update:field="username = $event"
@@ -16,7 +16,7 @@
                 <div class="form-group pt-1">
                      <PasswordField
                         name="password"
-                        :placeholder="$t('auth.password')"
+                        :placeholder="$t('password')"
                         icon="fas fa-key"
                         :errors="errors"
                         @update:field="password = $event"
@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group">
                     <input type="checkbox" name="remember" />
-                    {{$t('auth.remember_me')}}
+                    {{$t('remember_me')}}
                 </div>
 
                 <div class="form-group">
@@ -37,7 +37,7 @@
                         class="btn btn-success"
                         style="width:100%"
                     >
-                    {{ $t('auth.login') }}
+                    {{ $t('login') }}
                     </button>
 
                     <div class="text-center">
@@ -46,7 +46,7 @@
                             :to="{ name: 'login-with-otc-to-reset-password' }"
                         >
 
-                            {{ $t('auth.forgot_password' )}}
+                            {{ $t('forgot_password' )}}
                         </router-link>
                     </div>
 
@@ -59,7 +59,7 @@
                     style="width:100%"
                 >
 
-                    {{$t('auth.create_new_account')}}
+                    {{$t('create_new_account')}}
                 </router-link>
 
                 </div>

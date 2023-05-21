@@ -20,23 +20,19 @@
     "download_the_app": "অ্যাপটি ডাউনলোড করুন",
     "get_us_on": "আমাদের পান:",
     "about": "সম্বন্ধে",
-    "auth": {
-        "login": "লগইন",
-        "email_or_mobile": "ই-মেইল বা মোবাইল",
-        "password": "পাসওয়ার্ড",
-        "forgot_password": "পাসওয়ার্ড ভুলে গেছেন?",
-        "remember_me": "আমাকে মনে রাখ",
-        "create_new_account": "নতুন অ্যাকাউন্ট খুলুন",
-        "sign_up": "নিবন্ধন করুন"
-    },
-    "register": {
-        "first_name": "নামের প্রথম অংশ",
-        "last_name": "নামের পশেষ অংশ",
-        "dob": "জন্ম তারিখ",
-        "gender": "লিঙ্গ",
-        "male": "পুরুষ",
-        "female": "মহিলা",
-        "other": "অন্যান্য",
-        "submit": "দাখিল করুন"
-    }
+    "login": "লগইন",
+    "email_or_mobile": "ই-মেইল বা মোবাইল",
+    "password": "পাসওয়ার্ড",
+    "forgot_password": "পাসওয়ার্ড ভুলে গেছেন?",
+    "remember_me": "আমাকে মনে রাখ",
+    "create_new_account": "নতুন অ্যাকাউন্ট খুলুন",
+    "sign_up": "নিবন্ধন করুন",
+    "first_name": "নামের প্রথম অংশ",
+    "last_name": "নামের পশেষ অংশ",
+    "dob": "জন্ম তারিখ",
+    "gender": "লিঙ্গ",
+    "male": "পুরুষ",
+    "female": "মহিলা",
+    "other": "অন্যান্য",
+    "submit": "দাখিল করুন"
 }
