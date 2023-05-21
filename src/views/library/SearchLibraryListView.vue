@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h4 class="text-secondary">Libraries</h4>
+        <h4 class="text-secondary"> {{$t('libraries')}} </h4>
         <SearchTextField @update:term="term = $event" />
 
         <Loading v-if="this.$store.getters.myLibrariesResponse == null"></Loading>

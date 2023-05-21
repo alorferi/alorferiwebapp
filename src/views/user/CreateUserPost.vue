@@ -16,7 +16,7 @@
                     class="ml-3 form-control btn btn-outline-info"
                     @click="showCreateUserPostModel = !showCreateUserPostModel"
                 >
-                    Start a discussion
+                     {{ $t('start_a_discussion') }}
                 </button>
             </div>
 

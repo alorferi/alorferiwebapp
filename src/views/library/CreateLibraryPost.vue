@@ -2,31 +2,32 @@
     <div>
         <div class="card">
             <div class="card-body d-flex  align-items-center">
-
-                       <router-link
-                :to="{
-                    name: 'users.show',
-                    params: { user_id: this.activeUser.id }
-                }"
-            >
-                <UserPhoto :user="activeUser" size="32"> </UserPhoto>
-                       </router-link>
+                <router-link
+                    :to="{
+                        name: 'users.show',
+                        params: { user_id: this.activeUser.id }
+                    }"
+                >
+                    <UserPhoto :user="activeUser" size="32"> </UserPhoto>
+                </router-link>
 
                 <button
                     type="button"
                     class="ml-3 form-control btn btn-outline-info"
                     @click="showCreateUserPostModel = !showCreateUserPostModel"
                 >
-                    Start a discussion
+                    {{ $t("start_a_discussion") }}
                 </button>
             </div>
 
-    <CreateOrEditPostModal :show="showCreateUserPostModel" @updateVisibleState="showCreateUserPostModel = $event"
-    postable_type="library"
-    :postable_id="library.id"
-    />
+            <CreateOrEditPostModal
+                :show="showCreateUserPostModel"
+                @updateVisibleState="showCreateUserPostModel = $event"
+                postable_type="library"
+                :postable_id="library.id"
+            />
 
-              <!-- <EditPostModal :show="showEditPostModal"
+            <!-- <EditPostModal :show="showEditPostModal"
             :post="post"
              @updateVisibleState="showEditPostModal = $event"
              /> -->
@@ -48,7 +49,7 @@ export default {
         // ImageUploader,
         CreateOrEditPostModal
     },
-    props:["library"],
+    props: ["library"],
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
@@ -62,13 +63,11 @@ export default {
             imgUrl: null,
             imgFile: null,
             hasImage: false,
-            showCreateUserPostModel:false,
+            showCreateUserPostModel: false
             // image: null
         };
     },
-    methods: {
-
-    }
+    methods: {}
 };
 </script>
 

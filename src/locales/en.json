@@ -40,5 +40,8 @@
     "news_feed": "News Feed",
     "my_libraries": "My Libraries",
     "profile": "Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+    "start_a_discussion": "Start a discussion",
+    "write_a_discussion" : "Write a discussion",
+    "edit_the_discussion": "Edit the discussion"
 }

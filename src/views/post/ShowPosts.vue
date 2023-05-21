@@ -9,13 +9,11 @@
             v-bind:key="post.id"
         />
 
-        <p v-if="!is_loading && posts.length < 1" class='text-center'>
+        <p v-if="!is_loading && posts.length < 1" class="text-center">
             No discussion found.
         </p>
 
-
-         <Loading v-if="scrolledToBottom" class="border mt-3"></Loading>
-
+        <Loading v-if="scrolledToBottom" class="border mt-3"></Loading>
     </div>
 </template>
 
@@ -34,10 +32,10 @@ export default {
     data: () => {
         return {
             is_loading: true,
-            scrolledToBottom:false
+            scrolledToBottom: false
         };
     },
-  async mounted(){
+    async mounted() {
         this.fetchPostFeedAction();
         this.scroll();
     },
@@ -67,7 +65,7 @@ export default {
 
                 if (bottomOfWindow) {
                     this.scrolledToBottom = true; // replace it with your code
-                     this.fetchPostFeedAction();
+                    this.fetchPostFeedAction();
                 }
             };
         }

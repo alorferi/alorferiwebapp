@@ -106,7 +106,7 @@ export default {
             hasImage: false,
             is_loading: false,
             modalTile:
-                this.post == null ? "Write a discussion" : "Edit the discussion"
+                this.post == null ? this.$t('write_a_discussion') : this.$t('edit_a_discussion')
         };
     },
     methods: {

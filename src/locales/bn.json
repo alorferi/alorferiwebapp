@@ -40,5 +40,8 @@
     "news_feed": "ঘটনাচক্র",
     "my_libraries": "আমার লাইব্রেরি",
     "profile": "প্রোফাইল",
-    "logout": "প্রস্থান"
+    "logout": "প্রস্থান",
+    "start_a_discussion": "একটি আলোচনা শুরু করুন",
+    "write_a_discussion" : "একটি আলোচনা লিখুন",
+    "edit_the_discussion": "আলোচনা সম্পাদনা করুন"
 }
