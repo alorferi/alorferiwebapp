@@ -32,18 +32,18 @@
 
                 <li class="pl-2 pr-1">
                     <a href="/" class="nav-link" @click="reload">
-                    <i class="fas fa-home"></i> <span class="pl-1">Home</span>
+                    <i class="fas fa-home"></i> <span class="pl-1"> {{ $t('home') }} </span>
                     </a>
                 </li>
                 <li class="pl-1 pr-1">
                     <a href="/libraries" class="nav-link" @click="reload">
-                       Libraries
+                        {{ $t('libraries') }}
                     </a>
                 </li>
 
                 <li class="pl-1 pr-1">
                     <a href="/users" class="nav-link" @click="reload">
-                       Users
+                       {{ $t('users') }}
                     </a>
                 </li>
 
@@ -79,7 +79,7 @@
                             class="dropdown-item"
                             :to="{ name: 'users.me' }"
                         >
-                            Profile
+                        {{ $t('profile') }}
                         </router-link>
 
                         <div class="dropdown-divider"></div>
@@ -88,7 +88,7 @@
                             href="#"
                             @click="logoutMe"
                             v-if="this.$store.getters.isLoggedIn"
-                            >Logout</a
+                            > {{ $t('logout') }}</a
                         >
                     </div>
                 </li>

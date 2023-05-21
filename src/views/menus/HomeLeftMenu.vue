@@ -5,7 +5,7 @@
                 href="/"
                 class="list-group-item list-group-item-action"
                 @click="reload"
-                >News Feed</a
+                > {{ $t('news_feed') }}</a
             >
 
             <!-- <router-link
@@ -16,7 +16,7 @@
             <router-link
                 class="list-group-item list-group-item-action"
                 :to="{ name: 'my-libraries' }"
-                >My Libraries</router-link
+                > {{ $t('my_libraries') }}</router-link
             >
 
             <!-- <router-link

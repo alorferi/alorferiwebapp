@@ -34,5 +34,11 @@
     "male": "Male",
     "female": "Female",
     "other": "Other",
-    "submit": "Submit"
+    "submit": "Submit",
+    "home": "Home",
+    "users": "Users",
+    "news_feed": "News Feed",
+    "my_libraries": "My Libraries",
+    "profile": "Profile",
+    "logout": "Logout"
 }
