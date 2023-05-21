@@ -83,7 +83,7 @@
 
             <div class="flex-fill">
                 <div class="mr-4  border-bottom font-weight-bold">
-
+                        {{ $t('community') }}
                 </div>
 
                 <div>

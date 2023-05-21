@@ -19,5 +19,24 @@
     "developers": "Developers",
     "download_the_app":  "Download the App",
     "get_us_on":  "Get us on:",
-    "about": "About"
+    "about": "About",
+    "auth":{
+        "login":"Login",
+        "email_or_mobile":"E-Mail or Mobile",
+        "password":"Password",
+        "remember_me":"Remember Me",
+        "forgot_password":"Forgot password?",
+        "sign_up":"Sign Up",
+        "create_new_account":"Create new account"
+    },
+    "register":{
+        "first_name":"First Name",
+        "last_name":"Last Name",
+        "dob":"Date of birth",
+        "gender":"Gender",
+        "male":"Male",
+        "female":"Female",
+        "other":"Other",
+        "submit":"Submit"
+    }
 }

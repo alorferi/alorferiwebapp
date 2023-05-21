@@ -33,12 +33,12 @@
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" :to="{ name: 'login' }"
-                        >Login</router-link
+                        >{{ $t('auth.login') }}</router-link
                     >
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" :to="{ name: 'register' }"
-                        >Sign Up</router-link
+                        > {{ $t('auth.sign_up') }}</router-link
                     >
                 </li>
             </ul>

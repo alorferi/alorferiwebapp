@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-3"></div>
             <div class="col-sm-6 card">
-                <h4 class="text-center mt-2">Create New Account</h4>
+                <h4 class="text-center mt-2"> {{ $t('auth.create_new_account') }} </h4>
                 <form class="card-body" @submit.prevent="submitForm">
                     <div class="col-md-12">
                         <div class="d-flex">
@@ -11,8 +11,8 @@
                                 <EditTextField
                                     type="text"
                                     name="first_name"
-                                    label="First Name"
-                                    placeholder="First Name"
+                                    :label="$t('register.first_name')"
+                                    :placeholder="$t('register.first_name')"
                                     icon=" "
                                     :errors="errors"
                                     @update:field="userData.first_name = $event"
@@ -23,8 +23,8 @@
                                 <EditTextField
                                     type="text"
                                     name="surname"
-                                    label="Last Name"
-                                    placeholder="Last Name"
+                                    :label="$t('register.last_name')"
+                                    :placeholder="$t('register.last_name')"
                                     icon=" "
                                     :errors="errors"
                                     @update:field="userData.surname = $event"
@@ -35,8 +35,8 @@
                         <div class="form-group">
                             <UserNameField
                                 name="username"
-                                label="E-mail or Mobile"
-                                placeholder="E-mail or Mobile"
+                                :label="$t('auth.email_or_mobile')"
+                                :placeholder="$t('auth.email_or_mobile')"
                                 icon="fas fa-at"
                                 :errors="errors"
                                 @update:field="userData.username = $event"
@@ -47,8 +47,8 @@
 
                             <PasswordField
                                 name="password"
-                                label="Password"
-                                placeholder="Password"
+                                :label="$t('auth.password')"
+                                :placeholder="$t('auth.password')"
                                 icon="fas fa-key"
                                 :errors="errors"
                                 @update:field="userData.password = $event"
@@ -60,7 +60,7 @@
                                 type="date"
                                 name="dob"
                                 :initval="this.userData.dob"
-                                label="Date of birth"
+                                :label="$t('register.dob')"
                                 placeholder="DD/MM/YYYY"
                                 icon="fas fa-birthday-cake"
                                 :errors="errors"
@@ -71,7 +71,7 @@
                         <div>
                             <GenderInputField
                                 name="gender"
-                                label="Gender"
+                                :label="$t('register.gender')"
                                 :errors="errors"
                                 @update:field="userData.gender = $event"
                             />
@@ -89,7 +89,7 @@
                                 class="btn btn-primary"
                                 style="width:100%"
                             >
-                                Submit
+                                {{$t('register.submit')}}
                             </button>
                         </div>
                     </div>
