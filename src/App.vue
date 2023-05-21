@@ -94,6 +94,7 @@ export default {
     },
     methods: {},
     created() {
+        this.$i18n.locale =  this.$store.getters.activeLanguage;
         this.$store.dispatch("setPageTitle", this.$route.meta.title);
     },
     watch: {

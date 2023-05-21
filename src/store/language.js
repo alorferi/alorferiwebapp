@@ -10,13 +10,13 @@ const getters = {
 const mutations = {
     setActiveLanguage: (state, newLanguage) => {
         state.activeLanguage = newLanguage
-        localStorage.setItem("lang", newLanguage);
     }
 };
 
 
 const actions = {
     setActiveLanguage({ commit }, activeLanguage) {
+        localStorage.setItem("lang", activeLanguage);
         commit("setActiveLanguage", activeLanguage);
     }
 };
