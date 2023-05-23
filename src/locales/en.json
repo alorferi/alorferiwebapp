@@ -1,6 +1,6 @@
 {
     "alorferi": "Alor Feri",
-    "motto": "Connects readers, and libraries and enlightens society.",
+    "motto": "Connects readers and libraries.",
     "services": "Services",
     "pricing": "Pricing",
     "awards": "Awards",
@@ -42,6 +42,6 @@
     "profile": "Profile",
     "logout": "Logout",
     "start_a_discussion": "Start a discussion",
-    "write_a_discussion" : "Write a discussion",
+    "write_a_discussion": "Write a discussion",
     "edit_the_discussion": "Edit the discussion"
 }

@@ -34,7 +34,7 @@ Vue.prototype.$axios = axios;
 Vue.use(PortalVue);
 
 import moment from "moment";
-import i18n from './i18n'
+import i18n from "./i18n";
 
 Vue.prototype.moment = moment;
 
@@ -53,13 +53,28 @@ Vue.use(IconsPlugin);
 
 //  Vue.prototype.$http = axios;
 
-const access_token =  JSON.parse(localStorage.getItem("otc_token") || null)
+const access_token = JSON.parse(localStorage.getItem("otc_token") || null);
 if (access_token) {
     Vue.prototype.$http.defaults.headers.common["Authorization"] =
         "Bearer " + access_token;
 }
 
 Vue.config.productionTip = false;
+
+// router.beforeEach((to, from, next) => {
+//     let language = to.params.lang;
+
+//     if (!language) {
+//         language = "en";
+//     }
+
+//     store.dispatch("setActiveLanguage",language)
+
+//     i18n.locale = language;
+
+
+//     next();
+// });
 
 new Vue({
     router,

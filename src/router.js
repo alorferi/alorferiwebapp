@@ -36,6 +36,7 @@ import LibraryBadge from "@/views/badges/LibraryBadge";
 // import UserBadge from "@/views/badges/UserBadge";
 import LoginWithOtcToResetPassword from "@/views/auth/LoginWithOtcToResetPassword";
 import ResetPassword from "@/views/auth/ResetPassword";
+// import i18n from "./i18n";
 
 Vue.use(Router);
 
@@ -124,7 +125,7 @@ let router = new Router({
             component: Advertisers,
             meta: { title: "Advertisers" }
         },
-         {
+        {
             path: "/careers",
             name: "careers",
             component: Careers,
@@ -142,18 +143,17 @@ let router = new Router({
             component: PrivacyPolicy,
             meta: { title: "Privacy Policy" }
         },
-      {
+        {
             path: "/contact-us",
             name: "contact-us",
             component: ContactUs,
-            meta:{title: "Contact Us"}
-
-        }, {
+            meta: { title: "Contact Us" }
+        },
+        {
             path: "/developers/api-overview",
             name: "api-overview",
             component: ApiOverview,
-            meta:{title: "API Overview"}
-
+            meta: { title: "API Overview" }
         },
         {
             path: "/users/me",

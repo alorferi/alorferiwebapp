@@ -2,13 +2,22 @@
     <div>
         <div class="row" style="padding-top: 50pt">
             <div class="col-sm-7 pl-2 text-center">
-                <div class="mt-5 ml-auto mr-auto p-5">
+                <div class="ml-auto mr-auto pl-5 pr-5 mb-3">
                     <div class="text-success text-left">
                         <h1>{{ $t("alorferi") }}</h1>
                     </div>
 
                     <div class="text-left" style="font-size: 30px">
                         {{ $t("motto") }}
+                    </div>
+
+                    <div class="text-left mt-2">
+                        <img
+                            class="img-rounded"
+                            src="@/assets/images/defaults/img_khude_pathok.png"
+                            height="256"
+                            alt="img_khude_pathok"
+                        />
                     </div>
                 </div>
             </div>
