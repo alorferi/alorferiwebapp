@@ -19,11 +19,11 @@
                     <router-link :to="{ name: 'about' }">{{ $t('about') }}</router-link>
                 </div>
 
-                <div>
+                <!-- <div>
                     <router-link :to="{ name: 'products' }"
                         >{{ $t('services') }}</router-link
                     >
-                </div>
+                </div> -->
 
                 <div>
                     <router-link :to="{ name: 'pricing' }">{{ $t('pricing') }}</router-link>
