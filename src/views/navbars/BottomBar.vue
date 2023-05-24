@@ -12,11 +12,13 @@
 
             <div class="flex-fill">
                 <div class="mr-4  border-bottom font-weight-bold">
-                    {{ $t('alorferi') }}
+                    {{ $t("alorferi") }}
                 </div>
 
                 <div>
-                    <router-link :to="{ name: 'about' }">{{ $t('about') }}</router-link>
+                    <router-link :to="{ name: 'about' }">{{
+                        $t("about")
+                    }}</router-link>
                 </div>
 
                 <!-- <div>
@@ -26,38 +28,41 @@
                 </div> -->
 
                 <div>
-                    <router-link :to="{ name: 'pricing' }">{{ $t('pricing') }}</router-link>
+                    <router-link :to="{ name: 'awards' }">{{
+                        $t("awards")
+                    }}</router-link>
                 </div>
-
-                <div>
-                    <router-link :to="{ name: 'awards' }">{{ $t('awards') }}</router-link>
-                </div>
-                <div>
+                <!-- <div>
                     <router-link :to="{ name: 'research' }"
                         >{{ $t('research') }}</router-link
                     >
-                </div>
+                </div> -->
             </div>
 
             <div class="flex-fill">
-
-
                 <div class=" mr-4 border-bottom font-weight-bold">
-                    {{ $t('libraries') }}
+                    {{ $t("libraries") }}
                 </div>
 
                 <div>
-
-                       <router-link :to="{ name: 'help' }"> {{ $t('create_and_manage') }}</router-link>
+                    <router-link :to="{ name: 'help' }">
+                        {{ $t("create_and_manage") }}</router-link
+                    >
                 </div>
 
                 <div>
                     <a href="https://backoffice.alorferi.com" target="_blank">
-                        {{ $t('back_office') }}
+                        {{ $t("back_office") }}
                     </a>
                 </div>
 
-                <div class=" mr-4  mt-2 border-bottom font-weight-bold">
+                <div>
+                    <router-link :to="{ name: 'pricing' }">{{
+                        $t("pricing")
+                    }}</router-link>
+                </div>
+
+                <!-- <div class=" mr-4  mt-2 border-bottom font-weight-bold">
                     {{ $t('employers') }}
                 </div>
 
@@ -77,35 +82,36 @@
                     >
 
 
-                </div>
-
+                </div> -->
             </div>
 
             <div class="flex-fill">
                 <div class="mr-4  border-bottom font-weight-bold">
-                        {{ $t('community') }}
+                    {{ $t("community") }}
                 </div>
 
                 <div>
                     <router-link :to="{ name: 'privacy-policy' }">
-                        {{ $t('privacy_policy') }}   </router-link
-                    >
+                        {{ $t("privacy_policy") }}
+                    </router-link>
                 </div>
 
                 <div>
-                    <router-link :to="{ name: 'help' }">  {{ $t('help') }}  </router-link>
+                    <router-link :to="{ name: 'help' }">
+                        {{ $t("help") }}
+                    </router-link>
                 </div>
 
                 <div>
                     <router-link :to="{ name: 'contact-us' }">
-                        {{ $t('contact_us') }}   </router-link
-                    >
+                        {{ $t("contact_us") }}
+                    </router-link>
                 </div>
             </div>
 
             <div class="flex-fill">
                 <div class=" mr-4 border-bottom font-weight-bold">
-                     {{ $t('work_with_us') }}
+                    {{ $t("work_with_us") }}
                 </div>
 
                 <!-- <div>
@@ -122,16 +128,14 @@
 
                 <div>
                     <router-link :to="{ name: 'api-overview' }">
-                        {{ $t('developers') }}    </router-link
-                    >
+                        {{ $t("developers") }}
+                    </router-link>
                 </div>
             </div>
 
             <div>
                 <div class="ml-2">
-
-                    {{ $t('download_the_app') }}
-
+                    {{ $t("download_the_app") }}
                 </div>
 
                 <a
@@ -146,8 +150,7 @@
                 </a>
 
                 <div class="mt-1 ml-2">
-
-                    {{ $t('get_us_on') }}
+                    {{ $t("get_us_on") }}
                     <a
                         class="p-1"
                         href="https://fb.com/alorferi"

@@ -51,6 +51,7 @@
 </template>
 
 <script>
+
 import GuestNav from "@/views/navbars/GuestNav";
 import HomeNav from "@/views/navbars/HomeNav.vue";
 // import UserBadge from "./views/badges/UserBadge";

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row" style="padding-top: 50pt">
+        <div class="row mb-5" style="padding-top: 50pt">
             <div class="col-sm-7 pl-2 text-center">
                 <div class="ml-auto mr-auto pl-5 pr-5 mb-3">
                     <div class="text-success text-left">
@@ -26,15 +26,31 @@
                 <Login />
             </div>
         </div>
+
+
+
+        <LibraryPatrons class="mb-5"/>
+
+        <NewsAndMediaReports class="mb-5"/>
+
+        <Awards/>
+
+
     </div>
 </template>
 
 <script>
 import Login from "@/views/auth/Login";
+import LibraryPatrons from "@/views/welcome/LibraryPatrons";
+import NewsAndMediaReports from "@/views/welcome/NewsAndMediaReports";
+import Awards from "@/views/welcome/Awards";
 export default {
     name: "Welcome",
     components: {
-        Login
+        Login,
+        LibraryPatrons,
+        NewsAndMediaReports,
+        Awards
     },
     mounted: function() {},
     computed: {},
