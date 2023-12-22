@@ -36,6 +36,7 @@ import LibraryBadge from "@/views/badges/LibraryBadge";
 // import UserBadge from "@/views/badges/UserBadge";
 import LoginWithOtcToResetPassword from "@/views/auth/LoginWithOtcToResetPassword";
 import ResetPassword from "@/views/auth/ResetPassword";
+import AwardsAndAchievements from "@/views/welcome/AwardsAndAchievements";
 // import i18n from "./i18n";
 
 Vue.use(Router);
@@ -70,6 +71,12 @@ let router = new Router({
             name: "login",
             component: LoginContainer,
             meta: { title: "Login" }
+        },
+        {
+            path: "/achievements",
+            name: "achievements",
+            component: AwardsAndAchievements,
+            meta: { title: "Achievements" }
         },
         {
             path: "/register",

@@ -21,7 +21,7 @@
                                     <h4>{{ item.caption }}</h4>
                                 </div>
 
-                                <h5 class="text-center">{{ item.title }}</h5>
+                                <h6 class="text-center">{{ $t(item.report_src) }}</h6>
 
                             </div>
                         </div>
@@ -44,11 +44,11 @@ export default {
             videos: [
                 {
                     vid: "O6tpimUtg24",
-                    title: "সময় টিভি",
+                    report_src: "somoy_tv_report",
                 },
                 {
                     vid: "6VIGaPAnjz0",
-                    title: "The Business Standard",
+                    report_src: "tbs_report",
                 }
             ]
         };

@@ -28,10 +28,30 @@
             </ul>
 
             <ul class="navbar-nav ml-auto">
+
                 <li class="nav-item">
-                    <LanguageToggleButton/>
+                    <router-link
+                        class="nav-link"
+                        :to="{ name: 'home' }"
+                        >{{ $t("home") }}</router-link
+                    >
                 </li>
+
                 <li class="nav-item">
+                    <router-link
+                        class="nav-link"
+                        :to="{ name: 'achievements' }"
+                        >{{ $t("achievements") }}</router-link
+                    >
+                </li>
+
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="{ name: 'about' }">{{
+                        $t("about")
+                    }}</router-link>
+                </li>
+
+                <!-- <li class="nav-item">
                     <router-link class="nav-link" :to="{ name: 'login' }"
                         >{{ $t('login') }}</router-link
                     >
@@ -40,6 +60,9 @@
                     <router-link class="nav-link" :to="{ name: 'register' }"
                         > {{ $t('sign_up') }}</router-link
                     >
+                </li> -->
+                <li class="nav-item">
+                    <LanguageToggleButton />
                 </li>
             </ul>
         </div>
@@ -50,7 +73,7 @@
 import LanguageToggleButton from "@/components/LanguageToggleButton";
 export default {
     name: "GuestNav",
-    components: {LanguageToggleButton},
+    components: { LanguageToggleButton },
     data() {
         return {};
     },

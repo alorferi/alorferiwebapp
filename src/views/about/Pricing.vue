@@ -36,7 +36,7 @@
                         :class="item.pac0.color"
                         v-html="item.pac0.text"
                     >
-                        <!-- &check; {{ item.pac0.text }} -->
+
                     </td>
                     <td
                         class="text-center"
@@ -88,15 +88,15 @@ export default {
                     name: "Books",
                     pac0: { text: "Max: 500", color: "text-success" },
                     pac1: {
-                        text: "Min: 501 ~ Max: 2000",
+                        text: "Min: 501 ~ Max: 1000",
                         color: "text-success"
                     },
                     pac2: {
-                        text: "Min: 2001 ~ Max: 5000",
+                        text: "Min: 1001 ~ Max: 2000",
                         color: "text-success"
                     },
                     pac3: {
-                        text: "Min: 5001 ~ Max: 10000",
+                        text: "Min: 2001 ~ Max: 3000",
                         color: "text-success"
                     }
                 },
@@ -168,7 +168,7 @@ export default {
                 },
 
                 {
-                    name: "Personal SMS",
+                    name: "Accounting",
                     pac0: {
                         text: this.symbolCross(),
                         color: this.colorDanger()
