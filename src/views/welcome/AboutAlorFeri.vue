@@ -4,13 +4,27 @@
         <div class="container custom-section">
             <div class="row">
                 <div class="col-md-6">
-                    <h1>About Alor Feri</h1>
-                    <p>Alor Feri is a promising Bangladeshi technology startup founded in 2021. The company's mission is
-                        to
-                        empower libraries and connect readers with books and knowledge to improve the quality of
-                        education
-                        and enlighten society. With the Alor Feri app, the company provides a smart library management
-                        system that streamlines library operations and enhances the reading experience for users.</p>
+                    <h1>Alor Feri</h1>
+                    <p style="text-align: justify;">
+                        Alor Feri Limited stands at the forefront of technological innovation as a dynamic software
+                        development company. Specializing in mobile app development using Flutter, Android, and iOS
+                        technologies, as well as web-based applications and backend services utilizing Laravel, Vue.Js,
+                        Django, and more.
+
+                    </p>
+
+                    <p style="text-align: justify;">
+
+                        Alor Feri is committed to delivering cutting-edge solutions across diverse platforms.
+                        We are professionals in designing, creating and deploying applications for pivotal tasks and
+                        organization-wide ventures. Our specialized staff at Alor Feri approaches your difficulties
+                        strategically, developing solutions and system administration services that suit your short and
+                        long-term goals. We specialize in software development, which includes designing (UI/UX),
+                        developing, maintaining, and promoting mobile apps as well as other web applications. Our aim is
+                        to give our customers the best user experience in the business by providing proper solutions
+                        through our resource pool of experienced individuals, cutting-edge technology, and industry best
+                        practices.
+                    </p>
                 </div>
                 <div class="col-md-6">
                     <img class="img-fluid rounded"

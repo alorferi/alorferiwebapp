@@ -13,14 +13,14 @@
                     v-bind:class="{ active: item === activeItem  }">
 
 
-                    <img :src="item.image_name" :alt="item.title" style="height: 500px;"
+                    <img :src="item.image_name" :alt="item.title" style="height: 550px;"
                         class="d-block w-100 img-thumbnail" />
 
                     <div class="carousel-caption d-none d-md-block">
 
                         <div class=" p-2" style="background-color: #47434346;">
                             <h4> {{ $t(item . title) }} </h4>
-                            <p> {{ $t(item . caption) }} </p>
+                            <p style="text-align: justify;"> {{ $t(item . caption) }} </p>
                         </div>
 
                     </div>
@@ -41,8 +41,8 @@
 </template>
 
 <script>
-    import award_patuakkhali from "@/assets/images/awards/award_patuakkhali.jpg";
-    import award_prothom_alo from "@/assets/images/awards/award_prothom_alo.jpg";
+    import award_patuakkhali from "@/assets/images/awards/award_patuakkhali.png";
+    import award_prothom_alo from "@/assets/images/awards/award_prothom_alo.png";
     import bm_with_palak from "@/assets/images/awards/bm_with_palak.jpeg";
 
     import achivement_innovation_fair_barisal_2023 from "@/assets/images/awards/achivement_innovation_fair_barisal_2023.jpg";

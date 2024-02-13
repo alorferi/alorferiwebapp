@@ -3,9 +3,11 @@
 
         <TopSlider class="mb-5 mt-6" style="margin-top: 85px;"/>
 
-        <AboutAlorFeri class="mb-5 mt-6"/>
+        <!-- <AboutAlorFeri class="mb-5 mt-6"/> -->
 
-        <ServicesWeProvide class="mb-5 mt-6"/>
+        <OurServices class="mb-5 mt-6"/>
+
+        <OurProducts/>
 
         <NewsAndMediaReports class="mb-5" />
 
@@ -16,13 +18,14 @@
 </template>
 
 <script>
-import AboutAlorFeri from "@/views/welcome/AboutAlorFeri";
+// import AboutAlorFeri from "@/views/welcome/AboutAlorFeri";
 import TopSlider from "@/views/welcome/TopSlider";
 import LibraryPatrons from "@/views/welcome/LibraryPatrons";
 import NewsAndMediaReports from "@/views/welcome/NewsAndMediaReports";
 // import AwardsAndAchievements from "@/views/welcome/AwardsAndAchievements";
 
-import ServicesWeProvide from "@/views/welcome/ServicesWeProvide";
+import OurServices from "@/views/welcome/OurServices";
+import OurProducts from "@/views/welcome/OurProducts";
 
 
 export default {
@@ -32,8 +35,9 @@ export default {
         LibraryPatrons,
         NewsAndMediaReports,
         // AwardsAndAchievements,
-        AboutAlorFeri,
-        ServicesWeProvide
+        // AboutAlorFeri,
+        OurServices,
+        OurProducts
     },
     mounted: function() {},
     computed: {},

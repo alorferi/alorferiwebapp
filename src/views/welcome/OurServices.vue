@@ -3,7 +3,7 @@
         <div class="container custom-section">
             <div class="row">
                 <div class="col-md-6">
-                    <h1>Services We Provide</h1>
+                    <h1>Our Services</h1>
                     <p>Alor Feri is a promising Bangladeshi technology startup founded in 2021. The company's mission is to
                         empower libraries and connect readers with book.</p>
 
@@ -39,7 +39,7 @@
 
 <script>
 export default {
-    name: "ServicesWeProvide",
+    name: "OurServices",
     components: {},
 };
 </script>
