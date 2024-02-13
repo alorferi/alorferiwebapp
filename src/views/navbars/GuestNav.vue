@@ -41,7 +41,7 @@
                     <router-link
                         class="nav-link"
                         :to="{ name: 'achievements' }"
-                        >{{ $t("achievements") }}</router-link
+                        >{{ $t("training") }}</router-link
                     >
                 </li>
 
@@ -51,7 +51,7 @@
                     }}</router-link>
                 </li>
 
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <router-link class="nav-link" :to="{ name: 'login' }"
                         >{{ $t('login') }}</router-link
                     >
@@ -60,7 +60,7 @@
                     <router-link class="nav-link" :to="{ name: 'register' }"
                         > {{ $t('sign_up') }}</router-link
                     >
-                </li> -->
+                </li>
                 <li class="nav-item">
                     <LanguageToggleButton />
                 </li>
