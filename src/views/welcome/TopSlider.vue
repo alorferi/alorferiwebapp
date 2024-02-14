@@ -13,7 +13,7 @@
                     v-bind:class="{ active: item === activeItem  }">
 
 
-                    <img :src="item.image_name" :alt="item.title" style="height: 550px;"
+                    <img :src="item.image_name" :alt="item.title" style="height: 600px;"
                         class="d-block w-100 img-thumbnail" />
 
                     <div class="carousel-caption d-none d-md-block">

@@ -1,6 +1,6 @@
 <template>
-    <div class="">
-        <div class="container custom-section">
+    <div class="card ">
+        <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <h1>Our Services</h1>
@@ -10,11 +10,11 @@
                     <ul class="list-group">
                         <li class="list-group-item">Software Development</li>
                         <li class="list-group-item">Training & Consultancy</li>
-                        <li class="list-group-item">Library Management</li>
+                        <li class="list-group-item">Software as a Service (SaaS)</li>
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <img class="img-fluid rounded" src="https://www.bluecloudt.com/wp-content/uploads/2020/06/Managed-Services-1366x1106-1-1024x829.png" alt="Office Environment">
+                    <img class="img-fluid rounded" src="@/assets/images/our_services/ios_seminar_at_bracu.png" alt="Office Environment">
                 </div>
             </div>
         </div>
@@ -38,6 +38,8 @@
 </style>
 
 <script>
+
+
 export default {
     name: "OurServices",
     components: {},

@@ -1,16 +1,15 @@
 <template>
-    <div class="">
+    <div class="card">
 
-        <div class="container custom-section">
+        <div class=" card-body ">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 ">
                     <h1>Alor Feri</h1>
                     <p style="text-align: justify;">
                         Alor Feri Limited stands at the forefront of technological innovation as a dynamic software
                         development company. Specializing in mobile app development using Flutter, Android, and iOS
                         technologies, as well as web-based applications and backend services utilizing Laravel, Vue.Js,
                         Django, and more.
-
                     </p>
 
                     <p style="text-align: justify;">
@@ -23,13 +22,16 @@
                         developing, maintaining, and promoting mobile apps as well as other web applications. Our aim is
                         to give our customers the best user experience in the business by providing proper solutions
                         through our resource pool of experienced individuals, cutting-edge technology, and industry best
-                        practices.
+                        practices.    <router-link :to="{ name: 'about' }">{{
+                        $t("read_more")
+                    }}</router-link>
+
                     </p>
                 </div>
                 <div class="col-md-6">
                     <img class="img-fluid rounded"
-                        src="https://play-lh.googleusercontent.com/V0KaoFUiJYg0ndhEzBmE3zE3So-muLMz5NZZbiHgxI4qab0TJHBtpk6o2E8spw3iq6Q"
-                        alt="Office Environment">
+                        src="@/assets/images/news/interview_with_somoy_tv.jpg"
+                        alt="Interview with somoy tv">
                 </div>
             </div>
         </div>

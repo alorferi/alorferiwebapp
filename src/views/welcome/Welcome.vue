@@ -1,24 +1,24 @@
 <template>
     <div >
 
-        <TopSlider class="mb-5 mt-6" style="margin-top: 85px;"/>
+        <TopSlider class="mb-5 mt-6" style="margin-top: 85px ;"/>
 
-        <!-- <AboutAlorFeri class="mb-5 mt-6"/> -->
+        <AboutAlorFeri class="mb-5 mt-5"/>
 
-        <OurServices class="mb-5 mt-6"/>
+        <OurServices class="mb-5 mt-5"/>
 
-        <OurProducts/>
+        <OurProducts class="mb-5 mt-5"/>
 
-        <NewsAndMediaReports class="mb-5" />
+        <NewsAndMediaReports class="mb-5 mt-5" />
 
-        <LibraryPatrons class="mb-5" />
+        <LibraryPatrons class="mb-5 mt-5" />
 
         <!-- <AwardsAndAchievements /> -->
     </div>
 </template>
 
 <script>
-// import AboutAlorFeri from "@/views/welcome/AboutAlorFeri";
+import AboutAlorFeri from "@/views/welcome/AboutAlorFeri";
 import TopSlider from "@/views/welcome/TopSlider";
 import LibraryPatrons from "@/views/welcome/LibraryPatrons";
 import NewsAndMediaReports from "@/views/welcome/NewsAndMediaReports";
@@ -35,7 +35,7 @@ export default {
         LibraryPatrons,
         NewsAndMediaReports,
         // AwardsAndAchievements,
-        // AboutAlorFeri,
+        AboutAlorFeri,
         OurServices,
         OurProducts
     },

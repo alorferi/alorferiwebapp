@@ -1,5 +1,5 @@
 const state = {
-    activeLanguage: localStorage.getItem("lang") || "bn"
+    activeLanguage: localStorage.getItem("lang") || "en"
 };
 const getters = {
     activeLanguage: state => {
