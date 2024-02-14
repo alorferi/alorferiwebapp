@@ -94,7 +94,7 @@ export default {
         };
     },
     computed: {},
-    mounted() {},
+  async mounted(){},
     methods: {
         submitForm: function() {
             axios

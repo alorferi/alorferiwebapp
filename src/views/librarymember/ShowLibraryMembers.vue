@@ -27,12 +27,13 @@ import WrapperListView from "../../components/WrapperListView";
 
 export default {
     name: "ShowLibraryMembers",
+     props:["library"],
     components: {
         Loading,
         SearchTextField,
         Paginator,WrapperListView
     },
-    mounted() {
+  async mounted(){
         this.fetchLibraryMembers();
     },
     data: function() {
@@ -44,9 +45,6 @@ export default {
         };
     },
     computed: {
-        library() {
-            return this.$store.getters.library;
-        },
         libraryMemberWrappers() {
             return this.$store.getters.libraryMembersResponse == null
                 ? []
@@ -64,7 +62,7 @@ export default {
             var payload = {
                 term: pTerm,
                 page: pPage,
-                libraryId: this.library.id
+                library_id: this.library.id
             };
 
             this.$store

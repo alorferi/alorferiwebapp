@@ -1,94 +1,235 @@
 <template>
     <div>
-        <div class="media border p-3 mt-3">
-            <!-- <img
-                src="@/assets/ic_user_male.png"
-                alt="John Doe"
-                class="mr-3 mt-3 rounded-circle"
-                style="width:40px;height:40px"
-            /> -->
-
-            <UserPhoto :user="post.user" size="40"></UserPhoto>
-
+        <div class="media border p-3 mb-3">
+            <router-link
+                :to="{
+                    name: 'users.show',
+                    params: { user_id: this.post.user.id }
+                }"
+            >
+                <UserPhoto :user="post.user" size="48"></UserPhoto>
+            </router-link>
             <div class="media-body pl-3">
-                <h5>
-                    {{post.user.first_name}} <small><i class="text-text-secondary"> {{ post.posted_at }}</i></small>
-                </h5>
-                <p>
-                   {{post.body}}
-                </p>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <div>
+                            <router-link
+                                class="text-dark"
+                                :to="{
+                                    name: 'users.show',
+                                    params: { user_id: this.post.user.id }
+                                }"
+                            >
+                                <b>
+                                    {{ post.user.first_name }}
+                                    {{ post.user.surname }}
+                                </b>
+                            </router-link>
 
+                            <span v-if=" post.postable_type == 'App\\Models\\Library' ">
+                                &gt;
 
-                <div v-if="post.image">
+                                <router-link
+                                    class="text-dark"
+                                    :to="{
+                                        name: 'library-show',
+                                        params: { id: post.postable.id }
+                                    }"
+                                >
+                                    <b>
+                                        {{ post.postable.name }}
+                                    </b>
+                                </router-link>
+                            </span>
+                        </div>
 
-                    <img :src="post.image" alt="Posted image" class="w-100">
+                        <small
+                            ><i class="text-text-secondary">
+                                {{ this.momentFromNow(post.created_at) }}</i
+                            ></small
+                        >
+                    </div>
 
+                    <div>
+                        <div class="dropdown show">
+                            <a
+                                class="dropdown-toggle dropdown-toggle-split btn btn-link
+                                border-top border-left border-right border-bottom
+                                "
+                                role="button"
+                                id="dropdownMenuLink"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                            </a>
+
+                            <div
+                                class="dropdown-menu"
+                                aria-labelledby="dropdownMenuLink"
+                            >
+                                <a
+                                    class="dropdown-item  text-primary"
+                                    role="button"
+                                    v-if="isMyPost"
+                                    @click="
+                                        showEditPostModal = !showEditPostModal
+                                    "
+                                    ><i class="far fa-edit"></i> Edit this
+                                    post</a
+                                >
+                                <a
+                                    class="dropdown-item text-danger"
+                                    v-if="isMyPost"
+                                    role="button"
+                                    @click="deleteUserPost(post)"
+                                    ><i class="far fa-trash-alt"></i> Delete
+                                    this post</a
+                                >
+
+                                <a
+                                    class="dropdown-item text-danger"
+                                    v-if="!isMyPost"
+                                    role="button"
+                                    @click="
+                                        showCreateReportModel = !showCreateReportModel
+                                    "
+                                    ><i class="fas fa-exclamation-triangle"></i>
+                                    Report this post</a
+                                >
+
+                                <a
+                                    class="dropdown-item text-danger"
+                                    v-if="!isMyPost"
+                                    role="button"
+                                    @click="
+                                        showCreateBlockModel = !showCreateBlockModel
+                                    "
+                                    ><i class="fas fa-exclamation-triangle"></i>
+                                    Block this post</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <CreateReportModal
+                    :show="showCreateReportModel"
+                    @updateVisibleState="showCreateReportModel = $event"
+                    :user="post.user"
+                    complainable_type="Post"
+                    :complainable_id="post.id"
+                />
+
+                <CreateBlockModal
+                    :show="showCreateBlockModel"
+                    @updateVisibleState="showCreateBlockModel = $event"
+                    :user="post.user"
+                    blockable_type="Post"
+                    :blockable_id="post.id"
+                    @didFinish="didFinishBlockingUser"
+                />
+
+                <h5
+                    v-if="post.title"
+                    class="mr-5"
+                    style="text-align:justify"
+                    v-html="post.title"
+                ></h5>
+
+                <p
+                    v-if="post.body"
+                    v-html="body"
+                    class="mr-5"
+                    style="text-align:justify"
+                ></p>
+
+                <div v-if="post.image_url" class="mr-5">
+                    <img
+                        :src="this.getApiUrl(post.image_url)"
+                        style="max-width:100%; height: auto;"
+                        alt="Posted image"
+                        class="img-fluid"
+                    />
                 </div>
 
                 <!-- 4:3 aspect ratio -->
-                <div v-if="getYouTubeEmbedUrl" class="embed-responsive embed-responsive-16by9">
+                <div
+                    v-if="getYouTubeEmbedUrl"
+                    class="embed-responsive embed-responsive-16by9"
+                >
                     <iframe
                         class="embed-responsive-item"
                         :src="getYouTubeEmbedUrl"
                     ></iframe>
                 </div>
 
-                <div class="d-flex justify-content-between">
-                    <div class="p-2">
-                        <i class="far fa-thumbs-up"></i> Iqbal and 137 others
-                    </div>
+                <ShowPostComments :post="post" />
 
-                    <div class="p-2">
-                        123 comments
-                    </div>
-                </div>
-
-                <div
-                    class="d-flex justify-content-between border border-left-0 border-right-0 border-bottom-0"
-                >
-                    <div>
-                        <a href="#" class="btn btn-light">
-                            <i class="far fa-thumbs-up"></i> Like</a
-                        >
-                    </div>
-
-                    <a href="#" class="btn btn-light">  <i class="far fa-comment-dots"></i> Comment</a>
-                </div>
+                <EditPostModal
+                    :show="showEditPostModal"
+                    :post="post"
+                    @updateVisibleState="showEditPostModal = $event"
+                    :postable_type="post.postable_type"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import UserPhoto from "../user/UserPhoto"
+import UserPhoto from "../user/UserPhoto";
+import ShowPostComments from "../postcomment/ShowPostComments";
+import EditPostModal from "./CreateOrEditPostModal.vue";
+import CreateReportModal from "@/views/complain/CreateReportModal.vue";
+import CreateBlockModal from "@/views/complain/CreateBlockModal.vue";
+
 export default {
     name: "PostListItem",
-    props: ['post'],
-    components: {UserPhoto},
+    props: ["post"],
+    components: {
+        UserPhoto,
+        ShowPostComments,
+        EditPostModal,
+        CreateReportModal,
+        CreateBlockModal
+    },
     data() {
         return {
-
-
+            showEditPostModal: false,
+            showCreateReportModel: false,
+            showCreateBlockModel: false
         };
     },
     computed: {
-
-
+        body() {
+            return this.post.body.replace(/(?:\r\n|\r|\n)/g, "<br>");
+        },
         getYouTubeEmbedUrl: function() {
+            var url = this.extractUrl(this.post.body);
 
-          var url = this.extractUrl(this.post.body)
+            var vId = this.extractYouTubeVideoId(url);
 
+            if (vId) {
+                url =
+                    "https://www.youtube.com/embed/" +
+                    this.extractYouTubeVideoId(url);
+            }
 
-        if(url){
-          url = "https://www.youtube.com/embed/" +
-                this.extractYouTubeVideoId(url)
+            return url;
+        },
+
+        isMyPost() {
+            return this.post.user.id == this.$store.getters.activeUser.id;
         }
+    },
 
-
-
-            return (
-               url
-            );
+    methods: {
+        deleteUserPost(post) {
+            this.$store.dispatch("deleteUserPost", post);
+        },
+        didFinishBlockingUser() {
+            this.$store.dispatch("removeUserPost", this.post);
         }
     }
 };

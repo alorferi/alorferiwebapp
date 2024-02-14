@@ -7,7 +7,7 @@
 
 <script>
 // @ is an alias to /src
-import Welcome from "@/views/Welcome.vue";
+import Welcome from "@/views/welcome/Welcome.vue";
 import NewsFeeds from "@/views/home/NewsFeeds";
 
 export default {

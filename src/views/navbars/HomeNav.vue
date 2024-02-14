@@ -1,43 +1,21 @@
 <template>
     <div class="container-fluid">
-        <router-link :to="{ name: 'home' }" class="navbar-brand">
+        <!-- <router-link :to="{ name: 'home' }" class="navbar-brand"    @click="reload">
             <img
-                src="@/assets/alorferi_logo_brand.png"
+                src="@/assets/images/defaults/alorferi_logo_brand.png"
                 height="24px"
                 alt="Alor Feri logo"
             />
-        </router-link>
+        </router-link> -->
 
-        <form class="form-inline" action="/action_page.php">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">
-                        <i class="fas fa-mobile-alt"></i>
-                    </span>
+        <a href="/" class="navbar-brand" @click="reload">
+            <img
+                src="@/assets/images/defaults/alorferi_logo_brand.png"
+                height="24px"
+                alt="Alor Feri logo"
+            />
+        </a>
 
-                    <select class="form-control">
-                        <option value="Library" selected>Library</option>
-                        <option value="+91">Book</option>
-                        <option value="+1">Blood</option>
-                        <option value="+1">Jobs</option>
-                    </select>
-                </div>
-
-                <input
-                    class="form-control"
-                    type="text"
-                    placeholder="Search"
-                />
-
-                    <div class="input-group-prepend">
-                    <span class="input-group-text">
-                        <a href="#"> <i class="fas fa-search"></i></a>
-                        <!-- <button type="submit"> <i class="fas fa-search"></i> </button> -->
-                    </span>
-                </div>
-            </div>
-            <!-- <button class="btn btn-success" type="submit">Search</button> -->
-        </form>
 
         <!-- Toggler/collapsibe Button -->
         <button
@@ -50,47 +28,67 @@
         </button>
 
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="nav navbar-nav mr-auto">
-                <li>
-                    <router-link class="nav-link" :to="{ name: 'home' }">
-                        <i class="fas fa-home"></i
-                    ></router-link>
-                </li>
-
-                <li>
-                    <router-link class="nav-link" :to="{ name: 'users.me' }">
-                        <i class="far fa-user-circle"></i></router-link>
-                </li>
-            </ul>
-
             <ul class="nav navbar-nav">
+
+                <li class="pl-2 pr-1">
+                    <a href="/" class="nav-link" @click="reload">
+                    <i class="fas fa-home"></i> <span class="pl-1"> {{ $t('home') }} </span>
+                    </a>
+                </li>
+                <li class="pl-1 pr-1">
+                    <a href="/libraries" class="nav-link" @click="reload">
+                        {{ $t('libraries') }}
+                    </a>
+                </li>
+
+                <li class="pl-1 pr-1">
+                    <a href="/users" class="nav-link" @click="reload">
+                       {{ $t('users') }}
+                    </a>
+                </li>
+
+
+            </ul>
+            <!-- <NavBarSearch class="ml-4"/> -->
+            <ul class="nav navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <LanguageToggleButton/>
+                </li>
+
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
-                    <a id="navbarDropdown"
+                    <a
+                        id="navbarDropdown"
                         class="nav-link dropdown-toggle "
                         href="#"
-                         role="button"
+                        role="button"
                         data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        <UserPhoto :user="activeUser" size="12" />
 
-
-                        <UserPhoto :user="user" size="12"/>
-
-                        {{ user.first_name }}
-
+                        {{ activeUser.first_name }}
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/user/profile"
-                            >Profile</a
+                    <div
+                        class="dropdown-menu dropdown-menu-right"
+                        aria-labelledby="navbarDropdown"
+                    >
+                        <router-link
+                            class="dropdown-item"
+                            :to="{ name: 'users.me' }"
                         >
-                        <a class="dropdown-item" href="#">Link 2</a>
+                        {{ $t('profile') }}
+                        </router-link>
+
                         <div class="dropdown-divider"></div>
                         <a
                             class="dropdown-item"
                             href="#"
                             @click="logoutMe"
                             v-if="this.$store.getters.isLoggedIn"
-                            >Logout</a
+                            > {{ $t('logout') }}</a
                         >
                     </div>
                 </li>
@@ -101,27 +99,34 @@
 
 <script>
 // import Logout from './Logout'
-import { mapGetters } from "vuex";
-import UserPhoto from '../user/UserPhoto'
+// import { mapGetters } from "vuex";
+import UserPhoto from "@/views/user/UserPhoto";
+import LanguageToggleButton from "@/components/LanguageToggleButton";
+// import NavBarSearch from '@/views/navbars/NavBarSearch.vue';
 export default {
     name: "HomeNav",
     components: {
-       UserPhoto, // Logout,
+        UserPhoto,
+        // NavBarSearch
+        LanguageToggleButton
     },
     data() {
         return {};
     },
     computed: {
-        ...mapGetters({
-            user: "user"
-        })
+        activeUser() {
+            return this.$store.getters.activeUser;
+        }
     },
-    mounted() {},
+    async mounted() {},
     methods: {
         logoutMe: function() {
             this.$store.dispatch("logout").then(() => {
                 this.$router.push({ name: "home" }).catch(() => {});
             });
+        },
+        reload: function() {
+            this.$router.go(this.$router.currentRoute);
         }
     }
 };

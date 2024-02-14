@@ -1,15 +1,26 @@
 <template>
     <div id="app" class="">
-
-
-        <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top  ">
+        <nav
+            class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white"
+            v-if="isLoggedIn"
+        >
             <div class="container">
+                 <HomeNav/>
 
-
-            <HomeNav v-if="isLoggedIn"></HomeNav>
-            <GuestNav v-else></GuestNav>
-              </div>
+            </div>
         </nav>
+
+
+        <nav
+            class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white"
+            v-else
+        >
+            <div class="container">
+                 <GuestNav/>
+
+            </div>
+        </nav>
+
 
         <div class="container" style="margin-top:70px;">
             <div v-if="isLoggedIn">
@@ -18,7 +29,8 @@
                         <component :is="leftBadge"></component>
                         <component :is="leftMenu"></component>
                     </div>
-                    <div class="col-sm-8" style="overflow-y: scroll;">
+                    <!-- style="overflow-y: scroll;" -->
+                    <div class="col-sm-8">
                         <router-view></router-view>
                     </div>
                     <div class="col-sm-2"></div>
@@ -28,22 +40,31 @@
             <div v-else class="">
                 <router-view></router-view>
             </div>
+
+            <br>
+            <br>
+            <br>
+            <BottomBar />
+
         </div>
     </div>
 </template>
 
 <script>
-import GuestNav from "./views/navbars/GuestNav";
-import HomeNav from "./views/navbars/HomeNav.vue";
+
+import GuestNav from "@/views/navbars/GuestNav";
+import HomeNav from "@/views/navbars/HomeNav.vue";
 // import UserBadge from "./views/badges/UserBadge";
 // import HomeLeftMenu from "./views/menus/HomeLeftMenu";
 // import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
+import BottomBar from "@/views/navbars/BottomBar";
 
 export default {
     name: "App",
     components: {
         GuestNav,
-        HomeNav
+        HomeNav,
+        BottomBar
     },
     computed: {
         isLoggedIn: function() {
@@ -74,6 +95,7 @@ export default {
     },
     methods: {},
     created() {
+        this.$i18n.locale =  this.$store.getters.activeLanguage;
         this.$store.dispatch("setPageTitle", this.$route.meta.title);
     },
     watch: {

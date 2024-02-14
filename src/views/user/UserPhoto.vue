@@ -35,7 +35,7 @@ export default {
             return this.size;
         },
 
-        phtoUrl() {
+        photoUrl() {
             return this.getApiUrl(this.user.photo_url);
         }
     }

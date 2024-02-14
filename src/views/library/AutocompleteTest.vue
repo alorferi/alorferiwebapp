@@ -23,7 +23,7 @@ export default {
     components: {
         Autocomplete
     },
-    mounted() {
+  async mounted(){
         this.fetchMyLibraries();
         this.customers = customers;
     },

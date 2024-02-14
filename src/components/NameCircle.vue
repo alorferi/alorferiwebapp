@@ -33,7 +33,7 @@ export default {
         return "width:" + this.size + "px; height:" + this.size + "px;";
       }
     },
-    mounted() {
+  async mounted(){
         console.log("Component mounted.");
     }
 };

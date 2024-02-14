@@ -10,6 +10,16 @@
                 />
 
                 <div>
+                    <p>
+                        {{ item.book_code }}<span v-if="item.shelf_number != null">
+                            /{{ item.shelf_number }}
+                        </span>
+
+                        <span v-if="item.box_number != null">
+                            .{{ item.box_number }}
+                        </span>
+                    </p>
+
                     <h5>{{ item.book.title }}</h5>
 
                     <div class="d-flex">
@@ -21,12 +31,6 @@
                             <span v-if="index < item.book.authors - 1">|</span>
                         </div>
                     </div>
-
-                    <p>
-                        B{{ item.book_code }} - SF{{ item.shelf_number }} - BX{{
-                            item.box_number
-                        }}
-                    </p>
                 </div>
             </div>
         </div>

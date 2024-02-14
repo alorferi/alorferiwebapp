@@ -1,92 +1,52 @@
 <template>
     <div class="pt-2">
+
+    <CreateLibraryPost :library="library"
+    v-if="this.hasMemberPermission('library_edit')"
+    />
+
         <Loading v-if="show_loading"></Loading>
-        <div v-else>
-            <WrapperListView
-                :dataWrapperList="dataWrappers"
-                :listItemComponent="listItemComponent"
-            />
-        </div>
+        <ShowLibraryPosts :library="library" v-else>
+
+        </ShowLibraryPosts>
     </div>
 </template>
 
 <script>
-import LibraryBookIssueTimelineItem from "../librarybookissue/LibraryBookIssueTimelineItem";
-import WrapperListView from "../../components/WrapperListView";
-import Loading from "../../components/Loading";
+
+import CreateLibraryPost from "@/views/library/CreateLibraryPost";
+import ShowLibraryPosts from  "@/views/library/ShowLibraryPosts";
+import Loading from "@/components/Loading";
 
 export default {
     name: "LibraryTimeline",
+     props:["library"],
     components: {
         Loading,
-        WrapperListView
+        ShowLibraryPosts,
+        CreateLibraryPost
     },
-    mounted() {
-        this.fetchLibraryBookIssues();
+  async mounted(){
     },
     data: function() {
         return {
-            show_loading: true,
+            show_loading: false,
             term: null,
             page: null,
-            listItemComponent: LibraryBookIssueTimelineItem
         };
     },
     computed: {
-        library() {
-            return this.$store.getters.library;
-        },
-        dataWrappers() {
-            return this.$store.getters.libraryBookIssuesResponse == null
-                ? []
-                : this.$store.getters.libraryBookIssuesResponse.data;
-        },
 
-        meta() {
-            return this.$store.getters.libraryBookIssuesResponse == null
-                ? null
-                : this.$store.getters.libraryBookIssuesResponse.meta;
-        }
+
+
     },
     methods: {
-        fetchLibraryBookIssues: function(pTerm = null, pPage = null) {
-            var payload = {
-                term: pTerm,
-                page: pPage,
-                libraryId: this.library.id
-            };
 
-            this.$store
-                .dispatch("fetchLibraryBookIssues", payload)
-                .then(() => {
-                    this.show_loading = false;
-                })
-                .catch(() => {
-                    this.show_loading = false;
-                });
-        }
     },
 
     watch: {
-        page: {
-            // the callback will be called immediately after the start of the observation
-            immediate: true,
-            handler(newVal, oldVal) {
-                if (newVal != oldVal) {
-                    this.fetchLibraryBookIssues(this.term, this.page);
-                }
-            }
-        },
 
-        term: {
-            // the callback will be called immediately after the start of the observation
-            immediate: true,
-            handler(newVal, oldVal) {
-                if (newVal != oldVal) {
-                    this.fetchLibraryBookIssues(this.term, this.page);
-                }
-            }
-        }
+
     }
 };
 </script>

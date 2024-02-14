@@ -1,23 +1,43 @@
 import Vue from "vue";
 import Router from "vue-router";
-import store from "./store.js";
-import Home from "./views/home/Home.vue";
-import About from "./views/about/About.vue";
-import Login from "./views/auth/Login.vue";
-import Secure from "./views/auth/Secure.vue";
-import Register from "./views/auth/Register.vue";
-import NewsFeeds from "./views/home/NewsFeeds.vue";
-import ShowMyLibraries from "./views/library/ShowMyLibraries.vue";
-import AutoCompleteTest from "./views/library/AutocompleteTest.vue";
-import LibraryCreate from "./views/library/LibraryCreate.vue";
-import LibraryEdit from "./views/library/LibraryEdit.vue";
-import LibraryShow from "./views/library/LibraryShow.vue";
-import LibraryAbout from "./views/library/LibraryAbout.vue";
-import UserProfile from "./views/user/UserProfile";
-import HomeLeftMenu from "./views/menus/HomeLeftMenu";
-import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
-import LibraryBadge from "./views/badges/LibraryBadge";
-import UserBadge from "./views/badges/UserBadge";
+import store from "@/store";
+import Home from "@/views/home/Home.vue";
+import SearchShow from "@/views/home/SearchShow.vue";
+import About from "@/views/about/About.vue";
+import Products from "@/views/about/Products.vue";
+import Research from "@/views/about/Research.vue";
+import Awards from "@/views/about/Awards.vue";
+import Advertisers from "@/views/about/Advertisers.vue";
+import Careers from "@/views/about/Careers.vue";
+
+import ApiOverview from "@/views/developer/ApiOverview.vue";
+
+import Pricing from "@/views/about/Pricing.vue";
+import Help from "@/views/about/Help.vue";
+import PrivacyPolicy from "@/views/about/PrivacyPolicy.vue";
+import ContactUs from "@/views/about/ContactUs.vue";
+// import Login from "@/views/auth/Login.vue";
+import LoginContainer from "@/views/auth/LoginContainer.vue";
+import Register from "@/views/auth/Register.vue";
+// import NewsFeeds from "@/views/home/NewsFeeds.vue";
+import MyLibraryListView from "@/views/library/MyLibraryListView.vue";
+import SearchLibraryListView from "@/views/library/SearchLibraryListView.vue";
+import SearchUserListView from "@/views/user/SearchUserListView.vue";
+import LibraryCreate from "@/views/library/LibraryCreate.vue";
+import LibraryEdit from "@/views/library/LibraryEdit.vue";
+import LibraryShow from "@/views/library/LibraryShow.vue";
+import LibraryAbout from "@/views/library/LibraryAbout.vue";
+import ShowMe from "@/views/user/ShowMe";
+import ShowUser from "@/views/user/ShowUser";
+import EditMyProfile from "@/views/user/EditMyProfile";
+import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
+import LibraryLeftMenu from "@/views/menus/LibraryLeftMenu";
+import LibraryBadge from "@/views/badges/LibraryBadge";
+// import UserBadge from "@/views/badges/UserBadge";
+import LoginWithOtcToResetPassword from "@/views/auth/LoginWithOtcToResetPassword";
+import ResetPassword from "@/views/auth/ResetPassword";
+import AwardsAndAchievements from "@/views/welcome/AwardsAndAchievements";
+// import i18n from "./i18n";
 
 Vue.use(Router);
 
@@ -29,106 +49,194 @@ let router = new Router({
             name: "home",
             component: Home,
             leftMenu: HomeLeftMenu,
-            meta:{title: "Home"}
+            meta: { title: "Home" }
+        },
 
+        {
+            path: "/libraries",
+            name: "libraries",
+            component: SearchLibraryListView,
+            leftMenu: HomeLeftMenu,
+            meta: { title: "My Libraries", requiresAuth: true }
         },
         {
-            path: "/auth/login",
+            path: "/users",
+            name: "users",
+            component: SearchUserListView,
+            leftMenu: HomeLeftMenu,
+            meta: { title: "Users", requiresAuth: true }
+        },
+        {
+            path: "/login",
             name: "login",
-            component: Login,
-            meta:{title: "Login"}
+            component: LoginContainer,
+            meta: { title: "Login" }
         },
         {
-            path: "/auth/register",
+            path: "/achievements",
+            name: "achievements",
+            component: AwardsAndAchievements,
+            meta: { title: "Achievements" }
+        },
+        {
+            path: "/register",
             name: "register",
             component: Register,
-            meta:{title: "Register"}
+            meta: { title: "Register" }
         },
         {
-            path: "/secure",
-            name: "secure",
-            component: Secure,
-            meta: {
-                requiresAuth: true
-            }
+            path: "/login-with-otc-to-reset-password",
+            name: "login-with-otc-to-reset-password",
+            component: LoginWithOtcToResetPassword,
+            meta: { title: "Reset password" }
+        },
+        {
+            path: "/reset-password",
+            name: "reset-password",
+            component: ResetPassword,
+            meta: { title: "Reset password" }
         },
         {
             path: "/about",
             name: "about",
-            component: About
+            component: About,
+            meta: { title: "About" }
         },
-
         {
-            path: "/newsfeeds",
-            name: "newsfeeds",
-            component: NewsFeeds,
-            leftMenu: HomeLeftMenu,
-            meta:{title: "News Feed"}
-
+            path: "/help",
+            name: "help",
+            component: Help,
+            meta: { title: "Help" }
+        },
+        {
+            path: "/awards",
+            name: "awards",
+            component: Awards,
+            meta: { title: "Awards" }
+        },
+        {
+            path: "/products",
+            name: "products",
+            component: Products,
+            meta: { title: "Products" }
+        },
+        {
+            path: "/research",
+            name: "research",
+            component: Research,
+            meta: { title: "Research" }
+        },
+        {
+            path: "/advertisers",
+            name: "advertisers",
+            component: Advertisers,
+            meta: { title: "Advertisers" }
+        },
+        {
+            path: "/careers",
+            name: "careers",
+            component: Careers,
+            meta: { title: "Careers" }
+        },
+        {
+            path: "/pricing",
+            name: "pricing",
+            component: Pricing,
+            meta: { title: "Pricing" }
+        },
+        {
+            path: "/privacy-policy",
+            name: "privacy-policy",
+            component: PrivacyPolicy,
+            meta: { title: "Privacy Policy" }
+        },
+        {
+            path: "/contact-us",
+            name: "contact-us",
+            component: ContactUs,
+            meta: { title: "Contact Us" }
+        },
+        {
+            path: "/developers/api-overview",
+            name: "api-overview",
+            component: ApiOverview,
+            meta: { title: "API Overview" }
         },
         {
             path: "/users/me",
             name: "users.me",
-            component: UserProfile,
+            component: ShowMe,
             leftMenu: HomeLeftMenu,
-            meta:{title: "Profile"}
+            meta: { title: "Profile", requiresAuth: true }
+        },
+        {
+            path: "/users/edit-me",
+            name: "users.edit-me",
+            component: EditMyProfile,
+            leftMenu: HomeLeftMenu,
+            meta: { title: "Edit My Profile", requiresAuth: true }
         },
         {
             path: "/users/:user_id",
-            name: "user.show",
-            component: UserProfile,
+            name: "users.show",
+            component: ShowUser,
             leftMenu: HomeLeftMenu,
-            meta:{title: "Profile"}
-        },
-        {
-            path: "/users/profile/edit",
-            name: "user-profile-edit",
-            component: UserProfile,
-            leftBadge: UserBadge
+            meta: { title: "User Profile", requiresAuth: true }
         },
         {
             path: "/libraries/my-libraries",
             name: "my-libraries",
-            component: ShowMyLibraries,
+            component: MyLibraryListView,
             leftMenu: HomeLeftMenu,
-            meta:{title: "My Libraries"}
-
-        },
-        {
-            path: "/libraries/autocomplete",
-            name: "autocomplete",
-            component: AutoCompleteTest,
-            leftMenu: HomeLeftMenu,
-            meta:{title: "AutoCompleteTest"}
-
+            meta: { title: "My Libraries", requiresAuth: true }
         },
         {
             path: "/libraries/create",
             name: "library-create",
             component: LibraryCreate,
             leftMenu: HomeLeftMenu,
-
+            meta: { title: "Create Library", requiresAuth: true }
         },
         {
             path: "/libraries/:id",
             name: "library-show",
             component: LibraryShow,
             leftMenu: HomeLeftMenu,
-            // leftBadge: LibraryBadge
+            // leftBadge: LibraryBadge,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: "/libraries/:id/edit",
             name: "library-edit",
             component: LibraryEdit,
             leftMenu: HomeLeftMenu,
-            // leftBadge: LibraryBadge
+            // leftBadge: LibraryBadge,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: "/libraries/:id/about",
             name: "library-about",
             component: LibraryAbout,
             leftMenu: LibraryLeftMenu,
-            leftBadge: LibraryBadge
+            leftBadge: LibraryBadge,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/:username",
+            name: "unique-name",
+            component: SearchShow,
+            leftMenu: HomeLeftMenu,
+            // leftBadge: LibraryBadge,
+            meta: {
+                title: "",
+                requiresAuth: true
+            }
         }
     ]
 });
@@ -139,7 +247,10 @@ router.beforeEach((to, from, next) => {
             next();
             return;
         }
-        next("/login");
+        // next("auth/login");
+
+        const loginpath = window.location.pathname;
+        next({ name: "login", query: { from: loginpath } });
     } else {
         next();
     }

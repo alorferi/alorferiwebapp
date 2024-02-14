@@ -1,20 +1,18 @@
 <template>
     <div>
-        <div class="card mb-3 p-2">
-            <div class="d-flex align-items-center ">
+        <div class="card mb-3">
+            <div class=" card-body d-flex align-items-center ">
                 <!-- <b-img-lazy
                     :src="this.getApiUrl(item.user.photo_url)"
                     class="p-2  rounded-circle"
                 /> -->
 
-            <UserPhoto :user="item.user" size="64" />
+            <LibraryMemberPhoto :member="item" size="64" />
 
-                <div class="p-2 ">
-                    <h6>{{ item.user.first_name }} {{ item.user.surname }} {{ item.user.nickname }} </h6>
-
-                    <div>M{{ item.member_code }}</div>
-
-                    <div>{{ this.formatDate(item.member_from) }} ~ {{ this.formatDate(item.member_to) }}</div>
+                <div class="ml-3">
+                    <div>{{ item.member_code }}</div>
+                    <h6>{{ item.first_name }} {{ item.surname }} {{ item.nickname }} </h6>
+                    <div> Reading: {{item.total_reading_books}},  Has read: {{item.total_has_read_books}}</div>
                 </div>
             </div>
         </div>
@@ -23,13 +21,13 @@
 
 <script>
 // import LibraryLogo from "./LibraryLogo";
-import UserPhoto from "../user/UserPhoto"
+import LibraryMemberPhoto from "../librarymember/LibraryMemberPhoto"
 
 export default {
     name: "LibraryMemberListItem",
     props: ["item"],
     components: {
-         UserPhoto
+        LibraryMemberPhoto
     },
     methods: {}
 };

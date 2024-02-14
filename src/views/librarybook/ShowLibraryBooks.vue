@@ -32,13 +32,14 @@ import LibraryBookListItem from "./LibraryBookListItem"
 
 export default {
     name: "ShowLibraryBooks",
+     props:["library"],
     components: {
         Loading,
         WrapperListView,
         SearchTextField,
         Paginator
     },
-    mounted() {
+  async mounted(){
         this.fetchLibraryBooks();
     },
     data: function() {
@@ -50,9 +51,6 @@ export default {
         };
     },
     computed: {
-           library() {
-            return this.$store.getters.library;
-        },
         libraryBookWrappers() {
             return this.$store.getters.libraryBooksResponse == null
                 ? []
@@ -71,7 +69,7 @@ export default {
             var payload = {
                 term: pTerm,
                 page: pPage,
-                libraryId:this.library.id,
+                library_id:this.library.id,
             };
 
             this.$store

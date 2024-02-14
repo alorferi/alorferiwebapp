@@ -1,6 +1,6 @@
 <template>
     <div class="form-group">
-        <label :for="name" class="text-primary">{{ label }}</label>
+        <label :for="name" v-if="label" class="text-primary">{{ label }}</label>
 
         <div class="input-group">
             <div class="input-group-prepend">
@@ -25,11 +25,12 @@
 <script>
 export default {
     name: "EditTextField",
-    props: ["name", "label", "placeholder", "type", "errors", "data", "icon"],
-    mounted() {},
+    props: ["name", "label", "placeholder", "type", "errors", "initval", "icon"],
+   async mounted() {},
     data: function() {
+        // this.updateField()
         return {
-            value: ""
+            value: this.initval
         };
     },
     computed: {

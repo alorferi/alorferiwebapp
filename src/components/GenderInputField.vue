@@ -11,7 +11,7 @@
             </div>
 
 
-            <label class="radio-inline pl-2">
+            <label class="radio-inline pl-2  pt-2">
                 <input
                     type="radio"
                     :name="name"
@@ -21,9 +21,9 @@
                     :class="errorClassObject()"
                     @change="updateField()"
                 />
-                Male
+                {{ $t('male') }}
             </label>
-            <label class="radio-inline  pl-2">
+            <label class="radio-inline  pl-2  pt-2">
                 <input
                     type="radio"
                     :name="name"
@@ -33,7 +33,20 @@
                     :class="errorClassObject()"
                     @change="updateField()"
                 />
-                Female
+                {{ $t('female') }}
+            </label>
+            <label class="radio-inline  pl-2  pt-2">
+                <input
+                    type="radio"
+                    :name="name"
+                    v-model="value"
+                    value="o"
+                    :placeholder="placeholder"
+                    :class="errorClassObject()"
+                    @change="updateField()"
+                />
+
+                {{ $t('other') }}
             </label>
         </div>
 
@@ -44,11 +57,11 @@
 <script>
 export default {
     name: "GenderInputField",
-    props: ["name", "label", "placeholder", "errors", "data"],
-    mounted() {},
+    props: ["name", "label", "placeholder", "errors", "data","initval"],
+  async mounted(){},
     data: function() {
         return {
-            value: ""
+            value: this.initval
         };
     },
     computed: {

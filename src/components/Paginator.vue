@@ -125,7 +125,7 @@
 export default {
     name: "Paginator",
     props: ["meta"],
-    mounted() {},
+  async mounted(){},
     computed: {
         currentTotalItems: function() {
             var currentTotalItems = this.meta.current_page * this.meta.per_page;
