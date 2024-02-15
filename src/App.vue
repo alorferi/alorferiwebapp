@@ -41,9 +41,8 @@
                 <router-view></router-view>
             </div>
 
-            <br>
-            <br>
-            <br>
+
+
             <BottomBar />
 
         </div>

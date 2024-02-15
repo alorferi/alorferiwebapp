@@ -12,9 +12,9 @@
 
             <div class="card-body">
 
-                <div class="d-flex d-flex justify-content-around">
+                <div id="bars" class="d-flex flex-row d-flex justify-content-around">
                     <div v-for="item in videos" :key="item.vid">
-                        <div class="card mb-4">
+                        <div class="card mb-4 port-item">
                             <iframe class="card-img-top" width="240" height="160" :src="getYouTubeEmbedUrl(item.vid)">
                             </iframe>
                             <div class="card-body">
@@ -74,4 +74,14 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+
+@media screen and (max-width: 768px) {
+  #bars {
+    flex-direction: column !important;
+  }
+  .port-item {
+    width: 100%;
+  }
+}
+</style>

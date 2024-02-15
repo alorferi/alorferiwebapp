@@ -1,7 +1,7 @@
 <template>
     <div class="border-top p-2">
-        <div class="d-flex  justify-content-between">
-            <div class="text-center p-3">
+        <div id="bars" class="d-flex flex-row justify-content-between">
+            <div class="text-center p-3 port-item">
                 <router-link :to="{ name: 'home' }">
                     <img
                         alt="Logo of Alor Feri"
@@ -10,7 +10,7 @@
                 /></router-link>
             </div>
 
-            <div class="flex-fill">
+            <div class="flex-fill port-item">
                 <div class="mr-4  border-bottom font-weight-bold">
                     {{ $t("alorferi") }}
                 </div>
@@ -39,7 +39,7 @@
                 </div> -->
             </div>
 
-            <div class="flex-fill">
+            <div class="flex-fill port-item">
                 <div class=" mr-4 border-bottom font-weight-bold">
                     {{ $t("libraries") }}
                 </div>
@@ -85,7 +85,7 @@
                 </div> -->
             </div>
 
-            <div class="flex-fill">
+            <div class="flex-fill port-item">
                 <div class="mr-4  border-bottom font-weight-bold">
                     {{ $t("community") }}
                 </div>
@@ -109,7 +109,7 @@
                 </div>
             </div>
 
-            <div class="flex-fill">
+            <div class="flex-fill port-item">
                 <div class=" mr-4 border-bottom font-weight-bold">
                     {{ $t("work_with_us") }}
                 </div>
@@ -133,7 +133,7 @@
                 </div>
             </div>
 
-            <div>
+            <div class="port-item">
                 <div class="ml-2">
                     {{ $t("download_the_app") }}
                 </div>
@@ -200,4 +200,19 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+
+.port-item {
+  width: 30%;
+  min-width: 0;
+}
+
+@media screen and (max-width: 768px) {
+  #bars {
+    flex-direction: column !important;
+  }
+  .port-item {
+    width: 100%;
+  }
+}
+</style>
