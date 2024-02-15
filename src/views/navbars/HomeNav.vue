@@ -98,6 +98,7 @@
 </template>
 
 <script>
+  import $ from 'jquery';
 // import Logout from './Logout'
 // import { mapGetters } from "vuex";
 import UserPhoto from "@/views/user/UserPhoto";
@@ -128,7 +129,12 @@ export default {
         reload: function() {
             this.$router.go(this.$router.currentRoute);
         }
-    }
+    },
+    watch: {
+            $route() {
+                $('.navbar-toggler').click();
+            }
+        },
 };
 </script>
 

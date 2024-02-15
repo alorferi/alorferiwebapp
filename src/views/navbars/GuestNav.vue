@@ -46,6 +46,7 @@
 </template>
 
 <script>
+    import $ from 'jquery';
     import LanguageToggleButton from "@/components/LanguageToggleButton";
     export default {
         name: "GuestNav",
@@ -57,7 +58,12 @@
         },
         computed: {},
         async mounted() {},
-        methods: {}
+        methods: {},
+        watch: {
+            $route() {
+                $('.navbar-toggler').click();
+            }
+        },
     };
 </script>
 

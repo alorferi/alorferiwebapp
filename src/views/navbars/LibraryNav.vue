@@ -36,6 +36,9 @@
 </template>
 
 <script>
+
+import $ from 'jquery';
+
 export default {
     name: "LibraryNav",
     data() {
@@ -43,7 +46,12 @@ export default {
     },
     computed: {},
   async mounted(){},
-    methods: {}
+    methods: {},
+    watch: {
+            $route() {
+                $('.navbar-toggler').click();
+            }
+        },
 };
 </script>
 
