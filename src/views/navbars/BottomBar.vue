@@ -202,11 +202,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.port-item {
-  width: 30%;
-  min-width: 0;
-}
-
 @media screen and (max-width: 768px) {
   #bars {
     flex-direction: column !important;
