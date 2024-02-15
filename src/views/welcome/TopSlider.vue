@@ -13,8 +13,8 @@
                     v-bind:class="{ active: item === activeItem  }">
 
 
-                    <img :src="item.image_name" :alt="item.title" style="height: 600px;"
-                        class="d-block w-100 img-thumbnail" />
+                    <img :src="item.image_name" :alt="item.title"
+                        class="d-block w-100 img-thumbnail img-fluid" />
 
                     <div class="carousel-caption d-none d-md-block">
 
@@ -41,11 +41,11 @@
 </template>
 
 <script>
-    import award_patuakkhali from "@/assets/images/awards/award_patuakkhali.png";
-    import award_prothom_alo from "@/assets/images/awards/award_prothom_alo.png";
-    import bm_with_palak from "@/assets/images/awards/bm_with_palak.jpeg";
-
+    import award_patuakkhali from "@/assets/images/awards/award_patuakkhali_16x9.png";
+    import award_prothom_alo from "@/assets/images/awards/award_prothom_alo_16x9.png";
+    import bm_with_palak from "@/assets/images/awards/expanded_junayed_ahmed.png";
     import achivement_innovation_fair_barisal_2023 from "@/assets/images/awards/achivement_innovation_fair_barisal_2023.jpg";
+
     export default {
         name: "TopSlider",
         components: {

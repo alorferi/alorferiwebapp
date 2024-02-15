@@ -1,7 +1,7 @@
 <template>
     <div id="app" class="">
         <nav
-            class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white"
+            class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm  bg-white"
             v-if="isLoggedIn"
         >
             <div class="container">
@@ -12,7 +12,7 @@
 
 
         <nav
-            class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white"
+            class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm  bg-white"
             v-else
         >
             <div class="container">

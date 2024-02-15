@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import award_patuakkhali from "@/assets/images/awards/award_patuakkhali.jpg";
-import award_prothom_alo from "@/assets/images/awards/award_prothom_alo.jpg";
+import award_patuakkhali from "@/assets/images/awards/award_patuakkhali_16x9.png";
+import award_prothom_alo from "@/assets/images/awards/award_prothom_alo_16x9.png";
 import achivement_innovation_fair_barisal_2023 from "@/assets/images/awards/achivement_innovation_fair_barisal_2023.jpg";
 
 export default {
