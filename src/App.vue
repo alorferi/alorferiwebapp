@@ -1,25 +1,27 @@
 <template>
     <div id="app" class="">
-        <nav
-            class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white"
-            v-if="isLoggedIn"
-        >
-            <div class="container">
-                 <HomeNav/>
 
-            </div>
-        </nav>
+        <div v-if="isLoggedIn">
 
 
-        <nav
-            class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white"
-            v-else
-        >
-            <div class="container">
-                 <GuestNav/>
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm bg-white">
+                <div class="container">
+                    <HomeNav />
+                </div>
+            </nav>
 
-            </div>
-        </nav>
+        </div>
+
+        <div v-else>
+
+            <nav change-class class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm bg-white">
+                <div class="container">
+                    <GuestNav />
+                </div>
+            </nav>
+
+        </div>
+
 
 
         <div class="container" style="margin-top:70px;">
@@ -51,64 +53,69 @@
 </template>
 
 <script>
+    import GuestNav from "@/views/navbars/GuestNav";
+    import HomeNav from "@/views/navbars/HomeNav.vue";
+    // import UserBadge from "./views/badges/UserBadge";
+    // import HomeLeftMenu from "./views/menus/HomeLeftMenu";
+    // import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
+    import BottomBar from "@/views/navbars/BottomBar";
+    import LanguageToggleButton from "@/components/LanguageToggleButton";
 
-import GuestNav from "@/views/navbars/GuestNav";
-import HomeNav from "@/views/navbars/HomeNav.vue";
-// import UserBadge from "./views/badges/UserBadge";
-// import HomeLeftMenu from "./views/menus/HomeLeftMenu";
-// import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
-import BottomBar from "@/views/navbars/BottomBar";
-
-export default {
-    name: "App",
-    components: {
-        GuestNav,
-        HomeNav,
-        BottomBar
-    },
-    computed: {
-        isLoggedIn: function() {
-            return this.$store.getters.isLoggedIn;
+    export default {
+        name: "App",
+        components: {
+            GuestNav,
+            HomeNav,
+            BottomBar,
+            LanguageToggleButton
         },
-        leftBadge() {
-            var name = this.$route.name;
-            var routes = this.$router.options.routes.filter(function(route) {
-                return route.name == name;
-            });
-            if (routes.length == 1) {
-                return routes[0].leftBadge;
-            }
+        computed: {
+            isLoggedIn: function() {
+                return this.$store.getters.isLoggedIn;
+            },
+            leftBadge() {
+                var name = this.$route.name;
+                var routes = this.$router.options.routes.filter(function(route) {
+                    return route.name == name;
+                });
+                if (routes.length == 1) {
+                    return routes[0].leftBadge;
+                }
 
-            return null;
+                return null;
+            },
+            leftMenu() {
+                var name = this.$route.name;
+                var routes = this.$router.options.routes.filter(function(route) {
+                    return route.name == name;
+                });
+                if (routes.length == 1) {
+                    return routes[0].leftMenu;
+                }
+
+                return null;
+            }
         },
-        leftMenu() {
-            var name = this.$route.name;
-            var routes = this.$router.options.routes.filter(function(route) {
-                return route.name == name;
-            });
-            if (routes.length == 1) {
-                return routes[0].leftMenu;
+        methods: {},
+        created() {
+            this.$i18n.locale = this.$store.getters.activeLanguage;
+            this.$store.dispatch("setPageTitle", this.$route.meta.title);
+        },
+        watch: {
+            $route(to) {
+                this.$store.dispatch("setPageTitle", to.meta.title);
             }
-
-            return null;
+        },
+        goBack() {
+            window.history.length > 1 ?
+                this.$router.go(-1) :
+                this.$router.push({
+                    name: "home"
+                });
         }
-    },
-    methods: {},
-    created() {
-        this.$i18n.locale =  this.$store.getters.activeLanguage;
-        this.$store.dispatch("setPageTitle", this.$route.meta.title);
-    },
-    watch: {
-        $route(to) {
-            this.$store.dispatch("setPageTitle", to.meta.title);
-        }
-    },
-    goBack() {
-        window.history.length > 1
-            ? this.$router.go(-1)
-            : this.$router.push({ name: "home" });
-    }
-};
+    };
 </script>
 
-<style></style>
+<style scoped>
+
+</style>
