@@ -2,9 +2,10 @@
     <div class="">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+
+                <li v-for="(item, index) in items" v-bind:key="item.title" v-bind:class="{ active: item === activeItem  }"
+                    :data-slide-to="index" data-target="#carouselExampleIndicators"></li>
+
             </ol>
             <div class="carousel-inner">
 
@@ -13,8 +14,7 @@
                     v-bind:class="{ active: item === activeItem  }">
 
 
-                    <img :src="item.image_name" :alt="item.title"
-                        class="d-block w-100 img-thumbnail img-fluid" />
+                    <img :src="item.image_name" :alt="item.title" class="d-block w-100 img-thumbnail img-fluid" />
 
                     <div class="carousel-caption d-none d-md-block">
 
