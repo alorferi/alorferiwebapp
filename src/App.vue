@@ -1,19 +1,27 @@
 <template>
     <div id="app" class="">
-        <nav class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white" v-if="isLoggedIn">
-            <div class="container">
-                <HomeNav />
 
-            </div>
-        </nav>
+        <div v-if="isLoggedIn">
 
 
-        <nav class="navbar navbar-expand-sm navbar-light fixed-top shadow-sm  bg-white" v-else>
-            <div class="container">
-                <GuestNav />
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm bg-white">
+                <div class="container">
+                    <HomeNav />
+                </div>
+            </nav>
 
-            </div>
-        </nav>
+        </div>
+
+        <div v-else>
+
+            <nav change-class class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm bg-white">
+                <div class="container">
+                    <GuestNav />
+                </div>
+            </nav>
+
+        </div>
+
 
 
         <div class="container" style="margin-top:70px;">
@@ -51,13 +59,15 @@
     // import HomeLeftMenu from "./views/menus/HomeLeftMenu";
     // import LibraryLeftMenu from "./views/menus/LibraryLeftMenu";
     import BottomBar from "@/views/navbars/BottomBar";
+    import LanguageToggleButton from "@/components/LanguageToggleButton";
 
     export default {
         name: "App",
         components: {
             GuestNav,
             HomeNav,
-            BottomBar
+            BottomBar,
+            LanguageToggleButton
         },
         computed: {
             isLoggedIn: function() {
@@ -106,4 +116,6 @@
     };
 </script>
 
-<style></style>
+<style scoped>
+
+</style>
