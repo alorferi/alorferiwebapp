@@ -41,9 +41,9 @@
 </template>
 
 <script>
-    import award_patuakkhali from "@/assets/images/awards/award_patuakkhali.png";
-    import award_prothom_alo from "@/assets/images/awards/award_prothom_alo.png";
-    import bm_with_palak from "@/assets/images/awards/bm_with_palak.jpeg";
+    import award_patuakkhali from "@/assets/images/awards/award_patuakkhali16x9.png";
+    import award_prothom_alo from "@/assets/images/awards/award_prothom16x9_alo.png";
+    import bm_with_palak from "@/assets/images/awards/expanded_junayed ahmed_.png";
 
     import achivement_innovation_fair_barisal_2023 from "@/assets/images/awards/achivement_innovation_fair_barisal_2023.jpg";
     export default {
