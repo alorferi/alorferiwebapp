@@ -49,7 +49,9 @@ export default {
     methods: {},
     watch: {
             $route() {
-                $('.navbar-toggler').click();
+                $(".nav-link").click(function() {
+                    $('.navbar-toggler').click();
+                });
             }
         },
 };
