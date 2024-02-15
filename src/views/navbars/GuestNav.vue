@@ -12,25 +12,25 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav mr-auto">
 
-                <li class="nav-item" style="margin-left: 5pt;margin-right: 5pt;">
+                <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
                     <router-link class="nav-link mx-2" :to="{ name: 'home' }">{{ $t('home') }}</router-link>
                 </li>
 
-                <!-- <li class="nav-item" style="margin-left: 5pt;margin-right: 5pt;">
+                <!-- <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
                     <router-link class="nav-link" :to="{ name: 'achievements' }">{{ $t('training') }}</router-link>
                 </li> -->
 
-                <li class="nav-item" style="margin-left: 5pt;margin-right: 5pt;">
+                <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
                     <router-link class="nav-link" :to="{ name: 'about' }">{{ $t('about') }}</router-link>
                 </li>
             </ul>
 
             <ul class="navbar-nav ml-auto">
 
-                <li class="nav-item" style="margin-left: 5pt;margin-right: 5pt;">
+                <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
                     <router-link class="nav-link" :to="{ name: 'login' }">{{ $t('login') }}</router-link>
                 </li>
-                <li class="nav-item" style="margin-left: 5pt;margin-right: 5pt;">
+                <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
                     <router-link class="nav-link" :to="{ name: 'register' }"> {{ $t('sign_up') }}</router-link>
                 </li>
                 <li class="nav-item">
