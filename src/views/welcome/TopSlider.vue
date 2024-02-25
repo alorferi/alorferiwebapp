@@ -45,6 +45,7 @@
     import award_prothom_alo from "@/assets/images/awards/award_prothom_alo_16x9.png";
     import bm_with_palak from "@/assets/images/awards/expanded_junayed_ahmed.png";
     import achivement_innovation_fair_barisal_2023 from "@/assets/images/awards/achivement_innovation_fair_barisal_2023.jpg";
+    import award_basis_softexpo_2023 from "@/assets/images/awards/award_basis_softexpo_2023.jpg";
 
     export default {
         name: "TopSlider",
@@ -62,6 +63,11 @@
                         title: "smart_app_dev_training_2014_title",
                         caption: "smart_app_dev_training_2014_caption",
                         image_name: bm_with_palak
+                    },
+                    {
+                        title: "award_basis_softexpo_2023_title",
+                        caption: "award_basis_softexpo_2023_caption",
+                        image_name: award_basis_softexpo_2023
                     },
                     {
                         title: "district_champion_title",
