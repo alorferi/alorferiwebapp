@@ -42,6 +42,12 @@
                 </li>
 
                 <li class="pl-1 pr-1">
+                    <a href="/courses" class="nav-link" @click="reload">
+                       Courses
+                    </a>
+                </li>
+
+                <li class="pl-1 pr-1">
                     <a href="/users" class="nav-link" @click="reload">
                        {{ $t('users') }}
                     </a>

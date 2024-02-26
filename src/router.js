@@ -37,6 +37,7 @@ import LibraryBadge from "@/views/badges/LibraryBadge";
 import LoginWithOtcToResetPassword from "@/views/auth/LoginWithOtcToResetPassword";
 import ResetPassword from "@/views/auth/ResetPassword";
 import AwardsAndAchievements from "@/views/welcome/AwardsAndAchievements";
+import ShowCourses from "@/views/courses/ShowCourses";
 // import i18n from "./i18n";
 
 Vue.use(Router);
@@ -125,6 +126,12 @@ let router = new Router({
             name: "research",
             component: Research,
             meta: { title: "Research" }
+        },
+        {
+            path: "/courses",
+            name: "courses",
+            component: ShowCourses,
+            meta: { title: "Courses" }
         },
         {
             path: "/advertisers",
