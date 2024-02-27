@@ -20,6 +20,7 @@ import UserFollowing from "@/store/user-following";
 import LibraryPost from "@/store/library-post";
 import Complain from "@/store/complain.js";
 import Block from "@/store/block";
+import Course from "@/store/course";
 
 Vue.use(Vuex);
 
@@ -44,7 +45,8 @@ export default new Vuex.Store({
         UserFollowing,
         Complain,
         Block,
-        LibraryFollower
+        LibraryFollower,
+        Course
     },
     state: {},
     getters: {},

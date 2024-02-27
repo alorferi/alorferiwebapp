@@ -18,10 +18,8 @@
                     <router-link class="nav-link mx-2" :to="{ name: 'home' }">{{ $t('home') }}</router-link>
                 </li>
 
-                <li class="pl-1 pr-1">
-                    <a href="/courses" class="nav-link" @click="reload">
-                       Courses
-                    </a>
+                <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
+                    <router-link class="nav-link mx-2" :to="{ name: 'courses' }">Courses</router-link>
                 </li>
 
                 <!-- <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
