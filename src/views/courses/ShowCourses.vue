@@ -3,6 +3,12 @@
         <Loading v-if="is_loading"></Loading>
 
 
+        <Paginator
+                :meta="meta"
+                @update:page="page = $event"
+            />
+
+            <Loading v-if="courses.length == 0"></Loading>
 
         <div class="row mb-4" >
             <div v-for="course in courses" v-bind:key="course.id" class="col-sm-4" >
@@ -10,13 +16,18 @@
             </div>
         </div>
 
+        <!-- <Paginator
+                :meta="meta"
+                @update:page="page = $event"
+            /> -->
 
 
         <p v-if="!is_loading && courses.length < 1" class="text-center">
             No Courses found.
         </p>
 
-        <Loading v-if="scrolledToBottom" class="border mt-3"></Loading>
+
+
     </div>
 </template>
 
@@ -24,33 +35,48 @@
     // import PostListItem from "@/views/post/PostListItem";
     import CourseCardItem from "@/views/courses/CourseCardItem";
     import Loading from "@/components/Loading";
+    import Paginator from "../../components/Paginator";
 
     export default {
         name: "ShowCourses",
         computed: {
             courses() {
                 return this.$store.getters.coursesResponse == null ? [] : this.$store.getters.coursesResponse.data;
-            }
+            },
+
+            meta() {
+            return this.$store.getters.coursesResponse == null
+                ? null
+                : this.$store.getters.coursesResponse.meta;
+        }
         },
         components: {
             Loading,
-            CourseCardItem
+            CourseCardItem,
+            Paginator
         },
         data: () => {
             return {
                 is_loading: true,
-                scrolledToBottom: false,
+
+                term: null,
+            page: null,
             };
         },
         async mounted() {
             this.fetchCoursesAction();
-            this.scroll();
+
         },
 
         methods: {
-            fetchCoursesAction() {
+            fetchCoursesAction(pTerm = null, pPage = null) {
+                var payload = {
+                term: pTerm,
+                page: pPage,
+            };
+
                 this.$store
-                    .dispatch("fetchCourses")
+                    .dispatch("fetchCourses",payload)
                     .then((
                         respose
                     ) => {
@@ -59,28 +85,33 @@
                     .catch(() => {})
                     .finally(() => {
                         this.is_loading = false;
-                        this.scrolledToBottom = false;
+
                     });
             },
 
-            scroll() {
-                window.onscroll = () => {
-                    let bottomOfWindow =
-                        Math.max(
-                            window.pageYOffset,
-                            document.documentElement.scrollTop,
-                            document.body.scrollTop
-                        ) +
-                        window.innerHeight ===
-                        document.documentElement.offsetHeight;
 
-                    if (bottomOfWindow) {
-                        this.scrolledToBottom = true; // replace it with your code
-                        this.fetchCoursesAction();
-                    }
-                };
+        },
+        watch: {
+        page: {
+            // the callback will be called immediately after the start of the observation
+            immediate: true,
+            handler(newVal, oldVal) {
+                if (newVal != oldVal) {
+                    this.fetchCoursesAction(this.term, this.page);
+                }
+            }
+        },
+
+        term: {
+            // the callback will be called immediately after the start of the observation
+            immediate: true,
+            handler(newVal, oldVal) {
+                if (newVal != oldVal) {
+                    this.fetchCoursesAction(this.term, this.page);
+                }
             }
         }
+    }
     };
 </script>
 

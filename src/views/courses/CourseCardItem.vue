@@ -2,6 +2,7 @@
     <div class="">
 
 
+        <div class="card mb-4" :style="{background: item.color_background }" data-container="body">
 
         <div class="d-flex justify-content-between">
             <span>
@@ -67,6 +68,7 @@
 
 
 
+    </div>
     </div>
 </template>
 

@@ -56,15 +56,16 @@ const actions = {
         });
     },
 
-    fetchCourses(context) {
+    fetchCourses(context,payload) {
         return new Promise((resolve, reject) => {
             const endPoint =
                 "/api/courses";
 
-
-            var url = mixin.methods.getApiUrl(
-                endPoint
-            );
+                var url = mixin.methods.getApiUrl(
+                    endPoint,
+                    payload.term,
+                    payload.page
+                );
 
             axios({
                 url: url,
