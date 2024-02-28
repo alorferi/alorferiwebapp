@@ -26,9 +26,7 @@ const mutations = {
         state.course = course;
     },
 
-    // setCourses(state, courses) {
-    //     state.courses = course;
-    // },
+
 
     setCoursesResponse(state, coursesResponse) {
         state.coursesResponse = coursesResponse;
@@ -39,13 +37,14 @@ const mutations = {
 const actions = {
     fetchCourse(context, courseId) {
         var url = mixin.methods.getApiUrl("/api/courses/" + courseId);
-        var headers = mixin.methods.getHeaderWithAuthorizationBearerToken();
-
         return new Promise((resolve, reject) => {
             axios
-                .get(url, headers)
+                .get(url)
                 .then(response => {
-                    const course = response.data.data.attributes;
+                    const course = response.data.data;
+
+                    console.log(course)
+
                     context.commit("setCourse", course);
                     resolve(response);
                 })

@@ -19,7 +19,7 @@
                 </li>
 
                 <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
-                    <router-link class="nav-link mx-2" :to="{ name: 'courses' }">Courses</router-link>
+                    <router-link class="nav-link mx-2" :to="{ name: 'courses.index' }">Courses</router-link>
                 </li>
 
                 <!-- <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
