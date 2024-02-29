@@ -8,7 +8,6 @@
                 @update:page="page = $event"
             />
 
-            <Loading v-if="courses.length == 0"></Loading>
 
         <div class="row mb-4" >
             <div v-for="course in courses" v-bind:key="course.id" class="col-sm-4" >

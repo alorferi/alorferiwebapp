@@ -135,7 +135,7 @@ let router = new Router({
             meta: { title: "Show Course", requiresAuth: true }
         },
         {
-            path: "/courses/:slug/apply",
+            path: "/courses/:id/apply",
             name: "courses.apply",
             component: ApplyCourse,
             meta: { title: "Apply Course", requiresAuth: true }

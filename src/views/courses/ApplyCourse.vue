@@ -3,14 +3,15 @@
 
     <div>
 
-        <Loading v-if="loading"/>
+        <Loading v-if="loading" />
 
 
         <div v-else>
 
 
 
-            <router-link class="btn btn-sm btn-outline-success mb-2" :to="{ name: 'courses.index' }"> &lt; Back </router-link>
+            <router-link class="btn btn-sm btn-outline-success mb-2" :to="{ name: 'courses.index' }"> &lt; Back
+            </router-link>
 
             <div class="card">
 
@@ -36,10 +37,10 @@
 
 
 
-                                        &nbsp;
-                                        <span class="circle-md" v-if="course.discount > 0">
-                                            -{{ course . discount }}%
-                                        </span>
+                                    &nbsp;
+                                    <span class="circle-md" v-if="course.discount > 0">
+                                        -{{ course . discount }}%
+                                    </span>
 
 
                                 </div>
@@ -67,7 +68,7 @@
                                     <h5 :style="{ color: course.color_title }">
                                         {{ course . starts_at }} </h5>
                                     <div :style="{ color: course.color_subtitle }">
-                                        diff  {{ course .starts_at }}
+                                        diff {{ course . starts_at }}
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -106,15 +107,15 @@
                                         </h3>
                                         <h5 v-if="course . discount > 0">
 
-                                                &nbsp; <span :style="{ color: course.color_subtitle }">
-                                                    ৳{{ course . list_fee }}</span>
+                                            &nbsp; <span :style="{ color: course.color_subtitle }">
+                                                ৳{{ course . list_fee }}</span>
 
                                         </h5>
                                     </div>
                                     <div class="col-md-6">
                                         <h3> <span :style="{ color: course.color_title }"> {{ course . duration }}
-                                        Hours
-                                        </span> </h3>
+                                                Hours
+                                            </span> </h3>
                                     </div>
 
 
@@ -176,6 +177,22 @@
 
 
                 </div>
+
+                <div class="card-footer">
+
+                    <form @submit.prevent="applyNow">
+
+
+                        <!-- <input type="hidden" name="course_id" value="{{ $course->id }}"/> -->
+
+                            <button type="submit" class="btn btn-small btn-success">
+                                {{ $t('apply_now') }}
+                            </button>
+
+
+                    </form>
+
+                </div>
             </div>
 
         </div>
@@ -200,7 +217,7 @@
 
         },
         async mounted() {
-         this.fetchCourse(this.$route.params.slug);
+            this.fetchCourse(this.$route.params.id);
         },
 
 
@@ -212,19 +229,39 @@
         data: function() {
             return {
                 loading: true,
-                delete_modal: false
+                delete_modal: false,
+                username: "",
+            password: "",
+            is_error: false,
+            error_message: "",
+
             };
         },
         methods: {
             imageUrl() {
                 return this.getApiUrl(this.course.image_url)
             },
+            applyNow: function () {
+            const self = this;
+            this.is_error = false;
+            let username = this.username.replace(/^0+/, "");
+            let password = this.password;
+            self.$store
+                .dispatch("applyCourse", {
+                    username,
+                    password
+                })
+                .then(() => {
 
-            fetchCourse(slug) {
+                })
+                .catch();
+        },
+
+            fetchCourse(course_id) {
                 let self = this;
 
                 self.$store
-                    .dispatch("fetchCourseBySlug", slug)
+                    .dispatch("fetchCourse", course_id)
                     .then(() => {
 
                         self.loading = false;

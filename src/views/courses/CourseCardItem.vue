@@ -95,7 +95,7 @@
                 <router-link class="btn btn-small btn-success" :to="{
 
                     name: 'courses.apply',
-                    params: { slug: item.slug }
+                    params: { id: item.id }
 
                 }">Apply
                     now</router-link>
