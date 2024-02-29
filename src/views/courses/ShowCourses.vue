@@ -16,10 +16,10 @@
             </div>
         </div>
 
-        <!-- <Paginator
+        <Paginator
                 :meta="meta"
                 @update:page="page = $event"
-            /> -->
+            />
 
 
         <p v-if="!is_loading && courses.length < 1" class="text-center">
@@ -116,4 +116,4 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style></style>
+<style scoped></style>

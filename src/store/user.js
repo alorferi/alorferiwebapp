@@ -57,7 +57,6 @@ const actions = {
             })
                 .then(response => {
                     const usersResponse = response.data;
-                    console.log("usersResponse", usersResponse)
                     context.commit("setUsersResponse", usersResponse);
                     resolve(response);
                 })

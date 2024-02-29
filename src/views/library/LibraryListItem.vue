@@ -8,9 +8,9 @@
                 <div class="pl-2">
                     <h4>{{ item.name }}</h4>
 
-                    <p>
+                    <p v-if=" item.address !=null">
 
-                        <span v-if="  item.address.house != null && item.address.house.length!=0 ">
+                        <span v-if="item.address.house != null && item.address.house.length!=0 ">
                             {{ item.address.house }},
                         </span>
 

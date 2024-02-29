@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div   v-if="meta!=null">
         <div class="d-flex justify-content-between mt-2">
             <div class="align-self-center">
                 <nav aria-label="Page navigation example">
