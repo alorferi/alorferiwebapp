@@ -70,7 +70,7 @@
                     :to="{
 
                         name: 'courses.show',
-                        params: { id: item.id }
+                        params: { slug: item.slug }
 
                     }">Show</router-link>
 

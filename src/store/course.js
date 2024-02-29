@@ -55,6 +55,26 @@ const actions = {
         });
     },
 
+    fetchCourseBySlug(context, slug) {
+        var url = mixin.methods.getApiUrl("/api/courses/" + slug + "/slug");
+        return new Promise((resolve, reject) => {
+            axios
+                .get(url)
+                .then(response => {
+                    const course = response.data.data;
+
+                    console.log(course)
+
+                    context.commit("setCourse", course);
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
+
     fetchCourses(context,payload) {
         return new Promise((resolve, reject) => {
             const endPoint =

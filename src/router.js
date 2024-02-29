@@ -129,7 +129,7 @@ component: Research,
 meta: { title: "Research" }
 },
 {
-path: "/courses/:id",
+path: "/courses/:slug",
 name: "courses.show",
 component: ShowCourse,
 

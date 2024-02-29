@@ -21,7 +21,7 @@
 
                         <div class="col-sm-6 p-2">
 
-                            <img class="rounded img-fluid" :src="course.image_url" alt="Course Thumb" width="100%" />
+                            <img class="rounded img-fluid" :src="imageUrl()" alt="Course Thumb" width="100%" />
                         </div>
                         <div class="col-sm-6 d-flex flex-column justify-content-between">
 
@@ -35,12 +35,12 @@
                                     </div>
 
 
-                                    @if (course . discount > 0)
+
                                         &nbsp;
-                                        <span class="circle-md">
+                                        <span class="circle-md" v-if="course.discount > 0">
                                             -{{ course . discount }}%
                                         </span>
-                                    @endif
+
 
                                 </div>
 
@@ -50,7 +50,7 @@
                                     <h5> {{ course . pre_title }}</h5>
 
                                     <h2> {{ course . title }}</h2>
-                                    <p :style="{ color: course.color_subtitle }"> {!! course . post_title !!}</p>
+                                    <p :style="{ color: course.color_subtitle }"> {{ course . post_title }}</p>
 
                                 </div>
 
@@ -62,7 +62,7 @@
                             <div class="row">
 
                                 <div class="col-sm-6">
-                                    <h5 :style="{ color: course.color_subtitle }">@lang('strings.date') </h5>
+                                    <h5 :style="{ color: course.color_subtitle }"> Date </h5>
 
                                     <h5 :style="{ color: course.color_title }">
                                         {{ course . starts_at }} </h5>
@@ -160,7 +160,7 @@
 
                     <h5> Course Outline: </h5>
                     <p>
-                        <!-- {!! str_replace("\n", '<br/>', course . outline) !!} -->
+                        <!-- {{ str_replace("\n", '<br/>', course . outline) }} -->
                     </p>
 
 
@@ -200,7 +200,7 @@
 
         },
         async mounted() {
-         this.fetchCourse(this.$route.params.id);
+         this.fetchCourse(this.$route.params.slug);
         },
 
 
@@ -217,14 +217,14 @@
         },
         methods: {
             imageUrl() {
-                return this.getApiUrl(this.item.image_url)
+                return this.getApiUrl(this.course.image_url)
             },
 
-            fetchCourse(course_id) {
+            fetchCourse(slug) {
                 let self = this;
 
                 self.$store
-                    .dispatch("fetchCourse", course_id)
+                    .dispatch("fetchCourseBySlug", slug)
                     .then(() => {
 
                         self.loading = false;
