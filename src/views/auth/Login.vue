@@ -4,23 +4,13 @@
         <div class="card-body mt-3">
             <form @submit.prevent="login">
                 <div class="form-group">
-                    <UserNameField
-                        name="username"
-                        :placeholder="$t('email_or_mobile')"
-                        icon="fas fa-user-alt"
-                        :errors="errors"
-                        @update:field="username = $event"
-                    />
+                    <UserNameField name="username" :placeholder="$t('email_or_mobile')" icon="fas fa-user-alt"
+                        :errors="errors" @update:field="username = $event" />
                 </div>
 
                 <div class="form-group pt-1">
-                     <PasswordField
-                        name="password"
-                        :placeholder="$t('password')"
-                        icon="fas fa-key"
-                        :errors="errors"
-                        @update:field="password = $event"
-                    />
+                    <PasswordField name="password" :placeholder="$t('password')" icon="fas fa-key" :errors="errors"
+                        @update:field="password = $event" />
                 </div>
 
                 <div class="text-center text-danger mb-2" v-if="error_message">
@@ -28,39 +18,28 @@
                 </div>
                 <div class="form-group">
                     <input type="checkbox" name="remember" />
-                    {{$t('remember_me')}}
+                    {{ $t('remember_me') }}
                 </div>
 
                 <div class="form-group">
-                    <button
-                        type="submit"
-                        class="btn btn-success"
-                        style="width:100%"
-                    >
-                    {{ $t('login') }}
+                    <button type="submit" class="btn btn-success" style="width:100%">
+                        {{ $t('login') }}
                     </button>
 
                     <div class="text-center">
-                        <router-link
-                            class="btn btn-link"
-                            :to="{ name: 'login-with-otc-to-reset-password' }"
-                        >
+                        <router-link class="btn btn-link" :to="{ name: 'login-with-otc-to-reset-password' }">
 
-                            {{ $t('forgot_password' )}}
+                            {{ $t('forgot_password') }}
                         </router-link>
                     </div>
 
                     <hr>
 
 
-                <router-link
-                    class="btn btn-primary"
-                    :to="{ name: 'register' }"
-                    style="width:100%"
-                >
+                    <router-link class="btn btn-primary" :to="{ name: 'register' }" style="width:100%">
 
-                    {{$t('create_new_account')}}
-                </router-link>
+                        {{ $t('create_new_account') }}
+                    </router-link>
 
                 </div>
 
@@ -83,7 +62,7 @@ export default {
         UserNameField,
         PasswordField
     },
-    mounted: function() {
+    mounted: function () {
         if (this.$store.getters.isLoggedIn) {
             //  this.$router.push({ name: "home" });
         }
@@ -98,18 +77,21 @@ export default {
         };
     },
     methods: {
-        login: function() {
+        login: function () {
             const self = this;
             this.is_error = false;
             let username = this.username.replace(/^0+/, "");
             let password = this.password;
             self.$store
-                .dispatch("loginBasic", { username, password })
+                .dispatch("loginBasic", {
+                    username,
+                    password
+                })
                 .then(() => {
                     self.$store
                         .dispatch("fetchMe")
                         .then(() => {
-                            self.$router.replace(self.$route.query.from);
+                            // self.$router.replace(self.$route.query.from);
                             // window.location.href = "/";
                             // console.log("success");
                         })
@@ -124,7 +106,7 @@ export default {
                     try {
                         if (errors.response.data.errors) {
                             self.errors = errors.response.data.errors;
-                        }else if(errors.response.data.message){
+                        } else if (errors.response.data.message) {
                             self.error_message = errors.response.data.message;
                         }
                     } catch (err) {

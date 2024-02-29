@@ -78,9 +78,9 @@
                 this.$store
                     .dispatch("fetchCourses",payload)
                     .then((
-                        respose
+
                     ) => {
-                        console.log(respose)
+                        // console.log(respose)
                     })
                     .catch(() => {})
                     .finally(() => {

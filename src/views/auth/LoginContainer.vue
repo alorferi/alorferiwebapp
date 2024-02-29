@@ -32,7 +32,13 @@ export default {
     },
     mounted: function() {
         if (this.$store.getters.isLoggedIn) {
-            this.$router.push({ name: "home" });
+
+            if(this.$route.query.from){
+                this.$router.push(this.$route.query.from);
+            }else{
+                this.$router.push({ name: "home" })
+            }
+
         }
     },
     computed: {},

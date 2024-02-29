@@ -43,7 +43,7 @@ const actions = {
                 .then(response => {
                     const course = response.data.data;
 
-                    console.log(course)
+                    // console.log(course)
 
                     context.commit("setCourse", course);
                     resolve(response);
@@ -63,7 +63,7 @@ const actions = {
                 .then(response => {
                     const course = response.data.data;
 
-                    console.log(course)
+                    // console.log(course)
 
                     context.commit("setCourse", course);
                     resolve(response);
@@ -93,7 +93,7 @@ const actions = {
                 .then(response => {
                     const coursesResponse = response.data;
 
-                    console.log(coursesResponse);
+                    // console.log(coursesResponse);
 
                     context.commit(
                         "setCoursesResponse",

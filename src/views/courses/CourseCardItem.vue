@@ -2,55 +2,64 @@
     <div class="">
 
 
-        <div class="card mb-4" :style="{ background: item.color_background }" data-container="body">
-
-            <div class="d-flex justify-content-between">
-                <span>
-                    &nbsp;
-                </span>
+        <div class="card mb-4" data-container="body">
 
 
-                <span class="circle-sm m-2" v-if="item.discount > 0">
-                    -{{ item . discount }}%
-                </span>
+            <img class="rounded img-fluid" :src="imageUrl()" alt="Course Thumb">
+
+            <div class="card-body" :style="{ background: item.color_background }">
 
 
-                <span class="circle m-2 bg-success text-success" v-else>
-                    -{{ item . discount }}%
-                </span>
+                <h4 :style="{ color: item.color_title }">
+                    {{ item.title }}
+                </h4>
 
-
-            </div>
-
-
-            <img class="rounded img-fluid ml-2 mr-2" :src="imageUrl()" alt="Course Thumb">
-
-            <div class="card-body">
-
-                <div :style="{ color: item.color_title }"> {{ item . starts_at }}
-                </div>
-
-                <div :style="{ color: item.color_subtitle }">
-                    diff: {{ item . starts_at }}
-                </div>
 
                 <div class="d-flex justify-content-between mt-3">
 
                     <div>
-                        <h5 :style="{ color: item.color_title }">
-                            ৳{{ item . actual_fee }}.0
-                        </h5>
-                        <h6>
-                            <span :style="{ color: item.color_subtitle }"> ৳{{ item . list_fee }}</span>
-                        </h6>
+
+                        <h6> Starts at: {{ this.formatDate(item.starts_at) }}</h6>
+
+
+
+                    </div>
+
+                    <div>
+
+
+                        {{ this.momentFromNow(item.starts_at) }}
+
+
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="d-flex justify-content-between mt-3">
+
+                    <div>
+
+                        <div class="d-flex">
+                            <h5 :style="{ color: item.color_title }">
+                                ৳{{ item.actual_fee }}.0
+                            </h5>
+                            &nbsp;
+                            <del :style="{ color: item.color_subtitle }"> <strong>৳{{ item.list_fee }}</strong> </del>
+                        </div>
 
                     </div>
 
 
                     <div>
-                        <h5> <span :style="{ color: item.color_title }"> {{ item . duration }}
-                                Hours
-                            </span> </h5>
+
+
+
+                        <h6 :style="{ color: item.color_title }"> {{ item.duration }}
+                            Hours
+                        </h6>
 
                     </div>
 
@@ -61,24 +70,37 @@
             </div>
 
 
+            <!-- <router-link class="stretched-link"
+                :to="{
+
+                    name: 'courses.show',
+                    params: { slug: item.slug }
+
+                }"></router-link> -->
+
+            <div class="card-body d-flex justify-content-between">
+
+                <!-- <a class="btn btn-small btn-danger">
+                            Wishlist
+                    </a> -->
+
+                <router-link class="btn btn-small btn-info" :to="{
+
+                    name: 'courses.show',
+                    params: { slug: item.slug }
+
+                }">Show</router-link>
 
 
-            <div class="card-footer bg-white">
+                <router-link class="btn btn-small btn-success" :to="{
 
+                    name: 'courses.apply',
+                    params: { slug: item.slug }
 
-                <router-link class="btn btn-outline-info flex-fill ml-2"
-                    :to="{
-
-                        name: 'courses.show',
-                        params: { slug: item.slug }
-
-                    }">Show</router-link>
-
+                }">Apply
+                    now</router-link>
 
             </div>
-
-
-
 
 
 
@@ -87,26 +109,48 @@
 </template>
 
 <script>
-    export default {
-        name: "CourseCardItem",
-        props: ["item"],
-        components: {},
-        mounted: function() {
+export default {
+    name: "CourseCardItem",
+    props: ["item"],
+    components: {
 
+
+
+    },
+    mounted: function () {
+
+    },
+    computed: {
+
+        //     isLoggedIn: function() {
+        //     return this.$store.getters.isLoggedIn;
+        // }
+    },
+    methods: {
+
+        imageUrl() {
+            return this.getApiUrl(this.item.image_url)
         },
-        computed: {},
-        methods: {
 
-            imageUrl() {
-                return this.getApiUrl(this.item.image_url)
-            },
 
+        appliNow() {
+
+            if (!this.isLoggedIn) {
+                this.$router.push({
+                    name: "login"
+                });
+            }
+
+            // else{
+
+            // }
 
         }
 
-    };
+    }
+
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
+<style scoped></style>
