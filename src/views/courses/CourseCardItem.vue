@@ -18,11 +18,7 @@
                 <div class="d-flex justify-content-between mt-3">
 
                     <div>
-
                         <h6> Starts at: {{ this.formatDate(item.starts_at) }}</h6>
-
-
-
                     </div>
 
                     <div>
@@ -131,21 +127,6 @@ export default {
         imageUrl() {
             return this.getApiUrl(this.item.image_url)
         },
-
-
-        appliNow() {
-
-            if (!this.isLoggedIn) {
-                this.$router.push({
-                    name: "login"
-                });
-            }
-
-            // else{
-
-            // }
-
-        }
 
     }
 

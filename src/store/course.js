@@ -6,7 +6,7 @@ const state = {
     course: JSON.parse(localStorage.getItem("course") || null),
 
     // courses: JSON.parse(
-    //     localStorage.getItem("courses") || null
+    // localStorage.getItem("courses") || null
     // ),
 
     coursesResponse: null,
@@ -25,8 +25,6 @@ const mutations = {
     setCourse(state, course) {
         state.course = course;
     },
-
-
 
     setCoursesResponse(state, coursesResponse) {
         state.coursesResponse = coursesResponse;
@@ -75,16 +73,16 @@ const actions = {
         });
     },
 
-    fetchCourses(context,payload) {
+    fetchCourses(context, payload) {
         return new Promise((resolve, reject) => {
             const endPoint =
                 "/api/courses";
 
-                var url = mixin.methods.getApiUrl(
-                    endPoint,
-                    payload.term,
-                    payload.page
-                );
+            var url = mixin.methods.getApiUrl(
+                endPoint,
+                payload.term,
+                payload.page
+            );
 
             axios({
                 url: url,
@@ -107,6 +105,29 @@ const actions = {
                 });
         });
     },
+    applyCourse(context, payload) {
+        return new Promise((resolve, reject) => {
+
+            var url = mixin.methods.getApiUrl("/api/course-applications");
+
+            const headers = mixin.methods.getAuthorizationBearerToken();
+
+            axios({
+                url: url,
+                headers: headers,
+                data:payload,
+                method: "POST"
+            })
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log("err:", err);
+                    reject(err);
+                });
+        });
+    },
+
 };
 
 export default {

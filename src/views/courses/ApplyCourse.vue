@@ -60,15 +60,16 @@
                             </div>
 
 
+
                             <div class="row">
 
                                 <div class="col-sm-6">
                                     <h5 :style="{ color: course.color_subtitle }"> Date </h5>
 
                                     <h5 :style="{ color: course.color_title }">
-                                        {{ course . starts_at }} </h5>
+                                        {{ this . formatDate(course . starts_at) }} </h5>
                                     <div :style="{ color: course.color_subtitle }">
-                                        diff {{ course . starts_at }}
+                                        {{ this . momentFromNow(course . starts_at) }}
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -83,61 +84,6 @@
 
 
 
-                            <div>
-
-
-
-
-
-
-                                <div class="row">
-
-
-                                    <div class="col-md-6">
-
-
-                                        <h3>
-                                            <span :style="{ color: course.color_title }">
-                                                ৳{{ course . actual_fee }}.0
-
-                                            </span>
-
-
-
-                                        </h3>
-                                        <h5 v-if="course . discount > 0">
-
-                                            &nbsp; <span :style="{ color: course.color_subtitle }">
-                                                ৳{{ course . list_fee }}</span>
-
-                                        </h5>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h3> <span :style="{ color: course.color_title }"> {{ course . duration }}
-                                                Hours
-                                            </span> </h3>
-                                    </div>
-
-
-
-                                </div>
-
-
-
-
-                                <p :style="{ color: course.color_title }">
-                                    Link will be sent to your mail before the session.
-
-                                </p>
-
-
-
-                            </div>
-
-
-
-
-
 
                         </div>
 
@@ -147,36 +93,6 @@
 
 
 
-                <div class="card-body">
-
-
-                    <p>
-                        {{ course . intro }}
-                    </p>
-
-                    <h4>What you'll learn</h4>
-                    <p>
-                        {{ course . career_opportunities }}
-                    </p>
-
-                    <h5> Course Outline: </h5>
-                    <p>
-                        <!-- {{ str_replace("\n", '<br/>', course . outline) }} -->
-                    </p>
-
-
-                    <h4> Educators: </h4>
-
-                    <ul>
-
-                    </ul>
-
-                    <p class="card-text"> Last date of application: {{ }}
-                    </p>
-
-
-
-                </div>
 
                 <div class="card-footer">
 
@@ -185,9 +101,9 @@
 
                         <!-- <input type="hidden" name="course_id" value="{{ $course->id }}"/> -->
 
-                            <button type="submit" class="btn btn-small btn-success">
-                                {{ $t('apply_now') }}
-                            </button>
+                        <button type="submit" class="btn btn-small btn-success">
+                            {{ $t('apply') }}
+                        </button>
 
 
                     </form>
@@ -217,7 +133,8 @@
 
         },
         async mounted() {
-            this.fetchCourse(this.$route.params.id);
+            this.course_id = this.$route.params.id;
+            this.fetchCourse();
         },
 
 
@@ -229,11 +146,8 @@
         data: function() {
             return {
                 loading: true,
-                delete_modal: false,
-                username: "",
-            password: "",
-            is_error: false,
-            error_message: "",
+
+                course_id: ""
 
             };
         },
@@ -241,27 +155,26 @@
             imageUrl() {
                 return this.getApiUrl(this.course.image_url)
             },
-            applyNow: function () {
-            const self = this;
-            this.is_error = false;
-            let username = this.username.replace(/^0+/, "");
-            let password = this.password;
-            self.$store
-                .dispatch("applyCourse", {
-                    username,
-                    password
-                })
-                .then(() => {
+            applyNow: function() {
+                const self = this;
 
-                })
-                .catch();
-        },
+                var payload = {
+                    "course_id": self.course_id
+                }
 
-            fetchCourse(course_id) {
+                self.$store
+                    .dispatch("applyCourse", payload)
+                    .then(() => {
+
+                    })
+                    .catch();
+            },
+
+            fetchCourse() {
                 let self = this;
 
                 self.$store
-                    .dispatch("fetchCourse", course_id)
+                    .dispatch("fetchCourse", this.course_id)
                     .then(() => {
 
                         self.loading = false;

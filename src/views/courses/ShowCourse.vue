@@ -3,14 +3,15 @@
 
     <div>
 
-        <Loading v-if="loading"/>
+        <Loading v-if="loading" />
 
 
         <div v-else>
 
 
 
-            <router-link class="btn btn-sm btn-outline-success mb-2" :to="{ name: 'courses.index' }"> &lt; Back </router-link>
+            <router-link class="btn btn-sm btn-outline-success mb-2" :to="{ name: 'courses.index' }"> &lt; Back
+            </router-link>
 
             <div class="card">
 
@@ -36,10 +37,10 @@
 
 
 
-                                        &nbsp;
-                                        <span class="circle-md" v-if="course.discount > 0">
-                                            -{{ course . discount }}%
-                                        </span>
+                                    &nbsp;
+                                    <span class="circle-md" v-if="course.discount > 0">
+                                        -{{ course . discount }}%
+                                    </span>
 
 
                                 </div>
@@ -65,9 +66,9 @@
                                     <h5 :style="{ color: course.color_subtitle }"> Date </h5>
 
                                     <h5 :style="{ color: course.color_title }">
-                                        {{ course . starts_at }} </h5>
+                                        {{ this.formatDate(course.starts_at) }} </h5>
                                     <div :style="{ color: course.color_subtitle }">
-                                        diff  {{ course .starts_at }}
+                                         {{ this.momentFromNow(course.starts_at)  }}
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -106,15 +107,15 @@
                                         </h3>
                                         <h5 v-if="course . discount > 0">
 
-                                                &nbsp; <span :style="{ color: course.color_subtitle }">
-                                                    ৳{{ course . list_fee }}</span>
+                                            &nbsp; <span :style="{ color: course.color_subtitle }">
+                                                ৳{{ course . list_fee }}</span>
 
                                         </h5>
                                     </div>
                                     <div class="col-md-6">
                                         <h3> <span :style="{ color: course.color_title }"> {{ course . duration }}
-                                        Hours
-                                        </span> </h3>
+                                                Hours
+                                            </span> </h3>
                                     </div>
 
 
@@ -176,6 +177,19 @@
 
 
                 </div>
+
+                <div class="card-footer d-flex justify-content-between">
+
+                    <router-link class="btn btn-small btn-success"
+                        :to="{
+
+                            name: 'courses.apply',
+                            params: { id: course.id }
+
+                        }">Apply
+                        now</router-link>
+
+                </div>
             </div>
 
         </div>
@@ -200,7 +214,7 @@
 
         },
         async mounted() {
-         this.fetchCourse(this.$route.params.slug);
+            this.fetchCourse(this.$route.params.slug);
         },
 
 
