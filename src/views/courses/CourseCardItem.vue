@@ -11,20 +11,20 @@
 
 
                 <h4 :style="{ color: item.color_title }">
-                    {{ item.title }}
+                    {{ item . title }}
                 </h4>
 
 
                 <div class="d-flex justify-content-between mt-3">
 
                     <div>
-                        <h6> Starts at: {{ this.formatDate(item.starts_at) }}</h6>
+                        <h6> Starts at: {{ this . formatDate(item . starts_at) }}</h6>
                     </div>
 
                     <div>
 
 
-                        {{ this.momentFromNow(item.starts_at) }}
+                        {{ this . momentFromNow(item . starts_at) }}
 
 
 
@@ -40,10 +40,10 @@
 
                         <div class="d-flex">
                             <h5 :style="{ color: item.color_title }">
-                                ৳{{ item.actual_fee }}.0
+                                ৳{{ item . actual_fee }}.0
                             </h5>
                             &nbsp;
-                            <del :style="{ color: item.color_subtitle }"> <strong>৳{{ item.list_fee }}</strong> </del>
+                            <del :style="{ color: item.color_subtitle }"> <strong>৳{{ item . list_fee }}</strong> </del>
                         </div>
 
                     </div>
@@ -53,7 +53,7 @@
 
 
 
-                        <h6 :style="{ color: item.color_title }"> {{ item.duration }}
+                        <h6 :style="{ color: item.color_title }"> {{ item . duration }}
                             Hours
                         </h6>
 
@@ -80,20 +80,23 @@
                             Wishlist
                     </a> -->
 
-                <router-link class="btn btn-small btn-info" :to="{
+                <router-link class="btn btn-small btn-info"
+                    :to="{
 
-                    name: 'courses.show',
-                    params: { slug: item.slug }
+                        name: 'courses.show',
+                        params: { slug: item.slug }
 
-                }">Show</router-link>
+                    }">Show</router-link>
 
 
-                <router-link class="btn btn-small btn-success" :to="{
+                <router-link class="btn btn-small btn-success"
+                    v-if="showApplyButton"
+                    :to="{
 
-                    name: 'courses.apply',
-                    params: { id: item.id }
+                        name: 'courses.apply',
+                        params: { id: item.id }
 
-                }">Apply
+                    }">Apply
                     now</router-link>
 
             </div>
@@ -105,32 +108,51 @@
 </template>
 
 <script>
-export default {
-    name: "CourseCardItem",
-    props: ["item"],
-    components: {
+    export default {
+        name: "CourseCardItem",
+        props: ["item"],
+        components: {
 
 
 
-    },
-    mounted: function () {
+        },
+        mounted: function() {
+            this.fetchMyOrder();
+        },
+        computed: {
 
-    },
-    computed: {
-
-        //     isLoggedIn: function() {
-        //     return this.$store.getters.isLoggedIn;
-        // }
-    },
-    methods: {
-
-        imageUrl() {
-            return this.getApiUrl(this.item.image_url)
         },
 
-    }
+        data: function(){
+            return {
+                showApplyButton: false
+            }
+        },
 
-};
+        methods: {
+
+            imageUrl() {
+                return this.getApiUrl(this.item.image_url)
+            },
+
+            fetchMyOrder() {
+
+                let self = this;
+
+                self.$store
+                    .dispatch("fetchMyCourseApplication", self.item.id)
+                    .then(() => {
+                        self.showApplyButton = false;
+                    })
+                    .catch(() => {
+                        self.showApplyButton = true;
+                    });
+
+            }
+
+        }
+
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

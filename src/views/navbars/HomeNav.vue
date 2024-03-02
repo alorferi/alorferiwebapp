@@ -90,6 +90,18 @@
                         </router-link>
 
                         <div class="dropdown-divider"></div>
+
+                        <router-link
+                            class="dropdown-item"
+                            :to="{ name: 'my-courses' }"
+                        >
+                        {{ $t('my-courses') }}
+                        </router-link>
+
+                        <div class="dropdown-divider"></div>
+
+
+
                         <a
                             class="dropdown-item"
                             href="#"

@@ -181,6 +181,7 @@
                 <div class="card-footer d-flex justify-content-between">
 
                     <router-link class="btn btn-small btn-success"
+                    v-if="showApplyButton"
                         :to="{
 
                             name: 'courses.apply',
@@ -226,7 +227,8 @@
         data: function() {
             return {
                 loading: true,
-                delete_modal: false
+                delete_modal: false,
+                showApplyButton: false
             };
         },
         methods: {
@@ -248,6 +250,20 @@
                         self.loading = false;
                     });
             },
+            fetchMyOrder() {
+
+let self = this;
+
+self.$store
+    .dispatch("fetchMyCourseApplication", self.item.id)
+    .then(() => {
+        self.showApplyButton = false;
+    })
+    .catch(() => {
+        self.showApplyButton = true;
+    });
+
+}
 
         }
 

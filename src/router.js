@@ -40,6 +40,7 @@ import AwardsAndAchievements from "@/views/welcome/AwardsAndAchievements";
 import ShowCourses from "@/views/courses/ShowCourses";
 import ShowCourse from "@/views/courses/ShowCourse";
 import ApplyCourse from "@/views/courses/ApplyCourse";
+import MyCourses from "@/views/courses/MyCourses";
 // import i18n from "./i18n";
 
 Vue.use(Router);
@@ -145,6 +146,12 @@ let router = new Router({
             name: "courses.index",
             component: ShowCourses,
             meta: { title: "Courses" }
+        },
+        {
+            path: "/my-courses",
+            name: "my-courses",
+            component: MyCourses,
+            meta: { title: "MyCourses" , requiresAuth: true }
         },
         {
             path: "/advertisers",
