@@ -189,6 +189,8 @@
                         }">Apply
                         now</router-link>
 
+                        <div>{{ msg_text }}</div>
+
                 </div>
             </div>
 
@@ -227,7 +229,8 @@
             return {
                 loading: true,
                 delete_modal: false,
-                showApplyButton: false
+                showApplyButton: false,
+                msg_text: ""
             };
         },
         methods: {
@@ -256,14 +259,12 @@
 
                 self.$store
                     .dispatch("fetchMyCourseOrder", self.course.id)
-                    .then(() => {
-
-                        console.log("then")
+                    .then((response) => {
 
                         self.showApplyButton = false;
+                        self.msg_text = response.data.message;
                     })
                     .catch(() => {
-                        console.log("catch")
                         self.showApplyButton = true;
                     });
 

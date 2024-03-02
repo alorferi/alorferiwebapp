@@ -99,6 +99,8 @@
                     }">Apply
                     now</router-link>
 
+                  <div>{{ msg_text }}</div>
+
             </div>
 
 
@@ -125,7 +127,8 @@
 
         data: function(){
             return {
-                showApplyButton: false
+                showApplyButton: false,
+                msg_text: "",
             }
         },
 
@@ -141,8 +144,9 @@
 
                 self.$store
                     .dispatch("fetchMyCourseOrder", self.item.id)
-                    .then(() => {
+                    .then((response) => {
                         self.showApplyButton = false;
+                        self.msg_text = response.data.message;
                     })
                     .catch(() => {
                         self.showApplyButton = true;

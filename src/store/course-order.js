@@ -64,7 +64,6 @@ const actions = {
         var headers = mixin.methods.getHeaderWithAuthorizationBearerToken();
 
 
-
         return new Promise((resolve, reject) => {
             axios
                 .get(url, headers)
