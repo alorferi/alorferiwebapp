@@ -140,7 +140,7 @@
                 let self = this;
 
                 self.$store
-                    .dispatch("fetchMyCourseApplication", self.item.id)
+                    .dispatch("fetchMyCourseOrder", self.item.id)
                     .then(() => {
                         self.showApplyButton = false;
                     })

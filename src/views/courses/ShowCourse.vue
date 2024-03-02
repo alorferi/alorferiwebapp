@@ -66,9 +66,9 @@
                                     <h5 :style="{ color: course.color_subtitle }"> Date </h5>
 
                                     <h5 :style="{ color: course.color_title }">
-                                        {{ this.formatDate(course.starts_at) }} </h5>
+                                        {{ this . formatDate(course . starts_at) }} </h5>
                                     <div :style="{ color: course.color_subtitle }">
-                                         {{ this.momentFromNow(course.starts_at)  }}
+                                        {{ this . momentFromNow(course . starts_at) }}
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -180,8 +180,7 @@
 
                 <div class="card-footer d-flex justify-content-between">
 
-                    <router-link class="btn btn-small btn-success"
-                    v-if="showApplyButton"
+                    <router-link class="btn btn-small btn-success" v-if="showApplyButton"
                         :to="{
 
                             name: 'courses.apply',
@@ -244,6 +243,7 @@
                     .then(() => {
 
                         self.loading = false;
+                        self.fetchMyOrder();
 
                     })
                     .catch(() => {
@@ -252,18 +252,22 @@
             },
             fetchMyOrder() {
 
-let self = this;
+                let self = this;
 
-self.$store
-    .dispatch("fetchMyCourseApplication", self.item.id)
-    .then(() => {
-        self.showApplyButton = false;
-    })
-    .catch(() => {
-        self.showApplyButton = true;
-    });
+                self.$store
+                    .dispatch("fetchMyCourseOrder", self.course.id)
+                    .then(() => {
 
-}
+                        console.log("then")
+
+                        self.showApplyButton = false;
+                    })
+                    .catch(() => {
+                        console.log("catch")
+                        self.showApplyButton = true;
+                    });
+
+            }
 
         }
 

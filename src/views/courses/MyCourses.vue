@@ -1,25 +1,29 @@
 <template>
     <div>
+
+        <div class="d-flex justify-content-center" style="margin-top: 80px;">
+            <div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-outline-primary active">My Orders</button>
+                    <button type="button" class="btn btn-outline-primary">Purchases</button>
+                    <button type="button" class="btn btn-outline-primary">Completed</button>
+                </div>
+            </div>
+        </div>
+
         <Loading v-if="is_loading"></Loading>
 
 
-        <Paginator
-                :meta="meta"
-                @update:page="page = $event"
-            />
+        <Paginator :meta="meta" @update:page="page = $event" />
 
 
-        <div class="row mb-4" >
-            <div v-for="course in courses" v-bind:key="course.id" class="col-sm-4" >
+        <div class="row mb-4">
+            <div v-for="course in courses" v-bind:key="course.id" class="col-sm-4">
                 <CourseCardItem :item="course" />
             </div>
         </div>
 
-        <Paginator
-                :meta="meta"
-                @update:page="page = $event"
-            />
-
+        <Paginator :meta="meta" @update:page="page = $event" />
 
         <p v-if="!is_loading && courses.length < 1" class="text-center">
             No Courses found.
@@ -40,14 +44,14 @@
         name: "MyCourses",
         computed: {
             courses() {
-                return this.$store.getters.coursesResponse == null ? [] : this.$store.getters.coursesResponse.data;
+                return this.$store.getters.myCourseOrdersResponse == null ? [] : this.$store.getters.myCourseOrdersResponse.data;
             },
 
             meta() {
-            return this.$store.getters.coursesResponse == null
-                ? null
-                : this.$store.getters.coursesResponse.meta;
-        }
+                return this.$store.getters.myCourseOrdersResponse == null ?
+                    null :
+                    this.$store.getters.myCourseOrdersResponse.meta;
+            }
         },
         components: {
             Loading,
@@ -59,7 +63,7 @@
                 is_loading: true,
 
                 term: null,
-            page: null,
+                page: null,
             };
         },
         async mounted() {
@@ -70,12 +74,12 @@
         methods: {
             fetchCoursesAction(pTerm = null, pPage = null) {
                 var payload = {
-                term: pTerm,
-                page: pPage,
-            };
+                    term: pTerm,
+                    page: pPage,
+                };
 
                 this.$store
-                    .dispatch("fetchMyCourseOrders",payload)
+                    .dispatch("fetchMyCourseOrders", payload)
                     .then((
 
                     ) => {
@@ -91,26 +95,26 @@
 
         },
         watch: {
-        page: {
-            // the callback will be called immediately after the start of the observation
-            immediate: true,
-            handler(newVal, oldVal) {
-                if (newVal != oldVal) {
-                    this.fetchCoursesAction(this.term, this.page);
+            page: {
+                // the callback will be called immediately after the start of the observation
+                immediate: true,
+                handler(newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        this.fetchCoursesAction(this.term, this.page);
+                    }
                 }
-            }
-        },
+            },
 
-        term: {
-            // the callback will be called immediately after the start of the observation
-            immediate: true,
-            handler(newVal, oldVal) {
-                if (newVal != oldVal) {
-                    this.fetchCoursesAction(this.term, this.page);
+            term: {
+                // the callback will be called immediately after the start of the observation
+                immediate: true,
+                handler(newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        this.fetchCoursesAction(this.term, this.page);
+                    }
                 }
             }
         }
-    }
     };
 </script>
 

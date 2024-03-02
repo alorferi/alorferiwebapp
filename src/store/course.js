@@ -105,28 +105,7 @@ const actions = {
                 });
         });
     },
-    applyCourse(context, payload) {
-        return new Promise((resolve, reject) => {
 
-            var url = mixin.methods.getApiUrl("/api/course-applications");
-
-            const headers = mixin.methods.getAuthorizationBearerToken();
-
-            axios({
-                url: url,
-                headers: headers,
-                data:payload,
-                method: "POST"
-            })
-                .then(response => {
-                    resolve(response);
-                })
-                .catch(err => {
-                    console.log("err:", err);
-                    reject(err);
-                });
-        });
-    },
 
 };
 

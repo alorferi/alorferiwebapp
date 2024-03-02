@@ -21,7 +21,7 @@ import LibraryPost from "@/store/library-post";
 import Complain from "@/store/complain.js";
 import Block from "@/store/block";
 import Course from "@/store/course";
-import CourseOrder from "@/store/course-application";
+import CourseOrder from "@/store/course-order";
 
 Vue.use(Vuex);
 
