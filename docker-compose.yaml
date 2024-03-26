@@ -13,10 +13,10 @@ services:
     environment:
       - NODE_ENV=development
 
-#     networks:
-#       alorferiwebapp_default:
-#         ipv4_address: 172.18.0.2
+    networks:
+      alorferiwebapp_default:
+        ipv4_address: 172.18.0.2
 
-# networks:
-#   alorferiwebapp_default:
-#     external: true
+networks:
+  alorferiwebapp_default:
+    external: true
