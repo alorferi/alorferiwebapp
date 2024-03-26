@@ -37,7 +37,7 @@
                 </li>
                 <li class="pl-1 pr-1">
                     <a href="/courses" class="nav-link" @click="reload">
-                       Courses
+                        Training
                     </a>
                 </li>
                 <li class="pl-1 pr-1">
