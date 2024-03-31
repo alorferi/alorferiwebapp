@@ -7,7 +7,7 @@
 
             <img class="rounded img-fluid" :src="imageUrl()" alt="Course Thumb">
 
-            <div class="card-body" :style="{ background: item.color_background }">
+            <!-- <div class="card-body" :style="{ background: item.color_background }">
 
 
                 <h4 :style="{ color: item.color_title }">
@@ -63,7 +63,7 @@
 
 
 
-            </div>
+            </div> -->
 
 
             <!-- <router-link class="stretched-link"
@@ -79,13 +79,13 @@
 
                 <div class="d-flex justify-content-between">
 
-                    <router-link class="btn btn-small btn-info"
+                    <!-- <router-link class="btn btn-small btn-info"
                     :to="{
 
                         name: 'courses.show',
                         params: { slug: item.slug }
 
-                    }">Show</router-link>
+                    }">Show</router-link> -->
 
                 <!-- <router-link class="btn btn-small btn-success"
                     v-if="showApplyButton"
