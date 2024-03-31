@@ -30,6 +30,11 @@
                 <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
                     <router-link class="nav-link" :to="{ name: 'about' }">{{ $t('about') }}</router-link>
                 </li>
+
+                <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
+                    <router-link class="nav-link" :to="{ name: 'contact-us' }">Contact</router-link>
+                </li>
+
             </ul>
 
             <ul class="navbar-nav ml-auto">
