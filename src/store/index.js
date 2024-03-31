@@ -22,6 +22,7 @@ import Complain from "@/store/complain.js";
 import Block from "@/store/block";
 import Course from "@/store/course";
 import CourseOrder from "@/store/course-order";
+import MyCart from "@/store/my-cart";
 
 Vue.use(Vuex);
 
@@ -48,7 +49,8 @@ export default new Vuex.Store({
         Block,
         LibraryFollower,
         Course,
-        CourseOrder
+        CourseOrder,
+        MyCart
     },
     state: {},
     getters: {},

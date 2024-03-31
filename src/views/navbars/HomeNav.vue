@@ -63,6 +63,10 @@
                     <LanguageToggleButton/>
                 </li>
 
+                <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
+                    <a href="" class="nav-link"> <i class="fas fa-shopping-cart"></i> My Cart</a>
+                </li>
+
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
                     <a

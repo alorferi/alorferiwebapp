@@ -15,11 +15,12 @@
             <ul class="navbar-nav mr-auto">
 
                 <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
-                    <router-link class="nav-link mx-2" :to="{ name: 'home' }">{{ $t('home') }}</router-link>
+                    <router-link class="nav-link mx-2" :to="{ name: 'home' }"> <i class="fas fa-home"></i>
+                        {{ $t('home') }}</router-link>
                 </li>
 
                 <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
-                    <router-link class="nav-link mx-2" :to="{ name: 'courses.index' }">Training</router-link>
+                    <router-link class="nav-link mx-2" :to="{ name: 'courses.index' }"> Training</router-link>
                 </li>
 
                 <!-- <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
@@ -43,6 +44,12 @@
                 <li class="nav-item">
                     <LanguageToggleButton />
                 </li>
+
+                <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
+                    <a href="" class="nav-link"> <i class="fas fa-shopping-cart"></i> <span
+                            class="badge badge-pill badge-danger cart_item_count" style="font-size:10px">0</span> </a>
+                </li>
+
             </ul>
         </div>
     </div>

@@ -74,13 +74,12 @@
 
                 }"></router-link> -->
 
-            <div class="card-body d-flex justify-content-between">
+            <div class="card-body">
 
-                <!-- <a class="btn btn-small btn-danger">
-                            Wishlist
-                    </a> -->
 
-                <router-link class="btn btn-small btn-info"
+                <div class="d-flex justify-content-between">
+
+                    <router-link class="btn btn-small btn-info"
                     :to="{
 
                         name: 'courses.show',
@@ -88,8 +87,7 @@
 
                     }">Show</router-link>
 
-
-                <router-link class="btn btn-small btn-success"
+                <!-- <router-link class="btn btn-small btn-success"
                     v-if="showApplyButton"
                     :to="{
 
@@ -97,7 +95,17 @@
                         params: { id: item.id }
 
                     }">Apply
-                    now</router-link>
+                    now</router-link> -->
+
+                    <a class="btn btn-small btn-danger">
+                            Wishlist
+                    </a>
+
+                    <button type="button" class="btn btn-success btn-small"> <i class="fas fa-cart-plus" ></i>&nbsp; Add to cart</button>
+
+
+                </div>
+
 
                   <div>{{ msg_text }}</div>
 
