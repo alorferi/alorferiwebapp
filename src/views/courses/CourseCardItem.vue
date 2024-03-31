@@ -101,7 +101,8 @@
                         Wishlist
                     </a>
 
-                    <button type="button" class="btn btn-success btn-small"> <i class="fas fa-cart-plus"></i>&nbsp; Add
+                    <button type="button" class="btn btn-success btn-small" @click="addToCart(item)"
+                        v-if=" ! isProductAdded "> <i class="fas fa-cart-plus"></i>&nbsp; Add
                         to cart</button>
 
 
@@ -132,6 +133,19 @@
         },
         computed: {
 
+            isProductAdded() {
+
+                const filterItems = this.$store.getters.myCart.filter(o => o.id == this.item.id);
+
+                if (filterItems.length == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+
+            },
+
         },
 
         data: function() {
@@ -161,6 +175,11 @@
                         self.showApplyButton = true;
                     });
 
+            },
+
+            addToCart(product) {
+                this.$store
+                    .dispatch("addProductToCart", product)
             }
 
         }

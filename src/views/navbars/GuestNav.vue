@@ -51,8 +51,10 @@
                 </li>
 
                 <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
-                    <a href="" class="nav-link"> <i class="fas fa-shopping-cart"></i> <span
-                            class="badge badge-pill badge-danger cart_item_count" style="font-size:10px">0</span> </a>
+                    <a href="#" class="nav-link"> <i class="fas fa-shopping-cart"></i> <span
+                            class="badge badge-pill badge-danger cart_item_count" style="font-size:10px">
+                        {{ myCart.length }}
+                        </span> </a>
                 </li>
 
             </ul>
@@ -72,7 +74,13 @@
         data() {
             return {};
         },
-        computed: {},
+        computed: {
+
+            myCart() {
+                return this.$store.getters.myCart;
+            },
+
+        },
         async mounted() {},
         methods: {},
         watch: {
