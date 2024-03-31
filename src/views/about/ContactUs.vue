@@ -10,7 +10,25 @@
                 Address
             </h5>
             <div>
-                437/1 A North Kazipara, Kafrul, Dhaka
+                <p>
+                    Alor Feri Limited
+                </p>
+
+                <p>
+                    241/A, North Kazipara
+                </p>
+
+                <p>
+                    Kafrul, Mirpur, Dhaka - 1216
+                </p>
+
+
+
+
+
+                <div>
+                    <a href="https://maps.app.goo.gl/vurpymDtkKBywiiM9" target="_blank"> <i class='fas fa-map-marker-alt' style='color:red'></i> View Map</a>
+                </div>
             </div>
         </div>
 
@@ -39,7 +57,7 @@
             <div>
                 Send us a direct message from our
                 <a href="https://www.facebook.com/alorferi" target="_blank"
-                    >Alor Feri Facebook Page</a
+                    >Facebook Page</a
                 >
             </div>
         </div>
