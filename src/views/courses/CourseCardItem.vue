@@ -7,7 +7,7 @@
 
             <img class="rounded img-fluid" :src="imageUrl()" alt="Course Thumb">
 
-            <div class="card-body" :style="{ background: item.color_background }">
+            <!-- <div class="card-body" :style="{ background: item.color_background }">
 
 
                 <h4 :style="{ color: item.color_title }">
@@ -63,7 +63,7 @@
 
 
 
-            </div>
+            </div> -->
 
 
             <!-- <router-link class="stretched-link"
@@ -79,15 +79,15 @@
 
                 <div class="d-flex justify-content-between">
 
-                    <router-link class="btn btn-small btn-info"
+                    <!-- <router-link class="btn btn-small btn-info"
                     :to="{
 
                         name: 'courses.show',
                         params: { slug: item.slug }
 
-                    }">Show</router-link>
+                    }">Show</router-link> -->
 
-                <!-- <router-link class="btn btn-small btn-success"
+                    <!-- <router-link class="btn btn-small btn-success"
                     v-if="showApplyButton"
                     :to="{
 
@@ -98,16 +98,17 @@
                     now</router-link> -->
 
                     <a class="btn btn-small btn-danger">
-                            Wishlist
+                        Wishlist
                     </a>
 
-                    <button type="button" class="btn btn-success btn-small"> <i class="fas fa-cart-plus" ></i>&nbsp; Add to cart</button>
+                    <button type="button" class="btn btn-success btn-small"> <i class="fas fa-cart-plus"></i>&nbsp; Add
+                        to cart</button>
 
 
                 </div>
 
 
-                  <div>{{ msg_text }}</div>
+                <div>{{ msg_text }}</div>
 
             </div>
 
@@ -133,7 +134,7 @@
 
         },
 
-        data: function(){
+        data: function() {
             return {
                 showApplyButton: false,
                 msg_text: "",
