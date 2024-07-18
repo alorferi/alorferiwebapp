@@ -126,6 +126,14 @@
                     >
                 </div> -->
 
+
+                <div>
+
+                    <a href="https://career.alorferi.com">
+                        Careers</a>
+
+                </div>
+
                 <div>
                     <router-link :to="{ name: 'api-overview' }">
                         {{ $t("developers") }}
