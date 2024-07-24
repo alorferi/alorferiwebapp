@@ -68,7 +68,7 @@
                     class="nav-item"
                     style="margin-left: 5px; margin-right: 5px"
                 >
-                    <a class="nav-link" href="https://career.alorferi.com"> Careers</a>
+                    <a class="nav-link" href="https://careers.alorferi.com"> Careers</a>
                 </li>
             </ul>
 

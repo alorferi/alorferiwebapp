@@ -129,7 +129,7 @@
 
                 <div>
 
-                    <a href="https://career.alorferi.com">
+                    <a href="https://careers.alorferi.com">
                         Careers</a>
 
                 </div>
