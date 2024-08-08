@@ -43,7 +43,7 @@
 <script>
     import award_patuakkhali from "@/assets/images/awards/award_patuakkhali_16x9.png";
     import award_prothom_alo from "@/assets/images/awards/award_prothom_alo_16x9.png";
-    import bm_with_palak from "@/assets/images/awards/expanded_junayed_ahmed.png";
+    // import bm_with_palak from "@/assets/images/awards/expanded_junayed_ahmed.png";
     import achivement_innovation_fair_barisal_2023 from "@/assets/images/awards/achivement_innovation_fair_barisal_2023.jpg";
     import award_basis_softexpo_2023 from "@/assets/images/awards/award_basis_softexpo_2023.jpg";
 
@@ -59,10 +59,16 @@
         props: {},
         data() {
             return {
-                items: [{
-                        title: "smart_app_dev_training_2014_title",
-                        caption: "smart_app_dev_training_2014_caption",
-                        image_name: bm_with_palak
+                items: [
+                    // {
+                    //     title: "smart_app_dev_training_2014_title",
+                    //     caption: "smart_app_dev_training_2014_caption",
+                    //     image_name: bm_with_palak
+                    // },
+                    {
+                        title: "prothom_alo_honor_title",
+                        caption: "prothom_alo_honor_caption",
+                        image_name: award_prothom_alo
                     },
                     {
                         title: "award_basis_softexpo_2023_title",
@@ -73,11 +79,6 @@
                         title: "district_champion_title",
                         caption: "district_champion_caption",
                         image_name: award_patuakkhali
-                    },
-                    {
-                        title: "prothom_alo_honor_title",
-                        caption: "prothom_alo_honor_caption",
-                        image_name: award_prothom_alo
                     },
                     {
                         title: "barishal_innovation_fair_2023_title",
