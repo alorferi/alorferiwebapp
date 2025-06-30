@@ -47,7 +47,7 @@
                 E-mail
             </h5>
             <div>
-                Email us:  <a href = "mailto:info@alorferi.com">info@alorferi.com</a>
+                Email us:  <a href = "mailto:hello@alorferi.com">hello@alorferi.com</a>
             </div>
         </div>
         <div class="p-4">
