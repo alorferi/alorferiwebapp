@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" width="600" height="350" fill="none" role="img" aria-labelledby="mat-title mat-description">
+  <title id="mat-title">A quiet reading corner</title>
+  <desc id="mat-description">A ten-year-old boy and a smaller seven-year-old girl sit comfortably on a woven sage reading mat, each holding their own open book, in a warm library corner with books and a small plant.</desc>
+  <defs>
+    <linearGradient id="mat-paper" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fffef7"/><stop offset="1" stop-color="#efe7d2"/>
+    </linearGradient>
+    <linearGradient id="mat-shelf" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#dde4d3"/><stop offset="1" stop-color="#ccd8c2"/>
+    </linearGradient>
+  </defs>
+  <g id="mat-setting">
+    <path d="M79 247c-16-42-7-107 45-133 50-26 94 2 140-15 51-19 110-49 168-20 60 30 101 102 74 159-25 52-93 65-180 64-104-1-225 3-247-55Z" fill="#e9eddf"/>
+    <circle cx="463" cy="96" r="36" fill="#ecddae"/>
+    <ellipse cx="302" cy="307" rx="238" ry="7" fill="#e1e6d7"/>
+    <g id="mat-bookshelf">
+      <rect x="89" y="127" width="119" height="174" rx="7" fill="url(#mat-shelf)" stroke="#7e967d" stroke-width="1.6"/>
+      <path d="M90 186h117M90 245h117" stroke="#7e967d" stroke-width="2"/>
+      <path d="M85 301h127" stroke="#174b3a" stroke-width="5" stroke-linecap="round"/>
+      <path d="M101 143h13v42h-13Z" fill="#174b3a"/>
+      <path d="M118 151h10v34h-10Z" fill="#b96342"/>
+      <path d="m131 145 11-3 12 40-11 3Z" fill="#fffef7"/>
+      <path d="M157 146h14v39h-14Z" fill="#c8a45e"/>
+      <path d="M175 155h10v30h-10Z" fill="#6e8874"/>
+      <path d="M190 140h9v45h-9Z" fill="#fffef7"/>
+      <path d="M105 152h5m-5 17h5m51-15h6m-6 16h6" stroke="#f7f4ec" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M101 201h16v43h-16Z" fill="#e2c99b"/>
+      <path d="M121 207h12v37h-12Z" fill="#fffef7"/>
+      <path d="M138 195h17v49h-17Z" fill="#466b53"/>
+      <path d="m161 207 11-4 14 36-11 4Z" fill="#b96342"/>
+      <path d="M188 200h11v44h-11Z" fill="#174b3a"/>
+      <path d="M105 209h7m-7 5h7m30-10h8m-8 22h8" stroke="#f7f4ec" stroke-width="1.5" stroke-linecap="round"/>
+      <rect x="102" y="282" width="51" height="10" rx="1" fill="#b96342"/>
+      <path d="M106 273h43v9h-43Z" fill="#fffef7"/>
+      <path d="M102 262h49v11h-49Z" fill="#c8a45e"/>
+      <path d="M163 263h13v35h-13Z" fill="#174b3a"/>
+      <path d="M181 258h12v40h-12Z" fill="#fffef7"/>
+    </g>
+    <g id="mat-plant">
+      <path d="M511 281v-62m0 32c-17-1-26-13-26-25 17 1 27 12 26 25Zm0-15c17-2 27-16 26-29-16 3-26 15-26 29Zm0 33c18-1 29-14 29-27-17 2-28 13-29 27Z" fill="#748d70"/>
+      <path d="m495 276 5 27h23l5-27Z" fill="#d9bc88"/>
+      <path d="M496 277h31" stroke="#c3a46d" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <path d="M237 107h8m-4-4v8m247 55h7m-3-3v6" stroke="#c8a45e" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="79" cy="222" r="2.5" fill="#c8a45e"/>
+    <circle cx="491" cy="130" r="2.5" fill="#b96342"/>
+    <path d="M255 82c22-15 48-14 68 0" stroke="#a3b095" stroke-width="1.4" stroke-dasharray="2 6" stroke-linecap="round"/>
+  </g>
+  <g id="mat-rug">
+    <ellipse cx="353" cy="285" rx="151" ry="26" fill="#ced9be"/>
+    <ellipse cx="353" cy="285" rx="140" ry="19" stroke="#a9ba99" stroke-width="1.3"/>
+    <path d="M221 287h263m-248-8h233m-230 16h228" stroke="#b7c6a7" stroke-width="1.2" stroke-dasharray="2 5" stroke-linecap="round"/>
+    <path d="m212 279-8-2m7 9-9 1m12 7-8 3m286-18 8-2m-7 9 9 1m-12 7 8 3" stroke="#a9ba99" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+  <g id="mat-boy">
+    <!-- Two bent trouser legs curve to separate shoes in front of the lap. -->
+    <path d="M282 224c-14 4-33 17-37 29-3 9 4 17 17 20l30 6 8-13-28-12 22-13Z" fill="#304c40"/>
+    <path d="M312 225c14 5 29 17 32 29 3 9-4 17-15 20l-17 6-9-12 18-14-17-12Z" fill="#466b53"/>
+    <path d="m291 265 11 3 5 12c-8 3-17 1-23-3l7-12Zm18 2 10 4 5 10c-8 3-16 1-20-4Z" fill="#f9f4e6" stroke="#7e9078" stroke-width="1.2" stroke-linejoin="round"/>
+    <path d="m290 275 13 3m5-2 12 3" stroke="#93a28a" stroke-width="1.3" stroke-linecap="round"/>
+      <g id="mat-boy-upper" transform="translate(0 12)">
+        <path d="M282 158c9-6 29-6 39 1l10 51-7 17h-43l-5-17Z" fill="#466b53"/>
+        <path d="M283 161c-7 4-13 13-16 24l15 7 12-25Z" fill="#466b53"/>
+        <path d="m270 186-5 17c-1 5 0 10 5 13l7 3 5-9-6-5 6-15Z" fill="#c58d70"/>
+        <path d="m322 185 7 17-4 8 7 7c6-5 9-10 7-16l-5-17Z" fill="#d19c7f"/>
+        <path d="M315 158c7-2 14 6 20 24l-14 8-13-24Z" fill="#527a5b"/>
+        <path d="M293 142v15c5 7 14 8 20 0l-2-17Z" fill="#c58d70"/>
+        <path d="M294 144c5 4 12 4 18 0v5c-6 5-14 4-18 1Z" fill="#b57e61" opacity=".6"/>
+        <circle cx="285" cy="127" r="4" fill="#d19c7f"/>
+        <circle cx="323" cy="127" r="4" fill="#d19c7f"/>
+        <path d="M286 115c3-11 30-16 37 0v14c0 12-8 20-18 20s-19-9-19-20Z" fill="#d19c7f"/>
+        <path d="M284 124c-6-13 2-28 15-29 5-6 13-3 15 0 12 0 17 12 12 28l-5-11c-8 3-16 0-20-5-3 8-8 11-15 11l-2 6Z" fill="#2b4235"/>
+        <path d="M293 129q3 3 6 0m12 0q3 3 6 0" stroke="#493c32" stroke-width="1.7" stroke-linecap="round"/>
+        <path d="m304 133-1 4h3m-7 5q6 3 11-1" stroke="#a46851" stroke-width="1.1" stroke-linecap="round"/>
+        <ellipse cx="291" cy="136" rx="3" ry="2" fill="#bd715a" opacity=".24"/>
+        <ellipse cx="319" cy="136" rx="3" ry="2" fill="#bd715a" opacity=".24"/>
+      </g>
+      <g id="mat-boy-book" transform="translate(272 211) scale(1.01667)">
+        <path d="M0 0c10-3 20-1 30 5C40-1 50-3 60 0v30c-10-3-20-1-30 5-10-6-20-8-30-5Z" fill="url(#mat-paper)" stroke="#73896e" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M30 5v30M7 7c6-1 11 1 16 4M7 14c6-1 11 1 16 4m14-7c5-3 10-5 16-4m-16 11c5-3 10-5 16-4" stroke="#a3ad91" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="m44 30 2 8 3-3 3 1-2-8" fill="#c8a45e"/>
+      </g>
+    <rect x="269" y="223" width="8" height="11" rx="4" fill="#c58d70"/>
+    <rect x="328" y="223" width="8" height="11" rx="4" fill="#d19c7f"/>
+  </g>
+  <g id="mat-girl">
+    <!-- Two cream-clad knees remain visible below the book and dress. -->
+    <path d="M405 232c-11 3-23 12-25 22-2 8 4 15 14 17l23 5 6-11-23-11 15-10Z" fill="#f9f4e6" stroke="#b4bea8" stroke-width="1.2" stroke-linejoin="round"/>
+    <path d="M429 232c11 4 23 13 25 22 2 8-4 15-14 18l-13 5-7-11 16-12-16-10Z" fill="#f0e9d9" stroke="#b4bea8" stroke-width="1.2" stroke-linejoin="round"/>
+    <path d="m415 265 10 3 4 11c-7 3-15 1-20-3l6-11Zm12 2 10 4 5 9c-7 3-13 1-17-3Z" fill="#b96342"/>
+    <path d="m412 275 13 3m3-1 11 2" stroke="#8e513d" stroke-width="1.4" stroke-linecap="round"/>
+      <g id="mat-girl-upper" transform="translate(0 9)">
+        <path d="M402 154c-7 2-12 13-9 22 7-2 13-9 14-18m31-4c7 2 12 13 9 22-7-2-13-9-14-18" fill="#493b32"/>
+        <path d="M408 174c7-4 17-4 24 0l8 31 7 25c-16 7-37 7-54 0l8-25Z" fill="#b96342"/>
+        <path d="M410 174q10 12 20 0l-3-3h-14Z" fill="#f1dfb8"/>
+        <path d="M408 177c-7-1-12 7-15 16l13 6 9-17Z" fill="#c97953"/>
+        <path d="m394 194-2 15c-1 6 0 11 5 14l5-8-2-5 5-12Z" fill="#d8a184"/>
+        <path d="m437 194 7 14-4 8 6 7c6-5 8-11 5-17l-5-15Z" fill="#d8a184"/>
+        <path d="M432 177c6-2 12 5 17 15l-12 7-12-17Z" fill="#c97953"/>
+        <path d="M413 160v14c4 5 10 5 14 0v-14Z" fill="#ca8e70"/>
+        <circle cx="401" cy="148" r="3.5" fill="#d8a184"/>
+        <circle cx="438" cy="148" r="3.5" fill="#d8a184"/>
+        <path d="M403 138c3-10 28-11 32 0v13c0 10-7 18-15 18-9 0-17-8-17-18Z" fill="#d8a184"/>
+        <path d="M400 149c-5-13 2-27 18-28 16-1 25 10 22 28l-5-11c-7-1-12-4-15-9-4 6-10 9-16 10l-4 10Z" fill="#493b32"/>
+        <path d="M409 151q2.5 3 5 0m12 0q2.5 3 5 0" stroke="#493b32" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="m420 154-1 4h2m-6 4q5 3 10-1" stroke="#af7259" stroke-width="1.1" stroke-linecap="round"/>
+        <ellipse cx="407" cy="157" rx="2.5" ry="1.8" fill="#bc6c57" opacity=".27"/>
+        <ellipse cx="433" cy="157" rx="2.5" ry="1.8" fill="#bc6c57" opacity=".27"/>
+        <path d="m399 160-6-3 1 7 5-1 5 2-1-7Zm40 0 6-3-1 7-5-1-5 2 1-7Z" fill="#91a381"/>
+      </g>
+      <g id="mat-girl-book" transform="translate(395 213) scale(0.833333)">
+        <path d="M0 0c10-3 20-1 30 5C40-1 50-3 60 0v30c-10-3-20-1-30 5-10-6-20-8-30-5Z" fill="url(#mat-paper)" stroke="#73896e" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M30 5v30M7 7c6-1 11 1 16 4M7 14c6-1 11 1 16 4m14-7c5-3 10-5 16-4m-16 11c5-3 10-5 16-4" stroke="#a3ad91" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="m44 30 2 8 3-3 3 1-2-8" fill="#c8a45e"/>
+      </g>
+    <rect x="393" y="224" width="7" height="10" rx="3.5" fill="#d8a184"/>
+    <rect x="441" y="224" width="7" height="10" rx="3.5" fill="#d8a184"/>
+  </g>
+</svg>

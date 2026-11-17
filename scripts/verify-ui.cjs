@@ -535,7 +535,10 @@ async function main() {
                 await evaluate("getComputedStyle(document.querySelector('.reader-page')).backgroundColor"),
                 "rgb(247, 244, 236)"
             );
-            assert.equal(await evaluate("!!document.querySelector('.reader-art svg')"), true);
+            await waitFor(
+                "document.querySelector('.reader-illustration')?.naturalWidth > 0 && document.querySelector('.reader-illustration').src.includes('home-readers-bench')",
+                "bench illustration loaded"
+            );
             assert.match(await evaluate("document.querySelector('.reader-card h2').innerText"), /Welcome back, reader/);
             const placement = await evaluate(
                 "(() => {const login=document.querySelector('.reader-submit').getBoundingClientRect(),create=document.querySelector('.reader-create-button').getBoundingClientRect();return {gap:create.y-login.bottom,diff:Math.abs(create.width-login.width),text:document.querySelector('.reader-submit').innerText};})()"
@@ -576,7 +579,10 @@ async function main() {
                     if (mode === "login") {
                         if (width <= 959) assert(layout.card.y >= layout.story.bottom);
                         else assert(layout.story.x < layout.card.x);
-                        assert(await evaluate("!!document.querySelector('.reader-art svg')"));
+                        await waitFor(
+                            "document.querySelector('.reader-illustration')?.naturalWidth > 0 && document.querySelector('.reader-illustration').src.includes('home-readers-bench')",
+                            "responsive bench illustration"
+                        );
                         if (width <= 959)
                             assert(
                                 await evaluate(
