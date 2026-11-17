@@ -1,7 +1,7 @@
 <template>
     <div>
       <div v-if="dataWrapperList.length === 0">
-            <p>
+            <p class="ui-empty-state">
                 {{emptyListMessage}}
             </p>
         </div>

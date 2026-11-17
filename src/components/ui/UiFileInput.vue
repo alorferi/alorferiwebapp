@@ -1,7 +1,7 @@
 <template>
     <label
-        class="block cursor-pointer rounded border border-dashed p-4 text-center focus-within:ring-2 focus-within:ring-primary/40"
-        :class="dragging ? 'bg-blue-50' : 'bg-white'"
+        class="block cursor-pointer rounded-xl border border-dashed p-4 text-center focus-within:ring-2 focus-within:ring-primary/40"
+        :class="dragging ? 'bg-primary-soft' : 'bg-white'"
         @dragover.prevent="dragging = true"
         @dragleave.prevent="dragging = false"
         @drop.prevent="drop"

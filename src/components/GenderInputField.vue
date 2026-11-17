@@ -2,14 +2,14 @@
     <div class="mb-4">
         <label :for="name" class="text-primary">{{ label }}</label>
 
-        <div class="flex w-full items-stretch mb-4 border">
+        <div class="flex w-full flex-wrap items-center mb-4 rounded-lg border bg-white">
             <div class="flex">
                 <span class="ui-input-addon">
                     <i class="fas fa-venus-mars"></i>
                 </span>
             </div>
 
-            <label class="mr-3 inline-flex items-center gap-1 pl-2 pt-2">
+            <label class="mr-3 mb-0 inline-flex min-h-[44px] items-center gap-2 px-2 py-2">
                 <input
                     type="radio"
                     :name="name"
@@ -21,7 +21,7 @@
                 />
                 {{ $t("male") }}
             </label>
-            <label class="mr-3 inline-flex items-center gap-1 pl-2 pt-2">
+            <label class="mr-3 mb-0 inline-flex min-h-[44px] items-center gap-2 px-2 py-2">
                 <input
                     type="radio"
                     :name="name"
@@ -33,7 +33,7 @@
                 />
                 {{ $t("female") }}
             </label>
-            <label class="mr-3 inline-flex items-center gap-1 pl-2 pt-2">
+            <label class="mr-3 mb-0 inline-flex min-h-[44px] items-center gap-2 px-2 py-2">
                 <input
                     type="radio"
                     :name="name"

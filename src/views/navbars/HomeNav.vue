@@ -31,26 +31,48 @@
         >
             <ul class="m-0 flex list-none flex-col p-0 lg:flex-row lg:items-center">
                 <li class="pl-2 pr-1">
-                    <a href="/" class="ui-nav-link" @click="reload">
+                    <a
+                        href="/"
+                        class="ui-nav-link"
+                        :aria-current="($route.path === '/') ? 'page' : undefined"
+                        @click="reload"
+                    >
                         <i class="fas fa-home"></i> <span class="pl-1"> {{ $t("home") }} </span>
                     </a>
                 </li>
                 <li class="pl-1 pr-1">
-                    <a href="/courses" class="ui-nav-link" @click="reload"> Training </a>
+                    <a
+                        href="/courses"
+                        class="ui-nav-link"
+                        :aria-current="($route.path.startsWith('/courses') || $route.name === 'my-courses') ? 'page' : undefined"
+                        @click="reload"
+                    >
+                        Training
+                    </a>
                 </li>
                 <li class="pl-1 pr-1">
-                    <a href="/libraries" class="ui-nav-link" @click="reload">
+                    <a
+                        href="/libraries"
+                        class="ui-nav-link"
+                        :aria-current="($route.path.startsWith('/librar') || $route.path.startsWith('/my-librar')) ? 'page' : undefined"
+                        @click="reload"
+                    >
                         {{ $t("libraries") }}
                     </a>
                 </li>
 
                 <li class="pl-1 pr-1">
-                    <a href="/users" class="ui-nav-link" @click="reload">
+                    <a
+                        href="/users"
+                        class="ui-nav-link"
+                        :aria-current="($route.path.startsWith('/users')) ? 'page' : undefined"
+                        @click="reload"
+                    >
                         {{ $t("users") }}
                     </a>
                 </li>
             </ul>
-            <ul class="m-0 flex list-none flex-col p-0 lg:flex-row lg:items-center ml-auto">
+            <ul class="m-0 flex list-none flex-col p-0 lg:flex-row lg:items-center lg:ml-auto">
                 <li class="">
                     <LanguageToggleButton />
                 </li>

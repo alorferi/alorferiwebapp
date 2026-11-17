@@ -13,7 +13,7 @@
 
                 <button
                     type="button"
-                    class="ml-4 ui-field ui-button ui-button-outline-info"
+                    class="ml-4 w-full min-w-0 ui-button ui-button-outline-primary"
                     @click="showCreateUserPostModel = !showCreateUserPostModel"
                 >
                     {{ $t("start_a_discussion") }}
@@ -84,7 +84,7 @@ li {
     margin: 0 10px;
 }
 a {
-    color: #42b983;
+    color: var(--color-primary);
 }
 .my-8 {
     margin-top: 4rem;

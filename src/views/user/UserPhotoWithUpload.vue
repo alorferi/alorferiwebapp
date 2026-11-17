@@ -11,13 +11,15 @@
                 height: height + 'px',
             }"
         >
-            <a
-                class="text-danger bg-white pl-1 pr-1 rounded mt-auto"
+            <button
+                type="button"
+                aria-label="Change profile photo"
+                class="ui-button ui-button-light mt-auto"
                 v-if="this.isItMe(this.currentUser)"
                 @click="showUploadMyPhotoModal = !showUploadMyPhotoModal"
             >
                 <i class="fa fa-camera"></i>
-            </a>
+            </button>
 
             <UploadMyPhotoModal :show="showUploadMyPhotoModal" @updateVisibleState="showUploadMyPhotoModal = $event" />
         </div>

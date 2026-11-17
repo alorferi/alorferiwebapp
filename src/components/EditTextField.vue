@@ -11,7 +11,9 @@
             <input
                 :type="type"
                 :name="name"
-                class="form-control"
+                class="ui-field"
+                :id="name"
+                :aria-invalid="hasError ? 'true' : undefined"
                 v-model="value"
                 :placeholder="placeholder"
                 :class="errorClassObject()"
@@ -80,6 +82,6 @@ export default {
 
 <style scoped>
 .error-field {
-    @apply border border-danger border-t-0 border-l-0 border-r-0;
+    @apply border-danger;
 }
 </style>

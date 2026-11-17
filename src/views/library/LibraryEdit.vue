@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div class="ui-card p-4 sm:p-5">
         <Loading v-if="loading" />
         <div v-else>
             <div class="flex justify-between">
-                <div class="text-blue-400">
+                <div class="text-primary">
                     <a href="#" @click="$router.back()">&lt; Back</a>
                 </div>
             </div>
@@ -57,10 +57,10 @@
                 />
 
                 <div class="flex justify-start">
-                    <button class="py-2 px-6 text-white rounded text-red-700 border mr-12 hover:border-red-700">
+                    <button class="ui-button ui-button-outline-danger mr-3">
                         Canel
                     </button>
-                    <button class="bg-blue-500 py-2 px-6 text-white rounded hover:bg-blue-500">Save</button>
+                    <button class="ui-button ui-button-primary">Save</button>
                 </div>
             </form>
         </div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="border-l border-r border-b rounded">
+    <div class="ui-card rounded-t-none border-t-0">
         <!-- <p class="pt-6 text-gray-600 font-bold uppercase text-sm">Mobile</p>
         <p class="pl-2 text-blue-400">{{ library.mobile }}</p>
         <p class="pt-6 text-gray-600 font-bold uppercase text-sm">Email</p>

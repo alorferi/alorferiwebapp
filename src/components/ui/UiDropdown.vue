@@ -19,7 +19,7 @@
             v-if="open"
             ref="menu"
             :id="menuId"
-            class="absolute top-full z-40 mt-1 min-w-[10rem] max-w-[calc(100vw-2rem)] rounded border bg-white py-2 text-dark shadow-lg"
+            class="ui-dropdown-menu"
             :class="align === 'left' ? 'left-0' : 'right-0'"
             @click="select"
         >

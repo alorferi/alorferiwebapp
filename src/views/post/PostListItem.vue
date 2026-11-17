@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex items-start border p-4 mb-4">
+        <div class="ui-card flex-row items-start p-4 mb-4">
             <router-link
                 :to="{
                     name: 'users.show',

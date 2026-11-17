@@ -214,7 +214,7 @@ li {
     margin: 0 10px;
 }
 a {
-    color: #42b983;
+    color: var(--color-primary);
 }
 .my-8 {
     margin-top: 4rem;

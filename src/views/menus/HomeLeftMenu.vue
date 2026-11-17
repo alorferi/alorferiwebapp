@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="flex flex-col mt-2">
-            <a href="/" class="ui-list-item hover:bg-light focus:bg-light" @click="reload"> {{ $t("news_feed") }}</a>
+            <a href="/" :aria-current="$route.path === '/' ? 'page' : undefined" class="ui-list-item hover:bg-light focus:bg-light" @click="reload"> {{ $t("news_feed") }}</a>
 
             <!-- <router-link
         class="list-group-item list-group-item-action"

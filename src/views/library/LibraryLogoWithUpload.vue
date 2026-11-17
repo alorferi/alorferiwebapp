@@ -9,13 +9,15 @@
                 height: height + 'px',
             }"
         >
-            <a
-                class="text-danger bg-white pl-1 pr-1 rounded mt-auto"
+            <button
+                type="button"
+                aria-label="Change library logo"
+                class="ui-button ui-button-light mt-auto"
                 @click="showUploadLogoModal = !showUploadLogoModal"
                 v-if="this.hasMemberPermission('library_edit')"
             >
                 <i class="fa fa-camera"></i>
-            </a>
+            </button>
 
             <UploadLibraryLogoModal
                 :show="showUploadLogoModal"

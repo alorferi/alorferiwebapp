@@ -2,14 +2,14 @@
     <div>
         <UserCoverPhotoWithUpload :user="user" />
 
-        <div class="bg-light">
-            <div class="flex border-l border-r">
+        <div class="ui-card">
+            <div class="flex flex-wrap sm:flex-nowrap">
                 <div class="pl-4 pt-2 pb-2 text-center">
                     <UserPhotoWithUpload :user="user" size="96" />
                 </div>
 
-                <div class="grow p-2">
-                    <h2 class="text-dark m-2">
+                <div class="min-w-0 grow basis-full p-2 sm:basis-0">
+                    <h2 class="text-dark m-2 break-words">
                         {{ user.first_name }} {{ user.surname }}
                         {{ user.nickname }}
                     </h2>
@@ -26,7 +26,7 @@
                         :user="user"
                     />
 
-                    <div class="inline-flex items-center">
+                    <div class="inline-flex flex-wrap items-center">
                         <button
                             class="ui-button ui-button-small ui-button-link mt-1 mb-1 mr-1"
                             @click="showUserFollowings = !showUserFollowings"

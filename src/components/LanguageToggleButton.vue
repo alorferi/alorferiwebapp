@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="flex list-none rounded p-0 justify-center">
+        <ul class="flex list-none rounded p-0 justify-center mb-0">
             <li
                 aria-label="English"
                 class="ui-page-item"

@@ -9,12 +9,19 @@ module.exports = {
     screens: { sm: '576px', md: '768px', lg: '992px', xl: '1200px' },
     extend: {
       colors: {
-        primary: '#007bff', success: '#28a745', danger: '#dc3545',
-        secondary: '#6c757d', info: '#17a2b8', light: '#f8f9fa', dark: '#343a40',
-        brand: '#174b3a', paper: '#f7f4ec'
+        primary: '#174b3a', 'primary-hover': '#103d2e', 'primary-soft': '#eef3eb',
+        success: '#356744', 'success-hover': '#284f34',
+        danger: '#ad342c', 'danger-hover': '#8d2923',
+        secondary: '#65716a', 'secondary-hover': '#526057',
+        info: '#32616a', light: '#f2f5ef', dark: '#24342c',
+        brand: '#174b3a', paper: '#f7f4ec', stroke: '#dbe1d8'
       },
-      borderColor: { DEFAULT: '#dee2e6' },
-      boxShadow: { sm: '0 .125rem .25rem rgba(0,0,0,.075)' },
+      borderColor: { DEFAULT: '#dbe1d8' },
+      boxShadow: {
+        sm: '0 2px 8px rgba(21,62,47,.04)',
+        card: '0 6px 24px -12px rgba(21,62,47,.14)',
+        menu: '0 12px 36px -12px rgba(21,62,47,.22)'
+      },
       fontFamily: { sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'] }
     }
   },

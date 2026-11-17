@@ -1,20 +1,22 @@
 <template>
     <div>
         <div
-            class="flex pt-2 pl-2 pr-2 pb-2 rounded bg-secondary border-t border-r border-l border-b"
+            class="flex pt-2 pl-2 pr-2 pb-2 rounded-2xl bg-primary-soft border"
             style="height: 312px"
             :style="{
                 'background-image': 'url(' + this.userCoverUrl + ')',
                 'background-size': 'cover',
             }"
         >
-            <a
-                class="text-danger bg-white pl-1 pr-1 rounded ml-auto mt-auto"
+            <button
+                type="button"
+                aria-label="Change cover photo"
+                class="ui-button ui-button-light ml-auto mt-auto"
                 v-if="this.isItMe(this.user)"
                 @click="showUploadMyCoverModal = !showUploadMyCoverModal"
             >
                 <i class="fa fa-camera"></i>
-            </a>
+            </button>
 
             <UploadMyCoverModal :show="showUploadMyCoverModal" @updateVisibleState="showUploadMyCoverModal = $event" />
         </div>

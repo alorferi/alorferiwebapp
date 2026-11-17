@@ -1,13 +1,13 @@
 <template>
     <div>
         <LibraryCoverPhotoWithUpload :user="this.$store.getters.activeUser" :library="library" />
-        <div class="flex flex-col pt-2 pl-2 pr-2 bg-light ui-card">
+        <div class="flex flex-col pt-2 pl-2 pr-2 ui-card">
             <div class="flex">
                 <div class="p-2">
                     <LibraryLogoWithUpload :library="library" size="96" />
                 </div>
 
-                <div class="grow p-2">
+                <div class="min-w-0 grow p-2">
                     <h3 class="text-success">{{ library.name }}</h3>
 
                     <h5>

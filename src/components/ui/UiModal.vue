@@ -2,7 +2,7 @@
     <portal to="dialogs">
         <div
             v-if="value"
-            class="fixed inset-0 flex overflow-y-auto bg-black/50 p-4"
+            class="fixed inset-0 flex overflow-y-auto bg-dark/50 p-4"
             :class="centered ? 'items-center' : 'items-start pt-8'"
             :style="{ zIndex: 1050 + layer * 10 }"
             :aria-hidden="top ? undefined : 'true'"
@@ -16,9 +16,9 @@
                 :aria-labelledby="titleId"
                 :aria-busy="busy ? 'true' : 'false'"
                 tabindex="-1"
-                class="relative m-auto flex max-h-[calc(100vh-2rem)] w-full max-w-[500px] flex-col rounded border border-black/20 bg-white shadow-lg outline-none"
+                class="ui-dialog"
             >
-                <header v-if="!hideHeader" class="flex shrink-0 items-center justify-between border-b p-4">
+                <header v-if="!hideHeader" class="ui-dialog-header">
                     <h2 :id="titleId" class="m-0 text-xl font-medium">{{ title }}</h2>
                     <button
                         type="button"
@@ -32,7 +32,7 @@
                 </header>
                 <h2 v-else :id="titleId" class="sr-only">{{ title || loadingLabel }}</h2>
                 <div class="min-h-0 overflow-y-auto p-4"><slot /></div>
-                <footer v-if="!hideFooter" class="flex shrink-0 justify-end gap-2 border-t p-3">
+                <footer v-if="!hideFooter" class="ui-dialog-footer">
                     <slot name="footer">
                         <button
                             v-if="!okOnly"

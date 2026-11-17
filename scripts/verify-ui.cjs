@@ -251,7 +251,7 @@ async function main() {
                     }
                     if (scenario.course && pathname === "/api/courses")
                         return await replyApi(requestId, 200, paginated([fixtureCourse]));
-                    if (scenario.course && pathname === "/api/courses/" + fixtureCourse.id)
+                    if (scenario.course && (pathname === "/api/courses/" + fixtureCourse.id || pathname === "/api/courses/" + fixtureCourse.slug + "/slug"))
                         return await replyApi(requestId, 200, { data: fixtureCourse });
                     if (scenario.course && pathname === "/api/my-course-orders/" + fixtureCourse.id)
                         return await replyApi(requestId, 404, { message: "Not enrolled" });
@@ -1101,6 +1101,115 @@ async function main() {
         await screenshot("mobile-feed");
         await resize(1440, 1000);
     });
+    await check("secure pages share the reader theme across responsive English and Bengali views", async () => {
+        const styles = await evaluate(`(() => {
+                const style = selector => getComputedStyle(document.querySelector(selector));
+                return {background: style('body').backgroundColor, text: style('body').color,
+                    card: style('.ui-card').backgroundColor, radius: style('.ui-card').borderRadius,
+                    action: style('.ui-button-outline-primary').color};
+            })()`);
+        assert.deepEqual(styles, {
+            background: "rgb(247, 244, 236)",
+            text: "rgb(36, 52, 44)",
+            card: "rgb(255, 255, 255)",
+            radius: "16px",
+            action: "rgb(23, 75, 58)",
+        });
+        scenario.course = true;
+        const routes = [
+            "/",
+            "/libraries",
+            "/users",
+            "/libraries/" + fixtureLibrary.id,
+            "/users/" + fixtureReader.id,
+            "/users/edit-me",
+            "/libraries/create",
+            "/libraries/" + fixtureLibrary.id + "/edit",
+            "/courses",
+            "/courses/" + fixtureCourse.slug,
+            "/courses/" + fixtureCourse.id + "/apply",
+        ];
+        for (const language of ["en", "bn"]) {
+            await evaluate(
+                app +
+                    ".$store.dispatch('setActiveLanguage'," +
+                    JSON.stringify(language) +
+                    ");" +
+                    app +
+                    ".$i18n.locale=" +
+                    JSON.stringify(language)
+            );
+            for (const route of routes) {
+                await navigate(base + route);
+                await waitFor("!document.querySelector('.ui-spinner')", "loaded themed page " + route);
+                for (const width of [320, 390, 768, 1440]) {
+                    await resize(width, width < 600 ? 844 : 1000);
+                    const overflow = await evaluate(`(() => {
+                            if (document.documentElement.scrollWidth <= innerWidth + 1) return [];
+                            return [...document.querySelectorAll('#app *')].filter(e=>e.getBoundingClientRect().right>innerWidth+1)
+                                .slice(0,8).map(e=>({tag:e.tagName,classes:e.className,text:e.innerText.slice(0,70),right:e.getBoundingClientRect().right}));
+                        })()`);
+                    if (overflow.length) await screenshot("theme-overflow");
+                    assert.deepEqual(overflow, [], language + " overflow at " + width + " on " + route);
+                }
+                if (route === "/courses/" + fixtureCourse.slug) {
+                    await waitFor("document.body.innerText.includes('Fixture Training')", "course promotional content");
+                    assert.equal(
+                        await evaluate("getComputedStyle(document.querySelector('.ui-card-header')).backgroundColor"),
+                        "rgb(248, 249, 250)"
+                    );
+                }
+                if (language === "en") {
+                    await screenshot(
+                        "theme-" + (route === "/" ? "feed" : route.slice(1).replaceAll("/", "-")) + "-desktop"
+                    );
+                    await resize(390, 844);
+                    await screenshot("theme-" + (route === "/" ? "feed" : route.slice(1).replaceAll("/", "-")) + "-mobile");
+                }
+            }
+        }
+        await navigate(base + "/libraries/create");
+        await resize(1440, 1000);
+        // Headless Chrome can retain activeElement while the document has no focus.
+        await send("Emulation.setFocusEmulationEnabled", { enabled: true });
+        await evaluate("document.querySelector('.ui-field').focus()");
+        await waitFor(
+            "getComputedStyle(document.querySelector('.ui-field')).borderTopColor === 'rgb(23, 75, 58)'",
+            "green field focus"
+        );
+        await evaluate("document.querySelector('.ui-field').setAttribute('aria-invalid','true')");
+        await waitFor(
+            "getComputedStyle(document.querySelector('.ui-field')).borderTopColor === 'rgb(173, 52, 44)'",
+            "invalid field stays red"
+        );
+        await evaluate("document.querySelector('.ui-field').removeAttribute('aria-invalid')");
+        assert.equal(await evaluate("getComputedStyle(document.querySelector('.ui-field')).minHeight"), "44px");
+        assert.equal(
+            await evaluate("getComputedStyle(document.querySelector('.ui-button-primary')).backgroundColor"),
+            "rgb(23, 75, 58)"
+        );
+        const actionPoint = await pointerPosition(".ui-button-primary");
+        await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...actionPoint });
+        await waitFor(
+            "getComputedStyle(document.querySelector('.ui-button-primary')).backgroundColor === 'rgb(16, 61, 46)'",
+            "green button hover"
+        );
+        await evaluate(
+            "document.querySelector('.ui-button-primary').disabled=true;document.querySelector('.ui-field').disabled=true"
+        );
+        assert.equal(await evaluate("getComputedStyle(document.querySelector('.ui-button-primary')).cursor"), "default");
+        await waitFor(
+            "getComputedStyle(document.querySelector('.ui-field')).backgroundColor === 'rgb(242, 245, 239)'",
+            "muted disabled field"
+        );
+        await evaluate(app + ".$store.dispatch('setActiveLanguage','en');" + app + ".$i18n.locale='en'");
+        await navigate(base + "/");
+        assert.equal(await evaluate("document.querySelector('.app-navbar [aria-current=page]').pathname"), "/");
+        await evaluate("document.querySelector('#navbarDropdown').click()");
+        assert.equal(await evaluate("getComputedStyle(document.querySelector('.ui-dropdown-menu')).borderRadius"), "12px");
+        await press("Escape");
+        await send("Emulation.setFocusEmulationEnabled", { enabled: false });
+    });
     await evaluate(`(() => {
     const app=document.querySelector('#app').__vue__, Base=app.$options._base;
     const found=new Map(),seen=new Set();
@@ -1136,6 +1245,8 @@ async function main() {
             "modal focus " + name
         );
         assert.equal(await evaluate("document.body.style.overflow"), "hidden");
+        assert.equal(await evaluate("getComputedStyle(document.querySelector('[role=dialog][aria-modal=true]')).borderRadius"), "16px");
+        assert.equal(await evaluate("getComputedStyle(document.querySelector('[role=dialog][aria-modal=true]')).color"), "rgb(36, 52, 44)");
         assert(
             await evaluate(
                 "!!document.getElementById(document.querySelector('[role=dialog][aria-modal=true]').getAttribute('aria-labelledby'))"
@@ -1183,6 +1294,13 @@ async function main() {
     await check("all 15 dialogs have unique names, trapped focus and reversible scroll locking", async () => {
         for (const [name, props, binding, event] of dialogs) {
             await mountModal(name, props, binding, event);
+            if (name === 'CreateOrEditPostModal' || name === 'UploadMyPhotoModal') {
+                await screenshot('theme-dialog-'+name+'-desktop');
+                await resize(390,844);
+                await screenshot('theme-dialog-'+name+'-mobile');
+                assert(await evaluate('document.documentElement.scrollWidth <= innerWidth + 1'));
+                await resize(1440,1000);
+            }
             await evaluate("document.querySelector('[role=dialog] footer button:last-child')?.focus()");
             await press("Tab");
             assert(await evaluate("document.querySelector('[role=dialog]').contains(document.activeElement)"));

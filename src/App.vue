@@ -1,7 +1,7 @@
 <template>
-    <div id="app" class="">
+    <div id="app" :class="{ 'app-secure': isLoggedIn }">
         <nav
-            class="flex min-h-[56px] items-center px-4 py-2 fixed inset-x-0 top-0 z-50 shadow-sm bg-white"
+            class="flex min-h-[56px] items-center px-4 py-2 fixed inset-x-0 top-0 z-50 app-navbar"
             v-if="isLoggedIn"
         >
             <div class="app-container">
@@ -9,7 +9,7 @@
             </div>
         </nav>
 
-        <nav class="flex min-h-[56px] items-center px-4 py-2 fixed inset-x-0 top-0 z-50 shadow-sm bg-white" v-else>
+        <nav class="flex min-h-[56px] items-center px-4 py-2 fixed inset-x-0 top-0 z-50 app-navbar" v-else>
             <div class="app-container">
                 <GuestNav />
             </div>
