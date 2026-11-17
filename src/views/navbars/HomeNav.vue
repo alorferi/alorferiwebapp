@@ -56,7 +56,6 @@
 
 
             </ul>
-            <!-- <NavBarSearch class="ml-4"/> -->
             <ul class="nav navbar-nav ml-auto">
 
                 <li class="nav-item">
@@ -126,12 +125,10 @@
 // import { mapGetters } from "vuex";
 import UserPhoto from "@/views/user/UserPhoto";
 import LanguageToggleButton from "@/components/LanguageToggleButton";
-// import NavBarSearch from '@/views/navbars/NavBarSearch.vue';
 export default {
     name: "HomeNav",
     components: {
         UserPhoto,
-        // NavBarSearch
         LanguageToggleButton
     },
     data() {

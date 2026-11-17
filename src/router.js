@@ -31,7 +31,6 @@ import EditMyProfile from "@/views/user/EditMyProfile";
 import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
 import LibraryLeftMenu from "@/views/menus/LibraryLeftMenu";
 import LibraryBadge from "@/views/badges/LibraryBadge";
-// import UserBadge from "@/views/badges/UserBadge";
 import LoginWithOtcToResetPassword from "@/views/auth/LoginWithOtcToResetPassword";
 import ResetPassword from "@/views/auth/ResetPassword";
 import AwardsAndAchievements from "@/views/welcome/AwardsAndAchievements";

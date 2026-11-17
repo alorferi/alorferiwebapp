@@ -40,13 +40,11 @@
 // import UserLogo from "../user/UserLogo";
 import Loading from "@/components/Loading";
 // import ImageUploader from "vue-image-upload-resize";
-// import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
     name: "UploadLibraryLogoModal",
     components: {
         // UserLogo,
-        // ImageAutoResize
         // ImageUploader,
         Loading
     },

@@ -47,13 +47,11 @@
 // import UserPhoto from "../user/UserPhoto";
 import Loading from "@/components/Loading";
 // import ImageUploader from "vue-image-upload-resize";
-// import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
     name: "UploadMyPhotoModal",
     components: {
         // UserPhoto,
-        // ImageAutoResize
         // ImageUploader,
         Loading
     },

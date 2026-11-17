@@ -38,13 +38,11 @@
 import UserPhoto from "@/views/user/UserPhoto";
 import CreateOrEditPostModal from "@/views/post/CreateOrEditPostModal.vue";
 // import ImageUploader from "vue-image-upload-resize";
-// import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
     name: "CreateUserPost",
     components: {
         UserPhoto,
-        // ImageAutoResize
         // ImageUploader,
         CreateOrEditPostModal
     },

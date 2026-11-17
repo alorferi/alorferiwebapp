@@ -128,7 +128,6 @@ export default {
     },
     components: {
         EditTextField,
-        // MobileNumberField,
         GenderInputField,
         // AskForOtcModal,
         Loading

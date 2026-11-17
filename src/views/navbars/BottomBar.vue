@@ -192,7 +192,6 @@
 
 <script>
 import { companyLinks } from "@/config/company";
-// import LanguageToggleLink from "@/components/LanguageToggleLink";
 
 export default {
     name: "Login",
@@ -200,7 +199,6 @@ export default {
         msg: String
     },
     components: {
-        // LanguageToggleLink
     },
     mounted: function() {},
     data() {

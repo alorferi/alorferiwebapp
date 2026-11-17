@@ -46,7 +46,6 @@
                     />
                 </div>
 
-                <!-- <ImageAutoResize @update:field="imgFile = $event" /> -->
 
                 <b-form-file
                     v-model="imgFile"
@@ -65,13 +64,11 @@
 import UserPhoto from "../user/UserPhoto";
 import Loading from "@/components/Loading";
 // import ImageUploader from "vue-image-upload-resize";
-// import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
     name: "CreateOrEditPostModal",
     components: {
         UserPhoto,
-        // ImageAutoResize
         // ImageUploader,
         Loading
     },
