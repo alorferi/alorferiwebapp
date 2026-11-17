@@ -47,7 +47,7 @@
                         :aria-current="($route.path.startsWith('/courses') || $route.name === 'my-courses') ? 'page' : undefined"
                         @click="reload"
                     >
-                        Training
+                        {{ $t("courses") }}
                     </a>
                 </li>
                 <li class="pl-1 pr-1">

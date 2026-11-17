@@ -40,6 +40,7 @@ const errors = [];
 const warnings = [];
 const requests = [];
 const redirects = [];
+const courseImageRequests = [];
 let canceledInterceptions = 0;
 const company = {
     about: "https://about.alorferi.com/",
@@ -49,6 +50,7 @@ const company = {
 let scenario = { login: "ok", profile: "ok", registration: "ok" };
 let requestStart = 0;
 const heldProfiles = [];
+const heldPostPages = [];
 const fixturePassword = "Reader-Test-Only-92";
 const user = {
     surname: "Fixture",
@@ -114,6 +116,13 @@ const fixtureCourse = {
     list_fee: 0,
     duration: 1,
 };
+const courseImageSources = [
+    '/course-fixtures/relative.png',
+    'course-fixtures/relative-no-slash.png',
+    'https://media.example.test/course-fixtures/absolute.png',
+    null,
+    '/course-fixtures/missing.png'
+];
 const paginated = (data) => ({
     data,
     links: null,
@@ -126,6 +135,30 @@ const paginated = (data) => ({
         to: data.length,
     },
 });
+function postPage(source, page, origin, short = false) {
+    const owner = Number(source.split("/")[3]) || 10;
+    const ids = short ? [[1], [1, 2], [3]][page - 1] : [[1, 2], [2, 3], [4]][page - 1];
+    const data = ids.map((n) => ({
+        attributes: {
+            id: owner * 10 + n,
+            user,
+            title: source + " post " + n,
+            body: short ? "A short discussion." : "Paging fixture discussion.\n".repeat(18),
+            postable_type: "App\\Models\\User",
+            postable: user,
+            created_at: "2026-01-01T10:00:00Z",
+            image_url: null,
+            comments_data: paginated([]),
+            likes_data: paginated([]),
+            my_like: null,
+        },
+    }));
+    return {
+        data,
+        links: { next: page === 1 ? origin + source + "?page=2" : page === 2 ? "?page=3" : null },
+        meta: { current_page: page, last_page: 3, per_page: 2, total: short ? 3 : 4 },
+    };
+}
 async function main() {
     let port;
     for (let i = 0; i < 100; i++) {
@@ -205,15 +238,48 @@ async function main() {
                     const pathname = new URL(request.url).pathname;
                     const header = (name) =>
                         Object.entries(request.headers).find(([key]) => key.toLowerCase() === name)?.[1];
-                    const data = request.postData && request.method !== "OPTIONS" ? JSON.parse(request.postData) : null;
+                    const data = request.postData && request.method !== "OPTIONS" && (header("content-type") || "").includes("application/json")
+                        ? JSON.parse(request.postData) : null;
                     requests.push({
                         path: pathname,
+                        query: new URL(request.url).search,
                         method: request.method,
                         data: data ? { ...data, password: data.password ? "[redacted]" : undefined } : null,
                         code: header("ot-code"),
                         authorization: header("authorization"),
                     });
                     if (request.method === "OPTIONS") return await replyApi(requestId, 204, null);
+                    if (scenario.postPages && request.method === 'POST' && /^\/api\/users\/\d+\/posts(?:\/\d+)?$/.test(pathname)) {
+                        const post=postPage('/api/posts',1,new URL(request.url).origin,true).data[0];
+                        const editing=/\/posts\/\d+$/.test(pathname);
+                        post.attributes.id=editing?Number(pathname.split('/').pop()):899001;
+                        post.attributes.title=editing?'Edited paging discussion':'Created paging discussion';
+                        post.attributes.body=post.attributes.title;
+                        return await replyApi(requestId,200,{data:post});
+                    }
+                    if (scenario.postPages && request.method === 'DELETE' && /^\/api\/users\/\d+\/posts\/\d+$/.test(pathname))
+                        return await replyApi(requestId,204,null);
+                    if (scenario.postPages && request.method === 'POST' && /^\/api\/posts\/\d+\/(?:likes|comments)$/.test(pathname)) {
+                        return await replyApi(requestId,200,{data:{attributes:{id:899002,user,
+                            body:data && data.body || 'Paging comment',created_at:'2026-01-01T10:00:00Z'}}});
+                    }
+                    if (scenario.postPages && request.method === 'GET' && /^\/api\/(?:posts|users\/\d+\/posts|libraries\/\d+\/posts)$/.test(pathname)) {
+                        const page = Number(new URL(request.url).searchParams.get('page') || 1);
+                        const config = scenario.postPages;
+                        const body = postPage(pathname, page, new URL(request.url).origin, config.short);
+                        if (config.holdPage === page && (!config.holdSource || config.holdSource === pathname)) {
+                            heldPostPages.push({requestId, body, source: pathname, page});
+                            return;
+                        }
+                        if (config.failPage === page && config.failRemaining > 0) {
+                            config.failRemaining--;
+                            if (config.network) return await send('Fetch.failRequest', {requestId, errorReason:'ConnectionFailed'});
+                            return await replyApi(requestId, 503, {message:'Post page fixture failure'});
+                        }
+                        return await replyApi(requestId, 200, body);
+                    }
+                    if (scenario.postPages && pathname.endsWith('/likes/my-like'))
+                        return await replyApi(requestId, 200, {data:{attributes:null}});
                     if (pathname.endsWith("/api/auth/login")) {
                         if (scenario.login === "network")
                             return await send("Fetch.failRequest", { requestId, errorReason: "ConnectionFailed" });
@@ -249,10 +315,15 @@ async function main() {
                         }
                         return await replyApi(requestId, 200, { status: "OK" });
                     }
-                    if (scenario.course && pathname === "/api/courses")
-                        return await replyApi(requestId, 200, paginated([fixtureCourse]));
+                    if (scenario.course && pathname === "/api/courses") {
+                        const courses = scenario.courseImageVariants
+                            ? courseImageSources.map((image_url, index) => ({...fixtureCourse, id:fixtureCourse.id+index,
+                                title:'Course image '+index, image_url})) : [fixtureCourse];
+                        return await replyApi(requestId, 200, paginated(courses));
+                    }
                     if (scenario.course && (pathname === "/api/courses/" + fixtureCourse.id || pathname === "/api/courses/" + fixtureCourse.slug + "/slug"))
-                        return await replyApi(requestId, 200, { data: fixtureCourse });
+                        return await replyApi(requestId, 200, { data: {...fixtureCourse,
+                            image_url: Object.prototype.hasOwnProperty.call(scenario,'courseImage') ? scenario.courseImage : fixtureCourse.image_url} });
                     if (scenario.course && pathname === "/api/my-course-orders/" + fixtureCourse.id)
                         return await replyApi(requestId, 404, { message: "Not enrolled" });
                     if (scenario.course && pathname === "/api/my-course-orders" && request.method === "POST")
@@ -305,6 +376,12 @@ async function main() {
                             paginated([{ id: fixtureReader.id, attributes: fixtureReader }])
                         );
                     return await replyApi(requestId, 200, paginated([]));
+                } else if (resourceType === "Image" && new URL(request.url).pathname.startsWith('/course-fixtures/')) {
+                    courseImageRequests.push(request.url);
+                    const found = ['relative.png','relative-no-slash.png','absolute.png','recovered.png'].includes(new URL(request.url).pathname.split('/').pop());
+                    await send('Fetch.fulfillRequest', {requestId, responseCode:found?200:404,
+                        responseHeaders:[{name:'Content-Type',value:found?'image/png':'text/plain'}],
+                        body:found?'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=':Buffer.from('Not found').toString('base64')});
                 } else if (resourceType === "Image" && new URL(request.url).origin !== new URL(base).origin) {
                     await send("Fetch.fulfillRequest", {
                         requestId,
@@ -863,6 +940,267 @@ async function main() {
             }
         });
     }
+    const postSources = [
+        { route: "/", source: "/api/posts", action: "fetchPostFeed", payload: {} },
+        {
+            route: "/libraries/" + fixtureLibrary.id,
+            source: "/api/libraries/" + fixtureLibrary.id + "/posts",
+            action: "fetchLibraryPosts",
+            payload: { overhead: { library: fixtureLibrary } },
+        },
+        {
+            route: "/users/" + fixtureReader.id,
+            source: "/api/users/" + fixtureReader.id + "/posts",
+            action: "fetchUserPosts",
+            payload: { user_id: fixtureReader.id },
+        },
+    ];
+    const postIds = () =>
+        evaluate("[...document.querySelectorAll('.post-feed [data-post-id]')].map(e=>Number(e.dataset.postId))");
+    const pageCount = (source, page) =>
+        requests
+            .slice(requestStart)
+            .filter(
+                (r) =>
+                    r.method === "GET" &&
+                    r.path === source &&
+                    Number(new URLSearchParams(r.query).get("page") || 1) === page
+            ).length;
+    async function spaTo(route, source) {
+        await evaluate("window.scrollTo(0,0);void " + app + ".$router.push(" + JSON.stringify(route) + ")");
+        await waitFor(
+            "document.querySelector('.post-feed')?.dataset.source === " + JSON.stringify(source),
+            "post source " + source
+        );
+    }
+    async function pagedLogin(config = {}) {
+        await resize(1440, 800);
+        await reset({ postPages: config });
+        await loginValues();
+        await submitLogin();
+        await waitFor("document.querySelector('.post-feed') && " + app + ".$store.getters.isLoggedIn", "paged login");
+    }
+    async function waitPosts(length) {
+        await waitFor(
+            "document.querySelectorAll('.post-feed [data-post-id]').length === " +
+                length +
+                " && !document.querySelector('.post-feed .ui-spinner')",
+            "post count " + length
+        );
+    }
+    async function scrollPosts() {
+        await evaluate("document.querySelector('.post-feed-sentinel').scrollIntoView({block:'center'})");
+        await delay(150);
+    }
+    async function releasePostPage() {
+        const held = heldPostPages.shift();
+        assert(held, "Expected held post page");
+        await replyApi(held.requestId, 200, held.body);
+        await delay(250);
+    }
+    await check("post paging: all three feeds append unique posts and stop after the last page", async () => {
+        for (const [index, feed] of postSources.entries()) {
+            await pagedLogin();
+            if (feed.route !== "/") await spaTo(feed.route, feed.source);
+            await resize(index === 1 ? 390 : 1440, 800);
+            await waitPosts(2);
+            const first = await postIds();
+            scenario.postPages.holdPage = 2;
+            scenario.postPages.holdSource = feed.source;
+            await scrollPosts();
+            await waitFor("document.querySelector('.post-feed .ui-spinner')", "next page spinner");
+            assert.equal(heldPostPages.length, 1);
+            assert.deepEqual(await postIds(), first, "Existing posts remain during loading");
+            await evaluate(
+                "void Promise.all(Array.from({length:8},()=>" +
+                    app +
+                    ".$store.dispatch(" +
+                    JSON.stringify(feed.action) +
+                    "," +
+                    JSON.stringify(feed.payload) +
+                    ")))"
+            );
+            for (let n = 0; n < 5; n++) await scrollPosts();
+            assert.equal(pageCount(feed.source, 2), 1, "One request per pending page");
+            scenario.postPages.holdPage = null;
+            await releasePostPage();
+            await waitPosts(3);
+            assert.deepEqual((await postIds()).slice(0, 2), first);
+            await scrollPosts();
+            await waitPosts(4);
+            const ids = await postIds();
+            assert.equal(new Set(ids).size, 4);
+            assert.deepEqual(ids, [first[0], first[1], first[1] + 1, first[1] + 2]);
+            for (let n = 0; n < 3; n++) await scrollPosts();
+            await evaluate(
+                "void " + app + ".$store.dispatch(" + JSON.stringify(feed.action) + "," + JSON.stringify(feed.payload) + ")"
+            );
+            assert.equal(pageCount(feed.source, 1), 1);
+            assert.equal(pageCount(feed.source, 2), 1);
+            assert.equal(pageCount(feed.source, 3), 1);
+            assert.equal(await evaluate("document.querySelector('.post-feed').getAttribute('aria-busy')"), "false");
+            assert.equal(await evaluate("document.querySelectorAll('.post-feed-pagination button').length"), 0);
+        }
+    });
+    await check("post paging: initial and next-page failures retry the same page without losing posts", async () => {
+        for (const feed of postSources) {
+            const config = { failPage: 1, failRemaining: 1 };
+            await pagedLogin(feed.route === "/" ? config : {});
+            if (feed.route !== "/") {
+                scenario.postPages = config;
+                await spaTo(feed.route, feed.source);
+            }
+            await waitFor("document.querySelector('.post-feed [role=alert]')", "initial post error");
+            assert.equal(
+                await evaluate("document.querySelectorAll('.post-feed .ui-spinner,.post-feed .ui-empty-state').length"),
+                0
+            );
+            await scrollPosts();
+            assert.equal(pageCount(feed.source, 1), 1);
+            await evaluate("document.querySelector('.post-feed-pagination button').focus()");
+            await press("Enter");
+            await waitPosts(2);
+            const first = await postIds();
+            config.failPage = 2;
+            config.failRemaining = 1;
+            config.network = true;
+            await scrollPosts();
+            await waitFor("document.querySelector('.post-feed [role=alert]')", "next post page error");
+            assert.deepEqual(await postIds(), first);
+            await evaluate(app + ".$store.dispatch('setActiveLanguage','bn');" + app + ".$i18n.locale='bn'");
+            assert.match(await evaluate("document.querySelector('.post-feed [role=alert]').innerText"), /পোস্ট/);
+            await scrollPosts();
+            assert.equal(pageCount(feed.source, 2), 1);
+            await evaluate("document.querySelector('.post-feed-pagination button').focus()");
+            await press("Enter");
+            await waitPosts(3);
+            assert.deepEqual((await postIds()).slice(0, 2), first);
+            assert.equal(pageCount(feed.source, 2), 2);
+        }
+    });
+    await check("post paging: short pages fill the viewport and keyboard Load more works without observers", async () => {
+        await pagedLogin({ short: true });
+        await waitPosts(3);
+        await waitFor(app + ".$store.getters.postsPaging.next === null", "short feed end");
+        const script = await send("Page.addScriptToEvaluateOnNewDocument", {
+            source: "delete window.IntersectionObserver;",
+        });
+        try {
+            await pagedLogin({ short: true });
+            await waitPosts(1);
+            await evaluate("document.querySelector('.post-feed-pagination button').focus()");
+            await press("Enter");
+            await waitPosts(2);
+            await evaluate("document.querySelector('.post-feed-pagination button').focus()");
+            await press(" ");
+            await waitPosts(3);
+            assert.equal(pageCount("/api/posts", 2), 1);
+            assert.equal(pageCount("/api/posts", 3), 1);
+        } finally {
+            await send("Page.removeScriptToEvaluateOnNewDocument", { identifier: script.identifier });
+        }
+    });
+    await check("post paging: late responses cannot cross feeds, tabs, owners or logout", async () => {
+        await pagedLogin({ holdPage: 1, holdSource: "/api/posts" });
+        await waitFor("document.querySelector('.post-feed .ui-spinner')", "held first page");
+        await spaTo(postSources[1].route, postSources[1].source);
+        await waitPosts(2);
+        const libraryIds = await postIds();
+        await releasePostPage();
+        assert.deepEqual(await postIds(), libraryIds);
+        scenario.postPages.holdPage = 2;
+        scenario.postPages.holdSource = postSources[1].source;
+        await scrollPosts();
+        await waitFor("document.querySelector('.post-feed .ui-spinner')", "held library page");
+        await spaTo(postSources[2].route, postSources[2].source);
+        await waitPosts(2);
+        const userIds = await postIds();
+        await releasePostPage();
+        assert.deepEqual(await postIds(), userIds);
+        scenario.postPages.holdSource = postSources[2].source;
+        await scrollPosts();
+        await waitFor("document.querySelector('.post-feed .ui-spinner')", "held profile page");
+        await evaluate(
+            "window.scrollTo(0,0);[...document.querySelectorAll('.ui-tabs a')].find(a=>a.innerText==='About').click()"
+        );
+        await waitFor("!document.querySelector('.post-feed')", "profile tab closed");
+        await evaluate("[...document.querySelectorAll('.ui-tabs a')].find(a=>a.innerText==='TimeLine').click()");
+        await waitPosts(2);
+        await releasePostPage();
+        assert.deepEqual(await postIds(), userIds);
+        assert.equal(pageCount(postSources[2].source, 1), 2, "Reopened timeline starts at page one");
+        await scrollPosts();
+        await waitFor("document.querySelector('.post-feed .ui-spinner')", "held previous owner");
+        const nextReader = { ...fixtureReader, id: fixtureReader.id + 1 };
+        await evaluate("window.scrollTo(0,0);" + app + '.$store.commit("setUser",' + JSON.stringify(nextReader) + ")");
+        await waitFor(
+            "document.querySelector('.post-feed')?.dataset.source === '/api/users/" + nextReader.id + "/posts'",
+            "new owner"
+        );
+        await waitPosts(2);
+        const nextIds = await postIds();
+        await releasePostPage();
+        assert.deepEqual(await postIds(), nextIds);
+        scenario.postPages.holdSource = "/api/users/" + nextReader.id + "/posts";
+        await scrollPosts();
+        await waitFor("document.querySelector('.post-feed .ui-spinner')", "held page at logout");
+        await evaluate("document.querySelector('#navbarDropdown').click()");
+        const selector = await logoutSelector();
+        await evaluate("document.querySelector(" + JSON.stringify(selector) + ").click()");
+        await waitFor("document.querySelector('.reader-login-card')", "logout during paging");
+        await releasePostPage();
+        assert.deepEqual(await evaluate(app + ".$store.getters.postsResponse.data"), []);
+        assert.equal(await evaluate(app + ".$store.getters.postsPaging.source"), null);
+    });
+    await check("post paging: create, edit, like, comment and delete preserve the loaded pages", async () => {
+        await pagedLogin();
+        await waitPosts(2);
+        await scrollPosts();
+        await waitPosts(3);
+        await scrollPosts();
+        await waitPosts(4);
+        const original = await postIds();
+        await evaluate("window.scrollTo(0,0);document.querySelector('.app-content .ui-button-outline-primary').click()");
+        await waitFor("document.querySelector('[role=dialog] textarea')", "new paged discussion");
+        const submitDiscussion = async () => {
+            await evaluate(
+                "(() => {const t=document.querySelector('[role=dialog] textarea');t.value='Paging discussion change';t.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[role=dialog] footer button:last-child').click();})()"
+            );
+            await waitFor("!document.querySelector('[role=dialog]')", "discussion saved");
+        };
+        await submitDiscussion();
+        await waitPosts(5);
+        assert.deepEqual(await postIds(), [899001, ...original]);
+        await evaluate("document.querySelector('[data-post-id=\"899001\"] button').click()");
+        await evaluate(
+            "[...document.querySelectorAll('[data-post-id=\"899001\"] .ui-menu-item')].find(a=>a.innerText.includes('Edit this post')).click()"
+        );
+        await waitFor("document.querySelector('[role=dialog] textarea')", "edit paged discussion");
+        await submitDiscussion();
+        await waitFor(
+            "document.querySelector('[data-post-id=\"899001\"]').innerText.includes('Edited paging discussion')",
+            "post edited"
+        );
+        await evaluate(
+            "[...document.querySelectorAll('[data-post-id=\"899001\"] button')].find(b=>b.innerText.trim()==='Like').click()"
+        );
+        await waitFor("document.querySelector('[data-post-id=\"899001\"]').innerText.includes('You')", "post liked");
+        await evaluate(
+            "(() => {const i=document.querySelector('[data-post-id=\"899001\"] [aria-label=\"Write a comment\"]');i.value='Paging comment';i.dispatchEvent(new Event('input',{bubbles:true}));i.focus();})()"
+        );
+        await press("Enter");
+        await waitFor(
+            "document.querySelector('[data-post-id=\"899001\"]').innerText.includes('Paging comment')",
+            "comment added"
+        );
+        assert.deepEqual(await postIds(), [899001, ...original]);
+        await evaluate("document.querySelector('[data-post-id=\"899001\"] button').click()");
+        await evaluate(
+            "[...document.querySelectorAll('[data-post-id=\"899001\"] .ui-menu-item')].find(a=>a.innerText.includes('Delete this post')).click()"
+        );
+        await waitPosts(4);
+        assert.deepEqual(await postIds(), original);
+    });
     await check("active awards, achievements and product pages retain their images and favicon", async () => {
         await reset();
         await resize(1440, 1000);
@@ -1494,6 +1832,122 @@ async function main() {
         assert.equal(await evaluate("qaCalls.filter(c=>c.type==='storePostComment').length"), 1);
     });
     await evaluate("qaHost.$destroy();qaHost.$el.remove();qaHost=null");
+    await check("course images: guest labels, relative/absolute URLs and missing-image fallbacks work", async () => {
+        await reset();
+        scenario.course = true;
+        scenario.courseImageVariants = true;
+        const firstRequest = courseImageRequests.length;
+        await navigate(base + "/courses");
+        await waitFor(
+            "document.querySelectorAll('.course-image').length===5 && [...document.querySelectorAll('.course-image img')].every(i=>i.complete&&i.naturalWidth>0) && document.querySelectorAll('.course-image [role=img]').length===2",
+            "course image variants"
+        );
+        const apiOrigin = await evaluate("new URL(" + app + ".$apiServerBaseUrl).origin");
+        const sources = await evaluate("[...document.querySelectorAll('.course-image img')].map(i=>i.src)");
+        assert.deepEqual(sources, [
+            apiOrigin + "/course-fixtures/relative.png",
+            apiOrigin + "/course-fixtures/relative-no-slash.png",
+            courseImageSources[2],
+        ]);
+        assert.deepEqual(
+            courseImageRequests.slice(firstRequest).sort(),
+            [...sources, apiOrigin + "/course-fixtures/missing.png"].sort()
+        );
+        assert.match(
+            await evaluate("document.querySelectorAll('.course-image [role=img]')[0].textContent"),
+            /Course image 3/
+        );
+        for (const language of ["en", "bn"]) {
+            await evaluate(
+                app +
+                    '.$store.dispatch("setActiveLanguage",' +
+                    JSON.stringify(language) +
+                    ");" +
+                    app +
+                    ".$i18n.locale=" +
+                    JSON.stringify(language)
+            );
+            assert.equal(
+                await evaluate("document.querySelector('.app-navbar a[href=\"/courses\"]').textContent.trim()"),
+                language === "en" ? "Courses" : "কোর্সসমূহ"
+            );
+            for (const width of [320, 390, 768, 1440]) {
+                await resize(width, width < 600 ? 844 : 1000);
+                assert(
+                    await evaluate("document.documentElement.scrollWidth <= innerWidth+1"),
+                    "course image overflow " + width + " " + language
+                );
+            }
+        }
+        await evaluate("void (window.recoveredCourseElement=document.querySelectorAll('.course-image')[4])");
+        await evaluate(
+            "(() => {const store=" +
+                app +
+                '.$store,r=store.getters.coursesResponse;store.commit("setCoursesResponse",{...r,data:r.data.map((c,i)=>i===4?{...c,image_url:"/course-fixtures/recovered.png"}:c)})})()'
+        );
+        await waitFor(
+            "document.querySelectorAll('.course-image')[4].querySelector('img')?.naturalWidth>0",
+            "recovered course source"
+        );
+        assert(await evaluate("window.recoveredCourseElement===document.querySelectorAll('.course-image')[4]"));
+        assert.equal(
+            courseImageRequests.slice(firstRequest).filter((u) => u.endsWith("/missing.png")).length,
+            1,
+            "No fallback request loop"
+        );
+        await screenshot("courses-fallback-desktop");
+        await resize(390, 844);
+        await screenshot("courses-fallback-mobile");
+        scenario.courseImageVariants = false;
+    });
+    await check("course images: signed-in labels and detail thumbnails recover after missing sources", async () => {
+        await reset();
+        await loginValues();
+        await submitLogin();
+        await waitFeed();
+        scenario.course = true;
+        await resize(1440, 1000);
+        for (const source of [
+            "/course-fixtures/relative.png",
+            courseImageSources[2],
+            null,
+            "/course-fixtures/missing.png",
+        ]) {
+            scenario.courseImage = source;
+            await navigate(base + "/courses/" + fixtureCourse.slug);
+            await waitFor("document.querySelector('.course-image')", "detail image component");
+            if (source && !source.endsWith("/missing.png")) {
+                await waitFor("document.querySelector('.course-image img')?.naturalWidth>0", "detail thumbnail");
+                assert.equal(await evaluate("document.querySelector('.course-image img').alt"), fixtureCourse.title);
+            } else {
+                await waitFor("document.querySelector('.course-image [role=img]')", "detail fallback");
+                assert.match(await evaluate("document.querySelector('.course-image').textContent"), /Fixture Training/);
+            }
+        }
+        await evaluate(
+            "(()=>{const store=" +
+                app +
+                '.$store;store.commit("setCourse",{...store.getters.course,image_url:"/course-fixtures/recovered.png"})})()'
+        );
+        await waitFor("document.querySelector('.course-image img')?.naturalWidth>0", "detail source recovery");
+        for (const language of ["en", "bn"]) {
+            await evaluate(
+                app +
+                    '.$store.dispatch("setActiveLanguage",' +
+                    JSON.stringify(language) +
+                    ");" +
+                    app +
+                    ".$i18n.locale=" +
+                    JSON.stringify(language)
+            );
+            assert.equal(
+                await evaluate("document.querySelector('.app-navbar a[href=\"/courses\"]').textContent.trim()"),
+                language === "en" ? "Courses" : "কোর্সসমূহ"
+            );
+        }
+        await evaluate(app + '.$store.dispatch("setActiveLanguage","en");' + app + '.$i18n.locale="en"');
+        delete scenario.courseImage;
+    });
     await check("course cards, cart actions and application forms retain their behavior", async () => {
         scenario.course = true;
         await navigate(base + "/courses");
@@ -1540,7 +1994,7 @@ async function main() {
     assert.deepEqual(
         warnings.filter(
             (w) =>
-                /Unknown custom element|Error in render|Error in .*hook|Invalid prop|Failed to mount/.test(w) &&
+                /Unknown custom element|Error in render|Error in .*hook|Invalid prop|Failed to mount|Duplicate keys detected/.test(w) &&
                 !knownWarnings.includes(w)
         ),
         [],

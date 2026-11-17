@@ -14,7 +14,7 @@
                 <div class="ui-card-header" :style="{ background: course.color_background }">
                     <div class="-mx-[15px] flex flex-wrap">
                         <div class="relative w-full px-[15px] sm:w-1/2 p-2">
-                            <img class="rounded h-auto max-w-full" :src="imageUrl()" alt="Course Thumb" width="100%" />
+                            <CourseImage :src="course.image_url" :title="course.title" />
                         </div>
                         <div class="relative w-full px-[15px] sm:w-1/2 flex flex-col justify-between">
                             <div>
@@ -129,6 +129,7 @@
 
 
 <script>
+    import CourseImage from "./CourseImage";
     import Loading from "../../components/Loading";
 
 
@@ -136,6 +137,7 @@
         name: "ShowCourse",
 
         components: {
+            CourseImage,
             Loading,
 
         },
@@ -158,10 +160,6 @@
             };
         },
         methods: {
-            imageUrl() {
-                return this.getApiUrl(this.course.image_url)
-            },
-
             fetchCourse(slug) {
                 let self = this;
 

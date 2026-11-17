@@ -196,6 +196,7 @@ const actions = {
     },
     logout({ commit }) {
         return new Promise(resolve => {
+            commit("clearPostsResponse");
             commit("logout");
             localStorage.removeItem("token");
             localStorage.removeItem("otc_token");

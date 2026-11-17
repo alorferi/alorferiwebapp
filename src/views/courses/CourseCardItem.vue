@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <div class="ui-card mb-6">
-            <img class="rounded h-auto max-w-full" :src="imageUrl()" alt="Course Thumb" />
+            <CourseImage :src="item.image_url" :title="item.title" class="rounded-t-2xl rounded-b-none" />
 
             <!-- <div class="card-body" :style="{ background: item.color_background }">
 
@@ -108,14 +108,11 @@
 </template>
 
 <script>
+    import CourseImage from "./CourseImage";
     export default {
         name: "CourseCardItem",
         props: ["item"],
-        components: {
-
-
-
-        },
+        components: { CourseImage },
         mounted: function() {
             this.fetchMyOrder();
         },
@@ -144,10 +141,6 @@
         },
 
         methods: {
-
-            imageUrl() {
-                return this.getApiUrl(this.item.image_url)
-            },
 
             fetchMyOrder() {
 

@@ -3,13 +3,40 @@ import mixin from "@/mixin";
 
 const state = {
     postsResponse: { data: [], links: null, meta: null },
-    post: null
+    post: null,
+    postsPaging: { source: null, generation: 0, loading: false, loaded: false, next: null, error: false }
 };
 
 const getters = {
     post: state => state.post,
-    postsResponse: state => state.postsResponse
+    postsResponse: state => state.postsResponse,
+    postsPaging: state => state.postsPaging
 };
+
+function resetFeed(state, source = null) {
+    state.postsResponse = { data: [], links: null, meta: null };
+    state.postsPaging = {
+        source,
+        generation: state.postsPaging.generation + 1,
+        loading: false,
+        loaded: false,
+        next: null,
+        error: false,
+    };
+}
+
+function appendPosts(state, response) {
+    const ids = new Set(state.postsResponse.data.map((post) => String(post.attributes.id)));
+    for (const post of response.data) {
+        const id = String(post.attributes.id);
+        if (!ids.has(id)) {
+            ids.add(id);
+            state.postsResponse.data.push(post);
+        }
+    }
+    state.postsResponse.links = response.links;
+    state.postsResponse.meta = response.meta;
+}
 
 const mutations = {
     setPost(state, newPost) {
@@ -17,7 +44,9 @@ const mutations = {
     },
 
     insertPostToFeed(state, newPost) {
-        state.postsResponse.data.splice(0, 0, newPost);
+        const id = String(newPost.attributes.id);
+        state.postsResponse.data = state.postsResponse.data.filter(post => String(post.attributes.id) !== id);
+        state.postsResponse.data.unshift(newPost);
     },
 
     updatePostToFeed(state, updatedPost) {
@@ -44,25 +73,24 @@ const mutations = {
     },
 
     clearPostsResponse(state) {
-        state.postsResponse = { data: [], links: null, meta: null };
+        resetFeed(state);
     },
 
-    setPostsResponse(state, newPostsResponse) {
-        if (state.postsResponse.data.length == 0) {
-            state.postsResponse.data = newPostsResponse.data;
-        } else {
-            newPostsResponse.data.forEach(function(item) {
-                state.postsResponse.data.push(item);
-            });
-        }
-
-        state.postsResponse.links = newPostsResponse.links;
-        state.postsResponse.meta = newPostsResponse.meta;
+    beginPostsFeed(state, source) {
+        resetFeed(state, source);
     },
 
-    setUserPostsResponse(state, newPostsResponse) {
-        this.setPostsResponse(state, newPostsResponse);
+    releasePostsFeed(state, generation) {
+        if (state.postsPaging.generation === generation) resetFeed(state);
     },
+
+    setPostsPaging(state, { generation, ...changes }) {
+        if (state.postsPaging.generation === generation) Object.assign(state.postsPaging, changes);
+    },
+
+    setPostsResponse: appendPosts,
+    setUserPostsResponse: appendPosts,
+
     pushPostComments(state, payload) {
         state.postsResponse.data.forEach(function(post) {
             if (post.attributes.id == payload.post.id) {
@@ -143,38 +171,47 @@ const mutations = {
 };
 
 const actions = {
-    fetchPostFeed(context) {
-        return new Promise((resolve, reject) => {
-            var url = null;
-
-            try {
-                url = context.getters.postsResponse.links.next;
-            } catch (err) {
-                url = mixin.methods.getApiUrl("/api/posts");
-            }
-
-            const headers = mixin.methods.getAuthorizationBearerToken();
-
-            axios({
-                url: url,
-                headers: headers,
-                method: "GET"
-            })
-                .then(response => {
-                    context.commit("clearPostsResponse");
-                    context.commit("setPostsResponse", response.data);
-                    resolve(response);
-                })
-                .catch(err => {
-                    console.log("err:", err);
-                    reject(err);
-                });
-        });
+    fetchPostFeed(context, options = {}) {
+        return context.dispatch("fetchPostsPage", { ...options, source: "/api/posts" });
     },
 
+    async fetchPostsPage({ state, rootGetters, commit }, { source, generation, reset = false, retry = false }) {
+        if (!rootGetters.isLoggedIn) return null;
+        if (generation != null && generation !== state.postsPaging.generation) return null;
+        if (reset || state.postsPaging.source !== source) commit("beginPostsFeed", source);
 
+        const paging = state.postsPaging;
+        if (paging.loading || (paging.error && !retry) || (paging.loaded && !paging.next)) return null;
 
-
+        const requestGeneration = paging.generation;
+        const token = rootGetters.access_token;
+        const current = () =>
+            state.postsPaging.generation === requestGeneration &&
+            state.postsPaging.source === source &&
+            rootGetters.isLoggedIn &&
+            rootGetters.access_token === token;
+        commit("setPostsPaging", { generation: requestGeneration, loading: true, error: false });
+        try {
+            const firstUrl = mixin.methods.getApiUrl(source);
+            const url = paging.loaded ? new URL(paging.next, firstUrl).href : firstUrl;
+            const response = await axios.get(url, { headers: mixin.methods.getAuthorizationBearerToken() });
+            if (!current()) return null;
+            if (!response.data || !Array.isArray(response.data.data)) throw new Error("Invalid post page");
+            commit("setPostsResponse", response.data);
+            commit("setPostsPaging", {
+                generation: requestGeneration,
+                loading: false,
+                loaded: true,
+                error: false,
+                next: (response.data.links && response.data.links.next) || null,
+            });
+            return response;
+        } catch (error) {
+            if (!current()) return null;
+            commit("setPostsPaging", { generation: requestGeneration, loading: false, error: true });
+            throw error;
+        }
+    },
 };
 
 export default {

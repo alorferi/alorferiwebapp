@@ -30,7 +30,7 @@
                 </li>
 
                 <li class="" style="margin-left: 5px; margin-right: 5px">
-                    <router-link class="ui-nav-link mx-2" :to="{ name: 'courses.index' }"> Training</router-link>
+                    <router-link class="ui-nav-link mx-2" :to="{ name: 'courses.index' }">{{ $t("courses") }}</router-link>
                 </li>
 
                 <!-- <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
