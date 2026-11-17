@@ -1,34 +1,31 @@
 <template>
     <div>
-        <b-modal
-            id="modal-prevent-closing"
+        <UiModal
             ref="modal"
-            title="One Time Code"
-            @show="initModal"
-            @hidden="hideModal"
+            :title="alertMessageTitle"
+            @opened="initModal"
+            @closed="hideModal"
             ok-title="OK"
             cancel-title="Cancel"
             v-model="showAlertModalLocal"
             :hide-header="hideHeader"
-            @ok="handleOk"
+            @confirm="handleOk"
             @cancel="handleCancel"
             centered
-            data-keyboard="false"
-            data-backdrop="static"
+            persistent
         >
-            <div class="modal-header">
-                <h5 class="modal-title">{{alertMessageTitle}}</h5>
+            <div class="mb-4 flex items-center justify-between">
+                <h5 class="m-0 text-xl font-medium">{{ alertMessageTitle }}</h5>
             </div>
 
-            <div class="modal-body text-center text-success" v-if=" isSuccessfulMessage == true ">
-                <h6> {{ alertMessageBody }}</h6>
+            <div class="p-4 text-center text-success" v-if="isSuccessfulMessage == true">
+                <h6>{{ alertMessageBody }}</h6>
             </div>
 
-            <div class="modal-body text-center text-danger" v-if=" isSuccessfulMessage == false ">
-                <h6> {{ alertMessageBody }}</h6>
+            <div class="p-4 text-center text-danger" v-if="isSuccessfulMessage == false">
+                <h6>{{ alertMessageBody }}</h6>
             </div>
-
-        </b-modal>
+        </UiModal>
     </div>
 </template>
 
@@ -66,31 +63,28 @@ export default {
         hideModal() {
             this.otCodeState = null;
             this.emitShowAlertModal(false);
-            this.emitCancelClick();
         },
         initModal() {
             this.otCodeState = null;
         },
-        handleOk(bvModalEvt) {
+        handleOk() {
             // Prevent modal from closing
-            bvModalEvt.preventDefault();
             // Trigger submit handler
             this.emitOkClick();
             // Push the name to submitted names
             // Hide the modal manually
             this.$nextTick(() => {
-                this.$bvModal.hide("modal-prevent-closing");
+                this.showAlertModalLocal = false;
             });
         },
-        handleCancel(bvModalEvt) {
+        handleCancel() {
             // Prevent modal from closing
-            bvModalEvt.preventDefault();
             // Trigger submit handler
-            this.hideModal();
+            this.emitCancelClick();
             // Push the name to submitted names
             // Hide the modal manually
             this.$nextTick(() => {
-                this.$bvModal.hide("modal-prevent-closing");
+                this.showAlertModalLocal = false;
             });
         }
     }

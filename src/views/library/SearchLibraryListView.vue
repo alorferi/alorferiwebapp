@@ -1,23 +1,15 @@
 <template>
     <div>
-        <h4 class="text-secondary"> {{$t('libraries')}} </h4>
+        <h4 class="text-secondary">{{ $t("libraries") }}</h4>
         <SearchTextField @update:term="term = $event" />
 
         <Loading v-if="this.$store.getters.myLibrariesResponse == null"></Loading>
         <div v-else>
-            <Paginator
-                :meta="meta"
-                route="my-libraries"
-                @update:page="page = $event"
-            />
+            <Paginator :meta="meta" route="my-libraries" @update:page="page = $event" />
 
             <WrapperListView :dataWrapperList="libraries" :listItemComponent="libraryListItem" />
 
-                   <Paginator
-                :meta="meta"
-                @update:page="page = $event"
-            />
-
+            <Paginator :meta="meta" @update:page="page = $event" />
         </div>
     </div>
 </template>

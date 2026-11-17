@@ -1,18 +1,17 @@
 <template>
     <div>
-
         <div
-            class="rounded d-flex justify-content-center"
+            class="rounded flex justify-center"
             :style="{
                 'background-image': 'url(' + this.logoUrl + ')',
                 'background-position': 'center',
                 width: width + 'px',
-                height: height + 'px'
-            }">
+                height: height + 'px',
+            }"
+        >
             <a
                 class="text-danger bg-white pl-1 pr-1 rounded mt-auto"
                 @click="showUploadLogoModal = !showUploadLogoModal"
-
                 v-if="this.hasMemberPermission('library_edit')"
             >
                 <i class="fa fa-camera"></i>
@@ -24,7 +23,6 @@
                 @updateVisibleState="showUploadLogoModal = $event"
             />
         </div>
-
     </div>
 </template>
 <script>

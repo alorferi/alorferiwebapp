@@ -1,29 +1,21 @@
 <template>
     <div>
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-between">
             <div>
                 <div v-if="likes.length == 1" class="p-1">
-                    <a
-                        class="btn btn-link"
-                        @click="showLikesModal = !showLikesModal"
-                    >
+                    <a class="ui-button ui-button-link" @click="showLikesModal = !showLikesModal">
                         <i class="far fa-thumbs-up text-primary"></i>
 
-                        <span v-if="myLike != null">
-                            You
-                        </span>
+                        <span v-if="myLike != null"> You </span>
 
                         <span v-else>
-                                 {{ likes[0].attributes.user.first_name }}
+                            {{ likes[0].attributes.user.first_name }}
                         </span>
                     </a>
                 </div>
 
                 <div v-else-if="likes.length == 2" class="p-1">
-                    <a
-                        class="btn btn-link"
-                        @click="showLikesModal = !showLikesModal"
-                    >
+                    <a class="ui-button ui-button-link" @click="showLikesModal = !showLikesModal">
                         <i class="far fa-thumbs-up text-primary"></i>
 
                         {{ textForTwoLikes }}
@@ -31,10 +23,7 @@
                 </div>
 
                 <div v-else-if="likes.length >= 3" class="p-1">
-                    <a
-                        class="btn btn-link"
-                        @click="showLikesModal = !showLikesModal"
-                    >
+                    <a class="ui-button ui-button-link" @click="showLikesModal = !showLikesModal">
                         <i class="far fa-thumbs-up text-primary"></i>
 
                         {{ textForGreatterThanOrEqualThreeLikes }}
@@ -52,30 +41,26 @@
             </div>
         </div>
 
-        <div
-            class="d-flex justify-content-between border border-left-0 border-right-0 border-bottom-0 pt-1"
-        >
+        <div class="flex justify-between border border-l-0 border-r-0 border-b-0 pt-1">
             <div>
                 <button
-                    class="btn  "
+                    class="ui-button"
                     type="button"
                     @click="onClikcLike"
                     v-bind:class="{
-                        'btn-light': !myLike,
-                        'btn-outline-primary': myLike,
-                        'border-bottom-0': myLike,
-                        'border-top-0': myLike,
-                        'border-left-0': myLike,
-                        'border-right-0': myLike
+                        'ui-button-light': !myLike,
+                        'ui-button-outline-primary': myLike,
+                        'border-b-0': myLike,
+                        'border-t-0': myLike,
+                        'border-l-0': myLike,
+                        'border-r-0': myLike,
                     }"
                 >
                     <i class="far fa-thumbs-up"></i> Like
                 </button>
             </div>
 
-            <a class="btn btn-light">
-                <i class="far fa-comment-dots"></i> Comment</a
-            >
+            <a class="ui-button ui-button-light"> <i class="far fa-comment-dots"></i> Comment</a>
         </div>
 
         <Loading v-if="is_loading"></Loading>
@@ -90,11 +75,7 @@
 
         <CreatePostComment :post="post" />
 
-        <PostLikesModal
-            :show="showLikesModal"
-            :post="post"
-            @updateVisibleState="showLikesModal = $event"
-        />
+        <PostLikesModal :show="showLikesModal" :post="post" @updateVisibleState="showLikesModal = $event" />
     </div>
 </template>
 

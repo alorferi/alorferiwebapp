@@ -1,41 +1,45 @@
 <template>
     <div>
-        <b-modal
-        size="xl"
+        <UiModal
+            :busy="is_loading"
+            size="xl"
             ref="modal"
             :title="modalTile"
             v-model="showLocal"
-            @show="showModal"
-            @hidden="hideModal"
+            @opened="showModal"
+            @closed="hideModal"
             ok-title="Save"
-            @ok="handleOk"
+            @confirm="handleOk"
             centered
         >
             <form ref="form" @submit.stop.prevent="handleSubmit" class="mb-2">
                 <Loading v-if="is_loading"></Loading>
 
-                <div class="d-flex justify-content-center m-2 rounded bg-muted border-top border-right border-left border-bottom"
-                style="height: 450px;"
-            :style="{
-                'background-image': 'url(' + this.coverUrl + ')',
-                'background-size': 'cover'
-            }"
-                >
-                </div>
-                <b-form-file
+                <div
+                    class="flex justify-center m-2 rounded bg-light border-t border-r border-l border-b"
+                    style="height: 450px"
+                    :style="{
+                        'background-image': 'url(' + this.coverUrl + ')',
+                        'background-size': 'cover',
+                    }"
+                ></div>
+                <UiFileInput
+                    required
+                    :disabled="is_loading"
                     v-model="coverFile"
                     accept="image/*"
                     placeholder="Choose an image or drop it here..."
-                    drop-placeholder="Drop your image here..."
                     @change="onFileChange"
-                ></b-form-file>
+                ></UiFileInput>
             </form>
-        </b-modal>
+            <p v-if="requestError" role="alert" class="mt-3 text-danger">{{ requestError }}</p>
+        </UiModal>
         <!-- </div> -->
     </div>
 </template>
 
 <script>
+import { requestErrorMessage } from "@/components/ui/requestError";
 import Loading from "@/components/Loading";
 
 export default {
@@ -43,6 +47,7 @@ export default {
     components: {
         Loading
     },
+    beforeDestroy() { if (this.coverUrl && this.coverUrl.startsWith("blob:")) URL.revokeObjectURL(this.coverUrl); },
     mounted: function() {},
     props: ["show", "cover_url"],
     computed: {
@@ -63,18 +68,21 @@ export default {
             coverUrl: null,
             coverFile: null,
             hasImage: false,
+            requestError: "",
             is_loading: false,
             modalTile: "Upload cover photo from computer."
         };
     },
     methods: {
-        onFileChange(e) {
-            const file = e.target.files[0];
-            this.coverUrl = URL.createObjectURL(file);
+        onFileChange(file) {
+            if (this.coverUrl && this.coverUrl.startsWith("blob:")) URL.revokeObjectURL(this.coverUrl);
+            this.coverFile = file;
+            this.coverUrl = file ? URL.createObjectURL(file) : null;
         },
 
         updateUserPhoto() {
             const self = this;
+            self.requestError = "";
             self.is_loading = true;
             let formData = new FormData();
 
@@ -92,7 +100,7 @@ export default {
                     self.$emit("onFinishedUploadingCoverPhoto", true);
                     self.hideThisModal();
                 })
-                .catch(() => {})
+                .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
                 .finally(() => {
                     self.is_loading = false;
                 });
@@ -109,6 +117,8 @@ export default {
             this.clearData();
         },
         clearData() {
+            this.requestError = "";
+            if (this.coverUrl && this.coverUrl.startsWith("blob:")) URL.revokeObjectURL(this.coverUrl);
             this.coverUrl = null;
             this.coverFile = null;
         },
@@ -121,13 +131,13 @@ export default {
             );
             this.coverFile = null;
         },
-        handleOk(bvModalEvt) {
+        handleOk() {
             // Prevent modal from closing
-            bvModalEvt.preventDefault();
             // Trigger submit handler
             this.handleSubmit();
         },
         handleSubmit() {
+            if (this.is_loading) return;
             // Exit when the form isn't valid
             if (!this.checkFormValidity()) {
                 return;

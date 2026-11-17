@@ -1,9 +1,8 @@
 <template>
-    <div >
+    <div>
+        <CreateUserPost class="mt-2 mb-4"></CreateUserPost>
 
-                <CreateUserPost class="mt-2 mb-3"></CreateUserPost>
-
-                <ShowPosts></ShowPosts>
+        <ShowPosts></ShowPosts>
     </div>
 </template>
 

@@ -3,12 +3,12 @@
         <UserCoverPhotoWithUpload :user="user" />
 
         <div class="bg-light">
-            <div class="d-flex  border-left border-right">
-                <div class="pl-3 pt-2 pb-2 text-center">
+            <div class="flex border-l border-r">
+                <div class="pl-4 pt-2 pb-2 text-center">
                     <UserPhotoWithUpload :user="user" size="96" />
                 </div>
 
-                <div class="flex-grow-1 p-2">
+                <div class="grow p-2">
                     <h2 class="text-dark m-2">
                         {{ user.first_name }} {{ user.surname }}
                         {{ user.nickname }}
@@ -26,35 +26,29 @@
                         :user="user"
                     />
 
-                    <div class="btn-group">
+                    <div class="inline-flex items-center">
                         <button
-                            class="btn btn-sm btn-link  mt-1 mb-1 mr-1"
+                            class="ui-button ui-button-small ui-button-link mt-1 mb-1 mr-1"
                             @click="showUserFollowings = !showUserFollowings"
                         >
                             {{ totalFollowings }}
                         </button>
 
                         <button
-                            class="btn btn-sm btn-link   mt-1 mb-1  mr-1"
+                            class="ui-button ui-button-small ui-button-link mt-1 mb-1 mr-1"
                             @click="showUserFollowers = !showUserFollowers"
                         >
                             {{ totalFollowers }}
                         </button>
 
-                        <button
-                            type="button"
-                            class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1
-                        border-top border-left border-right border-bottom
-                        "
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                        >
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu">
+                        <UiDropdown
+                            trigger-class="ui-button ui-button-small ui-button-link mt-1 mb-1 border-t border-l border-r border-b"
+                            label="Actions"
+                            ><template #trigger>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </template>
                             <a
-                                class="dropdown-item"
+                                class="ui-menu-item"
                                 href="#"
                                 v-if="!isItMe(user) && !isFollowingByMe"
                                 @click="followUserByMeAction()"
@@ -62,45 +56,37 @@
                             >
 
                             <a
-                                class="dropdown-item"
+                                class="ui-menu-item"
                                 v-if="!isItMe(user) && isFollowingByMe"
                                 href="#"
                                 @click="unFollowUserByMeAction()"
                                 >Unfollow</a
                             >
 
-                            <router-link
-                                class="dropdown-item"
-                                v-if="isItMe(user)"
-                                :to="{ name: 'users.edit-me' }"
-                            >
+                            <router-link class="ui-menu-item" v-if="isItMe(user)" :to="{ name: 'users.edit-me' }">
                                 Edit My Profile
                             </router-link>
-                            <div class="dropdown-divider"></div>
+                            <div class="ui-menu-separator"></div>
                             <a
-                                class="dropdown-item text-danger"
+                                class="ui-menu-item text-danger"
                                 href="#"
                                 v-if="!isItMe(user)"
-                                @click="
-                                    showCreateReportModel = !showCreateReportModel
-                                "
+                                @click="showCreateReportModel = !showCreateReportModel"
                             >
                                 <i class="fas fa-exclamation-triangle"></i>
                                 Report this user</a
                             >
 
                             <a
-                                class="dropdown-item text-danger"
+                                class="ui-menu-item text-danger"
                                 href="#"
                                 v-if="!isItMe(user)"
-                                @click="
-                                    showCreateBlockModel = !showCreateBlockModel
-                                "
+                                @click="showCreateBlockModel = !showCreateBlockModel"
                             >
                                 <i class="fas fa-exclamation-triangle"></i>
                                 Block this user</a
                             >
-                        </div>
+                        </UiDropdown>
                     </div>
 
                     <div></div>
@@ -108,16 +94,12 @@
             </div>
 
             <div class="pt-1">
-                <ul class="nav nav-tabs nav-justified">
-                    <li
-                        class="nav-item"
-                        v-for="(tab, index) in getTabs"
-                        v-bind:key="index"
-                    >
+                <ul class="flex flex-wrap ui-tabs [&>li]:flex-1 [&>li]:text-center">
+                    <li class="" v-for="(tab, index) in getTabs" v-bind:key="index">
                         <a
-                            class="nav-link"
+                            class="ui-nav-link"
                             href="#"
-                            :class="{ active: tab.active }"
+                            :class="{ 'ui-selected': tab.active }"
                             @click="clickTabItem(tab)"
                             >{{ tab.title }}</a
                         >

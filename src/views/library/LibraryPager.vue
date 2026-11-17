@@ -1,34 +1,21 @@
 <template>
     <div>
-        <LibraryCoverPhotoWithUpload
-            :user="this.$store.getters.activeUser"
-            :library="library"
-        />
-        <div class="d-flex flex-column pt-2 pl-2 pr-2 bg-light card">
-            <div class="d-flex">
+        <LibraryCoverPhotoWithUpload :user="this.$store.getters.activeUser" :library="library" />
+        <div class="flex flex-col pt-2 pl-2 pr-2 bg-light ui-card">
+            <div class="flex">
                 <div class="p-2">
                     <LibraryLogoWithUpload :library="library" size="96" />
                 </div>
 
-                <div class="flex-grow-1 p-2">
+                <div class="grow p-2">
                     <h3 class="text-success">{{ library.name }}</h3>
 
                     <h5>
-                        <span
-                            v-if="
-                                library.address.house != null &&
-                                    library.address.house.length != 0
-                            "
-                        >
+                        <span v-if="library.address.house != null && library.address.house.length != 0">
                             {{ library.address.house }},
                         </span>
 
-                        <span
-                            v-if="
-                                library.address.village != null &&
-                                    library.address.village.length != 0
-                            "
-                        >
+                        <span v-if="library.address.village != null && library.address.village.length != 0">
                             {{ library.address.village }},
                         </span>
 
@@ -40,9 +27,7 @@
                             {{ library.address.district.name }}
                         </span>
 
-                        <span v-if="library.address.post_code != null">
-                            - {{ library.address.post_code }}
-                        </span>
+                        <span v-if="library.address.post_code != null"> - {{ library.address.post_code }} </span>
                     </h5>
 
                     <LibraryFollowersModal
@@ -51,85 +36,56 @@
                         :library="library"
                     />
 
-                    <div class="btn-group">
-                        <button class="btn btn-sm btn-link   mt-1 mb-1  mr-1"
-                        @click="showLibraryFollowers = !showLibraryFollowers"
+                    <div class="inline-flex items-center">
+                        <button
+                            class="ui-button ui-button-small ui-button-link mt-1 mb-1 mr-1"
+                            @click="showLibraryFollowers = !showLibraryFollowers"
                         >
                             {{ totalFollowers }}
                         </button>
 
-                        <button
-                            type="button"
-                            class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1
-                        border-top border-left border-right border-bottom
-                        "
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                        >
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                v-if="!isFollowingByMe"
-                                @click="followLibraryByMeAction()"
+                        <UiDropdown
+                            trigger-class="ui-button ui-button-small ui-button-link mt-1 mb-1 border-t border-l border-r border-b"
+                            label="Actions"
+                            ><template #trigger>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </template>
+                            <a class="ui-menu-item" href="#" v-if="!isFollowingByMe" @click="followLibraryByMeAction()"
                                 >Follow</a
                             >
 
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                v-if="isFollowingByMe"
-                                @click="unFollowLibraryByMeAction()"
+                            <a class="ui-menu-item" href="#" v-if="isFollowingByMe" @click="unFollowLibraryByMeAction()"
                                 >Unfollow</a
                             >
 
                             <a
-                                class="dropdown-item"
+                                class="ui-menu-item"
                                 href="#"
-                                v-if="
-                                    myLibraryMembership == null &&
-                                        computeMyLibraryMemberRequest == null
-                                "
+                                v-if="myLibraryMembership == null && computeMyLibraryMemberRequest == null"
                                 @click="showMemberRequestModal = true"
                             >
                                 Request to be member
                             </a>
 
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                v-if="computeMyLibraryMemberRequest != null"
-                            >
+                            <a class="ui-menu-item" href="#" v-if="computeMyLibraryMemberRequest != null">
                                 Member request sent
                             </a>
-                        </div>
+                        </UiDropdown>
                     </div>
                 </div>
 
                 <div class="p-2">
-                    <img
-                        :src="getQRCodeUrl(library)"
-                        alt="QR Code"
-                        width="64"
-                        height="64"
-                    />
+                    <img class="h-[64px]" :src="getQRCodeUrl(library)" alt="QR Code" width="64" height="64" />
                 </div>
             </div>
 
             <div class="pt-1">
-                <ul class="nav nav-tabs nav-justified">
-                    <li
-                        class="nav-item"
-                        v-for="(tab, index) in getTabs"
-                        v-bind:key="index"
-                    >
+                <ul class="flex flex-wrap ui-tabs [&>li]:flex-1 [&>li]:text-center">
+                    <li class="" v-for="(tab, index) in getTabs" v-bind:key="index">
                         <a
-                            class="nav-link"
+                            class="ui-nav-link"
                             href="#"
-                            :class="{ active: tab.active }"
+                            :class="{ 'ui-selected': tab.active }"
                             @click="clickTabItem(tab)"
                             >{{ tab.title }}</a
                         >

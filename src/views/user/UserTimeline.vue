@@ -1,24 +1,14 @@
 <template>
     <div>
-
-    <CreateUserPost class="mb-3" v-if="user.id == $store.getters.activeUser.id"/>
+        <CreateUserPost class="mb-4" v-if="user.id == $store.getters.activeUser.id" />
 
         <Loading v-if="is_loading"></Loading>
 
-        <PostListItem
-            v-else
-            v-for="post in posts"
-            :post="post.attributes"
-            v-bind:key="post.id"
-        />
+        <PostListItem v-else v-for="post in posts" :post="post.attributes" v-bind:key="post.id" />
 
-        <p v-if="!is_loading && posts.length < 1" class="text-center mt-3">
-            No available posts.
-        </p>
+        <p v-if="!is_loading && posts.length < 1" class="text-center mt-4">No available posts.</p>
 
-
-         <Loading v-if="scrolledToBottom" class="border mt-3"></Loading>
-
+        <Loading v-if="scrolledToBottom" class="border mt-4"></Loading>
     </div>
 </template>
 

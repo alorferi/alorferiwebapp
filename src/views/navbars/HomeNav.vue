@@ -1,118 +1,88 @@
 <template>
-    <div class="container-fluid">
+    <div class="flex w-full flex-wrap items-center">
         <!-- <router-link :to="{ name: 'home' }" class="navbar-brand"    @click="reload">
-            <img
-                src="@/assets/images/defaults/alorferi_logo_brand.png"
-                height="24px"
-                alt="Alor Feri logo"
-            />
-        </router-link> -->
+        <img class="h-[24px]"
+            src="@/assets/images/defaults/alorferi_logo_brand.png"
+            height="24px"
+            alt="Alor Feri logo"
+        />
+    </router-link> -->
 
-        <a href="/" class="navbar-brand" @click="reload">
-            <img
-                src="@/assets/images/defaults/alorferi_logo_brand.png"
-                height="24px"
-                alt="Alor Feri logo"
-            />
+        <a href="/" class="mr-4 inline-flex items-center whitespace-nowrap text-xl" @click="reload">
+            <img class="h-[24px]" src="@/assets/images/defaults/alorferi_logo_brand.png" height="24px" alt="Alor Feri logo" />
         </a>
-
 
         <!-- Toggler/collapsibe Button -->
         <button
-            class="navbar-toggler"
+            class="ui-mobile-toggle"
             type="button"
-            data-toggle="collapse"
-            data-target="#collapsibleNavbar"
+            @click="navOpen = !navOpen"
+            :aria-expanded="navOpen ? 'true' : 'false'"
+            aria-controls="collapsibleNavbar"
+            aria-label="Toggle navigation"
         >
-            <span class="navbar-toggler-icon"></span>
+            <span aria-hidden="true">☰</span>
         </button>
 
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="nav navbar-nav">
-
+        <div
+            class="w-full grow flex-col lg:w-auto lg:flex-row lg:items-center"
+            :class="navOpen ? 'flex' : 'hidden lg:flex'"
+            id="collapsibleNavbar"
+        >
+            <ul class="m-0 flex list-none flex-col p-0 lg:flex-row lg:items-center">
                 <li class="pl-2 pr-1">
-                    <a href="/" class="nav-link" @click="reload">
-                    <i class="fas fa-home"></i> <span class="pl-1"> {{ $t('home') }} </span>
+                    <a href="/" class="ui-nav-link" @click="reload">
+                        <i class="fas fa-home"></i> <span class="pl-1"> {{ $t("home") }} </span>
                     </a>
                 </li>
                 <li class="pl-1 pr-1">
-                    <a href="/courses" class="nav-link" @click="reload">
-                        Training
-                    </a>
+                    <a href="/courses" class="ui-nav-link" @click="reload"> Training </a>
                 </li>
                 <li class="pl-1 pr-1">
-                    <a href="/libraries" class="nav-link" @click="reload">
-                        {{ $t('libraries') }}
+                    <a href="/libraries" class="ui-nav-link" @click="reload">
+                        {{ $t("libraries") }}
                     </a>
                 </li>
-
-
 
                 <li class="pl-1 pr-1">
-                    <a href="/users" class="nav-link" @click="reload">
-                       {{ $t('users') }}
+                    <a href="/users" class="ui-nav-link" @click="reload">
+                        {{ $t("users") }}
                     </a>
                 </li>
-
-
             </ul>
-            <ul class="nav navbar-nav ml-auto">
-
-                <li class="nav-item">
-                    <LanguageToggleButton/>
+            <ul class="m-0 flex list-none flex-col p-0 lg:flex-row lg:items-center ml-auto">
+                <li class="">
+                    <LanguageToggleButton />
                 </li>
 
-                <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
-                    <a href="" class="nav-link"> <i class="fas fa-shopping-cart"></i> My Cart</a>
+                <li class="" style="margin-left: 5px; margin-right: 5px">
+                    <a href="" class="ui-nav-link"> <i class="fas fa-shopping-cart"></i> My Cart</a>
                 </li>
 
                 <!-- Dropdown -->
-                <li class="nav-item dropdown">
-                    <a
-                        id="navbarDropdown"
-                        class="nav-link dropdown-toggle "
-                        href="#"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        <UserPhoto :user="activeUser" size="12" />
+                <li class="relative">
+                    <UiDropdown trigger-id="navbarDropdown" trigger-class="ui-nav-link inline-flex items-center gap-2" label="Account menu"
+                        ><template #trigger>
+                            <UserPhoto :user="activeUser" size="12" />
 
-                        {{ activeUser.first_name }}
-                    </a>
-                    <div
-                        class="dropdown-menu dropdown-menu-right"
-                        aria-labelledby="navbarDropdown"
-                    >
-                        <router-link
-                            class="dropdown-item"
-                            :to="{ name: 'users.me' }"
-                        >
-                        {{ $t('profile') }}
+                            {{ activeUser.first_name }}
+                        </template>
+                        <router-link class="ui-menu-item" :to="{ name: 'users.me' }">
+                            {{ $t("profile") }}
                         </router-link>
 
-                        <div class="dropdown-divider"></div>
+                        <div class="ui-menu-separator"></div>
 
-                        <router-link
-                            class="dropdown-item"
-                            :to="{ name: 'my-courses' }"
-                        >
-                        {{ $t('my-courses') }}
+                        <router-link class="ui-menu-item" :to="{ name: 'my-courses' }">
+                            {{ $t("my-courses") }}
                         </router-link>
 
-                        <div class="dropdown-divider"></div>
+                        <div class="ui-menu-separator"></div>
 
-
-
-                        <a
-                            class="dropdown-item"
-                            href="#"
-                            @click="logoutMe"
-                            v-if="this.$store.getters.isLoggedIn"
-                            > {{ $t('logout') }}</a
+                        <a class="ui-menu-item" href="#" @click="logoutMe" v-if="this.$store.getters.isLoggedIn">
+                            {{ $t("logout") }}</a
                         >
-                    </div>
+                    </UiDropdown>
                 </li>
             </ul>
         </div>
@@ -120,7 +90,6 @@
 </template>
 
 <script>
-  import $ from 'jquery';
 // import Logout from './Logout'
 // import { mapGetters } from "vuex";
 import UserPhoto from "@/views/user/UserPhoto";
@@ -132,7 +101,7 @@ export default {
         LanguageToggleButton
     },
     data() {
-        return {};
+        return { navOpen: false };
     },
     computed: {
         activeUser() {
@@ -150,13 +119,7 @@ export default {
             this.$router.go(this.$router.currentRoute);
         }
     },
-    watch: {
-            $route() {
-                $(".nav-link").click(function() {
-                    $('.navbar-toggler').click();
-                });
-            }
-        },
+    watch: { $route() { this.navOpen = false; } },
 };
 </script>
 

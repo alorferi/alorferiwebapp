@@ -1,27 +1,17 @@
 <template>
     <div class="">
+        <h1>{{ $t("tutorial") }}</h1>
 
-
-        <h1> {{ $t('tutorial') }} </h1>
-
-            <div v-for="item in videos" :key="item.vid">
-
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="card-title">
-
-                            <h4>   {{  $t(item .caption) }}</h4>
-
-                        </div>
-                        <iframe width="480" height="320" :src="getYouTubeEmbedUrl(item.vid)"> </iframe>
-
-
+        <div v-for="item in videos" :key="item.vid">
+            <div class="ui-card mb-6">
+                <div class="p-5">
+                    <div class="mb-3">
+                        <h4>{{ $t(item.caption) }}</h4>
                     </div>
-
+                    <iframe width="480" height="320" :src="getYouTubeEmbedUrl(item.vid)"> </iframe>
                 </div>
-
+            </div>
         </div>
-
     </div>
 </template>
 

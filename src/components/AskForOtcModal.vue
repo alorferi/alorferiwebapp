@@ -1,45 +1,41 @@
 <template>
     <div>
-        <b-modal
-            id="modal-prevent-closing"
+        <UiModal
             ref="modal"
             title="One Time Code"
-            @show="initModal"
-            @hidden="resetModal"
+            @opened="initModal"
+            @closed="resetModal"
             :ok-title="okTitleText"
             v-model="showOtcModalLocal"
             :hide-header="hideHeader"
-            @ok="handleOk"
+            @confirm="handleOk"
             centered
-            data-keyboard="false"
-            data-backdrop="static"
+            persistent
         >
-            <div class="modal-header">
-                <h5 class="modal-title">One Time Code</h5>
+            <div class="mb-4 flex items-center justify-between">
+                <h5 class="m-0 text-xl font-medium">One Time Code</h5>
 
                 <span id="countdownTimerSpan">
                     {{ downCounterText }}
                 </span>
             </div>
 
-            <form ref="form" @submit.stop.prevent="handleSubmit" class="pt-4">
-                <b-form-group
-                    label=""
-                    label-for="ot-code-input"
-                    invalid-feedback="One Time Code is required"
-                    :state="otCodeState"
-                >
-                    <div class="d-flex  justify-content-center">
-                        <b-form-input
+            <form ref="form" @submit.stop.prevent="handleSubmit" class="pt-6">
+                <div :aria-invalid="otCodeState === false ? 'true' : undefined">
+                    <div class="flex justify-center">
+                        <input
+                            class="ui-field"
                             id="ot-code-input"
                             v-model="ot_code"
-                            :state="otCodeState"
+                            :aria-invalid="otCodeState === false ? 'true' : undefined"
                             placeholder="Type 6-digit code here"
                             maxlength="6"
                             size="6"
-                            pattern="\d*"
+                            pattern="[0-9]{6}"
                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            type="number"
+                            type="text"
+                            inputmode="numeric"
+                            autocomplete="one-time-code"
                             required
                         />
                     </div>
@@ -47,9 +43,9 @@
                     <div class="text-center text-danger">
                         {{ message }}
                     </div>
-                </b-form-group>
+                </div>
             </form>
-        </b-modal>
+        </UiModal>
     </div>
 </template>
 
@@ -67,10 +63,7 @@ export default {
             }
         }
     },
-    mounted: function() {
-        this.otcCountdownTimer();
-        this.downCounter = this.durationInSeconds;
-    },
+    beforeDestroy() { clearInterval(this.oldSetInterval); },
     data() {
         return {
             ot_code: "",
@@ -91,10 +84,10 @@ export default {
              this.$emit("onUpdateVisibleState", isShowModal);
         },
         otcCountdownTimer: function() {
+            clearInterval(this.oldSetInterval);
             this.oldSetInterval = setInterval(() => {
                 if (this.downCounter <= 0) {
                     this.message = "Time expired";
-                    // $("#okOtcButton").text("Try Again");
                     this.okTitleText = "Try Again";
                     clearInterval(this.oldSetInterval);
                     return;
@@ -130,9 +123,8 @@ export default {
             this.otcCountdownTimer();
             this.downCounter = this.durationInSeconds;
         },
-        handleOk(bvModalEvt) {
+        handleOk() {
             // Prevent modal from closing
-            bvModalEvt.preventDefault();
             // Trigger submit handler
             this.handleSubmit();
         },
@@ -146,7 +138,7 @@ export default {
             // Push the name to submitted names
             // Hide the modal manually
             this.$nextTick(() => {
-                this.$bvModal.hide("modal-prevent-closing");
+                this.showOtcModalLocal = false;
             });
         }
     }

@@ -1,19 +1,18 @@
 <template>
     <div>
-        <div class="card mb-3 p-3">
-            <div class="d-flex">
-
-                <UserPhoto :user ="item" size="48"/>
+        <div class="ui-card mb-4 p-4">
+            <div class="flex">
+                <UserPhoto :user="item" size="48" />
 
                 <div class="pl-2">
-                    <h4 class="ml-1 mt-3">{{ item.first_name }} {{ item.surname }} </h4>
+                    <h4 class="ml-1 mt-4">{{ item.first_name }} {{ item.surname }}</h4>
 
                     <router-link
                         :to="{
                             name: 'users.show',
-                            params: { user_id: item.id }
+                            params: { user_id: item.id },
                         }"
-                        class="stretched-link"
+                        class="absolute inset-0"
                     >
                     </router-link>
                 </div>

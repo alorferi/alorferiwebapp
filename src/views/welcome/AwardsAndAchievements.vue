@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h2 class=" text-center ">
+        <div class="ui-card mb-4">
+            <div class="p-5">
+                <h2 class="text-center">
                     {{ $t(activeItem.title) }}
                 </h2>
                 <img
-                    class="rounded mx-auto my-auto d-block img-fluid m-4"
+                    class="rounded mx-auto my-auto block h-auto max-w-full m-6"
                     :src="activeItem.image_name"
                     :alt="activeItem.title"
                 />
@@ -17,21 +17,17 @@
         </div>
         <!-- </div> -->
 
-        <div class="d-flex align-content-around">
+        <div class="flex content-around">
             <div
-                class="equal-width-img ml-2 mr-2 flex-fill  card"
+                class="equal-width-img ml-2 mr-2 flex-1 ui-card"
                 v-for="item in items"
                 v-bind:key="item.title"
                 @click="showItem(item)"
             >
-                <div class="card-body">
-                    <img
-                        class="rounded mx-auto my-auto img-fluid"
-                        :src="item.image_name"
-                        :alt="item.title"
-                    />
+                <div class="p-5">
+                    <img class="rounded mx-auto my-auto h-auto max-w-full" :src="item.image_name" :alt="item.title" />
                 </div>
-                <div class="card-footer text-center" @click="showItem(item)">
+                <div class="ui-card-footer text-center" @click="showItem(item)">
                     <h5>{{ $t(item.title) }}</h5>
                 </div>
             </div>

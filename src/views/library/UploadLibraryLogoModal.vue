@@ -1,42 +1,46 @@
 <template>
     <div>
-        <b-modal
+        <UiModal
+            :busy="is_loading"
             ref="modal"
             :title="modalTile"
             v-model="showLocal"
-            @show="showModal"
-            @hidden="hideModal"
+            @opened="showModal"
+            @closed="hideModal"
             ok-title="Save"
-            @ok="handleOk"
+            @confirm="handleOk"
             centered
         >
-
             <form ref="form" @submit.stop.prevent="handleSubmit" class="mb-2">
                 <Loading v-if="is_loading"></Loading>
 
-                <div class="d-flex justify-content-center m-2">
+                <div class="flex justify-center m-2">
                     <img
+                        v-if="imgUrl"
                         :src="imgUrl"
-                        style="max-width:460px; max-height:460px"
-                        class="rounded-circle"
+                        style="max-width: 460px; max-height: 460px"
+                        class="h-[96px] rounded-full"
                         width="96px"
                         height="96px"
                     />
                 </div>
-                <b-form-file
+                <UiFileInput
+                    required
+                    :disabled="is_loading"
                     v-model="imgFile"
                     accept="image/*"
                     placeholder="Choose an image or drop it here..."
-                    drop-placeholder="Drop your image here..."
                     @change="onFileChange"
-                ></b-form-file>
+                ></UiFileInput>
             </form>
-        </b-modal>
+            <p v-if="requestError" role="alert" class="mt-3 text-danger">{{ requestError }}</p>
+        </UiModal>
         <!-- </div> -->
     </div>
 </template>
 
 <script>
+import { requestErrorMessage } from "@/components/ui/requestError";
 // import UserLogo from "../user/UserLogo";
 import Loading from "@/components/Loading";
 // import ImageUploader from "vue-image-upload-resize";
@@ -48,6 +52,7 @@ export default {
         // ImageUploader,
         Loading
     },
+    beforeDestroy() { if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl); },
     mounted: function() {},
     props: ["show",'library'],
     computed: {
@@ -69,14 +74,16 @@ export default {
             imgUrl: null,
             imgFile: null,
             hasImage: false,
+            requestError: "",
             is_loading: false,
             modalTile: "Upload logo from computer."
         };
     },
     methods: {
-        onFileChange(e) {
-            const file = e.target.files[0];
-            this.imgUrl = URL.createObjectURL(file);
+        onFileChange(file) {
+            if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
+            this.imgFile = file;
+            this.imgUrl = file ? URL.createObjectURL(file) : null;
         },
 
         uploadLibraryLogo() {
@@ -88,6 +95,7 @@ export default {
                 formData.append("logo", self.imgFile);
             }
 
+            self.requestError = "";
             self.is_loading = true;
 
             var packet = {
@@ -100,7 +108,7 @@ export default {
                 .then(() => {
                     self.hideThisModal();
                 })
-                .catch(() => {})
+                .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
                 .finally(() => {
                     self.is_loading = false;
                 });
@@ -117,6 +125,8 @@ export default {
             this.clearData();
         },
         clearData() {
+            this.requestError = "";
+            if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
             this.imgUrl = null;
             this.imgFile = null;
         },
@@ -124,13 +134,13 @@ export default {
             this.imgUrl = this.getApiUrl(this.library.logo_url);
             this.imgFile = null;
         },
-        handleOk(bvModalEvt) {
+        handleOk() {
             // Prevent modal from closing
-            bvModalEvt.preventDefault();
             // Trigger submit handler
             this.handleSubmit();
         },
         handleSubmit() {
+            if (this.is_loading) return;
             // Exit when the form isn't valid
             if (!this.checkFormValidity()) {
                 return;

@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex justify-content-center pt-3">
-        <div class="spinner-border  text-success" role="status">
+    <div class="flex justify-center pt-4">
+        <div class="ui-spinner text-success" role="status">
             <span class="sr-only">Loading...</span>
         </div>
     </div>

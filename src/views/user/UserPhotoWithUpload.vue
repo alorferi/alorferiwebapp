@@ -1,14 +1,14 @@
 <template>
     <div class="">
         <div
-            class="rounded-circle d-flex justify-content-center"
+            class="rounded-full flex justify-center"
             :style="{
                 'background-image': 'url(' + this.photoUrl + ')',
                 // 'background-repeat': 'no-repeat',
                 'background-position': 'center',
                 // 'background-position': '50px 50px 50px 50px',
                 width: width + 'px',
-                height: height + 'px'
+                height: height + 'px',
             }"
         >
             <a
@@ -19,15 +19,12 @@
                 <i class="fa fa-camera"></i>
             </a>
 
-            <UploadMyPhotoModal
-                :show="showUploadMyPhotoModal"
-                @updateVisibleState="showUploadMyPhotoModal = $event"
-            />
+            <UploadMyPhotoModal :show="showUploadMyPhotoModal" @updateVisibleState="showUploadMyPhotoModal = $event" />
         </div>
 
         <!-- <div class="" v-else>
-            <NameCircle :name="this.currentUser.first_name" :size="this.size" />
-        </div> -->
+        <NameCircle :name="this.currentUser.first_name" :size="this.size" />
+    </div> -->
     </div>
 </template>
 <script>

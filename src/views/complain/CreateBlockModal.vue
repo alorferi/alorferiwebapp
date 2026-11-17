@@ -1,42 +1,36 @@
 <template>
     <div>
-        <b-modal
+        <UiModal
+            :busy="is_loading"
             ref="modal"
             :title="modalTile"
             v-model="showLocal"
-            @show="showModal"
-            @hidden="hideModal"
+            @opened="showModal"
+            @closed="hideModal"
             ok-title="Yes"
             cancel-title="No"
-            @ok="handleOk"
+            @confirm="handleOk"
             centered
         >
             <!-- <div class="d-flex align-items-center mb-3">
-                <UserPhoto :user="user" size="16"></UserPhoto>
+            <UserPhoto :user="user" size="16"></UserPhoto>
 
-                <div class="ml-2">
-                    {{ user.first_name }} {{ user.surname }}
-                    {{ user.nickname }}
-                </div>
-            </div> -->
+            <div class="ml-2">
+                {{ user.first_name }} {{ user.surname }}
+                {{ user.nickname }}
+            </div>
+        </div> -->
 
-            <div
-                class="alert alert-danger alert-dismissible"
-                v-if="errorMessage"
-            >
-                <button type="button" class="close" data-dismiss="alert">
-                    &times;
-                </button>
+            <div class="relative rounded border p-4 border-red-200 bg-red-50 text-red-800 pr-12" v-if="errorMessage">
+                <button type="button" class="ui-close-button" @click="errorMessage = null">&times;</button>
 
                 {{ errorMessage }}
             </div>
 
-            <div class="text-center">
-                Do you want to block this {{ blockable_type }}?
-            </div>
+            <div class="text-center">Do you want to block this {{ blockable_type }}?</div>
 
             <Loading v-if="is_loading"></Loading>
-        </b-modal>
+        </UiModal>
     </div>
 </template>
 
@@ -117,13 +111,13 @@ export default {
         clearData() {
             this.errorMessage = null;
         },
-        handleOk(bvModalEvt) {
+        handleOk() {
             // Prevent modal from closing
-            bvModalEvt.preventDefault();
             // Trigger submit handler
             this.handleSubmit();
         },
         handleSubmit() {
+            if (this.is_loading) return;
             // Submit data to backend server
             this.createReportAction();
         },

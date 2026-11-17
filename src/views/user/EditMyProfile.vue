@@ -1,16 +1,12 @@
 <template>
     <div>
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        &nbsp;
-                    </div>
-                    <h4 class="text-center mt-2">
-                        Edit Profile
-                    </h4>
+        <div class="ui-card">
+            <div class="p-5">
+                <div class="flex justify-between">
+                    <div>&nbsp;</div>
+                    <h4 class="text-center mt-2">Edit Profile</h4>
                     <router-link
-                        class="btn btn-outline-danger"
+                        class="ui-button ui-button-outline-danger"
                         v-if="isItMe(user)"
                         :to="{ name: 'users.me' }"
                     >
@@ -22,9 +18,9 @@
                 <br />
 
                 <form @submit.prevent="submitForm">
-                    <div class="col-md-12">
-                        <div class="d-flex">
-                            <div class="form-group flex-fill pr-2">
+                    <div class="relative w-full px-[15px] md:w-full">
+                        <div class="flex">
+                            <div class="mb-4 flex-1 pr-2">
                                 <EditTextField
                                     type="text"
                                     name="first_name"
@@ -37,7 +33,7 @@
                                 />
                             </div>
 
-                            <div class="form-group flex-fill pl-2">
+                            <div class="mb-4 flex-1 pl-2">
                                 <EditTextField
                                     type="text"
                                     name="surname"
@@ -51,7 +47,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="mb-4">
                             <EditTextField
                                 name="mobile"
                                 type="phone"
@@ -64,7 +60,7 @@
                             />
                         </div>
 
-                        <div class="form-group">
+                        <div class="mb-4">
                             <EditTextField
                                 name="email"
                                 type="email"
@@ -77,7 +73,7 @@
                             />
                         </div>
 
-                        <div class="form-group">
+                        <div class="mb-4">
                             <EditTextField
                                 type="date"
                                 name="dob"
@@ -100,12 +96,8 @@
                             />
                         </div>
 
-                        <div class="form-group">
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                                style="width:100%"
-                            >
+                        <div class="mb-4">
+                            <button type="submit" class="ui-button ui-button-primary" style="width: 100%">
                                 Submit
                             </button>
                         </div>

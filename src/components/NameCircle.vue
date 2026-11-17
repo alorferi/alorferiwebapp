@@ -1,10 +1,10 @@
 <template>
-    <div class>
+    <div class="">
         <div
-            class="border border-light  rounded-circle d-flex justify-content-center align-items-center bg-primary text-white"
+            class="border border-light rounded-full flex justify-center items-center bg-primary text-white"
             :style="style"
         >
-            <span class=" justify-content-center">
+            <span class="justify-center">
                 {{ shortName }}
             </span>
         </div>

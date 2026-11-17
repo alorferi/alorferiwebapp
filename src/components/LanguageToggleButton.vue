@@ -1,28 +1,20 @@
 <template>
     <div>
-        <!-- <b-button variant="success" size="sm">বাং</b-button>   <b-button variant="secondary" size="sm">EN</b-button> -->
-
-        <ul class="pagination justify-content-center">
+        <ul class="flex list-none rounded p-0 justify-center">
             <li
                 aria-label="English"
-                class="page-item"
-                :class="{ active: activeLanguage == 'en' }"
+                class="ui-page-item"
+                :class="{ 'ui-selected': activeLanguage == 'en' }"
                 @click="setLanguage('en')"
             >
-                <a role="button" class="page-link"
-                    ><span aria-hidden="true">EN</span
-                    ><span class="sr-only">English</span></a
+                <a role="button" class="ui-page-link"
+                    ><span aria-hidden="true">EN</span><span class="sr-only">English</span></a
                 >
             </li>
 
-            <li
-                class="page-item"
-                :class="{ active: activeLanguage == 'bn' }"
-                @click="setLanguage('bn')"
-            >
-                <a role="button" aria-label="Bangla" class="page-link"
-                    ><span aria-hidden="true">বাং</span
-                    ><span class="sr-only">Bangla</span></a
+            <li class="ui-page-item" :class="{ 'ui-selected': activeLanguage == 'bn' }" @click="setLanguage('bn')">
+                <a role="button" aria-label="Bangla" class="ui-page-link"
+                    ><span aria-hidden="true">বাং</span><span class="sr-only">Bangla</span></a
                 >
             </li>
         </ul>

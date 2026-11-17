@@ -1,8 +1,8 @@
 <template>
-    <div class="about">
-        <div class="d-flex justify-content-around">
+<div class="about">
+        <div class="flex flex-wrap justify-around">
             <div class="text-center p-2">
-                <img
+                <img class="h-[180px]"
                     src="@/assets/images/defaults/logo_large_en.png"
                     height="180"
                     alt="Alor Feri logo"
@@ -10,14 +10,14 @@
 
             </div>
             <div class="text-center p-2">
-                <img
+                <img class="h-[200px]"
                     src="@/assets/images/defaults/af_mobile_app.png"
                     height="200"
                     alt="Alor Feri logo"
                 />
             </div>
             <div class="text-center p-2">
-                <img
+                <img class="h-[200px]"
                     src="@/assets/images/defaults/af_model_car.png"
                     height="200"
                     alt="Alor Feri logo"

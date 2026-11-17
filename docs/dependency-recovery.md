@@ -2,6 +2,15 @@
 
 Verified on 18 November 2026, macOS Apple Silicon, Node 22.22.2 and npm 10.9.7.
 
+## Subsequent UI migration
+
+The application now uses Tailwind CSS 3.4 and shared Vue 2 dialogs, dropdowns,
+and file pickers. Bootstrap, BootstrapVue, and direct jQuery/Popper imports and
+dependencies have been removed. Application CSS uses PostCSS 8 through the
+Webpack 4-compatible postcss-loader 4; CLI internals retain their own PostCSS 7.
+The recovery checkpoint, dependency table, and audit findings below describe
+the earlier recovery baseline. See the README for current UI verification.
+
 ## Source baseline
 
 After refreshing origin, the latest application branch was `origin/feature/training`
@@ -200,8 +209,8 @@ Stop local servers and preserve current files before restoring any backup.
 3. Inventory unused/deprecated packages, then replace legacy metadata, select,
    autocomplete, upload, and date integrations with behavior checks.
 4. Migrate Vue 2 to Vue 3 and Router 3 to Router 4 while preserving route/auth contracts.
-5. Replace Bootstrap Vue with maintained Vue 3 components, preserving accessibility
-   and responsive layouts; replace portals with Teleport where appropriate.
+5. Port the shared UI components to Vue 3, preserving accessibility and responsive
+   layouts; replace PortalVue with Teleport where appropriate.
 6. Move Vuex modules to Pinia incrementally, and migrate Vue CLI/Webpack to Vite
    in a separate change covering assets, locale loading, environment variables,
    source maps, and production history fallback.

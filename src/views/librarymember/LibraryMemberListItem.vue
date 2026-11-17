@@ -1,18 +1,13 @@
 <template>
     <div>
-        <div class="card mb-3">
-            <div class=" card-body d-flex align-items-center ">
-                <!-- <b-img-lazy
-                    :src="this.getApiUrl(item.user.photo_url)"
-                    class="p-2  rounded-circle"
-                /> -->
+        <div class="ui-card mb-4">
+            <div class="p-5 flex items-center">
+                <LibraryMemberPhoto :member="item" size="64" />
 
-            <LibraryMemberPhoto :member="item" size="64" />
-
-                <div class="ml-3">
+                <div class="ml-4">
                     <div>{{ item.member_code }}</div>
-                    <h6>{{ item.first_name }} {{ item.surname }} {{ item.nickname }} </h6>
-                    <div> Reading: {{item.total_reading_books}},  Has read: {{item.total_has_read_books}}</div>
+                    <h6>{{ item.first_name }} {{ item.surname }} {{ item.nickname }}</h6>
+                    <div>Reading: {{ item.total_reading_books }}, Has read: {{ item.total_has_read_books }}</div>
                 </div>
             </div>
         </div>

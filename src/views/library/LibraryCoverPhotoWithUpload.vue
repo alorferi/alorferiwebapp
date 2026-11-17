@@ -1,18 +1,17 @@
 <template>
     <div>
         <div
-            class="d-flex pt-2 pl-2 pr-2 pb-2 rounded bg-secondary border-top border-right border-left border-bottom"
-            style="height: 312px;"
+            class="flex pt-2 pl-2 pr-2 pb-2 rounded bg-secondary border-t border-r border-l border-b"
+            style="height: 312px"
             :style="{
                 'background-image': 'url(' + this.coverUrl + ')',
-                'background-size': 'cover'
+                'background-size': 'cover',
             }"
         >
             <a
                 class="text-danger bg-white pl-1 pr-1 rounded ml-auto mt-auto"
                 v-if="this.hasMemberPermission('library_edit')"
                 @click="showUploadLibraryCoverModal = !showUploadLibraryCoverModal"
-
             >
                 <i class="fa fa-camera"></i>
             </a>

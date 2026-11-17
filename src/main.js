@@ -8,21 +8,20 @@ import VueAxios from "vue-axios";
 import ImageUploader from "vue-image-upload-resize";
 Vue.use(ImageUploader);
 
-import "popper.js";
-import "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
+import "@/styles/tailwind.css";
+import UiModal from "@/components/ui/UiModal.vue";
+import UiDropdown from "@/components/ui/UiDropdown.vue";
+import UiFileInput from "@/components/ui/UiFileInput.vue";
+Vue.component("UiModal", UiModal);
+Vue.component("UiDropdown", UiDropdown);
+Vue.component("UiFileInput", UiFileInput);
 
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 
-import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
 import PortalVue from "portal-vue";
 
-// import JQuery from "jquery";
-// window.$ = window.JQuery = JQuery;
-window.$ = window.JQuery = require("jquery");
 
 import mixin from "./mixin";
 
@@ -46,10 +45,6 @@ Vue.prototype.$apiClientSecret = process.env.VUE_APP_API_SERVER_CLIENT_SECRET;
 // console.log("apiClientId", Vue.prototype.$apiClientId);
 // console.log("apiClientSecret", Vue.prototype.$apiClientSecret);
 
-// Install BootstrapVue
-Vue.use(BootstrapVue);
-// Optionally install the BootstrapVue icon components plugin
-Vue.use(IconsPlugin);
 
 //  Vue.prototype.$http = axios;
 

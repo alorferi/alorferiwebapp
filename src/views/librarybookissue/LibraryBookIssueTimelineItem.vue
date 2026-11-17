@@ -1,41 +1,35 @@
 <template>
     <div>
-        <div class="card mb-3 p-1 ">
-            <div class="d-flex align-items-center">
-
-
-
-                <b-img-lazy
+        <div class="ui-card mb-4 p-1">
+            <div class="flex items-center">
+                <img
+                    class="inline-block p-2 rounded-full"
+                    loading="lazy"
+                    decoding="async"
                     :src="this.getApiUrl(item.library_member.user.photo_url)"
-                    class="p-2 rounded-circle"
-                   style=" max-width:48px;max-height:48px;"
+                    style="max-width: 48px; max-height: 48px"
                 />
 
-               <div class="p-1 ">
+                <div class="p-1">
                     {{ item.library_member.user.first_name }}
                 </div>
 
-  <div class="p-1 " v-if=" isCollected ">{{this.momentFromNow(item.collected_at)}} </div>
+                <div class="p-1" v-if="isCollected">{{ this.momentFromNow(item.collected_at) }}</div>
 
-                <div class="p-1 " v-else>{{this.momentFromNow(item.issued_at)}} </div>
+                <div class="p-1" v-else>{{ this.momentFromNow(item.issued_at) }}</div>
 
-                <b-img-lazy
+                <img
+                    class="inline-block p-2"
+                    loading="lazy"
+                    decoding="async"
                     :src="this.getApiUrl(item.library_book.book.cover_url)"
-                    class="p-2"
-                     style=" max-width:48px;max-height:48px;"
+                    style="max-width: 48px; max-height: 48px"
                 />
 
-               <div class="p-1 ">
-                 {{ item.library_book.book.title }}  (B{{ item.library_book.book_code }})
+                <div class="p-1">{{ item.library_book.book.title }} (B{{ item.library_book.book_code }})</div>
 
-                </div>
-
-                <div class="p-1 "  v-if=" isCollected ">
-                    বইটি ফেরত দিয়েছেন।
-                </div>
-                <div class="p-1 "  v-else>
-                    বইটি পড়তে নিয়েছেন।
-                </div>
+                <div class="p-1" v-if="isCollected">বইটি ফেরত দিয়েছেন।</div>
+                <div class="p-1" v-else>বইটি পড়তে নিয়েছেন।</div>
             </div>
         </div>
     </div>

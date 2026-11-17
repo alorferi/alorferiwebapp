@@ -1,7 +1,7 @@
 /* Restore the shared App shell when either visitor auth page is left. */
 #app.reader-auth-active > nav,
-#app.reader-auth-active > .container > .border-top { display: none; }
-#app.reader-auth-active > .container { max-width: none; width: 100%; margin-top: 0 !important; padding: 0; }
+#app.reader-auth-active > .app-content > .app-footer { display: none; }
+#app.reader-auth-active > .app-content { max-width: none; width: 100%; margin-top: 0 !important; padding: 0; }
 
 .reader-welcome { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; color: #24342c; background: #f7f4ec; background-image: radial-gradient(ellipse at 7% 38%, #e9eddf80, transparent 48%); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-align: left; }
 .reader-welcome *, .reader-welcome *::before, .reader-welcome *::after { box-sizing: border-box; }

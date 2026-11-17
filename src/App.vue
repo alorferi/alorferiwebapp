@@ -1,56 +1,48 @@
 <template>
     <div id="app" class="">
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm  bg-white" v-if="isLoggedIn">
-            <div class="container">
+        <nav
+            class="flex min-h-[56px] items-center px-4 py-2 fixed inset-x-0 top-0 z-50 shadow-sm bg-white"
+            v-if="isLoggedIn"
+        >
+            <div class="app-container">
                 <HomeNav />
-
             </div>
         </nav>
 
-
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm  bg-white" v-else>
-            <div class="container">
+        <nav class="flex min-h-[56px] items-center px-4 py-2 fixed inset-x-0 top-0 z-50 shadow-sm bg-white" v-else>
+            <div class="app-container">
                 <GuestNav />
-
             </div>
         </nav>
 
-
-        <div class="container" style="margin-top:70px;">
+        <div class="app-content app-container mt-[70px]">
             <div v-if="isLoggedIn">
-
                 <div v-if="leftBadge || leftMenu">
-
-                    <div class="row">
-                        <div class="col-sm-2">
+                    <div class="-mx-[15px] flex flex-wrap">
+                        <div class="relative w-full px-[15px] sm:w-1/6">
                             <component :is="leftBadge"></component>
                             <component :is="leftMenu"></component>
                         </div>
                         <!-- style="overflow-y: scroll;" -->
-                        <div class="col-sm-8">
+                        <div class="relative w-full px-[15px] sm:w-2/3">
                             <router-view></router-view>
                         </div>
-                        <div class="col-sm-2"></div>
+                        <div class="relative w-full px-[15px] sm:w-1/6"></div>
                     </div>
-
                 </div>
 
                 <div v-else>
                     <router-view></router-view>
                 </div>
-
-
             </div>
 
             <div v-else class="">
                 <router-view></router-view>
             </div>
 
-
-
             <BottomBar />
-
         </div>
+        <portal-target name="dialogs" multiple class="ui-modal-target" />
     </div>
 </template>
 

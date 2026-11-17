@@ -1,11 +1,11 @@
 <template>
     <div>
         <div
-            class="d-flex pt-2 pl-2 pr-2 pb-2 rounded bg-secondary border-top border-right border-left border-bottom"
-            style="height: 312px;"
+            class="flex pt-2 pl-2 pr-2 pb-2 rounded bg-secondary border-t border-r border-l border-b"
+            style="height: 312px"
             :style="{
                 'background-image': 'url(' + this.userCoverUrl + ')',
-                'background-size': 'cover'
+                'background-size': 'cover',
             }"
         >
             <a
@@ -16,10 +16,7 @@
                 <i class="fa fa-camera"></i>
             </a>
 
-            <UploadMyCoverModal
-                :show="showUploadMyCoverModal"
-                @updateVisibleState="showUploadMyCoverModal = $event"
-            />
+            <UploadMyCoverModal :show="showUploadMyCoverModal" @updateVisibleState="showUploadMyCoverModal = $event" />
         </div>
     </div>
 </template>

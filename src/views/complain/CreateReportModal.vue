@@ -1,55 +1,59 @@
 <template>
     <div>
-        <b-modal
+        <UiModal
+            :busy="is_loading"
             ref="modal"
             :title="modalTile"
             v-model="showLocal"
-            @show="showModal"
-            @hidden="hideModal"
+            @opened="showModal"
+            @closed="hideModal"
             ok-title="Submit"
-            @ok="handleOk"
+            @confirm="handleOk"
             centered
         >
             <!-- <div class="d-flex align-items-center mb-3">
-                <UserPhoto :user="user" size="16"></UserPhoto>
+            <UserPhoto :user="user" size="16"></UserPhoto>
 
-                <div class="ml-2">
-                    {{ user.first_name }} {{ user.surname }}
-                    {{ user.nickname }}
-                </div>
-            </div> -->
+            <div class="ml-2">
+                {{ user.first_name }} {{ user.surname }}
+                {{ user.nickname }}
+            </div>
+        </div> -->
 
-            <div class="alert alert-danger alert-dismissible" v-if="errorMessage"
-            >
-                <button type="button" class="close" data-dismiss="alert">
-                    &times;
-                </button>
+            <div class="relative rounded border p-4 border-red-200 bg-red-50 text-red-800 pr-12" v-if="errorMessage">
+                <button type="button" class="ui-close-button" @click="errorMessage = null">&times;</button>
 
                 {{ errorMessage }}
             </div>
 
             <form ref="form" @submit.stop.prevent="handleSubmit" class="mb-2">
-                <b-form-select
+                <select
+                    aria-label="Report reason"
+                    class="ui-field"
                     v-model="dataModel.subject"
-                    :options="options"
-                    :state="subjectState"
+                    :aria-invalid="subjectState === false ? 'true' : undefined"
                     required
-                ></b-form-select>
+                >
+                    <option v-for="option in options" :key="String(option.value)" :value="option.value">
+                        {{ option.text }}
+                    </option>
+                </select>
 
-                <b-form-textarea
+                <textarea
+                    aria-label="Report details"
+                    class="ui-field"
                     id="textarea"
                     v-model="dataModel.body"
                     placeholder="What do you want to discussion about?"
-                    rows="4s"
-                    max-rows="6"
-                    :state="bodyState"
+                    rows="4"
+                    :aria-invalid="bodyState === false ? 'true' : undefined"
                     required
                 >
-                </b-form-textarea>
+                </textarea>
 
                 <Loading v-if="is_loading"></Loading>
             </form>
-        </b-modal>
+        </UiModal>
     </div>
 </template>
 
@@ -168,13 +172,13 @@ export default {
             this.bodyState = null;
             this.errorMessage = null;
         },
-        handleOk(bvModalEvt) {
+        handleOk() {
             // Prevent modal from closing
-            bvModalEvt.preventDefault();
             // Trigger submit handler
             this.handleSubmit();
         },
         handleSubmit() {
+            if (this.is_loading) return;
             // Exit when the form isn't valid
             if (!this.checkFormValidity()) {
                 return;

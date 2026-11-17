@@ -1,17 +1,17 @@
 <template>
-    <div   v-if="meta!=null">
-        <div class="d-flex justify-content-between mt-2">
-            <div class="align-self-center">
+    <div v-if="meta != null">
+        <div class="flex justify-between mt-2">
+            <div class="self-center">
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination">
+                    <ul class="flex list-none rounded p-0">
                         <!--Start: Previous   -->
                         <li
-                            class="page-item"
-                            :class="{ disabled: meta.current_page == 1 }"
-                            v-if="meta.last_page !=  1"
+                            class="ui-page-item"
+                            :class="{ 'ui-disabled': meta.current_page == 1 }"
+                            v-if="meta.last_page != 1"
                         >
                             <a
-                                class="page-link"
+                                class="ui-page-link"
                                 role="button"
                                 @click="updatePage(meta.current_page - 1)"
                                 aria-label="« Previous"
@@ -25,85 +25,62 @@
 
                         <!-- Start: Firstr Loop -->
                         <li
-                            class="page-item"
+                            class="ui-page-item"
                             v-for="(page, index) in firstLoop"
                             :key="'first' + index"
-                            :class="{ active: page == meta.current_page }"
+                            :class="{ 'ui-selected': page == meta.current_page }"
                         >
-                            <a
-                                class="page-link"
-                                role="button"
-                                @click="updatePage(page)"
-                                >{{ page }}</a
-                            >
+                            <a class="ui-page-link" role="button" @click="updatePage(page)">{{ page }}</a>
                         </li>
 
                         <!-- End: Firstr Loop -->
 
                         <!-- Start: First Gap -->
-                        <li class="page-item disabled" aria-disabled="true">
-                            <span class="page-link" v-if="isMake1stGap"
-                                >...</span
-                            >
+                        <li class="ui-page-item ui-disabled" aria-disabled="true">
+                            <span class="ui-page-link" v-if="isMake1stGap">...</span>
                         </li>
 
                         <!-- End: First Gap -->
 
                         <!-- Start: Middle Loop -->
                         <li
-                            class="page-item"
+                            class="ui-page-item"
                             v-for="(page, index) in middleLoop"
                             :key="'middle' + index"
-                            :class="{ active: page == meta.current_page }"
+                            :class="{ 'ui-selected': page == meta.current_page }"
                         >
-                            <a
-                                class="page-link"
-                                role="button"
-                                @click="updatePage(page)"
-                                >{{ page }}</a
-                            >
+                            <a class="ui-page-link" role="button" @click="updatePage(page)">{{ page }}</a>
                         </li>
                         <!-- End: Middle Loop -->
 
                         <!--Start: Second Gap -->
-                        <li class="page-item disabled" aria-disabled="true">
-                            <span class="page-link" v-if="isMake2ndGap"
-                                >...</span
-                            >
+                        <li class="ui-page-item ui-disabled" aria-disabled="true">
+                            <span class="ui-page-link" v-if="isMake2ndGap">...</span>
                         </li>
                         <!--End: Second Gap -->
 
                         <!-- Start: Last Loop -->
                         <li
-                            class="page-item"
+                            class="ui-page-item"
                             v-for="(page, index) in lastLoop"
                             :key="'last' + index"
-                            :class="{ active: page == meta.current_page }"
+                            :class="{ 'ui-selected': page == meta.current_page }"
                         >
-                            <a
-                                class="page-link"
-                                role="button"
-                                @click="updatePage(page)"
-                                >{{ page }}</a
-                            >
+                            <a class="ui-page-link" role="button" @click="updatePage(page)">{{ page }}</a>
                         </li>
 
                         <!-- End: Last Loop -->
 
                         <!-- Start: Next-->
                         <li
-                            class="page-item"
+                            class="ui-page-item"
                             aria-label="Next »"
                             :class="{
-                                disabled: meta.current_page == meta.last_page
+                                'ui-disabled': meta.current_page == meta.last_page,
                             }"
-                               v-if="meta.last_page != 1"
+                            v-if="meta.last_page != 1"
                         >
-                            <a
-                                class="page-link"
-                                role="button"
-                                @click="updatePage(meta.current_page + 1)"
-                            >
+                            <a class="ui-page-link" role="button" @click="updatePage(meta.current_page + 1)">
                                 <span aria-hidden="true">›</span>
                                 <span class="sr-only">Next</span>
                             </a>
@@ -114,9 +91,7 @@
                 </nav>
             </div>
 
-            <div class="text-secondary p-2">
-                Items: {{ this.currentTotalItems }} of {{ meta.total }}
-            </div>
+            <div class="text-secondary p-2">Items: {{ this.currentTotalItems }} of {{ meta.total }}</div>
         </div>
     </div>
 </template>

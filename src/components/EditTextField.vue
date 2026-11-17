@@ -1,10 +1,10 @@
 <template>
-    <div class="form-group">
+    <div class="mb-4">
         <label :for="name" v-if="label" class="text-primary">{{ label }}</label>
 
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text" v-if="icon">
+        <div class="flex w-full items-stretch">
+            <div class="flex">
+                <span class="ui-input-addon" v-if="icon">
                     <i :class="icon"></i>
                 </span>
             </div>
@@ -80,6 +80,6 @@ export default {
 
 <style scoped>
 .error-field {
-    @apply .border .border-danger .border-top-0 .border-left-0 .border-right-0;
+    @apply border border-danger border-t-0 border-l-0 border-r-0;
 }
 </style>

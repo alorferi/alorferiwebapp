@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="card">
-            <div class="card-body d-flex  align-items-center">
+        <div class="ui-card">
+            <div class="p-5 flex items-center">
                 <router-link
                     :to="{
                         name: 'users.show',
-                        params: { user_id: this.activeUser.id }
+                        params: { user_id: this.activeUser.id },
                     }"
                 >
                     <UserPhoto :user="activeUser" size="32"> </UserPhoto>
@@ -13,10 +13,10 @@
 
                 <button
                     type="button"
-                    class="ml-3 form-control btn btn-outline-info"
+                    class="ml-4 ui-field ui-button ui-button-outline-info"
                     @click="showCreateUserPostModel = !showCreateUserPostModel"
                 >
-                     {{ $t('start_a_discussion') }}
+                    {{ $t("start_a_discussion") }}
                 </button>
             </div>
 
@@ -27,9 +27,9 @@
             />
 
             <!-- <EditPostModal :show="showEditPostModal"
-            :post="post"
-             @updateVisibleState="showEditPostModal = $event"
-             /> -->
+        :post="post"
+         @updateVisibleState="showEditPostModal = $event"
+         /> -->
         </div>
     </div>
 </template>

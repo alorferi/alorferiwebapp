@@ -58,16 +58,10 @@
             />
 
             <div class="flex justify-start">
-                <button
-                    class="py-2 px-4 text-white rounded text-red-700 border mr-5 hover:border-red-700"
-                >
+                <button class="py-2 px-6 text-white rounded text-red-700 border mr-12 hover:border-red-700">
                     Canel
                 </button>
-                <button
-                    class="bg-blue-500 py-2 px-4 text-white rounded hover:bg-blue-400"
-                >
-                    Save
-                </button>
+                <button class="bg-blue-500 py-2 px-6 text-white rounded hover:bg-blue-400">Save</button>
             </div>
         </form>
     </div>

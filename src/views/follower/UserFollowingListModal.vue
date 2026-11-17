@@ -1,15 +1,17 @@
 <template>
     <div>
-        <b-modal
+        <UiModal
+            :busy="is_loading"
             ref="modal"
             :title="titleTotalFollowings"
             v-model="showLocal"
             ok-only
+            close-on-confirm
             centered
-            @show="showModal"
-            @hidden="hideModal"
+            @opened="showModal"
+            @closed="hideModal"
             ok-title="OK"
-            @ok="handleOk"
+            @confirm="handleOk"
         >
             <Loading v-if="is_loading"></Loading>
             <UserFollowerListItem
@@ -18,8 +20,7 @@
                 :user="follower.attributes.followable"
                 v-bind:key="follower.attributes.id"
             />
-
-        </b-modal>
+        </UiModal>
     </div>
 </template>
 

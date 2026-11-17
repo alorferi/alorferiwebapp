@@ -2,20 +2,11 @@
     <div>
         <Loading v-if="is_loading"></Loading>
 
-        <PostListItem
-            v-else
-            v-for="post in posts"
-            :post="post.attributes"
-            v-bind:key="post.id"
-        />
+        <PostListItem v-else v-for="post in posts" :post="post.attributes" v-bind:key="post.id" />
 
-        <p v-if="!is_loading && posts.length < 1" class='text-center'>
-            No discussion found.
-        </p>
+        <p v-if="!is_loading && posts.length < 1" class="text-center">No discussion found.</p>
 
-
-         <Loading v-if="scrolledToBottom" class="border mt-3"></Loading>
-
+        <Loading v-if="scrolledToBottom" class="border mt-4"></Loading>
     </div>
 </template>
 

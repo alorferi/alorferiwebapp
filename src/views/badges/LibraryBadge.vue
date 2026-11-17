@@ -1,14 +1,14 @@
 <template>
     <div>
-        <div class="card">
-            <div class="card-body p-2 text-center">
-                   <LibraryLogo :library ="library" size="72"/>
-                <a href="/user/profile" class="stretched-link"> </a>
+        <div class="ui-card">
+            <div class="p-5 p-2 text-center">
+                <LibraryLogo :library="library" size="72" />
+                <a href="/user/profile" class="absolute inset-0"> </a>
             </div>
 
             <!-- <div class="card-footer text-center">
-                <span>Alor Feri</span>
-            </div> -->
+            <span>Alor Feri</span>
+        </div> -->
         </div>
     </div>
 </template>

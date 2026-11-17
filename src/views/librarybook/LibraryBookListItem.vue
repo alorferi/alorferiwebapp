@@ -1,32 +1,27 @@
 <template>
     <div>
-        <div class="card mb-3 p-2">
-            <div class="d-flex align-items-center">
+        <div class="ui-card mb-4 p-2">
+            <div class="flex items-center">
                 <!-- <LibraryLogo :item ="item" size="72"/> -->
 
-                <b-img-lazy
+                <img
+                    class="inline-block p-2"
+                    loading="lazy"
+                    decoding="async"
                     :src="this.getApiUrl(item.book.cover_url)"
-                    class="p-2"
                 />
 
                 <div>
                     <p>
-                        {{ item.book_code }}<span v-if="item.shelf_number != null">
-                            /{{ item.shelf_number }}
-                        </span>
+                        {{ item.book_code }}<span v-if="item.shelf_number != null"> /{{ item.shelf_number }} </span>
 
-                        <span v-if="item.box_number != null">
-                            .{{ item.box_number }}
-                        </span>
+                        <span v-if="item.box_number != null"> .{{ item.box_number }} </span>
                     </p>
 
                     <h5>{{ item.book.title }}</h5>
 
-                    <div class="d-flex">
-                        <div
-                            v-for="(author, index) in item.book.authors"
-                            v-bind:key="index"
-                        >
+                    <div class="flex">
+                        <div v-for="(author, index) in item.book.authors" v-bind:key="index">
                             {{ author.name }}
                             <span v-if="index < item.book.authors - 1">|</span>
                         </div>

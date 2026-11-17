@@ -1,23 +1,23 @@
 <template>
     <div>
-        <div class="media border p-3 mb-3">
+        <div class="flex items-start border p-4 mb-4">
             <router-link
                 :to="{
                     name: 'users.show',
-                    params: { user_id: this.post.user.id }
+                    params: { user_id: this.post.user.id },
                 }"
             >
                 <UserPhoto :user="post.user" size="48"></UserPhoto>
             </router-link>
-            <div class="media-body pl-3">
-                <div class="d-flex justify-content-between">
+            <div class="min-w-0 flex-1 pl-4">
+                <div class="flex justify-between">
                     <div>
                         <div>
                             <router-link
                                 class="text-dark"
                                 :to="{
                                     name: 'users.show',
-                                    params: { user_id: this.post.user.id }
+                                    params: { user_id: this.post.user.id },
                                 }"
                             >
                                 <b>
@@ -26,14 +26,14 @@
                                 </b>
                             </router-link>
 
-                            <span v-if=" post.postable_type == 'App\\Models\\Library' ">
+                            <span v-if="post.postable_type == 'App\\Models\\Library'">
                                 &gt;
 
                                 <router-link
                                     class="text-dark"
                                     :to="{
                                         name: 'library-show',
-                                        params: { id: post.postable.id }
+                                        params: { id: post.postable.id },
                                     }"
                                 >
                                     <b>
@@ -44,71 +44,48 @@
                         </div>
 
                         <small
-                            ><i class="text-text-secondary">
-                                {{ this.momentFromNow(post.created_at) }}</i
-                            ></small
+                            ><i class="text-secondary"> {{ this.momentFromNow(post.created_at) }}</i></small
                         >
                     </div>
 
                     <div>
-                        <div class="dropdown show">
-                            <a
-                                class="dropdown-toggle dropdown-toggle-split btn btn-link
-                                border-top border-left border-right border-bottom
-                                "
-                                role="button"
-                                id="dropdownMenuLink"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                            >
-                            </a>
-
-                            <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuLink"
-                            >
+                        <div class="relative">
+                            <UiDropdown
+                                trigger-id="dropdownMenuLink"
+                                trigger-class="ui-button ui-button-link border-t border-l border-r border-b"
+                                label="Actions"
+                                ><template #trigger> </template>
                                 <a
-                                    class="dropdown-item  text-primary"
+                                    class="ui-menu-item text-primary"
                                     role="button"
                                     v-if="isMyPost"
-                                    @click="
-                                        showEditPostModal = !showEditPostModal
-                                    "
-                                    ><i class="far fa-edit"></i> Edit this
-                                    post</a
+                                    @click="showEditPostModal = !showEditPostModal"
+                                    ><i class="far fa-edit"></i> Edit this post</a
                                 >
                                 <a
-                                    class="dropdown-item text-danger"
+                                    class="ui-menu-item text-danger"
                                     v-if="isMyPost"
                                     role="button"
                                     @click="deleteUserPost(post)"
-                                    ><i class="far fa-trash-alt"></i> Delete
-                                    this post</a
+                                    ><i class="far fa-trash-alt"></i> Delete this post</a
                                 >
 
                                 <a
-                                    class="dropdown-item text-danger"
+                                    class="ui-menu-item text-danger"
                                     v-if="!isMyPost"
                                     role="button"
-                                    @click="
-                                        showCreateReportModel = !showCreateReportModel
-                                    "
-                                    ><i class="fas fa-exclamation-triangle"></i>
-                                    Report this post</a
+                                    @click="showCreateReportModel = !showCreateReportModel"
+                                    ><i class="fas fa-exclamation-triangle"></i> Report this post</a
                                 >
 
                                 <a
-                                    class="dropdown-item text-danger"
+                                    class="ui-menu-item text-danger"
                                     v-if="!isMyPost"
                                     role="button"
-                                    @click="
-                                        showCreateBlockModel = !showCreateBlockModel
-                                    "
-                                    ><i class="fas fa-exclamation-triangle"></i>
-                                    Block this post</a
+                                    @click="showCreateBlockModel = !showCreateBlockModel"
+                                    ><i class="fas fa-exclamation-triangle"></i> Block this post</a
                                 >
-                            </div>
+                            </UiDropdown>
                         </div>
                     </div>
                 </div>
@@ -130,38 +107,22 @@
                     @didFinish="didFinishBlockingUser"
                 />
 
-                <h5
-                    v-if="post.title"
-                    class="mr-5"
-                    style="text-align:justify"
-                    v-html="post.title"
-                ></h5>
+                <h5 v-if="post.title" class="mr-12" style="text-align: justify" v-html="post.title"></h5>
 
-                <p
-                    v-if="post.body"
-                    v-html="body"
-                    class="mr-5"
-                    style="text-align:justify"
-                ></p>
+                <p v-if="post.body" v-html="body" class="mr-12" style="text-align: justify"></p>
 
-                <div v-if="post.image_url" class="mr-5">
+                <div v-if="post.image_url" class="mr-12">
                     <img
                         :src="this.getApiUrl(post.image_url)"
-                        style="max-width:100%; height: auto;"
+                        style="max-width: 100%; height: auto"
                         alt="Posted image"
-                        class="img-fluid"
+                        class="h-auto max-w-full"
                     />
                 </div>
 
                 <!-- 4:3 aspect ratio -->
-                <div
-                    v-if="getYouTubeEmbedUrl"
-                    class="embed-responsive embed-responsive-16by9"
-                >
-                    <iframe
-                        class="embed-responsive-item"
-                        :src="getYouTubeEmbedUrl"
-                    ></iframe>
+                <div v-if="getYouTubeEmbedUrl" class="ui-video-frame">
+                    <iframe class="absolute inset-0 h-full w-full" :src="getYouTubeEmbedUrl"></iframe>
                 </div>
 
                 <ShowPostComments :post="post" />

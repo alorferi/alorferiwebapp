@@ -2,31 +2,17 @@
     <div>
         <Loading v-if="is_loading"></Loading>
 
+        <Paginator :meta="meta" @update:page="page = $event" />
 
-        <Paginator
-                :meta="meta"
-                @update:page="page = $event"
-            />
-
-
-        <div class="row mb-4" >
-            <div v-for="course in courses" v-bind:key="course.id" class="col-sm-4" >
+        <div class="-mx-[15px] flex flex-wrap mb-6">
+            <div v-for="course in courses" v-bind:key="course.id" class="relative w-full px-[15px] sm:w-1/3">
                 <CourseCardItem :item="course" />
             </div>
         </div>
 
-        <Paginator
-                :meta="meta"
-                @update:page="page = $event"
-            />
+        <Paginator :meta="meta" @update:page="page = $event" />
 
-
-        <p v-if="!is_loading && courses.length < 1" class="text-center">
-            No Courses found.
-        </p>
-
-
-
+        <p v-if="!is_loading && courses.length < 1" class="text-center">No Courses found.</p>
     </div>
 </template>
 

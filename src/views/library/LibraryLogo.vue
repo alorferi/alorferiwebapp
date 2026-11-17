@@ -1,10 +1,12 @@
 <template>
     <div>
-        <b-img-lazy
+        <img
+            class="inline-block rounded-full p-2"
+            loading="lazy"
+            decoding="async"
             v-if="this.library.logo_url != null"
             :src="this.logoUrl()"
             :style="imgStyle"
-            class="rounded-circle p-2"
         />
 
         <NameCircle v-else :name="library.name" :size="this.size" class="p-2" />

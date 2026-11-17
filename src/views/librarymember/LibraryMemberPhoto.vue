@@ -1,10 +1,12 @@
 <template>
     <span>
-            <b-img-lazy
+        <img
+            class="inline-block rounded-full"
+            loading="lazy"
+            decoding="async"
             v-if="this.member.photo_url"
             :src="this.getApiUrl(this.member.photo_url)"
             :style="imgStyle"
-            class="rounded-circle"
         />
 
         <NameCircle v-else :name="member.first_name" :size="this.size" />

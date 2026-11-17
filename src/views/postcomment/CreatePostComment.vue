@@ -1,22 +1,19 @@
 <template>
-    <div class="media p-3" >
+    <div class="flex items-start p-4">
+        <div class="min-w-0 flex-1">
+            <form ref="form" @submit.stop.prevent="handleSubmit">
+                <div class="mb-4 flex">
+                    <UserPhoto :user="this.$store.getters.activeUser" size="24"></UserPhoto>
 
-            <div class="media-body">
-        <form ref="form" @submit.stop.prevent="handleSubmit">
-            <div class="form-group d-flex">
-                <UserPhoto
-                    :user="this.$store.getters.activeUser"
-                    size="24"
-                ></UserPhoto>
-
-                <b-form-input
-                    class="form-control ml-2"
-                    v-model="body"
-                    placeholder="Type your comment here"
-                    v-on:keyup="handleSubmit"
-                ></b-form-input>
-            </div>
-        </form>
+                    <input
+                        aria-label="Write a comment"
+                        class="ui-field ml-2"
+                        v-model="body"
+                        placeholder="Type your comment here"
+                        required :disabled="isSubmitting"
+                    />
+                </div>
+            </form>
         </div>
     </div>
 </template>
@@ -31,7 +28,8 @@ export default {
     data() {
         return {
             body: "",
-            bodyState: null
+            bodyState: null,
+            isSubmitting: false
         };
     },
     methods: {
@@ -53,7 +51,7 @@ export default {
                 })
                 .catch(() => {
                 })
-                .finally();
+                .finally(() => { this.isSubmitting = false; });
         },
 
         checkFormValidity() {
@@ -61,25 +59,10 @@ export default {
             this.bodyState = valid;
             return valid;
         },
-        resetModal() {
-            this.body = "";
-            this.bodyState = null;
-        },
-        handleOk(bvModalEvt) {
-            // Prevent modal from closing
-            bvModalEvt.preventDefault();
-            // Trigger submit handler
-            this.handleSubmit();
-        },
-        handleSubmit(e) {
-            if (e.keyCode === 13) {
-                // Exit when the form isn't valid
-                if (!this.checkFormValidity()) {
-                    return;
-                }
-                // Subit data to backend server
-                this.storePostCommenAction();
-            }
+        handleSubmit() {
+            if (this.isSubmitting || !this.body.trim() || !this.checkFormValidity()) return;
+            this.isSubmitting = true;
+            this.storePostCommenAction();
         }
     }
 };

@@ -1,53 +1,33 @@
 <template>
-    <div class="media  p-2">
-        <UserPhoto :user="comment.user" size="24" class="mr-3 mt-3"></UserPhoto>
+    <div class="flex items-start p-2">
+        <UserPhoto :user="comment.user" size="24" class="mr-4 mt-4"></UserPhoto>
 
-        <div
-            class="media-body  border border-left-0 border-right-0 border-top-0"
-        >
-            <div class="d-flex d-flex justify-content-between">
+        <div class="min-w-0 flex-1 border border-l-0 border-r-0 border-t-0">
+            <div class="flex justify-between">
                 <h6>
                     {{ comment.user.first_name }} {{ comment.user.surname }}
                     <small
-                        ><i class="text-text-secondary">
-                            {{ this.momentFromNow(comment.created_at) }}</i
-                        ></small
+                        ><i class="text-secondary"> {{ this.momentFromNow(comment.created_at) }}</i></small
                     >
                 </h6>
 
                 <div>
-                    <div class="dropdown show">
-                        <a
-                            class="dropdown-toggle"
-                            role="button"
-                            id="dropdownMenuLink"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                        >
-                            <!-- <i class="fas fa-ellipsis-v"></i> -->
-                        </a>
-
-                        <div
-                            class="dropdown-menu"
-                            aria-labelledby="dropdownMenuLink"
-                        >
-                            <a
-                                class="dropdown-item  text-primary"
-                                role="button"
-                                v-if="isAbleToEditComment"
+                    <div class="relative">
+                        <UiDropdown trigger-id="dropdownMenuLink" trigger-class="" label="Actions"
+                            ><template #trigger>
+                                <!-- <i class="fas fa-ellipsis-v"></i> -->
+                            </template>
+                            <a class="ui-menu-item text-primary" role="button" v-if="isAbleToEditComment"
                                 ><i class="far fa-edit"></i> Edit this comment</a
                             >
                             <a
-                                class="dropdown-item text-danger"
+                                class="ui-menu-item text-danger"
                                 v-if="isAbletoDeleteComment"
                                 role="button"
                                 @click="deleteComment(comment)"
-                                ><i class="far fa-trash-alt"></i> Delete this
-                                comment</a
+                                ><i class="far fa-trash-alt"></i> Delete this comment</a
                             >
-
-                        </div>
+                        </UiDropdown>
                     </div>
                 </div>
             </div>
