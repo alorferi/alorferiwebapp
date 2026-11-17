@@ -50,25 +50,23 @@
                     class="nav-item"
                     style="margin-left: 5px; margin-right: 5px"
                 >
-                    <router-link class="nav-link" :to="{ name: 'about' }">{{
+                    <a class="nav-link" :href="companyLinks.about" target="_blank" rel="noopener noreferrer">{{
                         $t("about")
-                    }}</router-link>
+                    }}</a>
                 </li>
 
                 <li
                     class="nav-item"
                     style="margin-left: 5px; margin-right: 5px"
                 >
-                    <router-link class="nav-link" :to="{ name: 'contact-us' }"
-                        >Contact</router-link
-                    >
+                    <a class="nav-link" :href="companyLinks.contact" target="_blank" rel="noopener noreferrer">Contact</a>
                 </li>
 
                 <li
                     class="nav-item"
                     style="margin-left: 5px; margin-right: 5px"
                 >
-                    <a class="nav-link" href="https://careers.alorferi.com"> Careers</a>
+                    <a class="nav-link" :href="companyLinks.careers" target="_blank" rel="noopener noreferrer"> Careers</a>
                 </li>
             </ul>
 
@@ -115,13 +113,14 @@
 <script>
 import $ from "jquery";
 import LanguageToggleButton from "@/components/LanguageToggleButton";
+import { companyLinks } from "@/config/company";
 export default {
     name: "GuestNav",
     components: {
         LanguageToggleButton,
     },
     data() {
-        return {};
+        return { companyLinks };
     },
     computed: {
         myCart() {

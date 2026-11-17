@@ -16,9 +16,9 @@
                 </div>
 
                 <div>
-                    <router-link :to="{ name: 'about' }">{{
+                    <a :href="companyLinks.about" target="_blank" rel="noopener noreferrer">{{
                         $t("about")
-                    }}</router-link>
+                    }}</a>
                 </div>
 
                 <!-- <div>
@@ -103,9 +103,9 @@
                 </div>
 
                 <div>
-                    <router-link :to="{ name: 'contact-us' }">
+                    <a :href="companyLinks.contact" target="_blank" rel="noopener noreferrer">
                         {{ $t("contact_us") }}
-                    </router-link>
+                    </a>
                 </div>
             </div>
 
@@ -129,7 +129,7 @@
 
                 <div>
 
-                    <a href="https://careers.alorferi.com">
+                    <a :href="companyLinks.careers" target="_blank" rel="noopener noreferrer">
                         Careers</a>
 
                 </div>
@@ -161,8 +161,9 @@
                     {{ $t("get_us_on") }}
                     <a
                         class="p-1"
-                        href="https://fb.com/alorferi"
+                        :href="companyLinks.facebook"
                         target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <img
                             src="@/assets/images/icons/ic_facebook.png"
@@ -173,8 +174,9 @@
 
                     <a
                         class="p-1"
-                        href="https://youtube.com/@alorferi"
+                        :href="companyLinks.youtube"
                         target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <img
                             src="@/assets/images/icons/ic_youtube.png"
@@ -189,6 +191,7 @@
 </template>
 
 <script>
+import { companyLinks } from "@/config/company";
 // import LanguageToggleLink from "@/components/LanguageToggleLink";
 
 export default {
@@ -201,7 +204,7 @@ export default {
     },
     mounted: function() {},
     data() {
-        return {};
+        return { companyLinks };
     },
     methods: {}
 };

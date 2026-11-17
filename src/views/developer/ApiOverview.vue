@@ -8,7 +8,7 @@
         made in the form of a simple HTTP GET. The APIs that are not provided
         publicly are available to our API partners. If you're interested in
         becoming an API partner, please
-        <a href="mailto:info@alorfferi.com">contact us</a> .
+        <a :href="'mailto:' + companyContact.email">contact us</a> .
 
         <br />
         <br />
@@ -38,8 +38,13 @@
 </template>
 
 <script>
+import { companyContact } from "@/config/company";
+
 export default {
     name: "ApiOverview",
+    data() {
+        return { companyContact };
+    },
     components: {},
     mounted: function() {},
     computed: {},

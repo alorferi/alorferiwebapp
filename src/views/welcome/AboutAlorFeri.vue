@@ -22,9 +22,9 @@
                         developing, maintaining, and promoting mobile apps as well as other web applications. Our aim is
                         to give our customers the best user experience in the business by providing proper solutions
                         through our resource pool of experienced individuals, cutting-edge technology, and industry best
-                        practices.    <router-link :to="{ name: 'about' }">{{
+                        practices.    <a :href="companyLinks.about" target="_blank" rel="noopener noreferrer">{{
                         $t("read_more")
-                    }}</router-link>
+                    }}</a>
 
                     </p>
                 </div>
@@ -51,8 +51,13 @@
 </style>
 
 <script>
+    import { companyLinks } from "@/config/company";
+
     export default {
         name: "AboutAlorFeri",
+        data() {
+            return { companyLinks };
+        },
         components: {
 
 

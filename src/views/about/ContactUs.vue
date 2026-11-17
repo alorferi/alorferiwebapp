@@ -27,7 +27,7 @@
 
 
                 <div>
-                    <a href="https://maps.app.goo.gl/vurpymDtkKBywiiM9" target="_blank"> <i class='fas fa-map-marker-alt' style='color:red'></i> View Map</a>
+                    <a :href="companyContact.map" target="_blank" rel="noopener noreferrer"> <i class='fas fa-map-marker-alt' style='color:red'></i> View Map</a>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
                 Mobile
             </h5>
             <div>
-                Call us:  <a href="tel:+8801717983473">+880 1717 983 473</a>,  <a href="tel:+88017406671998">+880 1740 6671 998</a>
+                Call us:  <a :href="'tel:' + companyContact.phone">{{ companyContact.phoneLabel }}</a>
 
             </div>
         </div>
@@ -47,7 +47,7 @@
                 E-mail
             </h5>
             <div>
-                Email us:  <a href = "mailto:hello@alorferi.com">hello@alorferi.com</a>
+                Email us:  <a :href="'mailto:' + companyContact.email">{{ companyContact.email }}</a>
             </div>
         </div>
         <div class="p-4">
@@ -56,7 +56,7 @@
             </h5>
             <div>
                 Send us a direct message from our
-                <a href="https://www.facebook.com/alorferi" target="_blank"
+                <a :href="companyLinks.facebook" target="_blank" rel="noopener noreferrer"
                     >Facebook Page</a
                 >
             </div>
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { companyLinks, companyContact } from "@/config/company";
+
 export default {
     name: "ContactUs",
     components: {},
@@ -79,7 +81,7 @@ export default {
     computed: {},
     props: {},
     data() {
-        return {};
+        return { companyLinks, companyContact };
     },
     methods: {}
 };
