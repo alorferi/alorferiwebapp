@@ -975,19 +975,92 @@ async function main() {
         await send("Input.dispatchKeyEvent", {
             type: "keyDown",
             key,
-            code: key,
+            code: key === " " ? "Space" : key,
             ...(key === "Enter" ? { text: "\r", unmodifiedText: "\r" } : {}),
             modifiers: shift ? 8 : 0,
-            windowsVirtualKeyCode: { Escape: 27, Tab: 9, Enter: 13, ArrowDown: 40, ArrowUp: 38 }[key] || 0,
+            windowsVirtualKeyCode: { Escape: 27, Tab: 9, Enter: 13, ArrowDown: 40, ArrowUp: 38, " ": 32 }[key] || 0,
         });
         await send("Input.dispatchKeyEvent", {
             type: "keyUp",
             key,
-            code: key,
+            code: key === " " ? "Space" : key,
             modifiers: shift ? 8 : 0,
-            windowsVirtualKeyCode: { Escape: 27, Tab: 9, Enter: 13, ArrowDown: 40, ArrowUp: 38 }[key] || 0,
+            windowsVirtualKeyCode: { Escape: 27, Tab: 9, Enter: 13, ArrowDown: 40, ArrowUp: 38, " ": 32 }[key] || 0,
         });
     }
+    async function pointerPosition(selector) {
+        return evaluate(`(() => {
+            const target=document.querySelector(${JSON.stringify(selector)});
+            target.scrollIntoView({block:'nearest'});
+            const r=target.getBoundingClientRect();
+            const point={x:r.x+r.width/2,y:r.y+r.height/2};
+            if(!target.contains(document.elementFromPoint(point.x,point.y)))throw Error('Pointer target is obscured');
+            return point;
+        })()`);
+    }
+    async function mouseClick(selector, afterPress) {
+        const point=await pointerPosition(selector);
+        await send('Input.dispatchMouseEvent',{type:'mouseMoved',...point});
+        await send('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...point});
+        if(afterPress)await afterPress();
+        await send('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...point});
+    }
+    async function touchTap(selector) {
+        const point=await pointerPosition(selector);
+        await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...point,id:1}]});
+        await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    }
+    async function logoutSelector() {
+        const menu=await evaluate("document.querySelector('#navbarDropdown').getAttribute('aria-controls')");
+        return '#'+menu+' button.ui-menu-item';
+    }
+    async function expectLoggedOut() {
+        await waitFor("document.querySelector('.reader-login-card') && location.pathname==='/'",'visitor homepage after logout');
+        assert.equal(await evaluate(app+'.$store.getters.isLoggedIn'),false);
+        assert.equal(await evaluate("localStorage.getItem('token')"),null);
+        assert.equal(await evaluate("localStorage.getItem('otc_token')"),null);
+        assert.equal(await evaluate('location.hash'),'');
+        await reloadPage();
+        await waitFor("document.querySelector('.reader-login-card')",'visitor homepage after refresh');
+        assert.equal(await evaluate(app+'.$store.getters.isLoggedIn'),false);
+    }
+    await check('desktop pointer logout survives focusout before mouseup and stays logged out after refresh',async()=>{
+        await reset();await resize(1440,1000);await loginValues();await submitLogin();await waitFeed();
+        await mouseClick('#navbarDropdown');
+        await waitFor("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='true'",'pointer account menu');
+        await mouseClick(await logoutSelector(),async()=>{
+            assert.equal(await evaluate("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')"),'true');
+            assert(await evaluate('!!document.querySelector('+JSON.stringify(await logoutSelector())+')'));
+        });
+        await expectLoggedOut();
+    });
+    await check('mobile touch logout closes the session and stays logged out after refresh',async()=>{
+        await reset();await resize(390,844);await loginValues();await submitLogin();await waitFeed();
+        await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:1});
+        try {
+            await touchTap('[aria-controls=collapsibleNavbar]');
+            await waitFor("document.querySelector('[aria-controls=collapsibleNavbar]').getAttribute('aria-expanded')==='true'",'touch navigation');
+            await touchTap('#navbarDropdown');
+            await waitFor("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='true'",'touch account menu');
+            await touchTap(await logoutSelector());await expectLoggedOut();
+        } finally { await send('Emulation.setTouchEmulationEnabled',{enabled:false}); }
+    });
+    await check('keyboard menu focus, Tab dismissal and Enter/Space logout remain functional',async()=>{
+        for(const key of ['Enter',' ']) {
+            await reset();await resize(1440,1000);await loginValues();await submitLogin();await waitFeed();
+            await evaluate("document.querySelector('#navbarDropdown').focus()");await press('ArrowDown');
+            await waitFor("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='true'",'keyboard account menu');
+            assert(await evaluate("document.activeElement.href.includes('/users/me')"));
+            await press('Tab');await press('Tab');
+            assert.equal(await evaluate('document.activeElement.tagName'),'BUTTON');
+            assert.equal(await evaluate("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')"),'true');
+            await press('Tab');
+            await waitFor("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='false'",'Tab outside closes menu');
+            await evaluate("document.querySelector('#navbarDropdown').focus()");await press('ArrowUp');
+            await waitFor("document.activeElement.matches('button.ui-menu-item')",'keyboard logout button');
+            await press(key);await expectLoggedOut();
+        }
+    });
     await check("Vue menus support mobile collapse, keyboard navigation and outside dismissal", async () => {
         await reset();
         await navigate(base + "/courses");

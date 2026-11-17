@@ -54,10 +54,11 @@ export default {
         outside(event) {
             if (!this.$el.contains(event.target)) this.open = false;
         },
-        leave() {
-            this.$nextTick(() => {
-                if (!this.$el.contains(document.activeElement)) this.open = false;
-            });
+        leave(event) {
+            // During focusout, activeElement can still be BODY even when the
+            // pointer is moving focus to a menu item. Keep it until click runs.
+            const next = event.relatedTarget;
+            if (next && !this.$el.contains(next)) this.open = false;
         },
         select(event) {
             if (event.target.closest("a,button")) this.open = false;

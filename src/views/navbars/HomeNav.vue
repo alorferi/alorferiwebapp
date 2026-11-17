@@ -79,9 +79,14 @@
 
                         <div class="ui-menu-separator"></div>
 
-                        <a class="ui-menu-item" href="#" @click="logoutMe" v-if="this.$store.getters.isLoggedIn">
-                            {{ $t("logout") }}</a
+                        <button
+                            type="button"
+                            class="ui-menu-item"
+                            @click="logoutMe"
+                            v-if="this.$store.getters.isLoggedIn"
                         >
+                            {{ $t("logout") }}
+                        </button>
                     </UiDropdown>
                 </li>
             </ul>
