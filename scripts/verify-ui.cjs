@@ -1693,7 +1693,7 @@ async function main() {
         await resize(1440, 1000);
         assert.equal(
             await evaluate("Math.round(document.querySelector('.social-sidebar').getBoundingClientRect().width)"),
-            232
+            288
         );
         assert.equal(await evaluate("document.querySelector('.social-sidebar [aria-current=page]').pathname"), "/");
         await resize(390, 844);
@@ -1743,7 +1743,10 @@ async function main() {
             ["/", "/libraries", "/users", "/courses"]
         );
         assert(await evaluate("!document.querySelector('.social-sidebar a[href=\"/libraries/create\"]')"));
-        await waitFor("document.querySelector('.social-library-context a[href=\"/libraries/create\"]')",'library creation remains in context panel');
+        await waitFor(
+            "document.querySelector('.social-library-context a[href=\"/libraries/create\"]')",
+            "library creation remains in context panel"
+        );
         for (const [language, width, labels] of [
             ["en", 1440, ["My profile", "My libraries", "My courses", "Logout"]],
             ["bn", 390, ["আমার প্রোফাইল", "আমার লাইব্রেরি", "আমার কোর্স", "প্রস্থান"]],
@@ -1803,10 +1806,13 @@ async function main() {
         );
         assert(await evaluate("!document.querySelector('.ui-drawer-panel a[href=\"/libraries/create\"]')"));
         await evaluate("document.querySelector('.ui-drawer-panel a[href=\"/libraries\"]').click()");
-        await waitFor("location.pathname==='/libraries' && document.querySelector('#social-main a[href=\"/libraries/create\"]') && !document.querySelector('[role=dialog]')",'mobile library creation remains on Libraries page');
+        await waitFor(
+            "location.pathname==='/libraries' && document.querySelector('#social-main a[href=\"/libraries/create\"]') && !document.querySelector('[role=dialog]')",
+            "mobile library creation remains on Libraries page"
+        );
     });
     await check(
-        "feed layout: full-width columns persist through library loading, failure, retry and empty states",
+        "feed layout: edge sidebars and a centered reading column persist through loading, failure and retry",
         async () => {
             await reset({ social: { holdLibraryPanel: true } });
             await resize(1920, 1080);
@@ -1818,12 +1824,62 @@ async function main() {
                 "library panel loading"
             );
             const geometry = () =>
-                evaluate(
-                    `(()=>{const r=s=>document.querySelector(s).getBoundingClientRect().toJSON();return {main:r('.social-main'),grid:r('.social-feed-layout'),feed:r('.social-feed-main'),aside:r('.social-feed-aside'),display:getComputedStyle(document.querySelector('.social-feed-aside')).display,overflow:document.documentElement.scrollWidth-innerWidth}})()`
+                evaluate(`(()=>{
+                    const r=s=>document.querySelector(s).getBoundingClientRect().toJSON();
+                    const header=document.querySelector('.social-topbar-inner');
+                    return {shell:r('.social-app-content'),header:r('.social-topbar-inner'),topbar:r('.social-topbar'),
+                        columns:r('.social-layout'),navigation:r('.social-navigation-slot'),account:r('.social-topbar-actions'),main:r('.social-main'),
+                        grid:r('.social-feed-layout'),feed:r('.social-feed-main'),aside:r('.social-feed-aside'),
+                        headerLeft:header.getBoundingClientRect().left+parseFloat(getComputedStyle(header).paddingLeft),
+                        viewport:document.documentElement.clientWidth,
+                        display:getComputedStyle(document.querySelector('.social-feed-aside')).display,
+                        overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
+                })()`);
+            function assertEdgeLayout(layout) {
+                assert(Math.abs(layout.shell.width - layout.viewport) < 1, "Full-width content shell");
+                assert(Math.abs(layout.shell.left) < 1, "No large outer margin");
+                assert(
+                    Math.abs(layout.header.left) < 1 && Math.abs(layout.header.width - layout.viewport) < 1,
+                    "Full-width header"
                 );
+                assert(Math.abs(layout.headerLeft - layout.columns.left) < 1, "Matching header and content gutters");
+                assert(
+                    Math.abs(layout.account.right - layout.columns.right) < 1,
+                    "Account menu aligns with content right"
+                );
+                assert(Math.abs(layout.topbar.width - layout.viewport) < 1, "Full-width header background");
+                assert(layout.feed.width <= 761, "Readable feed width");
+                if (layout.display !== "none") {
+                    assert(Math.abs(layout.navigation.width - layout.aside.width) < 1, "Matching sidebar widths");
+                    assert(
+                        Math.abs((layout.feed.left + layout.feed.right) / 2 - layout.viewport / 2) < 1,
+                        "Feed is centered in viewport"
+                    );
+                    assert(
+                        Math.abs(layout.feed.left - layout.navigation.right - (layout.aside.left - layout.feed.right)) <
+                            1,
+                        "Balanced space around feed"
+                    );
+                } else {
+                    assert(
+                        Math.abs(
+                            (layout.feed.left + layout.feed.right) / 2 - (layout.main.left + layout.main.right) / 2
+                        ) < 1,
+                        "Centered single reading column"
+                    );
+                }
+            }
             const loading = await geometry();
+            assertEdgeLayout(loading);
             assert(Math.abs(loading.aside.right - loading.main.right) < 1);
-            assert(loading.feed.width > 1000);
+            assert(Math.abs(loading.feed.width - 760) < 1);
+            assert(Math.abs(loading.feed.top - loading.navigation.top) < 1, "Composer starts alongside navigation");
+            assert(Math.abs(loading.aside.top - loading.navigation.top) < 1, "Context starts alongside navigation");
+            assert(
+                await evaluate(
+                    "!!document.querySelector('.social-feed-main > h1.sr-only') && document.querySelectorAll('#social-main .social-footer').length===1 && !!document.querySelector('.social-feed-main > .social-footer')"
+                )
+            );
             for (let n = 0; n < 50 && !heldSocial.some((x) => x.kind === "library-panel"); n++) await delay(20);
             const held = heldSocial.splice(
                 heldSocial.findIndex((x) => x.kind === "library-panel"),
@@ -1834,6 +1890,7 @@ async function main() {
             await replyApi(held.requestId, 503, { message: "Fixture libraries failed." });
             await waitFor("document.querySelector('.social-library-context [role=alert]')", "library panel error");
             const failed = await geometry();
+            assertEdgeLayout(failed);
             assert.equal(failed.feed.width, loading.feed.width);
             assert.equal(failed.aside.width, loading.aside.width);
             scenario.social.libraryPanelEmpty = true;
@@ -1843,7 +1900,9 @@ async function main() {
                 "empty library retry"
             );
             assert.equal(await evaluate("document.querySelectorAll('.social-library-context li').length"), 0);
-            assert.equal((await geometry()).feed.width, loading.feed.width);
+            const empty = await geometry();
+            assertEdgeLayout(empty);
+            assert.equal(empty.feed.width, loading.feed.width);
             scenario.social.libraryPanelEmpty = false;
             scenario.postPages = {};
             await evaluate("void " + app + '.$router.push("/users")');
@@ -1853,30 +1912,43 @@ async function main() {
                 "document.querySelector('.social-library-context li') && document.querySelector('.social-post')",
                 "library context loaded"
             );
-            for (const width of [320, 390, 768, 1024, 1280, 1440, 1920]) {
+            for (const width of [320, 390, 768, 1024, 1280, 1440, 1680, 1920, 2560]) {
                 await resize(width, width < 600 ? 844 : 1000);
+                await evaluate("window.scrollTo(0,0)");
                 const layout = await geometry();
+                assertEdgeLayout(layout);
                 assert(layout.overflow <= 1, "Feed overflow at " + width);
                 assert(Math.abs(layout.grid.width - layout.main.width) < 1);
                 if (width >= 1280) {
                     assert.notEqual(layout.display, "none");
                     assert(Math.abs(layout.aside.right - layout.main.right) < 1);
-                    assert(layout.aside.width >= 279 && layout.aside.width <= 321);
-                    assert(Math.abs(layout.aside.left - layout.feed.right - 24) < 1);
+                    assert(layout.aside.width >= 239 && layout.aside.width <= 361);
+                    assert(layout.feed.left - layout.navigation.right >= 23);
+                    assert(layout.aside.left - layout.feed.right >= 23);
                 } else {
                     assert.equal(layout.display, "none");
-                    assert(Math.abs(layout.feed.width - layout.main.width) < 1);
+                    assert(Math.abs(layout.feed.width - Math.min(layout.main.width, 760)) < 1);
                 }
                 assert(
                     await evaluate(
                         "[...document.querySelectorAll('.social-post-body')].every(e=>{const max=parseFloat(getComputedStyle(e).maxWidth);return Number.isFinite(max)&&e.getBoundingClientRect().width<=max+1})"
                     )
                 );
-                if ([390, 1280, 1920].includes(width)) {
+                if ([390, 1280, 1680, 1920, 2560].includes(width)) {
                     await evaluate("document.activeElement.blur();window.scrollTo(0,0)");
-                    await screenshot("fluid-feed-" + width);
+                    await screenshot("social-reading-feed-" + width);
                 }
             }
+            await resize(1920, 600);
+            await evaluate("window.scrollTo(0,260)");
+            await delay(100);
+            assert(
+                await evaluate(
+                    "Math.abs(document.querySelector('.social-sidebar').getBoundingClientRect().top-88)<1 && Math.abs(document.querySelector('.social-feed-aside').getBoundingClientRect().top-88)<1"
+                ),
+                "Both sidebars remain below the header while scrolling"
+            );
+            await evaluate("window.scrollTo(0,0)");
         }
     );
     await check("social redesign: expanded posts, comment focus and Like retries preserve the feed", async () => {

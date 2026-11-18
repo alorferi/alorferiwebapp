@@ -24,7 +24,7 @@
                         >
                     </PageHeading>
                     <router-view :key="$route.path" />
-                    <BottomBar compact />
+                    <BottomBar v-if="$route.name !== 'home'" compact />
                 </main>
             </div>
             <div v-else><router-view /></div>
@@ -64,7 +64,6 @@ export default {
         },
         heading() {
             return {
-                home: ["feed", "feedDescription"],
                 libraries: ["libraries", "librariesDescription"],
                 users: ["readers", "readersDescription"],
                 "my-libraries": ["myLibraries", "myLibrariesDescription"],

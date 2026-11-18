@@ -1,4 +1,7 @@
 /* The signed-in shell has fluid gutters; content widths follow the task. */
+.app-secure {
+    --social-rail-width: clamp(240px, 20vw, 360px);
+}
 .social-topbar {
     position: fixed;
     inset: 0 0 auto;
@@ -253,6 +256,9 @@
 }
 .social-feed-main {
     min-width: 0;
+    width: 100%;
+    max-width: 760px;
+    justify-self: center;
 }
 .social-feed-aside {
     display: none;
@@ -541,8 +547,6 @@
 }
 .social-library-context {
     padding: 20px;
-    position: sticky;
-    top: 88px;
 }
 .social-library-context h2 {
     font-size: 16px;
@@ -568,11 +572,19 @@
     line-height: 1.7;
 }
 @media (min-width: 1280px) {
+    .social-layout {
+        grid-template-columns: var(--social-rail-width) minmax(0, 1fr);
+        gap: 24px;
+    }
     .social-feed-layout {
-        grid-template-columns: minmax(0, 1fr) clamp(280px, 20vw, 320px);
+        grid-template-columns: minmax(0, 1fr) var(--social-rail-width);
     }
     .social-feed-aside {
         display: block;
+        position: sticky;
+        top: 88px;
+        max-height: calc(100dvh - 104px);
+        overflow-y: auto;
     }
 }
 @media (max-width: 1199px) {
