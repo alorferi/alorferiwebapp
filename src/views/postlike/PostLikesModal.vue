@@ -19,39 +19,39 @@
 <script>
 import LikeListItem from "@/views/postlike/LikeListItem";
 import Loading from "@/components/Loading";
-
 export default {
-    name: "PostLikesModal",
-    props: ["post", "show"],
-    components: { LikeListItem, Loading },
-    data() {
-        return {
-            is_loading: false
-        };
+  emits: ["updateVisibleState"],
+  name: "PostLikesModal",
+  props: ["post", "show"],
+  components: {
+    LikeListItem,
+    Loading
+  },
+  data() {
+    return {
+      is_loading: false
+    };
+  },
+  computed: {
+    showLocal: {
+      get: function () {
+        return this.show;
+      },
+      set: function (value) {
+        this.$emit("updateVisibleState", value);
+      }
     },
-    computed: {
-        showLocal: {
-            get: function() {
-                return this.show;
-            },
-            set: function(value) {
-                this.$emit("updateVisibleState", value);
-            }
-        },
-
-        totalLikes() {
-            return this.post.likes_data == null ? 0 : this.post.likes_data.meta.total;
-        },
-
-        likes() {
-            return this.post.likes_data == null ? [] : this.post.likes_data.data;
-        },
-        myLike() {
-            return this.post.my_like;
-        }
+    totalLikes() {
+      return this.post.likes_data == null ? 0 : this.post.likes_data.meta.total;
     },
-  async mounted(){},
-
-    methods: {}
+    likes() {
+      return this.post.likes_data == null ? [] : this.post.likes_data.data;
+    },
+    myLike() {
+      return this.post.my_like;
+    }
+  },
+  async mounted() {},
+  methods: {}
 };
 </script>

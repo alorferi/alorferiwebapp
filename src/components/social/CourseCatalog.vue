@@ -1,7 +1,7 @@
 <template>
     <section :aria-busy="loading ? 'true' : 'false'">
         <PageHeading
-            v-if="!$store.getters.isLoggedIn"
+            v-if="!$stores.auth.isLoggedIn"
             :title="$t('social.courses')"
             :description="$t('social.coursesDescription')"
         />
@@ -27,44 +27,57 @@ import Loading from "@/components/Loading";
 import Paginator from "@/components/Paginator";
 import PageHeading from "./PageHeading";
 export default {
-    name: "CourseCatalog",
-    components: { CourseCardItem, Loading, Paginator, PageHeading },
-    props: { mine: Boolean },
-    data() {
-        return { loading: true, error: false, response: null, page: 1, request: 0 };
+  name: "CourseCatalog",
+  components: {
+    CourseCardItem,
+    Loading,
+    Paginator,
+    PageHeading
+  },
+  props: {
+    mine: Boolean
+  },
+  data() {
+    return {
+      loading: true,
+      error: false,
+      response: null,
+      page: 1,
+      request: 0
+    };
+  },
+  computed: {
+    courses() {
+      return this.response && this.response.data || [];
+    }
+  },
+  mounted() {
+    this.load();
+  },
+  beforeUnmount() {
+    this.request++;
+  },
+  methods: {
+    changePage(page) {
+      this.page = page;
+      this.load();
     },
-    computed: {
-        courses() {
-            return (this.response && this.response.data) || [];
-        },
-    },
-    mounted() {
-        this.load();
-    },
-    beforeDestroy() {
-        this.request++;
-    },
-    methods: {
-        changePage(page) {
-            this.page = page;
-            this.load();
-        },
-        async load() {
-            const request = ++this.request;
-            this.loading = true;
-            this.error = false;
-            try {
-                const r = await this.$store.dispatch(this.mine ? "fetchMyCourseOrders" : "fetchCourses", {
-                    term: null,
-                    page: this.page,
-                });
-                if (request === this.request) this.response = r.data;
-            } catch (error) {
-                if (request === this.request) this.error = true;
-            } finally {
-                if (request === this.request) this.loading = false;
-            }
-        },
-    },
+    async load() {
+      const request = ++this.request;
+      this.loading = true;
+      this.error = false;
+      try {
+        const r = await this.$actions[this.mine ? "fetchMyCourseOrders" : "fetchCourses"]({
+          term: null,
+          page: this.page
+        });
+        if (request === this.request) this.response = r.data;
+      } catch (error) {
+        if (request === this.request) this.error = true;
+      } finally {
+        if (request === this.request) this.loading = false;
+      }
+    }
+  }
 };
 </script>

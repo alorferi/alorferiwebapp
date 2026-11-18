@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="ui-card mb-4">
+        <div v-if="activeItem" class="ui-card mb-4">
             <div class="p-5">
                 <h2 class="text-center">
                     {{ $t(activeItem.title) }}
@@ -39,42 +39,37 @@
 import award_patuakkhali from "@/assets/images/awards/award_patuakkhali_16x9.png";
 import award_prothom_alo from "@/assets/images/awards/award_prothom_alo_16x9.png";
 import achivement_innovation_fair_barisal_2023 from "@/assets/images/awards/achivement_innovation_fair_barisal_2023.jpg";
-
 export default {
-    name: "Awards",
-    components: {},
-    mounted: function() {
-        this.activeItem = this.items[0];
-    },
-    computed: {},
-    props: {},
-    data() {
-        return {
-            items: [
-                {
-                    title: "district_champion_title",
-                    caption: "district_champion_caption",
-                    image_name: award_patuakkhali
-                },
-                {
-                    title: "prothom_alo_honor_title",
-                    caption: "prothom_alo_honor_caption",
-                    image_name: award_prothom_alo
-                },
-                {
-                    title: "barishal_innovation_fair_2023_title",
-                    caption: "barishal_innovation_fair_2023_caption",
-                    image_name: achivement_innovation_fair_barisal_2023
-                }
-            ],
-            activeItem: null
-        };
-    },
-    methods: {
-        showItem(item) {
-            this.activeItem = item;
-        }
+  name: "Awards",
+  components: {},
+  mounted: function () {
+    this.activeItem = this.items[0];
+  },
+  computed: {},
+  props: {},
+  data() {
+    return {
+      items: [{
+        title: "district_champion_title",
+        caption: "district_champion_caption",
+        image_name: award_patuakkhali
+      }, {
+        title: "prothom_alo_honor_title",
+        caption: "prothom_alo_honor_caption",
+        image_name: award_prothom_alo
+      }, {
+        title: "barishal_innovation_fair_2023_title",
+        caption: "barishal_innovation_fair_2023_caption",
+        image_name: achivement_innovation_fair_barisal_2023
+      }],
+      activeItem: null
+    };
+  },
+  methods: {
+    showItem(item) {
+      this.activeItem = item;
     }
+  }
 };
 </script>
 

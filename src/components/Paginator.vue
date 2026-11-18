@@ -45,36 +45,31 @@
 </template>
 <script>
 export default {
-    name: "Paginator",
-    props: ["meta"],
-    computed: {
-        current() {
-            return Number(this.meta.current_page) || 1;
-        },
-        last() {
-            return Number(this.meta.last_page) || 1;
-        },
-        pages() {
-            const numbers = [
-                ...new Set(
-                    [1, this.current - 1, this.current, this.current + 1, this.last].filter(
-                        (n) => n >= 1 && n <= this.last
-                    )
-                ),
-            ].sort((a, b) => a - b);
-            const pages = [];
-            numbers.forEach((n, i) => {
-                if (i && n - numbers[i - 1] > 1) pages.push(null);
-                pages.push(n);
-            });
-            return pages;
-        },
+  emits: ["update:page"],
+  name: "Paginator",
+  props: ["meta"],
+  computed: {
+    current() {
+      return Number(this.meta.current_page) || 1;
     },
-    methods: {
-        updatePage(page) {
-            if (page < 1 || page > this.last || page === this.current) return;
-            this.$emit("update:page", page);
-        },
+    last() {
+      return Number(this.meta.last_page) || 1;
     },
+    pages() {
+      const numbers = [...new Set([1, this.current - 1, this.current, this.current + 1, this.last].filter(n => n >= 1 && n <= this.last))].sort((a, b) => a - b);
+      const pages = [];
+      numbers.forEach((n, i) => {
+        if (i && n - numbers[i - 1] > 1) pages.push(null);
+        pages.push(n);
+      });
+      return pages;
+    }
+  },
+  methods: {
+    updatePage(page) {
+      if (page < 1 || page > this.last || page === this.current) return;
+      this.$emit("update:page", page);
+    }
+  }
 };
 </script>

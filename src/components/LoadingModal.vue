@@ -20,33 +20,34 @@
 
 <script>
 export default {
-    name: "LoadingModal",
-    props: ["showLoadingModal"],
-    computed: {
-        showLoadingModalLocal: {
-            get: function() {
-                return this.showLoadingModal;
-            },
-            set: function(value) {
-                this.emitShowLoadingModal(value);
-            }
-        }
-    },
-    mounted: function() {},
-    data() {
-        return {
-            hideHeader: true,
-            hideFooter: true,
-        };
-    },
-    methods: {
-        resetModal() {
-            this.emitShowLoadingModal(false);
-        },
-        emitShowLoadingModal: function(isShowModal) {
-            this.$emit("onUpdateVisibleState", isShowModal);
-        },
+  emits: ["onUpdateVisibleState"],
+  name: "LoadingModal",
+  props: ["showLoadingModal"],
+  computed: {
+    showLoadingModalLocal: {
+      get: function () {
+        return this.showLoadingModal;
+      },
+      set: function (value) {
+        this.emitShowLoadingModal(value);
+      }
     }
+  },
+  mounted: function () {},
+  data() {
+    return {
+      hideHeader: true,
+      hideFooter: true
+    };
+  },
+  methods: {
+    resetModal() {
+      this.emitShowLoadingModal(false);
+    },
+    emitShowLoadingModal: function (isShowModal) {
+      this.$emit("onUpdateVisibleState", isShowModal);
+    }
+  }
 };
 </script>
 

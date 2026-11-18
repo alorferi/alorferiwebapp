@@ -47,81 +47,78 @@ import CommentListItem from "./CommentListItem";
 import Loading from "@/components/Loading";
 import PostLikesModal from "../postlike/PostLikesModal";
 export default {
-    name: "ShowPostComments",
-    props: ["post"],
-    components: { CreatePostComment, CommentListItem, Loading, PostLikesModal },
-    data() {
-        return {
-            is_loading: true,
-            showLikesModal: false,
-            likeBusy: false,
-            likeReady: false,
-            actionError: false,
-            loadError: false,
-        };
+  name: "ShowPostComments",
+  props: ["post"],
+  components: {
+    CreatePostComment,
+    CommentListItem,
+    Loading,
+    PostLikesModal
+  },
+  data() {
+    return {
+      is_loading: true,
+      showLikesModal: false,
+      likeBusy: false,
+      likeReady: false,
+      actionError: false,
+      loadError: false
+    };
+  },
+  computed: {
+    comments() {
+      return this.post.comments_data && this.post.comments_data.data || [];
     },
-    computed: {
-        comments() {
-            return (this.post.comments_data && this.post.comments_data.data) || [];
-        },
-        likes() {
-            return (this.post.likes_data && this.post.likes_data.data) || [];
-        },
-        myLike() {
-            return this.post.my_like;
-        },
-        likeCount() {
-            return (
-                (this.post.likes_data && this.post.likes_data.meta && this.post.likes_data.meta.total) ||
-                this.likes.length
-            );
-        },
-        commentCount() {
-            return (
-                (this.post.comments_data && this.post.comments_data.meta && this.post.comments_data.meta.total) ||
-                this.comments.length
-            );
-        },
+    likes() {
+      return this.post.likes_data && this.post.likes_data.data || [];
     },
-    mounted() {
-        this.loadDetails();
+    myLike() {
+      return this.post.my_like;
     },
-    methods: {
-        async loadDetails() {
-            if (this._detailsLoading) return;
-            this._detailsLoading = true;
-            this.is_loading = true;
-            this.loadError = false;
-            const results = await Promise.allSettled(
-                ["fetchPostComments", "fetchPostLikes", "fetchPostMyLike"].map((action) =>
-                    this.$store.dispatch(action, this.post)
-                )
-            );
-            this.likeReady =
-                results[2].status === "fulfilled" ||
-                (results[2].reason && results[2].reason.response && results[2].reason.response.status === 404);
-            this.loadError = results.slice(0, 2).some((r) => r.status === "rejected") || !this.likeReady;
-            this.is_loading = false;
-            this._detailsLoading = false;
-        },
-        focusComment() {
-            this.$refs.comment.focusInput();
-        },
-        async onClikcLike() {
-            if (this.likeBusy || !this.likeReady) return;
-            this.likeBusy = true;
-            this.actionError = false;
-            try {
-                await this.$store.dispatch(this.myLike ? "deletePostLike" : "storePostLike", {
-                    overhead: { post: this.post },
-                    payload: { emoji_html_code: "&#x1F44D;" },
-                });
-            } catch (error) {
-                this.actionError = true;
-            } finally {
-                this.likeBusy = false;
-            }
-        },
+    likeCount() {
+      return this.post.likes_data && this.post.likes_data.meta && this.post.likes_data.meta.total || this.likes.length;
     },
+    commentCount() {
+      return this.post.comments_data && this.post.comments_data.meta && this.post.comments_data.meta.total || this.comments.length;
+    }
+  },
+  mounted() {
+    this.loadDetails();
+  },
+  methods: {
+    async loadDetails() {
+      if (this._detailsLoading) return;
+      this._detailsLoading = true;
+      this.is_loading = true;
+      this.loadError = false;
+      const results = await Promise.allSettled(["fetchPostComments", "fetchPostLikes", "fetchPostMyLike"].map(action => this.$actions[action](this.post)));
+      this.likeReady = results[2].status === "fulfilled" || results[2].reason && results[2].reason.response && results[2].reason.response.status === 404;
+      this.loadError = results.slice(0, 2).some(r => r.status === "rejected") || !this.likeReady;
+      this.is_loading = false;
+      this._detailsLoading = false;
+    },
+    focusComment() {
+      this.$refs.comment.focusInput();
+    },
+    async onClikcLike() {
+      if (this.likeBusy || !this.likeReady) return;
+      this.likeBusy = true;
+      this.actionError = false;
+      try {
+        await this.$actions[this.myLike ? "deletePostLike" : "storePostLike"]({
+          overhead: {
+            post: this.post
+          },
+          payload: {
+            emoji_html_code: "&#x1F44D;"
+          }
+        });
+      } catch (error) {
+        this.actionError = true;
+      } finally {
+        this.likeBusy = false;
+      }
+    }
+  }
 };
 </script>

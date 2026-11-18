@@ -17,16 +17,21 @@
 import UserPhoto from "./UserPhoto";
 import UploadMyPhotoModal from "./UploadMyPhotoModal";
 export default {
-    name: "UserPhotoWithUpload",
-    props: ["user", "size"],
-    components: { UserPhoto, UploadMyPhotoModal },
-    data() {
-        return { showUploadMyPhotoModal: false };
-    },
-    computed: {
-        currentUser() {
-            return this.isItMe(this.user) ? this.$store.getters.activeUser : this.user;
-        },
-    },
+  name: "UserPhotoWithUpload",
+  props: ["user", "size"],
+  components: {
+    UserPhoto,
+    UploadMyPhotoModal
+  },
+  data() {
+    return {
+      showUploadMyPhotoModal: false
+    };
+  },
+  computed: {
+    currentUser() {
+      return this.isItMe(this.user) ? this.$stores.user.activeUser : this.user;
+    }
+  }
 };
 </script>

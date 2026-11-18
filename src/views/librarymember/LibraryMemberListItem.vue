@@ -20,13 +20,12 @@
 <script>
 // import LibraryLogo from "./LibraryLogo";
 import LibraryMemberPhoto from "../librarymember/LibraryMemberPhoto";
-
 export default {
-    name: "LibraryMemberListItem",
-    props: ["item"],
-    components: {
-        LibraryMemberPhoto,
-    },
-    methods: {},
+  name: "LibraryMemberListItem",
+  props: ["item"],
+  components: {
+    LibraryMemberPhoto
+  },
+  methods: {}
 };
 </script>

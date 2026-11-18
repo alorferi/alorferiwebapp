@@ -43,7 +43,6 @@
                 <i class="fas fa-bars" aria-hidden="true"></i><span>{{ $t("social.more") }}</span>
             </button>
         </nav>
-        <portal-target name="dialogs" multiple class="ui-modal-target" />
     </div>
 </template>
 <script>
@@ -53,82 +52,96 @@ import BottomBar from "@/views/navbars/BottomBar";
 import AppSidebar from "@/components/social/AppSidebar";
 import PageHeading from "@/components/social/PageHeading";
 export default {
-    name: "App",
-    components: { GuestNav, HomeNav, BottomBar, AppSidebar, PageHeading },
-    data() {
-        return { menuOpen: false, typing: false };
+  name: "App",
+  components: {
+    GuestNav,
+    HomeNav,
+    BottomBar,
+    AppSidebar,
+    PageHeading
+  },
+  data() {
+    return {
+      menuOpen: false,
+      typing: false
+    };
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$stores.auth.isLoggedIn;
     },
-    computed: {
-        isLoggedIn() {
-            return this.$store.getters.isLoggedIn;
-        },
-        heading() {
-            return {
-                libraries: ["libraries", "librariesDescription"],
-                users: ["readers", "readersDescription"],
-                "my-libraries": ["myLibraries", "myLibrariesDescription"],
-                "courses.index": ["courses", "coursesDescription"],
-                "my-courses": ["myCourses", "myCoursesDescription"],
-                "users.edit-me": ["editProfile", "profileDescription"],
-                "library-create": ["createLibrary", "createDescription"],
-                "library-edit": ["editLibrary", "editDescription"],
-                "courses.apply": ["applyCourse", "applyDescription"],
-            }[this.$route.name];
-        },
-        bottomLinks() {
-            return [
-                { name: "home", label: "feed", icon: "fas fa-home" },
-                { name: "libraries", label: "libraries", icon: "fas fa-book-open" },
-                { name: "users", label: "readers", icon: "fas fa-user-friends" },
-            ];
-        },
+    heading() {
+      return {
+        libraries: ["libraries", "librariesDescription"],
+        users: ["readers", "readersDescription"],
+        "my-libraries": ["myLibraries", "myLibrariesDescription"],
+        "courses.index": ["courses", "coursesDescription"],
+        "my-courses": ["myCourses", "myCoursesDescription"],
+        "users.edit-me": ["editProfile", "profileDescription"],
+        "library-create": ["createLibrary", "createDescription"],
+        "library-edit": ["editLibrary", "editDescription"],
+        "courses.apply": ["applyCourse", "applyDescription"]
+      }[this.$route.name];
     },
-    created() {
-        this.$i18n.locale = this.$store.getters.activeLanguage;
-        this.$store.dispatch("setPageTitle", this.$route.meta.title || "Alor Feri");
+    bottomLinks() {
+      return [{
+        name: "home",
+        label: "feed",
+        icon: "fas fa-home"
+      }, {
+        name: "libraries",
+        label: "libraries",
+        icon: "fas fa-book-open"
+      }, {
+        name: "users",
+        label: "readers",
+        icon: "fas fa-user-friends"
+      }];
+    }
+  },
+  created() {
+    this.$i18n.locale = this.$stores.language.activeLanguage;
+    this.$stores.pageTitle.setPageTitle(this.$route.meta.title || "Alor Feri");
+  },
+  mounted() {
+    document.addEventListener("focusin", this.trackFocus);
+    document.addEventListener("focusout", this.trackFocus);
+    window.addEventListener("resize", this.screenChanged);
+  },
+  beforeUnmount() {
+    document.removeEventListener("focusin", this.trackFocus);
+    document.removeEventListener("focusout", this.trackFocus);
+    window.removeEventListener("resize", this.screenChanged);
+  },
+  watch: {
+    $route(to, from) {
+      this.menuOpen = false;
+      this.typing = false;
+      this.$stores.pageTitle.setPageTitle(to.meta.title || "Alor Feri");
+      if (to.path !== from.path) this.$nextTick(() => window.scrollTo(0, 0));
     },
-    mounted() {
-        document.addEventListener("focusin", this.trackFocus);
-        document.addEventListener("focusout", this.trackFocus);
-        window.addEventListener("resize", this.screenChanged);
+    isLoggedIn(value) {
+      if (!value) {
+        this.menuOpen = false;
+        this.typing = false;
+      }
+    }
+  },
+  methods: {
+    bottomActive(name) {
+      if (name === "libraries") return this.$route.path.startsWith("/librar");
+      if (name === "users") return this.$route.path.startsWith("/users");
+      return this.$route.name === name;
     },
-    beforeDestroy() {
-        document.removeEventListener("focusin", this.trackFocus);
-        document.removeEventListener("focusout", this.trackFocus);
-        window.removeEventListener("resize", this.screenChanged);
+    trackFocus() {
+      if (!this.isLoggedIn) return;
+      this.$nextTick(() => {
+        this.typing = !!(document.activeElement && document.activeElement.matches("input,textarea,select,[contenteditable=true]"));
+      });
     },
-    watch: {
-        $route(to, from) {
-            this.menuOpen = false;
-            this.typing = false;
-            this.$store.dispatch("setPageTitle", to.meta.title || "Alor Feri");
-            if (to.path !== from.path) this.$nextTick(() => window.scrollTo(0, 0));
-        },
-        isLoggedIn(value) {
-            if (!value) {
-                this.menuOpen = false;
-                this.typing = false;
-            }
-        },
-    },
-    methods: {
-        bottomActive(name) {
-            if (name === "libraries") return this.$route.path.startsWith("/librar");
-            if (name === "users") return this.$route.path.startsWith("/users");
-            return this.$route.name === name;
-        },
-        trackFocus() {
-            if (!this.isLoggedIn) return;
-            this.$nextTick(() => {
-                this.typing = !!(
-                    document.activeElement &&
-                    document.activeElement.matches("input,textarea,select,[contenteditable=true]")
-                );
-            });
-        },
-        screenChanged() {
-            if (window.innerWidth >= 1024) this.menuOpen = false;
-        },
-    },
+    screenChanged() {
+      if (window.innerWidth >= 1024) this.menuOpen = false;
+    }
+  }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <NewsFeeds v-if="$store.getters.isLoggedIn"></NewsFeeds>
+    <NewsFeeds v-if="$stores.auth.isLoggedIn"></NewsFeeds>
     <Welcome v-else></Welcome>
   </div>
 </template>
@@ -9,12 +9,11 @@
 // @ is an alias to /src
 import Welcome from "@/views/welcome/Welcome.vue";
 import NewsFeeds from "@/views/home/NewsFeeds";
-
 export default {
   name: "home",
   components: {
     Welcome,
-    NewsFeeds,
-  },
+    NewsFeeds
+  }
 };
 </script>

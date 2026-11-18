@@ -24,11 +24,11 @@
 
 <script>
 export default {
-    name: "Awards",
-    components: {},
-    mounted: function() {},
-    computed: {},
-    props: {}
+  name: "Awards",
+  components: {},
+  mounted: function () {},
+  computed: {},
+  props: {}
 };
 </script>
 

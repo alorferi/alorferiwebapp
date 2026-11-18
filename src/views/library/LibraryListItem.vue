@@ -15,5 +15,11 @@
 </template>
 <script>
 import LibraryLogo from "./LibraryLogo";
-export default { name: "LibraryListItem", props: ["item"], components: { LibraryLogo } };
+export default {
+  name: "LibraryListItem",
+  props: ["item"],
+  components: {
+    LibraryLogo
+  }
+};
 </script>

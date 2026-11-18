@@ -29,31 +29,31 @@
 <script>
 import UploadLibraryCoverModal from "@/views/library/UploadLibraryCoverModal";
 export default {
-    name: "LibraryCoverPhotoWithUpload",
-    props: ["user", "library"],
-    components: { UploadLibraryCoverModal },
-    async mounted() {},
-
-    computed: {
-        coverUrl() {
-            var coverUrl = "";
-            if (this.$store.getters.libraryCoverUrl == null) {
-                coverUrl = "/libraries/" + this.library.id + "/cover-photo";
-            } else {
-                coverUrl = this.$store.getters.libraryCoverUrl;
-            }
-
-            return this.getApiUrl(coverUrl);
-        },
-    },
-    methods: {
-        didFinishedUploadCoverPhoto() {},
-    },
-    data: function () {
-        return {
-            showUploadLibraryCoverModal: false,
-        };
-    },
+  name: "LibraryCoverPhotoWithUpload",
+  props: ["user", "library"],
+  components: {
+    UploadLibraryCoverModal
+  },
+  async mounted() {},
+  computed: {
+    coverUrl() {
+      let coverUrl;
+      if (this.$stores.library.libraryCoverUrl == null) {
+        coverUrl = "/libraries/" + this.library.id + "/cover-photo";
+      } else {
+        coverUrl = this.$stores.library.libraryCoverUrl;
+      }
+      return this.getApiUrl(coverUrl);
+    }
+  },
+  methods: {
+    didFinishedUploadCoverPhoto() {}
+  },
+  data: function () {
+    return {
+      showUploadLibraryCoverModal: false
+    };
+  }
 };
 </script>
 

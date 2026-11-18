@@ -1,67 +1,56 @@
 {
-  "name": "",
+  "name": "alorferiwebapp",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\"",
-    "test:browser": "node scripts/verify-ui.cjs"
+    "serve": "node scripts/toolchain.cjs vite",
+    "dev": "node scripts/toolchain.cjs vite",
+    "build": "node scripts/toolchain.cjs vite build",
+    "preview": "node scripts/toolchain.cjs vite preview --host 127.0.0.1 --port 4173",
+    "lint": "node scripts/toolchain.cjs eslint .",
+    "test": "node scripts/toolchain.cjs vitest run",
+    "test:watch": "node scripts/toolchain.cjs vitest",
+    "test:browser": "node scripts/toolchain.cjs browser",
+    "i18n:report": "node scripts/toolchain.cjs i18n"
   },
   "dependencies": {
-    "axios": "0.35.0",
-    "core-js": "^3.6.5",
+    "vue": "3.5.45",
+    "vue-router": "5.5.1",
+    "pinia": "4.1.0",
+    "@vue/devtools-api": "8.2.1",
+    "vue-i18n": "11.4.22",
+    "axios": "1.21.1",
     "moment": "2.31.0",
-    "portal-vue": "^2.1.7",
-    "vue": "2.7.16",
-    "vue-axios": "^2.1.5",
-    "vue-headful": "^2.1.0",
-    "vue-i18n": "^8.26.3",
-    "vue-image-upload-resize": "^2.3.0",
-    "vue-router": "^3.3.2",
-    "vue-select2": "^0.2.6",
-    "vuejs-auto-complete": "^0.9.0",
-    "vuex": "^3.4.0"
+    "@fortawesome/fontawesome-free": "7.3.1"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.14.0",
-    "@vue/cli-plugin-babel": "~4.4.0",
-    "@vue/cli-plugin-eslint": "~4.4.0",
-    "@vue/cli-service": "^4.5.12",
-    "@vue/compiler-sfc": "3.4.19",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "vue-cli-plugin-i18n": "~2.3.2",
-    "vue-template-compiler": "2.7.16",
-    "tailwindcss": "3.4.17",
-    "postcss": "^8.5.33",
-    "autoprefixer": "^10.4.21",
-    "postcss-loader": "4.3.0"
+    "@vue/compiler-sfc": "3.5.45",
+    "vite": "8.3.8",
+    "@vitejs/plugin-vue": "6.0.11",
+    "tailwindcss": "4.3.5",
+    "@tailwindcss/vite": "4.3.5",
+    "eslint": "10.15.0",
+    "@eslint/js": "10.0.1",
+    "eslint-plugin-vue": "10.12.1",
+    "vue-eslint-parser": "10.4.2",
+    "globals": "17.14.0",
+    "vitest": "5.1.0",
+    "@vue/test-utils": "2.6.0",
+    "jsdom": "31.0.1",
+    "@vue/compiler-dom": "3.5.45"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
+  "type": "module",
+  "packageManager": "npm@12.2.3",
+  "engines": {
+    "node": ">=26.13.1 <27",
+    "npm": ">=12.2.3 <13"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ],
   "overrides": {
-    "@vue/cli-shared-utils": {
-      "@achrinza/node-ipc": "9.2.10"
+    "js-beautify": {
+      "glob": "14.0.6"
+    },
+    "editorconfig": {
+      "minimatch": "11.0.9"
     }
   }
 }

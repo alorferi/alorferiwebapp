@@ -167,7 +167,7 @@ async function main() {
         try {
             port = fs.readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0];
             break;
-        } catch {}
+        } catch { /* Retry until Chrome or the page is ready. */ }
         if (chrome.exitCode !== null) throw new Error("Chrome exited: " + chromeErrors.slice(-1500));
         await delay(100);
     }
@@ -621,7 +621,7 @@ async function main() {
         for (let i = 0; i < 100; i++) {
             try {
                 if (await evaluate("Boolean(" + expression + ")")) return;
-            } catch {}
+            } catch { /* Retry until Chrome or the page is ready. */ }
             await delay(100);
         }
         throw new Error(
@@ -649,14 +649,14 @@ async function main() {
         }
         throw new Error("Page reload did not finish");
     }
-    const app = "document.querySelector('#app').__vue__";
+    const app = "window.__ALORFERI_TEST__.app";
     const count = (suffix, method = "POST") =>
         requests.slice(requestStart).filter((r) => r.path.endsWith(suffix) && r.method === method).length;
     async function navigate(url) {
         const before = loadCount;
         await send("Page.navigate", { url });
         for (let i = 0; i < 150 && loadCount <= before; i++) await delay(100);
-        await waitFor("document.querySelector('#app')?.__vue__", "Vue mount");
+        await waitFor("window.__ALORFERI_TEST__?.app", "Vue mount");
     }
     async function reset(overrides = {}, query = "") {
         scenario = { login: "ok", profile: "ok", registration: "ok", ...overrides };
@@ -707,7 +707,7 @@ async function main() {
             "!document.querySelector('.reader-page') && document.querySelector('#navbarDropdown') && document.body.innerText.includes('No discussion found.')",
             "fresh authenticated feed"
         );
-        assert.equal(await evaluate(app + ".$store.getters.activeUser.id"), user.id);
+        assert.equal(await evaluate(app + ".$testStore.getters.activeUser.id"), user.id);
         assert.equal(await evaluate("document.querySelector('#app').classList.contains('reader-auth-active')"), false);
     }
     async function openSignup() {
@@ -795,6 +795,62 @@ async function main() {
             await evaluate("document.querySelector('.reader-account-link a').click()");
             await waitFor("document.querySelector('.reader-login-card')", "back to login");
             await screenshot("mobile-login");
+        });
+        await check("public auth: centered hero and matching signup panels in English and Bengali", async () => {
+            for (const language of ["en", "bn"]) {
+                await evaluate("document.querySelector('.reader-language [lang=" + language + "]').click()");
+                await waitFor("document.documentElement.lang === " + JSON.stringify(language), "auth layout language");
+                for (const width of [320, 360, 390, 768, 959, 960, 1024, 1366, 1440, 1920]) {
+                    await resize(width, width === 1366 ? 768 : width < 960 ? 844 : 900);
+                    const layouts = [];
+                    for (const route of ["/", "/register"]) {
+                        await evaluate("void " + app + ".$router.push(" + JSON.stringify(route) + ")");
+                        await waitFor("document.querySelector(" + JSON.stringify(route === "/" ? ".reader-login-card" : ".reader-register-card") + ")", "shared auth page");
+                        await waitFor("document.querySelector('.reader-illustration')?.naturalWidth > 0", "shared auth illustration");
+                        await evaluate("window.scrollTo(0, 0)");
+                        const layout = await evaluate(`(() => {
+                            const rect = selector => {
+                                const r = document.querySelector(selector).getBoundingClientRect();
+                                return {x:r.x,y:r.y,width:r.width,right:r.right,bottom:r.bottom,center:r.x+r.width/2};
+                            };
+                            return {
+                                main:rect('.reader-main'), hero:rect('.reader-story'), title:rect('.reader-hero-title'),
+                                description:rect('.reader-description'), values:rect('.reader-values'),
+                                art:rect('.reader-illustration'), caption:rect('.reader-art p'),
+                                panel:rect('.reader-auth-panel'), card:rect('.reader-card'),
+                                brand:rect('.reader-brand'), button:rect('.reader-submit'), secondary:rect('.reader-create-button'),
+                                h1:document.querySelectorAll('.reader-page h1').length,
+                                heading:document.querySelector('.reader-card-intro').style.textAlign || getComputedStyle(document.querySelector('.reader-card-intro')).textAlign,
+                                alignment:getComputedStyle(document.querySelector('.reader-story')).textAlign,
+                                overflow:document.documentElement.scrollWidth-innerWidth,
+                            };
+                        })()`);
+                        const label = `${language}/${width}/${route}`;
+                        assert(layout.overflow <= 1, label + " horizontal overflow");
+                        assert.equal(layout.h1, 1, label + " one page heading");
+                        assert.equal(layout.alignment, "center", label + " centered story");
+                        assert.equal(layout.heading, "left", label + " readable form introduction");
+                        for (const element of ["title", "description", "values", "art", "caption"])
+                            assert(Math.abs(layout[element].center-layout.hero.center) <= 1, label + " centered " + element);
+                        assert(Math.abs(layout.button.width-layout.secondary.width) <= 1, label + " full-width secondary action");
+                        if (width >= 960) {
+                            assert(layout.hero.right <= layout.panel.x + 1, label + " split columns");
+                            assert(layout.art.width <= 601 && layout.art.bottom-layout.art.y <= 321, label + " balanced illustration");
+                            if (route === "/" && width === 1366) assert(layout.button.bottom < 768, label + " visible login action");
+                        } else {
+                            assert(layout.card.y >= layout.hero.bottom, label + " form follows introduction");
+                            assert(layout.art.y >= layout.card.bottom, label + " art follows form");
+                        }
+                        layouts.push(layout);
+                        if ([390, 1440].includes(width)) await screenshot(`auth-layout-${language}-${route === "/" ? "home" : "signup"}-${width}`);
+                    }
+                    for (const element of ["panel", "card", "brand"])
+                        for (const key of ["x", "width"])
+                            assert(Math.abs(layouts[0][element][key]-layouts[1][element][key]) <= 1, `${language}/${width} matching ${element} ${key}`);
+                }
+            }
+            await evaluate("document.querySelector('.reader-language [lang=en]').click()");
+            await waitFor("document.documentElement.lang === 'en'", "restore English auth");
         });
         await check("signup navigation, direct refresh, browser back and keyboard controls work", async () => {
             await reset({}, "?from=%2Fcourses");
@@ -934,7 +990,7 @@ async function main() {
                 /couldn’t load your profile/
             );
             assert.equal(await evaluate("localStorage.getItem('token')"), null);
-            assert.equal(await evaluate(app + ".$store.getters.isLoggedIn"), false);
+            assert.equal(await evaluate(app + ".$testStore.getters.isLoggedIn"), false);
             assert.equal(await evaluate("!!document.querySelector('.reader-page')"), true);
         });
         await check("fresh login waits for profile, prevents duplicate submits and renders the feed", async () => {
@@ -946,7 +1002,7 @@ async function main() {
             for (let i = 0; i < 100 && !heldProfiles.length; i++) await delay(50);
             assert(heldProfiles.length);
             assert.equal(count("/api/auth/login"), 1);
-            assert.equal(await evaluate(app + ".$store.getters.isLoggedIn"), false);
+            assert.equal(await evaluate(app + ".$testStore.getters.isLoggedIn"), false);
             assert.equal(await evaluate("localStorage.getItem('token')"), null);
             assert.equal(
                 await evaluate("document.querySelector('.reader-login-card button[type=submit]').disabled"),
@@ -1118,7 +1174,7 @@ async function main() {
             await signupValues();
             await submitSignup();
             await waitFor(
-                "location.pathname === '/courses' && " + app + ".$store.getters.isLoggedIn",
+                "location.pathname === '/courses' && " + app + ".$testStore.getters.isLoggedIn",
                 "signup return destination"
             );
             await navigate(base + "/register");
@@ -1136,7 +1192,7 @@ async function main() {
                 await loginValues();
                 await submitLogin();
                 await waitFor(
-                    app + ".$store.getters.isLoggedIn && location.pathname === " + JSON.stringify(expected),
+                    app + ".$testStore.getters.isLoggedIn && location.pathname === " + JSON.stringify(expected),
                     "safe return destination"
                 );
                 assert.equal(await evaluate("location.origin"), new URL(base).origin);
@@ -1181,7 +1237,7 @@ async function main() {
         await reset({ postPages: config });
         await loginValues();
         await submitLogin();
-        await waitFor("document.querySelector('.post-feed') && " + app + ".$store.getters.isLoggedIn", "paged login");
+        await waitFor("document.querySelector('.post-feed') && " + app + ".$testStore.getters.isLoggedIn", "paged login");
     }
     async function waitPosts(length) {
         await waitFor(
@@ -1217,7 +1273,7 @@ async function main() {
             await evaluate(
                 "void Promise.all(Array.from({length:8},()=>" +
                     app +
-                    ".$store.dispatch(" +
+                    ".$testStore.dispatch(" +
                     JSON.stringify(feed.action) +
                     "," +
                     JSON.stringify(feed.payload) +
@@ -1242,7 +1298,7 @@ async function main() {
             await evaluate(
                 "void " +
                     app +
-                    ".$store.dispatch(" +
+                    ".$testStore.dispatch(" +
                     JSON.stringify(feed.action) +
                     "," +
                     JSON.stringify(feed.payload) +
@@ -1280,7 +1336,7 @@ async function main() {
             await scrollPosts();
             await waitFor("document.querySelector('.post-feed [role=alert]')", "next post page error");
             assert.deepEqual(await postIds(), first);
-            await evaluate(app + ".$store.dispatch('setActiveLanguage','bn');" + app + ".$i18n.locale='bn'");
+            await evaluate(app + ".$testStore.dispatch('setActiveLanguage','bn');" + app + ".$i18n.locale='bn'");
             assert.match(await evaluate("document.querySelector('.post-feed [role=alert]').innerText"), /পোস্ট/);
             await scrollPosts();
             assert.equal(pageCount(feed.source, 2), 1);
@@ -1304,7 +1360,7 @@ async function main() {
             await pagedLogin({ short: true });
             await resize(1440, 1400);
             await waitPosts(3);
-            await waitFor(app + ".$store.getters.postsPaging.next === null", "short feed end");
+            await waitFor(app + ".$testStore.getters.postsPaging.next === null", "short feed end");
             const script = await send("Page.addScriptToEvaluateOnNewDocument", {
                 source: "delete window.IntersectionObserver;",
             });
@@ -1356,7 +1412,7 @@ async function main() {
         await scrollPosts();
         await waitFor("document.querySelector('.post-feed .ui-spinner')", "held previous owner");
         const nextReader = { ...fixtureReader, id: fixtureReader.id + 1 };
-        await evaluate("window.scrollTo(0,0);" + app + '.$store.commit("setUser",' + JSON.stringify(nextReader) + ")");
+        await evaluate("window.scrollTo(0,0);" + app + '.$testStore.commit("setUser",' + JSON.stringify(nextReader) + ")");
         await waitFor(
             "document.querySelector('.post-feed')?.dataset.source === '/api/users/" + nextReader.id + "/posts'",
             "new owner"
@@ -1373,8 +1429,8 @@ async function main() {
         await evaluate("document.querySelector(" + JSON.stringify(selector) + ").click()");
         await waitFor("document.querySelector('.reader-login-card')", "logout during paging");
         await releasePostPage();
-        assert.deepEqual(await evaluate(app + ".$store.getters.postsResponse.data"), []);
-        assert.equal(await evaluate(app + ".$store.getters.postsPaging.source"), null);
+        assert.deepEqual(await evaluate(app + ".$testStore.getters.postsResponse.data"), []);
+        assert.equal(await evaluate(app + ".$testStore.getters.postsPaging.source"), null);
     });
     await check("post paging: create, edit, like, comment and delete preserve the loaded pages", async () => {
         await pagedLogin();
@@ -1454,7 +1510,7 @@ async function main() {
         assert.equal(icon, 200);
     });
     const tree =
-        "(() => {const all=[];function visit(v){all.push(v);v.$children.forEach(visit)}visit(document.querySelector('#app').__vue__);return all;})()";
+        "window.__ALORFERI_TEST__.components()";
     async function clickTab(prefix) {
         await evaluate(
             `(() => {const a=[...document.querySelectorAll('.ui-tabs .ui-nav-link')].find(a=>a.innerText.startsWith(${JSON.stringify(
@@ -1577,13 +1633,13 @@ async function main() {
             "document.querySelector('.reader-login-card') && location.pathname==='/'",
             "visitor homepage after logout"
         );
-        assert.equal(await evaluate(app + ".$store.getters.isLoggedIn"), false);
+        assert.equal(await evaluate(app + ".$testStore.getters.isLoggedIn"), false);
         assert.equal(await evaluate("localStorage.getItem('token')"), null);
         assert.equal(await evaluate("localStorage.getItem('otc_token')"), null);
         assert.equal(await evaluate("location.hash"), "");
         await reloadPage();
         await waitFor("document.querySelector('.reader-login-card')", "visitor homepage after refresh");
-        assert.equal(await evaluate(app + ".$store.getters.isLoggedIn"), false);
+        assert.equal(await evaluate(app + ".$testStore.getters.isLoggedIn"), false);
     }
     await check(
         "desktop pointer logout survives focusout before mouseup and stays logged out after refresh",
@@ -1754,7 +1810,7 @@ async function main() {
             await resize(width, width < 600 ? 844 : 1000);
             await evaluate(
                 app +
-                    '.$store.dispatch("setActiveLanguage",' +
+                    '.$testStore.dispatch("setActiveLanguage",' +
                     JSON.stringify(language) +
                     ");" +
                     app +
@@ -2068,7 +2124,7 @@ async function main() {
             await replyApi(held.requestId, 200, held.body);
             await delay(200);
             assert.equal(
-                await evaluate(app + ".$store.getters." + (kind === "users" ? "user" : "library") + ".id"),
+                await evaluate(app + ".$testStore.getters." + (kind === "users" ? "user" : "library") + ".id"),
                 owner + 1
             );
             scenario.social.holdDetail = null;
@@ -2309,7 +2365,7 @@ async function main() {
         for (const language of ["en", "bn"]) {
             await evaluate(
                 app +
-                    ".$store.dispatch('setActiveLanguage'," +
+                    ".$testStore.dispatch('setActiveLanguage'," +
                     JSON.stringify(language) +
                     ");" +
                     app +
@@ -2387,7 +2443,7 @@ async function main() {
             "getComputedStyle(document.querySelector('.ui-field')).backgroundColor === 'rgb(242, 245, 239)'",
             "muted disabled field"
         );
-        await evaluate(app + ".$store.dispatch('setActiveLanguage','en');" + app + ".$i18n.locale='en'");
+        await evaluate(app + ".$testStore.dispatch('setActiveLanguage','en');" + app + ".$i18n.locale='en'");
         await navigate(base + "/");
         assert.equal(await evaluate("document.querySelector('.social-sidebar [aria-current=page]').pathname"), "/");
         await evaluate("document.querySelector('#navbarDropdown').click()");
@@ -2398,30 +2454,6 @@ async function main() {
         await press("Escape");
         await send("Emulation.setFocusEmulationEnabled", { enabled: false });
     });
-    await evaluate(`(() => {
-    const app=document.querySelector('#app').__vue__, Base=app.$options._base;
-    const found=new Map(),seen=new Set();
-    function visit(component){const options=component.options||component;if(!options||seen.has(options))return;seen.add(options);if(options.name)found.set(options.name,component);Object.values(options.components||{}).forEach(visit);}
-    app.$router.options.routes.forEach(r=>r.component&&visit(r.component));Object.values(Base.options.components).forEach(visit);
-    window.qaConstructors=found;window.qaHost=null;
-    window.qaMount=(name,props,binding='show',event='updateVisibleState')=>{
-      if(window.qaHost){window.qaHost.$destroy();window.qaHost.$el.remove();}
-      window.qaCalls=[];window.qaHold=false;window.qaFail=false;window.qaResolve=null;
-      const facade={getters:{...app.$store.getters,complainTypesResponse:{data:['Spam','Abuse']}},commit:app.$store.commit.bind(app.$store),dispatch(type,payload){
-        const form=payload&&(payload.formData||payload.payload&&payload.payload.formData);
-        window.qaCalls.push({type,keys:form?[...form.keys()]:payload?Object.keys(payload):[]});
-        if(window.qaFail)return Promise.reject({response:{data:{message:'Fixture request failed.'}}});
-        if(window.qaHold)return new Promise(resolve=>{window.qaResolve=resolve});
-        return Promise.resolve({data:{data:{attributes:{id:1}}}});
-      }};
-      const component=found.get(name);if(!component)throw Error('Unknown fixture component '+name);
-      const host=new Base({parent:app,store:facade,router:app.$router,i18n:app.$i18n,data(){return {open:false}},render(h){return h('div',[
-        h('button',{attrs:{id:'qa-open'},on:{click:()=>this.open=true}},'Open '+name),
-        h(component,{ref:'subject',props:{...props,[binding]:this.open},on:{[event]:value=>this.open=value,onClickOk:()=>{},onClickCancel:()=>{}}})
-      ])}}).$mount();document.getElementById('app').appendChild(host.$el);window.qaHost=host;
-      document.getElementById('qa-open').focus();document.getElementById('qa-open').click();
-    };
-  })()`);
     async function mountModal(name, props = {}, binding = "show", event = "updateVisibleState") {
         await evaluate(
             `qaMount(${JSON.stringify(name)},${JSON.stringify(props)},${JSON.stringify(binding)},${JSON.stringify(
@@ -2508,7 +2540,7 @@ async function main() {
     await check("overlapping dialogs keep unique IDs, topmost focus and scroll locking until all close", async () => {
         await mountModal("UserFollowersModal", { user: fixtureReader });
         await evaluate(
-            `(() => {const Base=qaHost.$options._base;window.qaNested=new Base({parent:qaHost,data(){return {open:true}},render(h){return h('UiModal',{props:{value:this.open,title:'Nested confirmation',centered:true,closeOnConfirm:true},on:{input:v=>this.open=v}},[h('button','Nested action')])}}).$mount();document.getElementById('app').appendChild(qaNested.$el)})()`
+"window.__ALORFERI_TEST__.mountNested()"
         );
         await waitFor(
             "document.querySelectorAll('[role=dialog]').length===2 && document.querySelector('[aria-modal=true]').contains(document.activeElement)",
@@ -2518,11 +2550,11 @@ async function main() {
         await press("Escape");
         await waitFor("document.querySelectorAll('[role=dialog]').length===1", "topmost dismissal");
         assert.equal(await evaluate("document.body.style.overflow"), "hidden");
-        await evaluate("qaNested.$destroy();qaNested.$el.remove()");
+        await evaluate("window.__ALORFERI_TEST__.disposeNested()");
         await closeModal();
         assert.equal(await evaluate("document.body.style.overflow"), "");
         await mountModal("UserFollowersModal", { user: fixtureReader });
-        await evaluate("qaHost.$destroy();qaHost.$el.remove();qaHost=null");
+        await evaluate("window.__ALORFERI_TEST__.disposeFixture()");
         await waitFor(
             "!document.querySelector('[role=dialog]') && document.body.style.overflow===''",
             "dialog unmount cleanup"
@@ -2687,7 +2719,7 @@ async function main() {
         await waitFor("qaCalls.some(c=>c.type==='storePostComment')", "comment dispatched");
         assert.equal(await evaluate("qaCalls.filter(c=>c.type==='storePostComment').length"), 1);
     });
-    await evaluate("qaHost.$destroy();qaHost.$el.remove();qaHost=null");
+    await evaluate("window.__ALORFERI_TEST__.disposeFixture()");
     await check("course images: guest labels, relative/absolute URLs and missing-image fallbacks work", async () => {
         await reset();
         scenario.course = true;
@@ -2716,7 +2748,7 @@ async function main() {
         for (const language of ["en", "bn"]) {
             await evaluate(
                 app +
-                    '.$store.dispatch("setActiveLanguage",' +
+                    '.$testStore.dispatch("setActiveLanguage",' +
                     JSON.stringify(language) +
                     ");" +
                     app +
@@ -2737,8 +2769,7 @@ async function main() {
         }
         await evaluate("void (window.recoveredCourseElement=document.querySelectorAll('.course-image')[4])");
         await evaluate(`(() => {
-            const find=v=>v.$options.name==='CourseCatalog'?v:v.$children.map(find).find(Boolean);
-            const c=find(${app});
+            const c=window.__ALORFERI_TEST__.components().find(v=>v.$options.name==='CourseCatalog');
             c.response={...c.response,data:c.response.data.map((item,i)=>i===4?{...item,image_url:'/course-fixtures/recovered.png'}:item)};
         })()`);
         await waitFor(
@@ -2783,13 +2814,13 @@ async function main() {
         await evaluate(
             "(()=>{const store=" +
                 app +
-                '.$store;store.commit("setCourse",{...store.getters.course,image_url:"/course-fixtures/recovered.png"})})()'
+                '.$testStore;store.commit("setCourse",{...store.getters.course,image_url:"/course-fixtures/recovered.png"})})()'
         );
         await waitFor("document.querySelector('.course-image img')?.naturalWidth>0", "detail source recovery");
         for (const language of ["en", "bn"]) {
             await evaluate(
                 app +
-                    '.$store.dispatch("setActiveLanguage",' +
+                    '.$testStore.dispatch("setActiveLanguage",' +
                     JSON.stringify(language) +
                     ");" +
                     app +
@@ -2801,7 +2832,7 @@ async function main() {
                 language === "en" ? "Courses" : "কোর্সসমূহ"
             );
         }
-        await evaluate(app + '.$store.dispatch("setActiveLanguage","en");' + app + '.$i18n.locale="en"');
+        await evaluate(app + '.$testStore.dispatch("setActiveLanguage","en");' + app + '.$i18n.locale="en"');
         delete scenario.courseImage;
     });
     await check("course cards, cart actions and application forms retain their behavior", async () => {
@@ -2812,7 +2843,7 @@ async function main() {
             "course card"
         );
         await evaluate("[...document.querySelectorAll('button')].find(b=>b.innerText.includes('Add to cart')).click()");
-        assert(await evaluate(app + ".$store.getters.myCart.some(c=>c.id===12345)"));
+        assert(await evaluate(app + ".$testStore.getters.myCart.some(c=>c.id===12345)"));
         await navigate(base + "/courses/12345/apply");
         await waitFor(
             "document.body.innerText.includes('Apply for this course') && document.querySelector('button[type=submit]')",
@@ -2842,21 +2873,7 @@ async function main() {
         );
     });
     assert.deepEqual(errors, [], "Uncaught browser exceptions");
-    const knownWarnings = warnings.filter(
-        (w) =>
-            w.includes("src/views/welcome/AwardsAndAchievements.vue") &&
-            w.includes("Cannot read properties of null (reading 'title')")
-    );
-    assert.deepEqual(
-        warnings.filter(
-            (w) =>
-                /Unknown custom element|Error in render|Error in .*hook|Invalid prop|Failed to mount|Duplicate keys detected/.test(
-                    w
-                ) && !knownWarnings.includes(w)
-        ),
-        [],
-        "Unexpected Vue warnings beyond the documented baseline"
-    );
+    assert.deepEqual(warnings, [], "Unexpected browser warnings");
     fs.writeFileSync(
         output,
         JSON.stringify(

@@ -14,32 +14,29 @@
 </template>
 <script>
 import NameCircle from "../../components/NameCircle";
-
 export default {
-    name: "LibraryMemberPhoto",
-    props: ["member", "size"],
-    computed: {
-        imgStyle() {
-            var width = parseInt(this.size) + 12;
-            var height = parseInt(this.size) + 12;
-            return "width:" + width + "px; height:" + height + "px;";
-        }
-    },
-    components: {
-        NameCircle
-    },
-    methods: {
-        sizeOfImg() {
-            return this.size;
-        },
-
-        sizeOfNameCircle() {
-            return this.size;
-        },
-
-        phtoUrl() {
-            return this.getApiUrl(this.member.photo_url);
-        }
+  name: "LibraryMemberPhoto",
+  props: ["member", "size"],
+  computed: {
+    imgStyle() {
+      var width = parseInt(this.size) + 12;
+      var height = parseInt(this.size) + 12;
+      return "width:" + width + "px; height:" + height + "px;";
     }
+  },
+  components: {
+    NameCircle
+  },
+  methods: {
+    sizeOfImg() {
+      return this.size;
+    },
+    sizeOfNameCircle() {
+      return this.size;
+    },
+    phtoUrl() {
+      return this.getApiUrl(this.member.photo_url);
+    }
+  }
 };
 </script>

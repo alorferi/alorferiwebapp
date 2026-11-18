@@ -39,64 +39,80 @@ import WrapperListView from "@/components/WrapperListView";
 import LibraryListItem from "@/views/library/LibraryListItem";
 import UserListItem from "@/views/user/UserListItem";
 export default {
-    name: "DiscoveryList",
-    components: { Loading, Paginator, WrapperListView },
-    props: { kind: String },
-    data() {
-        return { term: "", page: 1, response: null, loading: false, error: false, request: 0 };
+  name: "DiscoveryList",
+  components: {
+    Loading,
+    Paginator,
+    WrapperListView
+  },
+  props: {
+    kind: String
+  },
+  data() {
+    return {
+      term: "",
+      page: 1,
+      response: null,
+      loading: false,
+      error: false,
+      request: 0
+    };
+  },
+  computed: {
+    items() {
+      return this.response && this.response.data || [];
     },
-    computed: {
-        items() {
-            return (this.response && this.response.data) || [];
-        },
-        meta() {
-            return this.response && this.response.meta;
-        },
-        itemComponent() {
-            return this.kind === "readers" ? UserListItem : LibraryListItem;
-        },
+    meta() {
+      return this.response && this.response.meta;
     },
-    mounted() {
-        this.load();
+    itemComponent() {
+      return this.kind === "readers" ? UserListItem : LibraryListItem;
+    }
+  },
+  mounted() {
+    this.load();
+  },
+  beforeUnmount() {
+    clearTimeout(this.timer);
+    this.request++;
+  },
+  watch: {
+    term() {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => this.searchNow(), 300);
+    }
+  },
+  methods: {
+    searchNow() {
+      clearTimeout(this.timer);
+      this.page = 1;
+      this.load();
     },
-    beforeDestroy() {
-        clearTimeout(this.timer);
-        this.request++;
+    changePage(page) {
+      this.page = page;
+      this.load();
     },
-    watch: {
-        term() {
-            clearTimeout(this.timer);
-            this.timer = setTimeout(() => this.searchNow(), 300);
-        },
-    },
-    methods: {
-        searchNow() {
-            clearTimeout(this.timer);
-            this.page = 1;
-            this.load();
-        },
-        changePage(page) {
-            this.page = page;
-            this.load();
-        },
-        async load() {
-            const request = ++this.request;
-            this.loading = true;
-            this.error = false;
-            try {
-                const action = {
-                    readers: "searchUsers",
-                    libraries: "fetchAllLibraries",
-                    myLibraries: "fetchMyLibraries",
-                }[this.kind];
-                const response = await this.$store.dispatch(action, { term: this.term || null, page: this.page });
-                if (request === this.request) this.response = response.data;
-            } catch (error) {
-                if (request === this.request) this.error = true;
-            } finally {
-                if (request === this.request) this.loading = false;
-            }
-        },
-    },
+    async load() {
+      const request = ++this.request;
+      this.loading = true;
+      this.error = false;
+      try {
+        const action = {
+          readers: "searchUsers",
+          libraries: "fetchAllLibraries",
+          myLibraries: "fetchMyLibraries"
+        }[this.kind];
+        const response = await this.$actions[action]({
+          term: this.term || null,
+          page: this.page
+        });
+        if (request === this.request) this.response = response.data;
+      } catch (error) {
+        if (request === this.request) this.error = true;
+      } finally {
+        if (request === this.request) this.loading = false;
+      }
+    }
+  }
 };
 </script>

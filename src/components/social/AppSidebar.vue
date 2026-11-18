@@ -4,12 +4,21 @@
             <AppLinks />
             <p class="social-sidebar-note">{{ $t("social.communityNote") }}</p>
         </aside>
-        <UiModal :value="value" @input="$emit('input', $event)" :title="$t('social.navigation')" side-panel hide-footer>
-            <AppLinks @navigate="$emit('input', false)" />
+        <UiModal :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)" :title="$t('social.navigation')" side-panel hide-footer>
+            <AppLinks @navigate="$emit('update:modelValue', false)" />
         </UiModal>
     </div>
 </template>
 <script>
 import AppLinks from "./AppLinks";
-export default { name: "AppSidebar", components: { AppLinks }, props: { value: Boolean } };
+export default {
+  emits: ["update:modelValue"],
+  name: "AppSidebar",
+  components: {
+    AppLinks
+  },
+  props: {
+    modelValue: Boolean
+  }
+};
 </script>

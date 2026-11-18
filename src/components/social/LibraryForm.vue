@@ -78,84 +78,106 @@
     </section>
 </template>
 <script>
-import axios from "axios";
+import axios from "@/api";
 import EditTextField from "@/components/EditTextField";
 import Loading from "@/components/Loading";
 export default {
-    name: "LibraryForm",
-    components: { EditTextField, Loading },
-    props: { edit: Boolean },
-    data() {
-        return {
-            form: { name: "", address: { house: "" }, email: "", mobile: "", post_code: "", founded_at: "" },
-            loading: false,
-            loadError: false,
-            saving: false,
-            saveError: false,
-            errors: {},
+  name: "LibraryForm",
+  components: {
+    EditTextField,
+    Loading
+  },
+  props: {
+    edit: Boolean
+  },
+  data() {
+    return {
+      form: {
+        name: "",
+        address: {
+          house: ""
+        },
+        email: "",
+        mobile: "",
+        post_code: "",
+        founded_at: ""
+      },
+      loading: false,
+      loadError: false,
+      saving: false,
+      saveError: false,
+      errors: {}
+    };
+  },
+  mounted() {
+    if (this.edit) this.load();
+  },
+  methods: {
+    async load() {
+      this.loading = true;
+      this.loadError = false;
+      try {
+        const response = await axios.get(this.getApiUrl("/api/libraries/" + this.$route.params.id), {
+          headers: this.getAuthorizationBearerToken()
+        });
+        if (this.componentLeaving) return;
+        const resource = response.data.data;
+        const record = resource.attributes || resource;
+        this.form = {
+          ...record,
+          address: {
+            house: "",
+            ...(record.address || {})
+          },
+          post_code: record.post_code || record.address && record.address.post_code || "",
+          founded_at: record.founded_at ? record.founded_at.slice(0, 10) : ""
         };
+      } catch (error) {
+        this.loadError = true;
+      } finally {
+        this.loading = false;
+      }
     },
-    mounted() {
-        if (this.edit) this.load();
-    },
-    methods: {
-        async load() {
-            this.loading = true;
-            this.loadError = false;
-            try {
-                const response = await axios.get(this.getApiUrl("/api/libraries/" + this.$route.params.id), {
-                    headers: this.getAuthorizationBearerToken(),
-                });
-                if (this._isDestroyed) return;
-                const resource = response.data.data;
-                const record = resource.attributes || resource;
-                this.form = {
-                    ...record,
-                    address: { house: "", ...(record.address || {}) },
-                    post_code: record.post_code || (record.address && record.address.post_code) || "",
-                    founded_at: record.founded_at ? record.founded_at.slice(0, 10) : "",
-                };
-            } catch (error) {
-                this.loadError = true;
-            } finally {
-                this.loading = false;
-            }
-        },
-        async submit() {
-            if (this.saving) return;
-            this.saving = true;
-            this.saveError = false;
-            this.errors = {};
-            try {
-                const payload = {
-                    ...this.form,
-                    address: { ...this.form.address, post_code: this.form.post_code || null },
-                };
-                const endpoint = this.getApiUrl("/api/libraries" + (this.edit ? "/" + this.$route.params.id : ""));
-                const response = await axios({
-                    url: endpoint,
-                    method: this.edit ? "PUT" : "POST",
-                    data: payload,
-                    headers: this.getAuthorizationBearerToken(),
-                });
-                if (this._isDestroyed) return;
-                const resource = response.data.data;
-                const id = this.edit
-                    ? this.$route.params.id
-                    : (resource && (resource.attributes || resource).id) || resource;
-                await this.$router.push({ name: "library-show", params: { id } });
-            } catch (error) {
-                this.errors = (error.response && error.response.data && error.response.data.errors) || {};
-                this.saveError = true;
-                this.$nextTick(() => {
-                    const target =
-                        this.$refs.form && this.$refs.form.querySelector('[aria-invalid="true"], [role="alert"]');
-                    if (target) target.focus();
-                });
-            } finally {
-                this.saving = false;
-            }
-        },
-    },
+    async submit() {
+      if (this.saving) return;
+      this.saving = true;
+      this.saveError = false;
+      this.errors = {};
+      try {
+        const payload = {
+          ...this.form,
+          address: {
+            ...this.form.address,
+            post_code: this.form.post_code || null
+          }
+        };
+        const endpoint = this.getApiUrl("/api/libraries" + (this.edit ? "/" + this.$route.params.id : ""));
+        const response = await axios({
+          url: endpoint,
+          method: this.edit ? "PUT" : "POST",
+          data: payload,
+          headers: this.getAuthorizationBearerToken()
+        });
+        if (this.componentLeaving) return;
+        const resource = response.data.data;
+        const id = this.edit ? this.$route.params.id : resource && (resource.attributes || resource).id || resource;
+        await this.$router.push({
+          name: "library-show",
+          params: {
+            id
+          }
+        });
+      } catch (error) {
+        this.errors = error.response && error.response.data && error.response.data.errors || {};
+        this.saveError = true;
+        this.$nextTick(() => {
+          const target = this.$refs.form && this.$refs.form.querySelector('[aria-invalid="true"], [role="alert"]');
+          if (target) target.focus();
+        });
+      } finally {
+        this.saving = false;
+      }
+    }
+  }
 };
 </script>

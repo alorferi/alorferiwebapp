@@ -15,8 +15,8 @@
 
 <script>
 export default {
-    name: "WrapperListView",
-    props: ["dataWrapperList", "listItemComponent", "emptyListMessage", "layout"],
-    components: {},
+  name: "WrapperListView",
+  props: ["dataWrapperList", "listItemComponent", "emptyListMessage", "layout"],
+  components: {}
 };
 </script>

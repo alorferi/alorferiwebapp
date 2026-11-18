@@ -17,23 +17,31 @@
 <script>
 import NameCircle from "@/components/NameCircle";
 export default {
-    name: "LibraryLogo",
-    components: { NameCircle },
-    props: { library: Object, size: { type: [String, Number], default: 48 } },
-    data() {
-        return { failed: false };
-    },
-    computed: {
-        logoUrl() {
-            return /^https?:\/\//i.test(this.library.logo_url)
-                ? this.library.logo_url
-                : this.getApiUrl(this.library.logo_url);
-        },
-    },
-    watch: {
-        "library.logo_url"() {
-            this.failed = false;
-        },
-    },
+  name: "LibraryLogo",
+  components: {
+    NameCircle
+  },
+  props: {
+    library: Object,
+    size: {
+      type: [String, Number],
+      default: 48
+    }
+  },
+  data() {
+    return {
+      failed: false
+    };
+  },
+  computed: {
+    logoUrl() {
+      return /^https?:\/\//i.test(this.library.logo_url) ? this.library.logo_url : this.getApiUrl(this.library.logo_url);
+    }
+  },
+  watch: {
+    "library.logo_url"() {
+      this.failed = false;
+    }
+  }
 };
 </script>

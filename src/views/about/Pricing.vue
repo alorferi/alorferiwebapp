@@ -43,159 +43,164 @@
 </template>
 
 <script>
-
 export default {
-    name: "Pricing",
-    components: {
-    },
-    mounted: function() {},
-    computed: {},
-    props: {},
-    data() {
-        return {
-            features: [
-                {
-                    name: "Books",
-                    pac0: { text: "Max: 500", color: "text-success" },
-                    pac1: {
-                        text: "Min: 501 ~ Max: 1000",
-                        color: "text-success"
-                    },
-                    pac2: {
-                        text: "Min: 1001 ~ Max: 2000",
-                        color: "text-success"
-                    },
-                    pac3: {
-                        text: "Min: 2001 ~ Max: 3000",
-                        color: "text-success"
-                    }
-                },
-
-                {
-                    name: "Members",
-                    pac0: { text: "Max: 100", color: "text-success" },
-                    pac1: {
-                        text: "Min: 101 ~ Max: 200",
-                        color: "text-success"
-                    },
-                    pac2: {
-                        text: "Min: 201 ~ Max: 500",
-                        color: "text-success"
-                    },
-                    pac3: {
-                        text: "Min: 501 ~ Max: 1000",
-                        color: "text-success"
-                    }
-                },
-                {
-                    name: "Book QR Code",
-                    pac0: {
-                        text: this.symbolCross(),
-                        color: this.colorDanger()
-                    },
-                    pac1: {
-                        text: this.symbolTick(),
-                        color: this.colorSuccess()
-                    },
-                    pac2: {
-                        text: this.symbolTick(),
-                        color: this.colorSuccess()
-                    },
-                    pac3: { text: this.symbolTick(), color: this.colorSuccess() }
-                },
-
-                {
-                    name: "Member ID Card",
-                    pac0: {
-                        text: this.symbolCross(),
-                        color: this.colorDanger()
-                    },
-                    pac1: {
-                        text: this.symbolTick(),
-                        color: this.colorSuccess()
-                    },
-                    pac2: {
-                        text: this.symbolTick(),
-                        color: this.colorSuccess()
-                    },
-                    pac3: { text: this.symbolTick(), color: this.colorSuccess() }
-                },
-                {
-                    name: "Attendance",
-                    pac0: {
-                        text: this.symbolCross(),
-                        color: this.colorDanger()
-                    },
-                    pac1: {
-                        text: this.symbolTick(),
-                        color: this.colorSuccess()
-                    },
-                    pac2: {
-                        text: this.symbolTick(),
-                        color: this.colorSuccess()
-                    },
-                    pac3: { text: this.symbolTick(), color: this.colorSuccess() }
-                },
-
-                {
-                    name: "Accounting",
-                    pac0: {
-                        text: this.symbolCross(),
-                        color: this.colorDanger()
-                    },
-                    pac1: {
-                        text: this.symbolCross(),
-                        color: this.colorDanger()
-                    },
-                    pac2: {
-                        text: this.symbolTick(),
-                        color: this.colorSuccess()
-                    },
-                    pac3: { text: this.symbolTick(), color: this.colorSuccess() }
-                },
-                {
-                    name: "Library Branch ",
-                    pac0: {
-                        text: this.symbolCross(),
-                        color: this.colorDanger()
-                    },
-                    pac1: {
-                        text: this.symbolCross(),
-                        color: this.colorDanger()
-                    },
-                    pac2: {
-                        text: this.symbolTick(),
-                        color: this.colorSuccess()
-                    },
-                    pac3: { text: this.symbolTick(), color: this.colorSuccess() }
-                },
-
-
-            ],
-            price: {
-                name: "Price",
-                pac0: "BDT 0/Month",
-                pac1: "BDT 100/Month",
-                pac2: "BDT 500/Month",
-                pac3: "BDT 1000/Month"
-            }
-        };
-    },
-    methods: {
-        symbolTick() {
-            return "&#x2713;";
+  name: "Pricing",
+  components: {},
+  mounted: function () {},
+  computed: {},
+  props: {},
+  data() {
+    return {
+      features: [{
+        name: "Books",
+        pac0: {
+          text: "Max: 500",
+          color: "text-success"
         },
-        symbolCross() {
-            return "&#215;";
+        pac1: {
+          text: "Min: 501 ~ Max: 1000",
+          color: "text-success"
         },
-
-        colorSuccess() {
-            return "text-success";
+        pac2: {
+          text: "Min: 1001 ~ Max: 2000",
+          color: "text-success"
         },
-        colorDanger() {
-            return "text-danger";
+        pac3: {
+          text: "Min: 2001 ~ Max: 3000",
+          color: "text-success"
         }
+      }, {
+        name: "Members",
+        pac0: {
+          text: "Max: 100",
+          color: "text-success"
+        },
+        pac1: {
+          text: "Min: 101 ~ Max: 200",
+          color: "text-success"
+        },
+        pac2: {
+          text: "Min: 201 ~ Max: 500",
+          color: "text-success"
+        },
+        pac3: {
+          text: "Min: 501 ~ Max: 1000",
+          color: "text-success"
+        }
+      }, {
+        name: "Book QR Code",
+        pac0: {
+          text: this.symbolCross(),
+          color: this.colorDanger()
+        },
+        pac1: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        },
+        pac2: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        },
+        pac3: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        }
+      }, {
+        name: "Member ID Card",
+        pac0: {
+          text: this.symbolCross(),
+          color: this.colorDanger()
+        },
+        pac1: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        },
+        pac2: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        },
+        pac3: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        }
+      }, {
+        name: "Attendance",
+        pac0: {
+          text: this.symbolCross(),
+          color: this.colorDanger()
+        },
+        pac1: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        },
+        pac2: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        },
+        pac3: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        }
+      }, {
+        name: "Accounting",
+        pac0: {
+          text: this.symbolCross(),
+          color: this.colorDanger()
+        },
+        pac1: {
+          text: this.symbolCross(),
+          color: this.colorDanger()
+        },
+        pac2: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        },
+        pac3: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        }
+      }, {
+        name: "Library Branch ",
+        pac0: {
+          text: this.symbolCross(),
+          color: this.colorDanger()
+        },
+        pac1: {
+          text: this.symbolCross(),
+          color: this.colorDanger()
+        },
+        pac2: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        },
+        pac3: {
+          text: this.symbolTick(),
+          color: this.colorSuccess()
+        }
+      }],
+      price: {
+        name: "Price",
+        pac0: "BDT 0/Month",
+        pac1: "BDT 100/Month",
+        pac2: "BDT 500/Month",
+        pac3: "BDT 1000/Month"
+      }
+    };
+  },
+  methods: {
+    symbolTick() {
+      return "&#x2713;";
+    },
+    symbolCross() {
+      return "&#215;";
+    },
+    colorSuccess() {
+      return "text-success";
+    },
+    colorDanger() {
+      return "text-danger";
     }
+  }
 };
 </script>
 

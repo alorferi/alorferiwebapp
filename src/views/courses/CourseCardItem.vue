@@ -38,32 +38,36 @@
 <script>
 import CourseImage from "./CourseImage";
 export default {
-    name: "CourseCardItem",
-    props: ["item"],
-    components: { CourseImage },
-    data() {
-        return { msg_text: "" };
+  name: "CourseCardItem",
+  props: ["item"],
+  components: {
+    CourseImage
+  },
+  data() {
+    return {
+      msg_text: ""
+    };
+  },
+  computed: {
+    isProductAdded() {
+      return this.$stores.myCart.myCart.some(c => c.id === this.item.id);
+    }
+  },
+  mounted() {
+    if (this.$stores.auth.isLoggedIn) this.fetchMyOrder();
+  },
+  methods: {
+    async fetchMyOrder() {
+      try {
+        const r = await this.$stores.courseOrder.fetchMyCourseOrder(this.item.id);
+        this.msg_text = r.data.message || "";
+      } catch (error) {
+        this.msg_text = "";
+      }
     },
-    computed: {
-        isProductAdded() {
-            return this.$store.getters.myCart.some((c) => c.id === this.item.id);
-        },
-    },
-    mounted() {
-        if (this.$store.getters.isLoggedIn) this.fetchMyOrder();
-    },
-    methods: {
-        async fetchMyOrder() {
-            try {
-                const r = await this.$store.dispatch("fetchMyCourseOrder", this.item.id);
-                this.msg_text = r.data.message || "";
-            } catch (error) {
-                this.msg_text = "";
-            }
-        },
-        addToCart(item) {
-            this.$store.dispatch("addProductToCart", item);
-        },
-    },
+    addToCart(item) {
+      this.$stores.myCart.addProductToCart(item);
+    }
+  }
 };
 </script>

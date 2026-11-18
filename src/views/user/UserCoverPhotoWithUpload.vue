@@ -25,33 +25,33 @@
 <script>
 import UploadMyCoverModal from "@/views/user/UploadMyCoverModal";
 export default {
-    name: "UserCoverPhotoWithUpload",
-    props: ["user"],
-    components: { UploadMyCoverModal },
-    async mounted() {},
-
-    computed: {
-        userCoverUrl() {
-            var coverUrl = null;
-            if (this.isItMe(this.user)) {
-                if (this.$store.getters.activeUserCoverUrl == null) {
-                    coverUrl = "/users/" + this.user.id + "/cover-photo";
-                } else {
-                    coverUrl = this.$store.getters.activeUserCoverUrl;
-                }
-            } else {
-                coverUrl = "/users/" + this.user.id + "/cover-photo";
-            }
-
-            return this.getApiUrl(coverUrl);
-        },
-    },
-    methods: {},
-    data: function () {
-        return {
-            showUploadMyCoverModal: false,
-        };
-    },
+  name: "UserCoverPhotoWithUpload",
+  props: ["user"],
+  components: {
+    UploadMyCoverModal
+  },
+  async mounted() {},
+  computed: {
+    userCoverUrl() {
+      let coverUrl;
+      if (this.isItMe(this.user)) {
+        if (this.$stores.user.activeUserCoverUrl == null) {
+          coverUrl = "/users/" + this.user.id + "/cover-photo";
+        } else {
+          coverUrl = this.$stores.user.activeUserCoverUrl;
+        }
+      } else {
+        coverUrl = "/users/" + this.user.id + "/cover-photo";
+      }
+      return this.getApiUrl(coverUrl);
+    }
+  },
+  methods: {},
+  data: function () {
+    return {
+      showUploadMyCoverModal: false
+    };
+  }
 };
 </script>
 

@@ -22,42 +22,60 @@
 <script>
 import Loading from "@/components/Loading";
 export default {
-    name: "LibraryAbout",
-    components: { Loading },
-    props: { library: Object },
-    data() {
-        return { loading: !this.library, error: false };
+  name: "LibraryAbout",
+  components: {
+    Loading
+  },
+  props: {
+    library: Object
+  },
+  data() {
+    return {
+      loading: !this.library,
+      error: false
+    };
+  },
+  computed: {
+    record() {
+      return this.library || this.$stores.library.library;
     },
-    computed: {
-        record() {
-            return this.library || this.$store.getters.library;
-        },
-        fields() {
-            return [
-                { key: "email", label: "email" },
-                { key: "mobile", label: "mobile" },
-                { key: "founded_at", label: "foundedAt" },
-                { key: "govt_reg_no", label: "registrationNumber" },
-                { key: "opening_time_at", label: "openingTime" },
-                { key: "closing_time_at", label: "closingTime" },
-            ];
-        },
-    },
-    mounted() {
-        if (!this.library) this.load();
-    },
-    methods: {
-        async load() {
-            this.loading = true;
-            this.error = false;
-            try {
-                await this.$store.dispatch("fetchLibrary", this.$route.params.id);
-            } catch (error) {
-                this.error = true;
-            } finally {
-                this.loading = false;
-            }
-        },
-    },
+    fields() {
+      return [{
+        key: "email",
+        label: "email"
+      }, {
+        key: "mobile",
+        label: "mobile"
+      }, {
+        key: "founded_at",
+        label: "foundedAt"
+      }, {
+        key: "govt_reg_no",
+        label: "registrationNumber"
+      }, {
+        key: "opening_time_at",
+        label: "openingTime"
+      }, {
+        key: "closing_time_at",
+        label: "closingTime"
+      }];
+    }
+  },
+  mounted() {
+    if (!this.library) this.load();
+  },
+  methods: {
+    async load() {
+      this.loading = true;
+      this.error = false;
+      try {
+        await this.$stores.library.fetchLibrary(this.$route.params.id);
+      } catch (error) {
+        this.error = true;
+      } finally {
+        this.loading = false;
+      }
+    }
+  }
 };
 </script>

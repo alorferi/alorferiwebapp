@@ -37,15 +37,15 @@
 // import LibraryLogo from "./LibraryLogo";
 
 export default {
-    name: "LibraryBookIssueTimelineItem",
-    props: ["item"],
-    components: {
-        // LibraryLogo
-    },
-    methods: {
-        coverUrl() {
-            return this.getApiUrl(this.item.book.cover_url);
-        },
-    },
+  name: "LibraryBookIssueTimelineItem",
+  props: ["item"],
+  components: {
+    // LibraryLogo
+  },
+  methods: {
+    coverUrl() {
+      return this.getApiUrl(this.item.book.cover_url);
+    }
+  }
 };
 </script>

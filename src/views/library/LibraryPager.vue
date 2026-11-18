@@ -1,6 +1,6 @@
 <template>
     <div>
-        <LibraryCoverPhotoWithUpload :user="this.$store.getters.activeUser" :library="library" />
+        <LibraryCoverPhotoWithUpload :user="this.$stores.user.activeUser" :library="library" />
         <div class="ui-card social-identity-card">
             <div class="social-identity">
                 <div class="shrink-0">
@@ -126,6 +126,7 @@
 </template>
 
 <script>
+import { markRaw } from "vue";
 import LibraryLogoWithUpload from "@/views/library/LibraryLogoWithUpload";
 import LibraryTimeline from "@/views/library/LibraryTimeline";
 import LibraryBookIssuedHistory from "@/views/library/LibraryBookIssuedHistory";
@@ -135,191 +136,168 @@ import ShowLibraryMembers from "@/views/librarymember/ShowLibraryMembers";
 import CreateLibraryMemberRequestModal from "@/views/librarymember/CreateLibraryMemberRequestModal";
 import LibraryCoverPhotoWithUpload from "@/views/library/LibraryCoverPhotoWithUpload";
 import LibraryFollowersModal from "@/views/follower/LibraryFollowersModal.vue";
-
 export default {
-    name: "LibraryPager",
-    components: {
-        LibraryLogoWithUpload,
-        LibraryTimeline,
-        LibraryAbout,
-        ShowLibraryMembers,
-        ShowLibraryBooks,
-        LibraryBookIssuedHistory,
-        CreateLibraryMemberRequestModal,
-        LibraryFollowersModal,
-        LibraryCoverPhotoWithUpload,
+  name: "LibraryPager",
+  components: {
+    LibraryLogoWithUpload,
+    LibraryTimeline,
+    LibraryAbout,
+    ShowLibraryMembers,
+    ShowLibraryBooks,
+    LibraryBookIssuedHistory,
+    CreateLibraryMemberRequestModal,
+    LibraryFollowersModal,
+    LibraryCoverPhotoWithUpload
+  },
+  async mounted() {
+    this.fetchLibraryFollowersAction();
+    // this.fetchLibraryFollowingAction();
+    this.fetchLibraryFollowingByMeAction();
+    this.initTabItems();
+    this.$stores.pageTitle.setPageTitle(this.library.name);
+  },
+  computed: {
+    isFollowingByMe() {
+      return this.$stores.follower.followingSource === "library:" + this.library.id && this.$stores.follower.followingByMe != null;
     },
-    async mounted() {
-        this.fetchLibraryFollowersAction();
-        // this.fetchLibraryFollowingAction();
-        this.fetchLibraryFollowingByMeAction();
-
-        this.initTabItems();
-        this.$store.dispatch("setPageTitle", this.library.name);
+    totalFollowers() {
+      var total = 0;
+      if (this.$stores.follower.followersResponse.meta) {
+        total = this.$stores.follower.followersResponse.meta.total;
+      }
+      return this.$t("social.followers") + " (" + total + ")";
     },
-    computed: {
-        isFollowingByMe() {
-            return (
-                this.$store.getters.followingSource === "library:" + this.library.id &&
-                this.$store.getters.followingByMe != null
-            );
-        },
-        totalFollowers() {
-            var total = 0;
-            if (this.$store.getters.followersResponse.meta) {
-                total = this.$store.getters.followersResponse.meta.total;
-            }
-
-            return this.$t("social.followers") + " (" + total + ")";
-        },
-        library() {
-            return this.$store.getters.library;
-        },
-        myLibraryMembership() {
-            return this.getMyLibraryMembership(this.library.id);
-        },
-        computeMyLibraryMemberRequest() {
-            if (this.myLibraryMemberRequest) {
-                return this.myLibraryMemberRequest;
-            } else {
-                return this.getMyLibraryMemberRequest(this.library.id);
-            }
-        },
-        getTabs() {
-            return this.tabs;
-        },
-        tabBody() {
-            return this.activeTab.tabBody;
-        },
+    library() {
+      return this.$stores.library.library;
     },
-    data: function () {
-        return {
-            tabs: [],
-            activeTab: {},
-            followBusy: false,
-            followReady: false,
-            followError: false,
-            showMemberRequestModal: false,
-            myLibraryMemberRequest: null,
-            showLibraryFollowers: false,
-        };
+    myLibraryMembership() {
+      return this.getMyLibraryMembership(this.library.id);
     },
-    methods: {
-        tabLabel(tab) {
-            const key =
-                { TimeLine: "timeline", Timeline: "timeline", About: "about" }[tab.title] ||
-                (tab.title.startsWith("Books") ? "books" : tab.title.startsWith("Members") ? "members" : null);
-            const count = tab.title.match(/\(.*\)/);
-            return key ? this.$t("social." + key) + (count ? " " + count[0] : "") : tab.title;
-        },
-        async toggleFollow() {
-            if (this.followBusy || !this.followReady) return;
-            this.followBusy = true;
-            this.followError = false;
-            try {
-                await this.$store.dispatch(this.isFollowingByMe ? "unFollowLibraryByMe" : "followLibraryByMe", {
-                    library_id: this.library.id,
-                });
-            } catch (error) {
-                this.followError = true;
-            } finally {
-                this.followBusy = false;
-            }
-        },
-        fetchLibraryFollowersAction() {
-            const self = this;
-
-            this.$store
-                .dispatch("fetchLibraryFollowers", { library_id: self.library.id })
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {});
-        },
-        fetchLibraryFollowingByMeAction() {
-            const self = this;
-            self.followReady = false;
-
-            this.$store
-                .dispatch("fetchLibraryFollowingByMe", {
-                    library_id: self.library.id,
-                })
-                .then(() => {
-                    self.followReady = true;
-                    self.followError = false;
-                })
-                .catch((error) => {
-                    if (error.response && error.response.status === 404) self.followReady = true;
-                    else self.followError = true;
-                });
-        },
-        followLibraryByMeAction() {
-            const self = this;
-
-            this.$store
-                .dispatch("followLibraryByMe", { library_id: self.library.id })
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {});
-        },
-        unFollowLibraryByMeAction() {
-            const self = this;
-
-            this.$store
-                .dispatch("unFollowLibraryByMe", {
-                    library_id: self.library.id,
-                })
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {});
-        },
-        initTabItems() {
-            var library = this.$store.getters.library;
-
-            this.tabs.push({
-                title: "Timeline",
-                tabBody: LibraryTimeline,
-                active: true,
-            });
-            // this.tabs.push({
-            //     title: "Issued Books",
-            //     tabBody: LibraryBookIssuedHistory,
-            //     active: false
-            // });
-            this.tabs.push({
-                title: "Books (" + library.total_books + ")",
-                tabBody: ShowLibraryBooks,
-                active: false,
-            });
-            this.tabs.push({
-                title: "Members(" + library.total_members + ")",
-                tabBody: ShowLibraryMembers,
-                active: false,
-            });
-            this.tabs.push({
-                title: "About",
-                tabBody: LibraryAbout,
-                active: false,
-            });
-
-            this.activeTab = this.tabs[0];
-        },
-
-        isActive: function (item) {
-            return {
-                active: item.active,
-            };
-        },
-        clickTabItem(tab) {
-            if (tab != this.activeTab) {
-                tab.active = true;
-                this.activeTab.active = false;
-                this.activeTab = tab;
-            }
-        },
-        getQRCodeUrl(library) {
-            return this.getApiUrl("/qr-codes/library_qr_codes/lib_qr_" + library.id + ".svg");
-        },
+    computeMyLibraryMemberRequest() {
+      if (this.myLibraryMemberRequest) {
+        return this.myLibraryMemberRequest;
+      } else {
+        return this.getMyLibraryMemberRequest(this.library.id);
+      }
     },
+    getTabs() {
+      return this.tabs;
+    },
+    tabBody() {
+      return this.activeTab.tabBody;
+    }
+  },
+  data: function () {
+    return {
+      tabs: [],
+      activeTab: {},
+      followBusy: false,
+      followReady: false,
+      followError: false,
+      showMemberRequestModal: false,
+      myLibraryMemberRequest: null,
+      showLibraryFollowers: false
+    };
+  },
+  methods: {
+    tabLabel(tab) {
+      const key = {
+        TimeLine: "timeline",
+        Timeline: "timeline",
+        About: "about"
+      }[tab.title] || (tab.title.startsWith("Books") ? "books" : tab.title.startsWith("Members") ? "members" : null);
+      const count = tab.title.match(/\(.*\)/);
+      return key ? this.$t("social." + key) + (count ? " " + count[0] : "") : tab.title;
+    },
+    async toggleFollow() {
+      if (this.followBusy || !this.followReady) return;
+      this.followBusy = true;
+      this.followError = false;
+      try {
+        await this.$actions[this.isFollowingByMe ? "unFollowLibraryByMe" : "followLibraryByMe"]({
+          library_id: this.library.id
+        });
+      } catch (error) {
+        this.followError = true;
+      } finally {
+        this.followBusy = false;
+      }
+    },
+    fetchLibraryFollowersAction() {
+      const self = this;
+      this.$stores.libraryFollower.fetchLibraryFollowers({
+        library_id: self.library.id
+      }).then(() => {}).catch(() => {}).finally(() => {});
+    },
+    fetchLibraryFollowingByMeAction() {
+      const self = this;
+      self.followReady = false;
+      this.$stores.libraryFollower.fetchLibraryFollowingByMe({
+        library_id: self.library.id
+      }).then(() => {
+        self.followReady = true;
+        self.followError = false;
+      }).catch(error => {
+        if (error.response && error.response.status === 404) self.followReady = true;else self.followError = true;
+      });
+    },
+    followLibraryByMeAction() {
+      const self = this;
+      this.$stores.libraryFollower.followLibraryByMe({
+        library_id: self.library.id
+      }).then(() => {}).catch(() => {}).finally(() => {});
+    },
+    unFollowLibraryByMeAction() {
+      const self = this;
+      this.$stores.libraryFollower.unFollowLibraryByMe({
+        library_id: self.library.id
+      }).then(() => {}).catch(() => {}).finally(() => {});
+    },
+    initTabItems() {
+      var library = this.$stores.library.library;
+      this.tabs.push({
+        title: "Timeline",
+        tabBody: markRaw(LibraryTimeline),
+        active: true
+      });
+      // this.tabs.push({
+      //     title: "Issued Books",
+      //     tabBody: markRaw(LibraryBookIssuedHistory),
+      //     active: false
+      // });
+      this.tabs.push({
+        title: "Books (" + library.total_books + ")",
+        tabBody: markRaw(ShowLibraryBooks),
+        active: false
+      });
+      this.tabs.push({
+        title: "Members(" + library.total_members + ")",
+        tabBody: markRaw(ShowLibraryMembers),
+        active: false
+      });
+      this.tabs.push({
+        title: "About",
+        tabBody: markRaw(LibraryAbout),
+        active: false
+      });
+      this.activeTab = this.tabs[0];
+    },
+    isActive: function (item) {
+      return {
+        active: item.active
+      };
+    },
+    clickTabItem(tab) {
+      if (tab != this.activeTab) {
+        tab.active = true;
+        this.activeTab.active = false;
+        this.activeTab = tab;
+      }
+    },
+    getQRCodeUrl(library) {
+      return this.getApiUrl("/qr-codes/library_qr_codes/lib_qr_" + library.id + ".svg");
+    }
+  }
 };
 </script>
 

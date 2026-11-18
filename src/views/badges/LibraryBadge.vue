@@ -17,17 +17,16 @@
 // @ is an alias to /src
 
 import LibraryLogo from "../library/LibraryLogo";
-
 export default {
-    name: "LibraryBadge",
-    components: {LibraryLogo},
-      computed: {
-        library(){
-
-           var lib = this.$store.getters.library;
-
-           return lib;
-        }
-    },
+  name: "LibraryBadge",
+  components: {
+    LibraryLogo
+  },
+  computed: {
+    library() {
+      var lib = this.$stores.library.library;
+      return lib;
+    }
+  }
 };
 </script>

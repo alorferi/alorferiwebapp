@@ -13,40 +13,27 @@
 </template>
 
 <script>
-
 import CreateLibraryPost from "@/views/library/CreateLibraryPost";
-import ShowLibraryPosts from  "@/views/library/ShowLibraryPosts";
+import ShowLibraryPosts from "@/views/library/ShowLibraryPosts";
 import Loading from "@/components/Loading";
-
 export default {
-    name: "LibraryTimeline",
-     props:["library"],
-    components: {
-        Loading,
-        ShowLibraryPosts,
-        CreateLibraryPost
-    },
-  async mounted(){
-    },
-    data: function() {
-        return {
-            show_loading: false,
-            term: null,
-            page: null,
-        };
-    },
-    computed: {
-
-
-
-    },
-    methods: {
-
-    },
-
-    watch: {
-
-
-    }
+  name: "LibraryTimeline",
+  props: ["library"],
+  components: {
+    Loading,
+    ShowLibraryPosts,
+    CreateLibraryPost
+  },
+  async mounted() {},
+  data: function () {
+    return {
+      show_loading: false,
+      term: null,
+      page: null
+    };
+  },
+  computed: {},
+  methods: {},
+  watch: {}
 };
 </script>

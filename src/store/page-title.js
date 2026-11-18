@@ -1,29 +1,20 @@
-const state = {
+import { defineStore } from "pinia";
+import { useStores } from "./registry";
+export const usePageTitleStore = defineStore("pageTitle", {
+  state: () => ({
     pageTitle: "Welcome"
-};
-const getters = {
-    pageTitle: state => {
-        return state.pageTitle;
+  }),
+  getters: {},
+  actions: {
+    applySetPageTitle(pageTitle) {
+      const state = this;
+      state.pageTitle = pageTitle + " | Alor Feri";
+      document.title = state.pageTitle;
+    },
+    setPageTitle(pageTitle) {
+      const appStores = useStores();
+      appStores.pageTitle.applySetPageTitle(pageTitle);
     }
-};
-
-const mutations = {
-    setPageTitle: (state, pageTitle) => {
-        state.pageTitle = pageTitle + " | Alor Feri";
-        document.title = state.pageTitle
-    }
-};
-
-
-const actions = {
-    setPageTitle({ commit }, pageTitle) {
-        commit("setPageTitle", pageTitle);
-    }
-};
-
-export default {
-    state,
-    getters,
-    mutations,
-    actions,
-};
+  }
+});
+export default usePageTitleStore;

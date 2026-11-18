@@ -18,85 +18,74 @@
 </template>
 
 <script>
+import { markRaw } from "vue";
 // import LibraryMemberListView from "./LibraryMemberListView";
 import LibraryMemberListItem from "./LibraryMemberListItem";
 import Loading from "../../components/Loading";
 import SearchTextField from "../../components/SearchTextField";
 import Paginator from "../../components/Paginator";
 import WrapperListView from "../../components/WrapperListView";
-
 export default {
-    name: "ShowLibraryMembers",
-    props: ["library"],
-    components: {
-        Loading,
-        SearchTextField,
-        Paginator,
-        WrapperListView,
+  name: "ShowLibraryMembers",
+  props: ["library"],
+  components: {
+    Loading,
+    SearchTextField,
+    Paginator,
+    WrapperListView
+  },
+  async mounted() {
+    this.fetchLibraryMembers();
+  },
+  data: function () {
+    return {
+      show_loading: true,
+      term: null,
+      page: null,
+      itemComponent: markRaw(LibraryMemberListItem)
+    };
+  },
+  computed: {
+    libraryMemberWrappers() {
+      return this.$stores.libraryMember.libraryMembersResponse == null ? [] : this.$stores.libraryMember.libraryMembersResponse.data;
     },
-    async mounted() {
-        this.fetchLibraryMembers();
+    meta() {
+      return this.$stores.libraryMember.libraryMembersResponse == null ? null : this.$stores.libraryMember.libraryMembersResponse.meta;
+    }
+  },
+  methods: {
+    fetchLibraryMembers: function (pTerm = null, pPage = null) {
+      var payload = {
+        term: pTerm,
+        page: pPage,
+        library_id: this.library.id
+      };
+      this.$stores.libraryMember.fetchLibraryMembers(payload).then(() => {
+        this.show_loading = false;
+      }).catch(() => {
+        this.show_loading = false;
+      });
+    }
+  },
+  watch: {
+    page: {
+      // the callback will be called immediately after the start of the observation
+      immediate: true,
+      handler(newVal, oldVal) {
+        if (newVal != oldVal) {
+          this.fetchLibraryMembers(this.term, this.page);
+        }
+      }
     },
-    data: function () {
-        return {
-            show_loading: true,
-            term: null,
-            page: null,
-            itemComponent: LibraryMemberListItem,
-        };
-    },
-    computed: {
-        libraryMemberWrappers() {
-            return this.$store.getters.libraryMembersResponse == null
-                ? []
-                : this.$store.getters.libraryMembersResponse.data;
-        },
-
-        meta() {
-            return this.$store.getters.libraryMembersResponse == null
-                ? null
-                : this.$store.getters.libraryMembersResponse.meta;
-        },
-    },
-    methods: {
-        fetchLibraryMembers: function (pTerm = null, pPage = null) {
-            var payload = {
-                term: pTerm,
-                page: pPage,
-                library_id: this.library.id,
-            };
-
-            this.$store
-                .dispatch("fetchLibraryMembers", payload)
-                .then(() => {
-                    this.show_loading = false;
-                })
-                .catch(() => {
-                    this.show_loading = false;
-                });
-        },
-    },
-
-    watch: {
-        page: {
-            // the callback will be called immediately after the start of the observation
-            immediate: true,
-            handler(newVal, oldVal) {
-                if (newVal != oldVal) {
-                    this.fetchLibraryMembers(this.term, this.page);
-                }
-            },
-        },
-
-        term: {
-            // the callback will be called immediately after the start of the observation
-            immediate: true,
-            handler(newVal, oldVal) {
-                if (newVal != oldVal) {
-                    this.fetchLibraryMembers(this.term, this.page);
-                }
-            },
-        },
-    },
+    term: {
+      // the callback will be called immediately after the start of the observation
+      immediate: true,
+      handler(newVal, oldVal) {
+        if (newVal != oldVal) {
+          this.fetchLibraryMembers(this.term, this.page);
+        }
+      }
+    }
+  }
 };
 </script>

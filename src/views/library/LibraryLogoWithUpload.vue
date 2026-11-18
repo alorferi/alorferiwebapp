@@ -21,11 +21,16 @@
 import LibraryLogo from "./LibraryLogo";
 import UploadLibraryLogoModal from "./UploadLibraryLogoModal";
 export default {
-    name: "LibraryLogoWithUpload",
-    components: { LibraryLogo, UploadLibraryLogoModal },
-    props: ["library", "size"],
-    data() {
-        return { showUploadLogoModal: false };
-    },
+  name: "LibraryLogoWithUpload",
+  components: {
+    LibraryLogo,
+    UploadLibraryLogoModal
+  },
+  props: ["library", "size"],
+  data() {
+    return {
+      showUploadLogoModal: false
+    };
+  }
 };
 </script>

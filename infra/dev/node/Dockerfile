@@ -1,20 +1,8 @@
-# Use a lightweight Node.js image
-FROM node:10.19.0
-
-# Set the working directory in the container
+FROM node:26.13.1-slim
 WORKDIR /app
-
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code
+RUN npm install --global npm@12.2.3
+COPY package.json package-lock.json .nvmrc ./
+RUN npm ci --no-fund
 COPY . .
-
-# Expose the port the app runs on
 EXPOSE 8080
-
-# Serve the app
-CMD ["npm", "run", "serve"]
+CMD ["npm", "run", "serve", "--", "--host", "0.0.0.0"]

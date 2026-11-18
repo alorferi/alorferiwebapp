@@ -59,50 +59,62 @@ import CourseImage from "./CourseImage";
 import Loading from "@/components/Loading";
 import { requestErrorMessage } from "@/components/ui/requestError";
 export default {
-    name: "ApplyCourse",
-    components: { CourseImage, Loading },
-    data() {
-        return { loading: true, error: false, submitting: false, applied: false, message: "", failed: false };
+  name: "ApplyCourse",
+  components: {
+    CourseImage,
+    Loading
+  },
+  data() {
+    return {
+      loading: true,
+      error: false,
+      submitting: false,
+      applied: false,
+      message: "",
+      failed: false
+    };
+  },
+  computed: {
+    course() {
+      return this.$stores.course.course;
     },
-    computed: {
-        course() {
-            return this.$store.getters.course;
-        },
-        activeUser() {
-            return this.$store.getters.activeUser;
-        },
+    activeUser() {
+      return this.$stores.user.activeUser;
+    }
+  },
+  mounted() {
+    this.load();
+  },
+  methods: {
+    async load() {
+      this.loading = true;
+      this.error = false;
+      try {
+        await this.$stores.course.fetchCourse(this.$route.params.id);
+      } catch (error) {
+        this.error = true;
+      } finally {
+        this.loading = false;
+      }
     },
-    mounted() {
-        this.load();
-    },
-    methods: {
-        async load() {
-            this.loading = true;
-            this.error = false;
-            try {
-                await this.$store.dispatch("fetchCourse", this.$route.params.id);
-            } catch (error) {
-                this.error = true;
-            } finally {
-                this.loading = false;
-            }
-        },
-        async applyNow() {
-            if (this.submitting || this.applied) return;
-            this.submitting = true;
-            this.failed = false;
-            this.message = "";
-            try {
-                const r = await this.$store.dispatch("applyCourse", { course_id: this.$route.params.id });
-                this.message = r.data.message;
-                this.applied = true;
-            } catch (error) {
-                this.failed = true;
-                this.message = requestErrorMessage(error, this.$store.getters.activeLanguage);
-            } finally {
-                this.submitting = false;
-            }
-        },
-    },
+    async applyNow() {
+      if (this.submitting || this.applied) return;
+      this.submitting = true;
+      this.failed = false;
+      this.message = "";
+      try {
+        const r = await this.$stores.courseOrder.applyCourse({
+          course_id: this.$route.params.id
+        });
+        this.message = r.data.message;
+        this.applied = true;
+      } catch (error) {
+        this.failed = true;
+        this.message = requestErrorMessage(error, this.$stores.language.activeLanguage);
+      } finally {
+        this.submitting = false;
+      }
+    }
+  }
 };
 </script>

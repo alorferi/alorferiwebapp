@@ -4,10 +4,11 @@
 
 <script>
 import PostFeed from "@/views/post/PostFeed";
-
 export default {
-    name: "ShowLibraryPosts",
-    components: { PostFeed },
-    props: ["library"],
+  name: "ShowLibraryPosts",
+  components: {
+    PostFeed
+  },
+  props: ["library"]
 };
 </script>

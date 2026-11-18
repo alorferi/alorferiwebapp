@@ -8,13 +8,13 @@
 
 <script>
 export default {
-    name: "Loading",
-    data() {
-        return {};
-    },
-    computed: {},
-  async mounted(){},
-    methods: {}
+  name: "Loading",
+  data() {
+    return {};
+  },
+  computed: {},
+  async mounted() {},
+  methods: {}
 };
 </script>
 

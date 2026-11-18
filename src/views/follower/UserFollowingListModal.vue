@@ -27,75 +27,63 @@
 <script>
 import UserFollowerListItem from "@/views/follower/UserFollowerListItem";
 import Loading from "@/components/Loading";
-
 export default {
-    name: "UserFollowingListModal",
-    props: ["user", "show"],
-    components: {
-        UserFollowerListItem,
-        Loading
+  emits: ["updateVisibleState"],
+  name: "UserFollowingListModal",
+  props: ["user", "show"],
+  components: {
+    UserFollowerListItem,
+    Loading
+  },
+  data() {
+    return {
+      is_loading: false,
+      scrolledToBottom: false
+    };
+  },
+  computed: {
+    followings() {
+      return this.$stores.userFollowing.userFollowingsResponse.data;
     },
-    data() {
-        return {
-            is_loading: false,
-            scrolledToBottom: false
-        };
+    showLocal: {
+      get: function () {
+        return this.show;
+      },
+      set: function (value) {
+        this.$emit("updateVisibleState", value);
+      }
     },
-    computed: {
-        followings() {
-            return this.$store.getters.userFollowingsResponse.data;
-        },
-        showLocal: {
-            get: function() {
-                return this.show;
-            },
-            set: function(value) {
-                this.$emit("updateVisibleState", value);
-            }
-        },
-
-        totalFollowings() {
-
-            if(this.$store.getters.userFollowingsResponse.meta){
-                return this.$store.getters.userFollowingsResponse.meta.total;
-            }else{
-                return 0;
-            }
-
-        },
-
-        titleTotalFollowings() {
-            return (
-                "Following (" +
-                this.totalFollowings +
-                ")"
-            );
-        },
-
-        myLike() {
-            return this.user.my_like;
-        }
+    totalFollowings() {
+      if (this.$stores.userFollowing.userFollowingsResponse.meta) {
+        return this.$stores.userFollowing.userFollowingsResponse.meta.total;
+      } else {
+        return 0;
+      }
     },
-    async mounted() {},
-
-    methods: {
-        handleOk() {},
-        showModal() {
-            // this.fetchFollowerFeedAction();
-        },
-        hideModal() {},
-        fetchFollowerFeedAction() {
-            const self = this;
-            self.is_loading = true;
-            this.$store
-                .dispatch("fetchUserFollowings", { user_id: this.user.id })
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {
-                    this.is_loading = false;
-                    this.scrolledToBottom = false;
-                });
-        }
+    titleTotalFollowings() {
+      return "Following (" + this.totalFollowings + ")";
+    },
+    myLike() {
+      return this.user.my_like;
     }
+  },
+  async mounted() {},
+  methods: {
+    handleOk() {},
+    showModal() {
+      // this.fetchFollowerFeedAction();
+    },
+    hideModal() {},
+    fetchFollowerFeedAction() {
+      const self = this;
+      self.is_loading = true;
+      this.$stores.userFollowing.fetchUserFollowings({
+        user_id: this.user.id
+      }).then(() => {}).catch(() => {}).finally(() => {
+        this.is_loading = false;
+        this.scrolledToBottom = false;
+      });
+    }
+  }
 };
 </script>

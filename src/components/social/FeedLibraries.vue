@@ -30,28 +30,38 @@
 import LibraryLogo from "@/views/library/LibraryLogo";
 import Loading from "@/components/Loading";
 export default {
-    name: "FeedLibraries",
-    components: { LibraryLogo, Loading },
-    data() {
-        return { loading: false, failed: false, libraries: [] };
-    },
-    mounted() {
-        this.load();
-    },
-    methods: {
-        async load() {
-            if (this.loading) return;
-            this.loading = true;
-            this.failed = false;
-            try {
-                const r = await this.$store.dispatch("fetchMyLibraries", { term: null, page: 1 });
-                if (!this._isDestroyed) this.libraries = (r.data.data || []).slice(0, 3).map((x) => x.attributes || x);
-            } catch (error) {
-                this.failed = true;
-            } finally {
-                this.loading = false;
-            }
-        },
-    },
+  name: "FeedLibraries",
+  components: {
+    LibraryLogo,
+    Loading
+  },
+  data() {
+    return {
+      loading: false,
+      failed: false,
+      libraries: []
+    };
+  },
+  mounted() {
+    this.load();
+  },
+  methods: {
+    async load() {
+      if (this.loading) return;
+      this.loading = true;
+      this.failed = false;
+      try {
+        const r = await this.$stores.library.fetchMyLibraries({
+          term: null,
+          page: 1
+        });
+        if (!this.componentLeaving) this.libraries = (r.data.data || []).slice(0, 3).map(x => x.attributes || x);
+      } catch (error) {
+        this.failed = true;
+      } finally {
+        this.loading = false;
+      }
+    }
+  }
 };
 </script>

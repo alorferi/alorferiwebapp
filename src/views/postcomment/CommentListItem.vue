@@ -32,35 +32,40 @@
 <script>
 import UserPhoto from "../user/UserPhoto";
 export default {
-    name: "CommentListItem",
-    props: ["comment", "post"],
-    components: { UserPhoto },
-    data() {
-        return { deleting: false, failed: false };
-    },
-    computed: {
-        isAbletoDeleteComment() {
-            return (
-                this.comment.user.id === this.$store.getters.activeUser.id ||
-                this.post.user.id === this.$store.getters.activeUser.id
-            );
-        },
-    },
-    methods: {
-        async deleteComment() {
-            if (this.deleting) return;
-            this.deleting = true;
-            this.failed = false;
-            try {
-                await this.$store.dispatch("deletePostComment", {
-                    overhead: { post: this.post, comment: this.comment },
-                });
-            } catch (error) {
-                this.failed = true;
-            } finally {
-                this.deleting = false;
-            }
-        },
-    },
+  name: "CommentListItem",
+  props: ["comment", "post"],
+  components: {
+    UserPhoto
+  },
+  data() {
+    return {
+      deleting: false,
+      failed: false
+    };
+  },
+  computed: {
+    isAbletoDeleteComment() {
+      return this.comment.user.id === this.$stores.user.activeUser.id || this.post.user.id === this.$stores.user.activeUser.id;
+    }
+  },
+  methods: {
+    async deleteComment() {
+      if (this.deleting) return;
+      this.deleting = true;
+      this.failed = false;
+      try {
+        await this.$stores.comment.deletePostComment({
+          overhead: {
+            post: this.post,
+            comment: this.comment
+          }
+        });
+      } catch (error) {
+        this.failed = true;
+      } finally {
+        this.deleting = false;
+      }
+    }
+  }
 };
 </script>

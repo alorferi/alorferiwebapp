@@ -1,5 +1,10 @@
 # Dependency recovery record
 
+> Historical Vue 2 recovery baseline. The approved Vue 3/Pinia/Vite migration
+> supersedes this configuration; see [modernization.md](modernization.md) and
+> the project README for current commands, versions and audit findings. Temporary
+> backup locations below may no longer exist after the power interruption.
+
 Verified on 18 November 2026, macOS Apple Silicon, Node 22.22.2 and npm 10.9.7.
 
 ## Subsequent UI migration

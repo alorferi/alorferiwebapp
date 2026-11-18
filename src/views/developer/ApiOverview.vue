@@ -30,16 +30,17 @@
 
 <script>
 import { companyContact } from "@/config/company";
-
 export default {
-    name: "ApiOverview",
-    data() {
-        return { companyContact };
-    },
-    components: {},
-    mounted: function() {},
-    computed: {},
-    props: {}
+  name: "ApiOverview",
+  data() {
+    return {
+      companyContact
+    };
+  },
+  components: {},
+  mounted: function () {},
+  computed: {},
+  props: {}
 };
 </script>
 

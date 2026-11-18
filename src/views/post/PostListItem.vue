@@ -47,7 +47,7 @@
             <h2 v-if="post.title" v-html="post.title"></h2>
             <div
                 v-if="post.body"
-                :id="'post-body-' + _uid"
+                :id="bodyId"
                 ref="body"
                 class="social-post-body"
                 :class="{ 'is-collapsed': !expanded }"
@@ -58,7 +58,7 @@
                 type="button"
                 class="social-read-more"
                 :aria-expanded="expanded ? 'true' : 'false'"
-                :aria-controls="'post-body-' + _uid"
+                :aria-controls="bodyId"
                 @click="expanded = !expanded"
             >
                 {{ $t(expanded ? "social.seeLess" : "social.seeMore") }}
@@ -101,75 +101,83 @@
     </article>
 </template>
 <script>
+import {createUiId} from "@/components/ui/id";
 import UserPhoto from "../user/UserPhoto";
 import ShowPostComments from "../postcomment/ShowPostComments";
 import EditPostModal from "./CreateOrEditPostModal.vue";
 import CreateReportModal from "@/views/complain/CreateReportModal.vue";
 import CreateBlockModal from "@/views/complain/CreateBlockModal.vue";
 export default {
-    name: "PostListItem",
-    props: ["post"],
-    components: { UserPhoto, ShowPostComments, EditPostModal, CreateReportModal, CreateBlockModal },
-    data() {
-        return {
-            showEditPostModal: false,
-            showCreateReportModel: false,
-            showCreateBlockModel: false,
-            expanded: false,
-            overflowing: false,
-            deleting: false,
-            deleteError: false,
-        };
+  name: "PostListItem",
+  props: ["post"],
+  components: {
+    UserPhoto,
+    ShowPostComments,
+    EditPostModal,
+    CreateReportModal,
+    CreateBlockModal
+  },
+  data() {
+    return {
+      bodyId:createUiId("post-body"),
+      showEditPostModal: false,
+      showCreateReportModel: false,
+      showCreateBlockModel: false,
+      expanded: false,
+      overflowing: false,
+      deleting: false,
+      deleteError: false
+    };
+  },
+  computed: {
+    body() {
+      return (this.post.body || "").replace(/(?:\r\n|\r|\n)/g, "<br>");
     },
-    computed: {
-        body() {
-            return (this.post.body || "").replace(/(?:\r\n|\r|\n)/g, "<br>");
-        },
-        getYouTubeEmbedUrl() {
-            const url = this.extractUrl(this.post.body || "");
-            const id = this.extractYouTubeVideoId(url);
-            return id ? "https://www.youtube.com/embed/" + id : null;
-        },
-        isMyPost() {
-            return this.post.user.id === this.$store.getters.activeUser.id;
-        },
+    getYouTubeEmbedUrl() {
+      const url = this.extractUrl(this.post.body || "");
+      const id = this.extractYouTubeVideoId(url);
+      return id ? "https://www.youtube.com/embed/" + id : null;
     },
-    mounted() {
-        this.measure();
-        if ("ResizeObserver" in window) {
-            this.resizeObserver = new ResizeObserver(this.measure);
-            if (this.$refs.body) this.resizeObserver.observe(this.$refs.body);
-        } else window.addEventListener("resize", this.measure);
+    isMyPost() {
+      return this.post.user.id === this.$stores.user.activeUser.id;
+    }
+  },
+  mounted() {
+    this.measure();
+    if ("ResizeObserver" in window) {
+      this.resizeObserver = new ResizeObserver(this.measure);
+      if (this.$refs.body) this.resizeObserver.observe(this.$refs.body);
+    } else window.addEventListener("resize", this.measure);
+  },
+  beforeUnmount() {
+    if (this.resizeObserver) this.resizeObserver.disconnect();
+    window.removeEventListener("resize", this.measure);
+  },
+  watch: {
+    "post.body"() {
+      this.$nextTick(this.measure);
+    }
+  },
+  methods: {
+    measure() {
+      const e = this.$refs.body;
+      if (e && !this.expanded) this.overflowing = e.scrollHeight > e.clientHeight + 1;
     },
-    beforeDestroy() {
-        if (this.resizeObserver) this.resizeObserver.disconnect();
-        window.removeEventListener("resize", this.measure);
+    async deleteUserPost() {
+      if (this.deleting) return;
+      this.deleting = true;
+      this.deleteError = false;
+      try {
+        await this.$stores.userPost.deleteUserPost(this.post);
+      } catch (error) {
+        this.deleteError = true;
+      } finally {
+        this.deleting = false;
+      }
     },
-    watch: {
-        "post.body"() {
-            this.$nextTick(this.measure);
-        },
-    },
-    methods: {
-        measure() {
-            const e = this.$refs.body;
-            if (e && !this.expanded) this.overflowing = e.scrollHeight > e.clientHeight + 1;
-        },
-        async deleteUserPost() {
-            if (this.deleting) return;
-            this.deleting = true;
-            this.deleteError = false;
-            try {
-                await this.$store.dispatch("deleteUserPost", this.post);
-            } catch (error) {
-                this.deleteError = true;
-            } finally {
-                this.deleting = false;
-            }
-        },
-        didFinishBlockingUser() {
-            this.$store.dispatch("removeUserPost", this.post);
-        },
-    },
+    didFinishBlockingUser() {
+      this.$stores.userPost.removeUserPost(this.post);
+    }
+  }
 };
 </script>

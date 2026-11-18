@@ -42,31 +42,31 @@ import CreateOrEditPostModal from "@/views/post/CreateOrEditPostModal.vue";
 // import ImageUploader from "vue-image-upload-resize";
 
 export default {
-    name: "CreateLibraryPost",
-    components: {
-        UserPhoto,
-        // ImageUploader,
-        CreateOrEditPostModal,
-    },
-    props: ["library"],
-    computed: {
-        activeUser() {
-            return this.$store.getters.activeUser;
-        },
-    },
-    data() {
-        return {
-            title: "",
-            body: "",
-            bodyState: null,
-            imgUrl: null,
-            imgFile: null,
-            hasImage: false,
-            showCreateUserPostModel: false,
-            // image: null
-        };
-    },
-    methods: {},
+  name: "CreateLibraryPost",
+  components: {
+    UserPhoto,
+    // ImageUploader,
+    CreateOrEditPostModal
+  },
+  props: ["library"],
+  computed: {
+    activeUser() {
+      return this.$stores.user.activeUser;
+    }
+  },
+  data() {
+    return {
+      title: "",
+      body: "",
+      bodyState: null,
+      imgUrl: null,
+      imgFile: null,
+      hasImage: false,
+      showCreateUserPostModel: false
+      // image: null
+    };
+  },
+  methods: {}
 };
 </script>
 

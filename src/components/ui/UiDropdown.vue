@@ -28,70 +28,72 @@
     </div>
 </template>
 <script>
+import {createUiId} from "./id";
 export default {
-    name: "UiDropdown",
-    props: {
-        triggerId: String,
-        triggerClass: { type: String, default: "ui-button ui-button-link" },
-        label: { type: String, default: "Actions" },
-        align: { type: String, default: "right" },
+  name: "UiDropdown",
+  props: {
+    triggerId: String,
+    triggerClass: {
+      type: String,
+      default: "ui-button ui-button-link"
     },
-    data() {
-        return { open: false, menuId: "ui-menu-" + this._uid };
+    label: {
+      type: String,
+      default: "Actions"
     },
-    mounted() {
-        document.addEventListener("click", this.outside);
+    align: {
+      type: String,
+      default: "right"
+    }
+  },
+  data() {
+    return {
+      open: false,
+      menuId: createUiId("ui-menu")
+    };
+  },
+  mounted() {
+    document.addEventListener("click", this.outside);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.outside);
+  },
+  watch: {
+    $route() {
+      this.open = false;
+    }
+  },
+  methods: {
+    outside(event) {
+      if (!this.$el.contains(event.target)) this.open = false;
     },
-    beforeDestroy() {
-        document.removeEventListener("click", this.outside);
+    leave(event) {
+      // During focusout, activeElement can still be BODY even when the
+      // pointer is moving focus to a menu item. Keep it until click runs.
+      const next = event.relatedTarget;
+      if (next && !this.$el.contains(next)) this.open = false;
     },
-    watch: {
-        $route() {
-            this.open = false;
-        },
+    select(event) {
+      if (event.target.closest("a,button")) this.open = false;
     },
-    methods: {
-        outside(event) {
-            if (!this.$el.contains(event.target)) this.open = false;
-        },
-        leave(event) {
-            // During focusout, activeElement can still be BODY even when the
-            // pointer is moving focus to a menu item. Keep it until click runs.
-            const next = event.relatedTarget;
-            if (next && !this.$el.contains(next)) this.open = false;
-        },
-        select(event) {
-            if (event.target.closest("a,button")) this.open = false;
-        },
-        keydown(event) {
-            if (event.key === "Escape" && this.open) {
-                event.preventDefault();
-                event.stopPropagation();
-                this.open = false;
-                this.$refs.trigger.focus();
-            }
-            if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
-            event.preventDefault();
-            this.open = true;
-            this.$nextTick(() => {
-                const items = [...this.$refs.menu.querySelectorAll("a[href],button:not([disabled])")].filter(
-                    (e) => e.getClientRects().length
-                );
-                if (!items.length) return;
-                const current = items.indexOf(document.activeElement);
-                const index =
-                    event.key === "Home"
-                        ? 0
-                        : event.key === "End"
-                        ? items.length - 1
-                        : event.key === "ArrowUp"
-                        ? current <= 0
-                            ? items.length - 1
-                            : current - 1
-                        : (current + 1) % items.length;
-                items[index].focus();
-            });
-        },
-    },
+    keydown(event) {
+      if (event.key === "Escape" && this.open) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.open = false;
+        this.$refs.trigger.focus();
+      }
+      if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      this.open = true;
+      this.$nextTick(() => {
+        const items = [...this.$refs.menu.querySelectorAll("a[href],button:not([disabled])")].filter(e => e.getClientRects().length);
+        if (!items.length) return;
+        const current = items.indexOf(document.activeElement);
+        const index = event.key === "Home" ? 0 : event.key === "End" ? items.length - 1 : event.key === "ArrowUp" ? current <= 0 ? items.length - 1 : current - 1 : (current + 1) % items.length;
+        items[index].focus();
+      });
+    }
+  }
 };
 </script>

@@ -59,83 +59,73 @@
 <script>
 import UserNameField from "@/components/UserNameField";
 import PasswordField from "@/components/PasswordField";
-
 export default {
-    name: "Login",
-    props: {
-        msg: String
-    },
-    components: {
-        UserNameField,
-        PasswordField
-    },
-    mounted: function () {
-        if (this.$store.getters.isLoggedIn) {
-            //  this.$router.push({ name: "home" });
-        }
-    },
-    data() {
-        return {
-            username: "",
-            password: "",
-            is_error: false,
-            error_message: "",
-            errors: null
-        };
-    },
-    methods: {
-        login: function () {
-            const self = this;
-            this.is_error = false;
-            let username = this.username.replace(/^0+/, "");
-            let password = this.password;
-            self.$store
-                .dispatch("loginBasic", {
-                    username,
-                    password
-                })
-                .then(() => {
-                    self.$store
-                        .dispatch("fetchMe")
-                        .then(() => {
-                            // self.$router.replace(self.$route.query.from);
-                            // window.location.href = "/";
-                            // console.log("success");
-                        })
-                        .catch(() => {
-                            console.log("failed");
-                        });
-                })
-                .catch(errors => {
-                    // this.error_message = errors;
-                    console.log(errors);
-
-                    try {
-                        if (errors.response.data.errors) {
-                            self.errors = errors.response.data.errors;
-                        } else if (errors.response.data.message) {
-                            self.error_message = errors.response.data.message;
-                        }
-                    } catch (err) {
-                        self.errors = err;
-                    }
-
-                    self.is_error = true;
-                });
-        },
-        onBlurMobileNumber(e) {
-            console.log("blur", e.target.value);
-
-            if (e.target.value.startsWith("0", 0)) {
-                e.target.value = e.target.value.substring(1);
-            }
-            // var value = parseInt(e.target.value, 10);
-            // if (isNaN(value) == false) {
-            //     e.target.value = value;
-            //     this.value = value;
-            // }
-        }
+  name: "Login",
+  props: {
+    msg: String
+  },
+  components: {
+    UserNameField,
+    PasswordField
+  },
+  mounted: function () {
+    if (this.$stores.auth.isLoggedIn) {
+      //  this.$router.push({ name: "home" });
     }
+  },
+  data() {
+    return {
+      username: "",
+      password: "",
+      is_error: false,
+      error_message: "",
+      errors: null
+    };
+  },
+  methods: {
+    login: function () {
+      const self = this;
+      this.is_error = false;
+      let username = this.username.replace(/^0+/, "");
+      let password = this.password;
+      self.$stores.auth.loginBasic({
+        username,
+        password
+      }).then(() => {
+        self.$stores.user.fetchMe().then(() => {
+          // self.$router.replace(self.$route.query.from);
+          // window.location.href = "/";
+          // console.log("success");
+        }).catch(() => {
+          console.log("failed");
+        });
+      }).catch(errors => {
+        // this.error_message = errors;
+        console.log(errors);
+        try {
+          if (errors.response.data.errors) {
+            self.errors = errors.response.data.errors;
+          } else if (errors.response.data.message) {
+            self.error_message = errors.response.data.message;
+          }
+        } catch (err) {
+          self.errors = err;
+        }
+        self.is_error = true;
+      });
+    },
+    onBlurMobileNumber(e) {
+      console.log("blur", e.target.value);
+      if (e.target.value.startsWith("0", 0)) {
+        e.target.value = e.target.value.substring(1);
+      }
+      // var value = parseInt(e.target.value, 10);
+      // if (isNaN(value) == false) {
+      //     e.target.value = value;
+      //     this.value = value;
+      // }
+    }
+  }
 };
 </script>
 

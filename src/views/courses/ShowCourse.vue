@@ -55,55 +55,72 @@
 import CourseImage from "./CourseImage";
 import Loading from "@/components/Loading";
 export default {
-    name: "ShowCourse",
-    components: { CourseImage, Loading },
-    data() {
-        return { loading: true, error: false, canApply: false, orderMessage: "", orderError: false };
+  name: "ShowCourse",
+  components: {
+    CourseImage,
+    Loading
+  },
+  data() {
+    return {
+      loading: true,
+      error: false,
+      canApply: false,
+      orderMessage: "",
+      orderError: false
+    };
+  },
+  computed: {
+    course() {
+      return this.$stores.course.course;
     },
-    computed: {
-        course() {
-            return this.$store.getters.course;
-        },
-        sections() {
-            return [
-                { key: "intro", label: "aboutCourse" },
-                { key: "for_whom", label: "forWhom" },
-                { key: "prerequisites", label: "prerequisites" },
-                { key: "outline", label: "outline" },
-                { key: "career_opportunities", label: "learn" },
-            ].filter((f) => this.course && this.course[f.key]);
-        },
+    sections() {
+      return [{
+        key: "intro",
+        label: "aboutCourse"
+      }, {
+        key: "for_whom",
+        label: "forWhom"
+      }, {
+        key: "prerequisites",
+        label: "prerequisites"
+      }, {
+        key: "outline",
+        label: "outline"
+      }, {
+        key: "career_opportunities",
+        label: "learn"
+      }].filter(f => this.course && this.course[f.key]);
+    }
+  },
+  mounted() {
+    this.load();
+  },
+  methods: {
+    async load() {
+      this.loading = true;
+      this.error = false;
+      try {
+        await this.$stores.course.fetchCourseBySlug(this.$route.params.slug);
+        await this.loadOrder();
+      } catch (error) {
+        this.error = true;
+      } finally {
+        this.loading = false;
+      }
     },
-    mounted() {
-        this.load();
-    },
-    methods: {
-        async load() {
-            this.loading = true;
-            this.error = false;
-            try {
-                await this.$store.dispatch("fetchCourseBySlug", this.$route.params.slug);
-                await this.loadOrder();
-            } catch (error) {
-                this.error = true;
-            } finally {
-                this.loading = false;
-            }
-        },
-        async loadOrder() {
-            this.orderError = false;
-            this.canApply = false;
-            try {
-                const r = await this.$store.dispatch("fetchMyCourseOrder", this.course.id);
-                this.orderMessage = r.data.message || "";
-            } catch (error) {
-                if (error.response && error.response.status === 404) this.canApply = true;
-                else {
-                    this.orderError = true;
-                    this.orderMessage = this.$t("social.requestError");
-                }
-            }
-        },
-    },
+    async loadOrder() {
+      this.orderError = false;
+      this.canApply = false;
+      try {
+        const r = await this.$stores.courseOrder.fetchMyCourseOrder(this.course.id);
+        this.orderMessage = r.data.message || "";
+      } catch (error) {
+        if (error.response && error.response.status === 404) this.canApply = true;else {
+          this.orderError = true;
+          this.orderMessage = this.$t("social.requestError");
+        }
+      }
+    }
+  }
 };
 </script>

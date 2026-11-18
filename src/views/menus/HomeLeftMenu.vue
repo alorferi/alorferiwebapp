@@ -31,12 +31,12 @@
 // @ is an alias to /src
 
 export default {
-    name: "HomeLeftMenu",
-    components: {},
-    methods: {
-        reload: function() {
-            this.$router.go(this.$router.currentRoute);
-        }
+  name: "HomeLeftMenu",
+  components: {},
+  methods: {
+    reload: function () {
+      this.$router.go(this.$router.currentRoute);
     }
+  }
 };
 </script>

@@ -19,9 +19,9 @@
             <span
                 class="social-cart"
                 role="status"
-                :aria-label="$t('social.cart') + ': ' + $store.getters.myCart.length"
+                :aria-label="$t('social.cart') + ': ' + $stores.myCart.myCart.length"
                 ><i class="fas fa-shopping-bag" aria-hidden="true"></i
-                ><span>{{ $store.getters.myCart.length }}</span></span
+                ><span>{{ $stores.myCart.myCart.length }}</span></span
             >
             <UiDropdown
                 trigger-id="navbarDropdown"
@@ -54,19 +54,27 @@
 import UserPhoto from "@/views/user/UserPhoto";
 import LanguageToggleButton from "@/components/LanguageToggleButton";
 export default {
-    name: "HomeNav",
-    components: { UserPhoto, LanguageToggleButton },
-    props: { menuOpen: Boolean },
-    computed: {
-        activeUser() {
-            return this.$store.getters.activeUser;
-        },
-    },
-    methods: {
-        async logoutMe() {
-            await this.$store.dispatch("logout");
-            this.$router.push({ name: "home" }).catch(() => {});
-        },
-    },
+  emits: ["menu"],
+  name: "HomeNav",
+  components: {
+    UserPhoto,
+    LanguageToggleButton
+  },
+  props: {
+    menuOpen: Boolean
+  },
+  computed: {
+    activeUser() {
+      return this.$stores.user.activeUser;
+    }
+  },
+  methods: {
+    async logoutMe() {
+      await this.$stores.auth.logout();
+      this.$router.push({
+        name: "home"
+      }).catch(() => {});
+    }
+  }
 };
 </script>
