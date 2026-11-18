@@ -18,32 +18,30 @@
 
 <script>
 import Login from "@/views/auth/Login";
-
-
 export default {
-    name: "LoginContainer",
-    props: {
-        msg: String
-    },
-    components: {
-        Login
-    },
-    mounted: function() {
-        if (this.$store.getters.isLoggedIn) {
-
-            if(this.$route.query.from){
-                this.$router.push(this.$route.query.from);
-            }else{
-                this.$router.push({ name: "home" })
-            }
-
-        }
-    },
-    computed: {},
-    data() {
-        return {};
-    },
-    methods: {}
+  name: "LoginContainer",
+  props: {
+    msg: String
+  },
+  components: {
+    Login
+  },
+  mounted: function () {
+    if (this.$stores.auth.isLoggedIn) {
+      if (this.$route.query.from) {
+        this.$router.push(this.$route.query.from);
+      } else {
+        this.$router.push({
+          name: "home"
+        });
+      }
+    }
+  },
+  computed: {},
+  data() {
+    return {};
+  },
+  methods: {}
 };
 </script>
 

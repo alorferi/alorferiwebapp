@@ -54,117 +54,110 @@ import Loading from "@/components/Loading";
 // import ImageUploader from "vue-image-upload-resize";
 
 export default {
-    name: "UploadMyPhotoModal",
-    components: {
-        // UserPhoto,
-        // ImageUploader,
-        Loading
+  emits: ["updateVisibleState"],
+  name: "UploadMyPhotoModal",
+  components: {
+    // UserPhoto,
+    // ImageUploader,
+    Loading
+  },
+  beforeUnmount() {
+    if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
+  },
+  mounted: function () {},
+  props: ["show"],
+  computed: {
+    user() {
+      return this.$stores.user.activeUser;
     },
-    beforeDestroy() { if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl); },
-    mounted: function() {},
-    props: ["show"],
-    computed: {
-        user() {
-            return this.$store.getters.activeUser;
-        },
-        activeUser() {
-            return this.$store.getters.activeUser;
-        },
-        showLocal: {
-            get: function() {
-                return this.show;
-            },
-            set: function(value) {
-                this.$emit("updateVisibleState", value);
-            }
-        }
+    activeUser() {
+      return this.$stores.user.activeUser;
     },
-    data() {
-        return {
-            imgUrl: null,
-            imgFile: null,
-            hasImage: false,
-            requestError: "",
-            is_loading: false,
-            modalTile: "Upload photo from computer."
-        };
-    },
-    methods: {
-        onFileChange(file) {
-            if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
-            this.imgFile = file;
-            this.imgUrl = file ? URL.createObjectURL(file) : null;
-        },
-
-        updateUserPhoto() {
-            const self = this;
-
-            let formData = new FormData();
-
-            if (self.imgFile) {
-                formData.append("photo", self.imgFile);
-            }
-
-            self.requestError = "";
-            self.is_loading = true;
-
-            var packet = {
-                formData: formData
-            };
-
-            self.$store
-                .dispatch("uploadMyPhoto", packet)
-                .then(() => {
-                    self.hideThisModal();
-                })
-                .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
-                .finally(() => {
-                    self.is_loading = false;
-                });
-        },
-
-        checkFormValidity() {
-            const valid = this.$refs.form.checkValidity();
-            return valid;
-        },
-        showModal() {
-            this.showData();
-        },
-        hideModal() {
-            this.clearData();
-        },
-        clearData() {
-            this.requestError = "";
-            if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
-            this.imgUrl = null;
-            this.imgFile = null;
-        },
-        showData() {
-            this.imgUrl = this.getApiUrl(this.user.photo_url);
-            this.imgFile = null;
-        },
-        handleOk() {
-            // Prevent modal from closing
-            // Trigger submit handler
-            this.handleSubmit();
-        },
-        handleSubmit() {
-            if (this.is_loading) return;
-            // Exit when the form isn't valid
-            if (!this.checkFormValidity()) {
-                return;
-            }
-            // Subit data to backend server
-            this.updateUserPhoto();
-        },
-
-        hideThisModal() {
-            // Hide the modal manually
-            this.$nextTick(() => {
-                this.showLocal = false;
-            });
-        }
+    showLocal: {
+      get: function () {
+        return this.show;
+      },
+      set: function (value) {
+        this.$emit("updateVisibleState", value);
+      }
     }
+  },
+  data() {
+    return {
+      imgUrl: null,
+      imgFile: null,
+      hasImage: false,
+      requestError: "",
+      is_loading: false,
+      modalTile: "Upload photo from computer."
+    };
+  },
+  methods: {
+    onFileChange(file) {
+      if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
+      this.imgFile = file;
+      this.imgUrl = file ? URL.createObjectURL(file) : null;
+    },
+    updateUserPhoto() {
+      const self = this;
+      let formData = new FormData();
+      if (self.imgFile) {
+        formData.append("photo", self.imgFile);
+      }
+      self.requestError = "";
+      self.is_loading = true;
+      var packet = {
+        formData: formData
+      };
+      self.$stores.user.uploadMyPhoto(packet).then(() => {
+        self.hideThisModal();
+      }).catch(error => {
+        self.requestError = requestErrorMessage(error, self.$stores.language.activeLanguage);
+      }).finally(() => {
+        self.is_loading = false;
+      });
+    },
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity();
+      return valid;
+    },
+    showModal() {
+      this.showData();
+    },
+    hideModal() {
+      this.clearData();
+    },
+    clearData() {
+      this.requestError = "";
+      if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
+      this.imgUrl = null;
+      this.imgFile = null;
+    },
+    showData() {
+      this.imgUrl = this.getApiUrl(this.user.photo_url);
+      this.imgFile = null;
+    },
+    handleOk() {
+      // Prevent modal from closing
+      // Trigger submit handler
+      this.handleSubmit();
+    },
+    handleSubmit() {
+      if (this.is_loading) return;
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return;
+      }
+      // Subit data to backend server
+      this.updateUserPhoto();
+    },
+    hideThisModal() {
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.showLocal = false;
+      });
+    }
+  }
 };
 </script>
 

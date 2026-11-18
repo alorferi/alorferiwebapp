@@ -37,98 +37,87 @@
 <script>
 // import UserPhoto from "../user/UserPhoto";
 import Loading from "@/components/Loading";
-
 export default {
-    name: "CreateBlockModal",
-    components: {
-        // UserPhoto,
-        Loading
+  emits: ["didFinish", "updateVisibleState"],
+  name: "CreateBlockModal",
+  components: {
+    // UserPhoto,
+    Loading
+  },
+  async mounted() {},
+  props: ["show", "blockable_type", "blockable_id", "user"],
+  computed: {
+    activeUser() {
+      return this.$stores.user.activeUser;
     },
-    async mounted() {},
-    props: ["show", "blockable_type", "blockable_id", "user"],
-    computed: {
-        activeUser() {
-            return this.$store.getters.activeUser;
-        },
-        showLocal: {
-            get: function() {
-                return this.show;
-            },
-            set: function(value) {
-                this.$emit("updateVisibleState", value);
-            }
-        }
-    },
-    data() {
-        return {
-            dataModel: {
-                blockable_id: null,
-                blockable_type: null
-            },
-
-            is_loading: false,
-            modalTile: "Block!",
-            errorMessage: null
-        };
-    },
-    methods: {
-        didFinish: function() {
-            this.$emit("didFinish");
-        },
-        createReportAction() {
-            const self = this;
-
-            self.is_loading = true;
-
-            self.dataModel.blockable_type = self.blockable_type;
-
-            self.dataModel.blockable_id = self.blockable_id;
-
-            self.$store
-                .dispatch("createBlock", self.dataModel)
-                .then(() => {
-                    self.hidePostModal();
-                    self.didFinish();
-                })
-                .catch(errors => {
-                    try {
-                        if (errors.response.data) {
-                            self.errorMessage = errors.response.data.message;
-                        }
-                    } catch (err) {
-                        self.errorMessage = err;
-                    }
-                })
-                .finally(() => {
-                    self.is_loading = false;
-                });
-        },
-
-        showModal() {},
-        hideModal() {
-            this.clearData();
-        },
-        clearData() {
-            this.errorMessage = null;
-        },
-        handleOk() {
-            // Prevent modal from closing
-            // Trigger submit handler
-            this.handleSubmit();
-        },
-        handleSubmit() {
-            if (this.is_loading) return;
-            // Submit data to backend server
-            this.createReportAction();
-        },
-
-        hidePostModal() {
-            // Hide the modal manually
-            this.$nextTick(() => {
-                this.showLocal = false;
-            });
-        }
+    showLocal: {
+      get: function () {
+        return this.show;
+      },
+      set: function (value) {
+        this.$emit("updateVisibleState", value);
+      }
     }
+  },
+  data() {
+    return {
+      dataModel: {
+        blockable_id: null,
+        blockable_type: null
+      },
+      is_loading: false,
+      modalTile: "Block!",
+      errorMessage: null
+    };
+  },
+  methods: {
+    didFinish: function () {
+      this.$emit("didFinish");
+    },
+    createReportAction() {
+      const self = this;
+      self.is_loading = true;
+      self.dataModel.blockable_type = self.blockable_type;
+      self.dataModel.blockable_id = self.blockable_id;
+      self.$stores.block.createBlock(self.dataModel).then(() => {
+        self.hidePostModal();
+        self.didFinish();
+      }).catch(errors => {
+        try {
+          if (errors.response.data) {
+            self.errorMessage = errors.response.data.message;
+          }
+        } catch (err) {
+          self.errorMessage = err;
+        }
+      }).finally(() => {
+        self.is_loading = false;
+      });
+    },
+    showModal() {},
+    hideModal() {
+      this.clearData();
+    },
+    clearData() {
+      this.errorMessage = null;
+    },
+    handleOk() {
+      // Prevent modal from closing
+      // Trigger submit handler
+      this.handleSubmit();
+    },
+    handleSubmit() {
+      if (this.is_loading) return;
+      // Submit data to backend server
+      this.createReportAction();
+    },
+    hidePostModal() {
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.showLocal = false;
+      });
+    }
+  }
 };
 </script>
 

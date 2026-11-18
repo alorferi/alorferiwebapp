@@ -17,50 +17,36 @@
 
 <script>
 export default {
-    name: "Help",
-    components: {},
-    mounted: function() {},
-    computed: {
-
+  name: "Help",
+  components: {},
+  mounted: function () {},
+  computed: {},
+  props: {},
+  data() {
+    return {
+      videos: [{
+        vid: "sbLFUISqMOk?list=PLzsrT--VduaZif4IN0vbTXnjBJG_4Qc8C",
+        caption: "tutorial_01"
+      }, {
+        vid: "NtI0i-3gA70",
+        caption: "tutorial_02"
+      }, {
+        caption: "tutorial_03",
+        url: "kXW38I0wa88"
+      }, {
+        caption: "tutorial_04",
+        vid: "PnUrXnrxrn0"
+      }]
+    };
+  },
+  methods: {
+    getYouTubeEmbedUrl: function (vid) {
+      return "https://www.youtube.com/embed/" + vid;
     },
-    props: {},
-    data() {
-        return {
-            videos: [
-                {
-                    vid:
-                        "sbLFUISqMOk?list=PLzsrT--VduaZif4IN0vbTXnjBJG_4Qc8C",
-                    caption:
-                        "tutorial_01"
-                },
-                {
-                    vid:
-                        "NtI0i-3gA70",
-                    caption:
-                    "tutorial_02"
-                }, {
-                    caption:
-                        "tutorial_03",
-                    url:
-                        "kXW38I0wa88",
-
-                }, {  caption:
-                        "tutorial_04",
-                        vid:
-                        "PnUrXnrxrn0",
-
-                }
-            ]
-        };
-    },
-    methods:{
-        getYouTubeEmbedUrl: function(vid) {
-            return   "https://www.youtube.com/embed/" + vid;
-        },
-        getYouTubeThumbUrl: function(vid) {
-            return   "https://img.youtube.com/vi/"+vid+"/default.jpg";
-        },
+    getYouTubeThumbUrl: function (vid) {
+      return "https://img.youtube.com/vi/" + vid + "/default.jpg";
     }
+  }
 };
 </script>
 

@@ -65,86 +65,127 @@
 
 <script>
 import readerAuth from "./readerAuth";
-
 export default {
-    name: "Register",
-    mixins: [readerAuth],
-    data() {
-        return {
-            signup: { first_name: "", surname: "", username: "", password: "", dob: "", gender: "" },
-            verifying: false, accountCreated: false, code: "", codeError: "", deadline: 0,
-            now: Date.now(), timer: null
-        };
+  name: "Register",
+  mixins: [readerAuth],
+  data() {
+    return {
+      signup: {
+        first_name: "",
+        surname: "",
+        username: "",
+        password: "",
+        dob: "",
+        gender: ""
+      },
+      verifying: false,
+      accountCreated: false,
+      code: "",
+      codeError: "",
+      deadline: 0,
+      now: Date.now(),
+      timer: null
+    };
+  },
+  computed: {
+    today() {
+      return this.formatDate(new Date(), "YYYY-MM-DD", "en");
     },
-    computed: {
-        today() { return this.formatDate(new Date(), "YYYY-MM-DD", "en"); },
-        remaining() { return Math.max(0, Math.ceil((this.deadline - this.now) / 1000)); },
-        signupButtonLabel() {
-            if (this.busy) return this.accountCreated ? this.copy.signingIn : this.copy.working;
-            return this.accountCreated ? this.copy.retryLogin : this.verifying ? this.copy.verifyButton : this.copy.signupButton;
-        }
+    remaining() {
+      return Math.max(0, Math.ceil((this.deadline - this.now) / 1000));
     },
-    methods: {
-        clearSecrets() { this.signup.password = ""; this.code = ""; },
-        onFieldErrors() {
-            if (this.verifying && Object.keys(this.errors).some(name => Object.prototype.hasOwnProperty.call(this.signup, name))) {
-                this.clearTimer();
-                this.verifying = false;
-            }
-            this.codeError = this.errors["ot-code"] || this.errors.ot_code || "";
-        },
-        clearTimer() { clearInterval(this.timer); this.timer = null; },
-        updateCode(value) { this.code = value.replace(/\D/g, "").slice(0, 6); this.codeError = ""; this.message = ""; },
-        pasteCode(event) { this.updateCode(event.clipboardData.getData("text")); },
-        editDetails() {
-            if (this.busy) return;
-            this.clearTimer(); this.verifying = false; this.code = ""; this.codeError = ""; this.message = "";
-        },
-        startVerification(data, rejected) {
-            this.verifying = true;
-            this.code = "";
-            this.codeError = rejected ? this.copy.invalidCode : "";
-            const duration = Number(data && data.otc_expired_after_in_seconds);
-            this.now = Date.now();
-            this.deadline = this.now + (Number.isFinite(duration) && duration > 0 ? duration : 30) * 1000;
-            this.clearTimer();
-            this.timer = setInterval(() => {
-                this.now = Date.now();
-                if (this.now >= this.deadline) this.clearTimer();
-            }, 1000);
-            this.$nextTick(() => {
-                if (this._readerLeaving) return;
-                const input = this.$el.querySelector('#reader-signup-code');
-                if (input) input.focus();
-            });
-        },
-        async submitSignup(resend = false) {
-            if (this.busy || (resend && this.remaining > 0)) return;
-            if (this.verifying && !this.accountCreated && !resend && (this.remaining === 0 || !/^\d{6}$/.test(this.code))) {
-                this.codeError = this.remaining === 0 ? this.copy.codeExpired : this.copy.invalidCode;
-                this.focusError();
-                return;
-            }
-            this.beginRequest();
-            try {
-                if (!this.accountCreated) {
-                    const response = await this.$axios.post(this.$apiServerBaseUrl + "/api/auth/register-with-username", {
-                        ...this.signup, username: this.normalizeUsername(this.signup.username)
-                    }, { headers: { "ot-code": resend ? "" : this.code }, cancelToken: this._readerCancel.token });
-                    const result = response.data;
-                    if (result.status === "OTC_GENERATED" || result.status === "OTC_REJECTED") {
-                        this.startVerification(result.data, result.status === "OTC_REJECTED");
-                        return;
-                    }
-                    if (result.status !== "OK") throw new Error("Unexpected registration response");
-                    this.accountCreated = true;
-                    this.clearTimer();
-                    this.code = "";
-                }
-                await this.authenticate(this.signup.username, this.signup.password);
-            } catch (error) { this.showError(error); }
-            finally { this.busy = false; this._readerCancel = null; }
-        }
+    signupButtonLabel() {
+      if (this.busy) return this.accountCreated ? this.copy.signingIn : this.copy.working;
+      return this.accountCreated ? this.copy.retryLogin : this.verifying ? this.copy.verifyButton : this.copy.signupButton;
     }
+  },
+  methods: {
+    clearSecrets() {
+      this.signup.password = "";
+      this.code = "";
+    },
+    onFieldErrors() {
+      if (this.verifying && Object.keys(this.errors).some(name => Object.prototype.hasOwnProperty.call(this.signup, name))) {
+        this.clearTimer();
+        this.verifying = false;
+      }
+      this.codeError = this.errors["ot-code"] || this.errors.ot_code || "";
+    },
+    clearTimer() {
+      clearInterval(this.timer);
+      this.timer = null;
+    },
+    updateCode(value) {
+      this.code = value.replace(/\D/g, "").slice(0, 6);
+      this.codeError = "";
+      this.message = "";
+    },
+    pasteCode(event) {
+      this.updateCode(event.clipboardData.getData("text"));
+    },
+    editDetails() {
+      if (this.busy) return;
+      this.clearTimer();
+      this.verifying = false;
+      this.code = "";
+      this.codeError = "";
+      this.message = "";
+    },
+    startVerification(data, rejected) {
+      this.verifying = true;
+      this.code = "";
+      this.codeError = rejected ? this.copy.invalidCode : "";
+      const duration = Number(data && data.otc_expired_after_in_seconds);
+      this.now = Date.now();
+      this.deadline = this.now + (Number.isFinite(duration) && duration > 0 ? duration : 30) * 1000;
+      this.clearTimer();
+      this.timer = setInterval(() => {
+        this.now = Date.now();
+        if (this.now >= this.deadline) this.clearTimer();
+      }, 1000);
+      this.$nextTick(() => {
+        if (this._readerLeaving) return;
+        const input = this.$el.querySelector('#reader-signup-code');
+        if (input) input.focus();
+      });
+    },
+    async submitSignup(resend = false) {
+      if (this.busy || resend && this.remaining > 0) return;
+      if (this.verifying && !this.accountCreated && !resend && (this.remaining === 0 || !/^\d{6}$/.test(this.code))) {
+        this.codeError = this.remaining === 0 ? this.copy.codeExpired : this.copy.invalidCode;
+        this.focusError();
+        return;
+      }
+      this.beginRequest();
+      try {
+        if (!this.accountCreated) {
+          const response = await this.$axios.post(this.$apiServerBaseUrl + "/api/auth/register-with-username", {
+            ...this.signup,
+            username: this.normalizeUsername(this.signup.username)
+          }, {
+            headers: {
+              "ot-code": resend ? "" : this.code
+            },
+            signal: this._readerCancel.signal
+          });
+          const result = response.data;
+          if (result.status === "OTC_GENERATED" || result.status === "OTC_REJECTED") {
+            this.startVerification(result.data, result.status === "OTC_REJECTED");
+            return;
+          }
+          if (result.status !== "OK") throw new Error("Unexpected registration response");
+          this.accountCreated = true;
+          this.clearTimer();
+          this.code = "";
+        }
+        await this.authenticate(this.signup.username, this.signup.password);
+      } catch (error) {
+        this.showError(error);
+      } finally {
+        this.busy = false;
+        this._readerCancel = null;
+      }
+    }
+  }
 };
 </script>

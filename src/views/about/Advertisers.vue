@@ -25,15 +25,15 @@
 
 <script>
 export default {
-    name: "Advertisers",
-    components: {},
-    mounted: function() {},
-    computed: {},
-    props: {},
-    data() {
-        return {};
-    },
-    methods: {}
+  name: "Advertisers",
+  components: {},
+  mounted: function () {},
+  computed: {},
+  props: {},
+  data() {
+    return {};
+  },
+  methods: {}
 };
 </script>
 

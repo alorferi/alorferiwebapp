@@ -1,111 +1,73 @@
-// import Vue from "vue";
-import axios from "axios";
+import { defineStore } from "pinia";
+import { useStores } from "./registry";
+import axios from "@/api";
 import mixin from "../mixin";
-
-let detailRequest = 0;
-
-const state = {
+export const useCourseStore = defineStore("course", {
+  state: () => ({
+    detailRequest: 0,
     course: JSON.parse(localStorage.getItem("course") || null),
-
-    // courses: JSON.parse(
-    // localStorage.getItem("courses") || null
-    // ),
-
-    coursesResponse: null,
-};
-
-const getters = {
-    course: (state) => state.course,
-    // courses: state => state.courses,
-    coursesResponse: (state) => state.coursesResponse,
-};
-
-const mutations = {
-    setCourse(state, course) {
-        state.course = course;
+    coursesResponse: null
+  }),
+  getters: {},
+  actions: {
+    setCourse(course) {
+      const state = this;
+      state.course = course;
     },
-
-    setCoursesResponse(state, coursesResponse) {
-        state.coursesResponse = coursesResponse;
+    setCoursesResponse(coursesResponse) {
+      const state = this;
+      state.coursesResponse = coursesResponse;
     },
-};
-
-const actions = {
-    fetchCourse(context, courseId) {
-        const request = ++detailRequest;
-        const token = context.rootGetters.access_token;
-        var url = mixin.methods.getApiUrl("/api/courses/" + courseId);
-        return new Promise((resolve, reject) => {
-            axios
-                .get(url)
-                .then((response) => {
-                    const course = response.data.data;
-
-                    // console.log(course)
-
-                    if (request === detailRequest && context.rootGetters.access_token === token)
-                        context.commit("setCourse", course);
-                    resolve(response);
-                })
-                .catch((err) => {
-                    console.log("err:", err);
-                    reject(err);
-                });
+    fetchCourse(courseId) {
+      const appStores = useStores();
+      const request = ++this.detailRequest;
+      const token = appStores.auth.access_token;
+      var url = mixin.methods.getApiUrl("/api/courses/" + courseId);
+      return new Promise((resolve, reject) => {
+        axios.get(url).then(response => {
+          const course = response.data.data;
+          if (request === this.detailRequest && appStores.auth.access_token === token) appStores.course.setCourse(course);
+          resolve(response);
+        }).catch(err => {
+          console.log("err:", err);
+          reject(err);
         });
+      });
     },
-
-    fetchCourseBySlug(context, slug) {
-        const request = ++detailRequest;
-        const token = context.rootGetters.access_token;
-        var url = mixin.methods.getApiUrl("/api/courses/" + slug + "/slug");
-        return new Promise((resolve, reject) => {
-            axios
-                .get(url)
-                .then((response) => {
-                    const course = response.data.data;
-
-                    // console.log(course)
-
-                    if (request === detailRequest && context.rootGetters.access_token === token)
-                        context.commit("setCourse", course);
-                    resolve(response);
-                })
-                .catch((err) => {
-                    console.log("err:", err);
-                    reject(err);
-                });
+    fetchCourseBySlug(slug) {
+      const appStores = useStores();
+      const request = ++this.detailRequest;
+      const token = appStores.auth.access_token;
+      var url = mixin.methods.getApiUrl("/api/courses/" + slug + "/slug");
+      return new Promise((resolve, reject) => {
+        axios.get(url).then(response => {
+          const course = response.data.data;
+          if (request === this.detailRequest && appStores.auth.access_token === token) appStores.course.setCourse(course);
+          resolve(response);
+        }).catch(err => {
+          console.log("err:", err);
+          reject(err);
         });
+      });
     },
-
-    fetchCourses(context, payload) {
-        return new Promise((resolve, reject) => {
-            const endPoint = "/api/courses";
-
-            var url = mixin.methods.getApiUrl(endPoint, payload.term, payload.page);
-
-            axios({
-                url: url,
-                method: "GET",
-            })
-                .then((response) => {
-                    const coursesResponse = response.data;
-
-                    // console.log(coursesResponse);
-
-                    context.commit("setCoursesResponse", coursesResponse);
-                    resolve(response);
-                })
-                .catch((err) => {
-                    console.log("err:", err);
-                    reject(err);
-                });
+    fetchCourses(payload) {
+      const appStores = useStores();
+      return new Promise((resolve, reject) => {
+        const endPoint = "/api/courses";
+        var url = mixin.methods.getApiUrl(endPoint, payload.term, payload.page);
+        axios({
+          url: url,
+          method: "GET"
+        }).then(response => {
+          const coursesResponse = response.data;
+          appStores.course.setCoursesResponse(coursesResponse);
+          resolve(response);
+        }).catch(err => {
+          console.log("err:", err);
+          reject(err);
         });
-    },
-};
-
-export default {
-    state,
-    getters,
-    mutations,
-    actions,
-};
+      });
+    }
+  }
+});
+export default useCourseStore;

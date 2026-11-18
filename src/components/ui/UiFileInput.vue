@@ -6,13 +6,13 @@
         @dragleave.prevent="dragging = false"
         @drop.prevent="drop"
     >
-        <span class="mb-2 block text-sm">{{ value ? value.name : placeholder }}</span>
+        <span class="mb-2 block text-sm">{{ modelValue ? modelValue.name : placeholder }}</span>
         <input
             ref="input"
             type="file"
             :accept="accept"
             :disabled="disabled"
-            :required="required && !value"
+            :required="required && !modelValue"
             :aria-required="required ? 'true' : undefined"
             class="block w-full max-w-full text-sm file:mr-3 file:rounded file:border-0 file:bg-light file:px-3 file:py-2"
             :aria-label="placeholder"
@@ -22,32 +22,43 @@
 </template>
 <script>
 export default {
-    name: "UiFileInput",
-    props: {
-        value: { default: null },
-        accept: { type: String, default: "image/*" },
-        disabled: Boolean,
-        required: Boolean,
-        placeholder: { type: String, default: "Choose an image or drop it here…" },
+  emits: ["change", "update:modelValue"],
+  name: "UiFileInput",
+  props: {
+    modelValue: {
+      default: null
     },
-    data() {
-        return { dragging: false };
+    accept: {
+      type: String,
+      default: "image/*"
     },
-    watch: {
-        value(file) {
-            if (!file && this.$refs.input) this.$refs.input.value = "";
-        },
+    disabled: Boolean,
+    required: Boolean,
+    placeholder: {
+      type: String,
+      default: "Choose an image or drop it here…"
+    }
+  },
+  data() {
+    return {
+      dragging: false
+    };
+  },
+  watch: {
+    modelValue(file) {
+      if (!file && this.$refs.input) this.$refs.input.value = "";
+    }
+  },
+  methods: {
+    choose(file) {
+      if (this.disabled) return;
+      this.$emit("update:modelValue", file);
+      this.$emit("change", file);
     },
-    methods: {
-        choose(file) {
-            if (this.disabled) return;
-            this.$emit("input", file);
-            this.$emit("change", file);
-        },
-        drop(event) {
-            this.dragging = false;
-            this.choose(event.dataTransfer.files[0] || null);
-        },
-    },
+    drop(event) {
+      this.dragging = false;
+      this.choose(event.dataTransfer.files[0] || null);
+    }
+  }
 };
 </script>

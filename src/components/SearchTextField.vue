@@ -21,35 +21,35 @@
 
 <script>
 export default {
-    name: "SearchTextField",
-    props: ["route"],
-  async mounted(){},
-    computed: {},
-    data() {
-        return {
-            term: null
-        };
+  emits: ["update:term"],
+  name: "SearchTextField",
+  props: ["route"],
+  async mounted() {},
+  computed: {},
+  data() {
+    return {
+      term: null
+    };
+  },
+  methods: {
+    updateTerm: function () {
+      this.$emit("update:term", this.term);
     },
-
-    methods: {
-        updateTerm: function() {
-            this.$emit("update:term", this.term);
-        },
-        textChange: function() {
-            console.log(this.term);
-        }
-    },
-    watch: {
-        term: {
-            // the callback will be called immediately after the start of the observation
-            immediate: true,
-            handler(newVal, oldVal) {
-                if (newVal != oldVal && newVal == "") {
-                    this.$emit("update:term", this.term);
-                }
-            }
-        }
+    textChange: function () {
+      console.log(this.term);
     }
+  },
+  watch: {
+    term: {
+      // the callback will be called immediately after the start of the observation
+      immediate: true,
+      handler(newVal, oldVal) {
+        if (newVal != oldVal && newVal == "") {
+          this.$emit("update:term", this.term);
+        }
+      }
+    }
+  }
 };
 </script>
 

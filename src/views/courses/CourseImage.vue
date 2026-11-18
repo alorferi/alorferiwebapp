@@ -35,38 +35,46 @@
 
 <script>
 export default {
-    name: "CourseImage",
-    props: {
-        src: { type: String, default: null },
-        title: { type: String, default: "" },
+  name: "CourseImage",
+  props: {
+    src: {
+      type: String,
+      default: null
     },
-    data() {
-        return { failed: false };
+    title: {
+      type: String,
+      default: ""
+    }
+  },
+  data() {
+    return {
+      failed: false
+    };
+  },
+  computed: {
+    resolvedSrc() {
+      if (!this.src || !this.src.trim()) return null;
+      try {
+        const base = this.$apiServerBaseUrl.replace(/\/+$/, "") + "/";
+        const url = new URL(this.src.trim(), base);
+        return ["http:", "https:"].includes(url.protocol) ? url.href : null;
+      } catch (error) {
+        return null;
+      }
     },
-    computed: {
-        resolvedSrc() {
-            if (!this.src || !this.src.trim()) return null;
-            try {
-                const base = this.$apiServerBaseUrl.replace(/\/+$/, "") + "/";
-                const url = new URL(this.src.trim(), base);
-                return ["http:", "https:"].includes(url.protocol) ? url.href : null;
-            } catch (error) {
-                return null;
-            }
-        },
-        unavailable() {
-            return this.$store.getters.activeLanguage === "bn" ? "ছবি পাওয়া যায়নি" : "Image unavailable";
-        },
-    },
-    watch: {
-        resolvedSrc() {
-            this.failed = false;
-        },
-    },
-    methods: {
-        onError(event) {
-            if (event.target.getAttribute("src") === this.resolvedSrc) this.failed = true;
-        },
-    },
+    unavailable() {
+      return this.$stores.language.activeLanguage === "bn" ? "ছবি পাওয়া যায়নি" : "Image unavailable";
+    }
+  },
+  watch: {
+    resolvedSrc() {
+      this.failed = false;
+    }
+  },
+  methods: {
+    onError(event) {
+      if (event.target.getAttribute("src") === this.resolvedSrc) this.failed = true;
+    }
+  }
 };
 </script>

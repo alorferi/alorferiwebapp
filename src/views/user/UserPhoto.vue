@@ -16,25 +16,37 @@
 <script>
 import NameCircle from "@/components/NameCircle";
 export default {
-    name: "UserPhoto",
-    props: { user: Object, size: { default: 32 } },
-    components: { NameCircle },
-    data() {
-        return { failed: false };
+  name: "UserPhoto",
+  props: {
+    user: Object,
+    size: {
+      default: 32
+    }
+  },
+  components: {
+    NameCircle
+  },
+  data() {
+    return {
+      failed: false
+    };
+  },
+  computed: {
+    source() {
+      const p = this.user && this.user.photo_url;
+      return p && (/^https?:\/\//i.test(p) ? p : this.getApiUrl(p));
     },
-    computed: {
-        source() {
-            const p = this.user && this.user.photo_url;
-            return p && (/^https?:\/\//i.test(p) ? p : this.getApiUrl(p));
-        },
-        dimensions() {
-            return { width: parseInt(this.size) + "px", height: parseInt(this.size) + "px" };
-        },
-    },
-    watch: {
-        source() {
-            this.failed = false;
-        },
-    },
+    dimensions() {
+      return {
+        width: parseInt(this.size) + "px",
+        height: parseInt(this.size) + "px"
+      };
+    }
+  },
+  watch: {
+    source() {
+      this.failed = false;
+    }
+  }
 };
 </script>

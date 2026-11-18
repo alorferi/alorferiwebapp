@@ -24,7 +24,7 @@
 // @ is an alias to /src
 
 export default {
-    name: "HomeLeftMenu",
-    components: {}
+  name: "HomeLeftMenu",
+  components: {}
 };
 </script>

@@ -51,97 +51,94 @@
 
 <script>
 export default {
-    name: "AskForOtcModal",
-    props: ["showOtcModal", "durationInSeconds"],
-      computed: {
-        showOtcModalLocal: {
-            get: function() {
-                return this.showOtcModal;
-            },
-            set: function(value) {
-                this.emitShowOtcModal(value);
-            }
-        }
-    },
-    beforeDestroy() { clearInterval(this.oldSetInterval); },
-    data() {
-        return {
-            ot_code: "",
-            otCodeState: null,
-            downCounter: 0,
-            downCounterText: "",
-            message: "",
-            oldSetInterval: null,
-            okTitleText: "OK",
-            hideHeader: true
-        };
-    },
-    methods: {
-        emitOtc: function() {
-            this.$emit("updateOtc", this.ot_code);
-        },
-        emitShowOtcModal: function(isShowModal) {
-             this.$emit("onUpdateVisibleState", isShowModal);
-        },
-        otcCountdownTimer: function() {
-            clearInterval(this.oldSetInterval);
-            this.oldSetInterval = setInterval(() => {
-                if (this.downCounter <= 0) {
-                    this.message = "Time expired";
-                    this.okTitleText = "Try Again";
-                    clearInterval(this.oldSetInterval);
-                    return;
-                }
-                this.downCounter--;
-
-                this.downCounterText =
-                    parseInt(this.downCounter / 60) +
-                    ":" +
-                    (this.downCounter % 60);
-            }, 1000);
-        },
-
-        checkFormValidity() {
-            const valid = this.$refs.form.checkValidity();
-            this.otCodeState = valid;
-            return valid;
-        },
-        resetModal() {
-            this.ot_code = "";
-            this.otCodeState = null;
-            this.downCounter = 0;
-            if (this.oldSetInterval != null) {
-                clearInterval(this.oldSetInterval);
-            }
-            this.emitShowOtcModal(false);
-        },
-        initModal() {
-            this.ot_code = "";
-            this.message = "";
-            this.okTitleText = "OK";
-            this.otCodeState = null;
-            this.otcCountdownTimer();
-            this.downCounter = this.durationInSeconds;
-        },
-        handleOk() {
-            // Prevent modal from closing
-            // Trigger submit handler
-            this.handleSubmit();
-        },
-        handleSubmit() {
-            // Exit when the form isn't valid
-            if (!this.checkFormValidity()) {
-                return;
-            }
-
-            this.emitOtc();
-            // Push the name to submitted names
-            // Hide the modal manually
-            this.$nextTick(() => {
-                this.showOtcModalLocal = false;
-            });
-        }
+  emits: ["onUpdateVisibleState", "updateOtc"],
+  name: "AskForOtcModal",
+  props: ["showOtcModal", "durationInSeconds"],
+  computed: {
+    showOtcModalLocal: {
+      get: function () {
+        return this.showOtcModal;
+      },
+      set: function (value) {
+        this.emitShowOtcModal(value);
+      }
     }
+  },
+  beforeUnmount() {
+    clearInterval(this.oldSetInterval);
+  },
+  data() {
+    return {
+      ot_code: "",
+      otCodeState: null,
+      downCounter: 0,
+      downCounterText: "",
+      message: "",
+      oldSetInterval: null,
+      okTitleText: "OK",
+      hideHeader: true
+    };
+  },
+  methods: {
+    emitOtc: function () {
+      this.$emit("updateOtc", this.ot_code);
+    },
+    emitShowOtcModal: function (isShowModal) {
+      this.$emit("onUpdateVisibleState", isShowModal);
+    },
+    otcCountdownTimer: function () {
+      clearInterval(this.oldSetInterval);
+      this.oldSetInterval = setInterval(() => {
+        if (this.downCounter <= 0) {
+          this.message = "Time expired";
+          this.okTitleText = "Try Again";
+          clearInterval(this.oldSetInterval);
+          return;
+        }
+        this.downCounter--;
+        this.downCounterText = parseInt(this.downCounter / 60) + ":" + this.downCounter % 60;
+      }, 1000);
+    },
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity();
+      this.otCodeState = valid;
+      return valid;
+    },
+    resetModal() {
+      this.ot_code = "";
+      this.otCodeState = null;
+      this.downCounter = 0;
+      if (this.oldSetInterval != null) {
+        clearInterval(this.oldSetInterval);
+      }
+      this.emitShowOtcModal(false);
+    },
+    initModal() {
+      this.ot_code = "";
+      this.message = "";
+      this.okTitleText = "OK";
+      this.otCodeState = null;
+      this.otcCountdownTimer();
+      this.downCounter = this.durationInSeconds;
+    },
+    handleOk() {
+      // Prevent modal from closing
+      // Trigger submit handler
+      this.handleSubmit();
+    },
+    handleSubmit() {
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return;
+      }
+      this.emitOtc();
+      // Push the name to submitted names
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.showOtcModalLocal = false;
+      });
+    }
+  }
 };
 </script>
 

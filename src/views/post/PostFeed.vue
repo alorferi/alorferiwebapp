@@ -44,82 +44,95 @@
 <script>
 import Loading from "@/components/Loading";
 import PostListItem from "./PostListItem";
-
 export default {
-    name: "PostFeed",
-    components: { Loading, PostListItem },
-    props: {
-        source: { type: String, required: true },
-        emptyMessage: { type: String, default: "No discussion found." },
+  name: "PostFeed",
+  components: {
+    Loading,
+    PostListItem
+  },
+  props: {
+    source: {
+      type: String,
+      required: true
     },
-    data() {
-        return { generation: null };
+    emptyMessage: {
+      type: String,
+      default: "No discussion found."
+    }
+  },
+  data() {
+    return {
+      generation: null
+    };
+  },
+  computed: {
+    paging() {
+      const paging = this.$stores.post.postsPaging;
+      return paging.source === this.source && paging.generation === this.generation ? paging : null;
     },
-    computed: {
-        paging() {
-            const paging = this.$store.getters.postsPaging;
-            return paging.source === this.source && paging.generation === this.generation ? paging : null;
-        },
-        posts() {
-            return this.paging ? this.$store.getters.postsResponse.data : [];
-        },
-        loading() {
-            return this.paging ? this.paging.loading : false;
-        },
-        bengali() {
-            return this.$store.getters.activeLanguage === "bn";
-        },
-        errorMessage() {
-            return this.bengali ? "পোস্ট লোড করা যায়নি। আবার চেষ্টা করুন।" : "Unable to load posts. Please try again.";
-        },
+    posts() {
+      return this.paging ? this.$stores.post.postsResponse.data : [];
     },
-    watch: {
-        source() {
-            this.startFeed();
-        },
+    loading() {
+      return this.paging ? this.paging.loading : false;
     },
-    mounted() {
-        this.startFeed();
+    bengali() {
+      return this.$stores.language.activeLanguage === "bn";
     },
-    beforeDestroy() {
-        if (this.observer) this.observer.disconnect();
-        this.$store.commit("releasePostsFeed", this.generation);
-        this.generation = null;
+    errorMessage() {
+      return this.bengali ? "পোস্ট লোড করা যায়নি। আবার চেষ্টা করুন।" : "Unable to load posts. Please try again.";
+    }
+  },
+  watch: {
+    source() {
+      this.startFeed();
+    }
+  },
+  mounted() {
+    this.startFeed();
+  },
+  beforeUnmount() {
+    if (this.observer) this.observer.disconnect();
+    this.$stores.post.releasePostsFeed(this.generation);
+    this.generation = null;
+  },
+  methods: {
+    startFeed() {
+      if (this.observer) this.observer.disconnect();
+      this.$stores.post.beginPostsFeed(this.source);
+      this.generation = this.$stores.post.postsPaging.generation;
+      this.requestPage();
     },
-    methods: {
-        startFeed() {
-            if (this.observer) this.observer.disconnect();
-            this.$store.commit("beginPostsFeed", this.source);
-            this.generation = this.$store.getters.postsPaging.generation;
-            this.requestPage();
-        },
-        async requestPage(retry = false) {
-            const paging = this.paging;
-            if (!paging || paging.loading || (paging.error && !retry) || (paging.loaded && !paging.next)) return;
-            const generation = this.generation;
-            try {
-                await this.$store.dispatch("fetchPostsPage", { source: this.source, generation, retry });
-            } catch (error) {
-                // The store retains the failed page and exposes the retry state.
-            }
-            await this.$nextTick();
-            if (this.generation !== generation || !this.paging) return;
-            this.observeNextPage();
-        },
-        observeNextPage() {
-            if (this.observer) this.observer.disconnect();
-            if (!this.paging || !this.paging.next || this.paging.error || !("IntersectionObserver" in window)) return;
-            if (!this.observer) {
-                this.observer = new IntersectionObserver(
-                    (entries) => {
-                        if (entries.some((entry) => entry.isIntersecting)) this.requestPage();
-                    },
-                    { rootMargin: "200px 0px" }
-                );
-            }
-            // Re-observe after rendering so short pages can fill the viewport.
-            this.observer.observe(this.$refs.sentinel);
-        },
+    async requestPage(retry = false) {
+      const paging = this.paging;
+      if (!paging || paging.loading || paging.error && !retry || paging.loaded && !paging.next) return;
+      const generation = this.generation;
+      try {
+        await this.$stores.post.fetchPostsPage({
+          source: this.source,
+          generation,
+          retry
+        });
+      } catch (error) {
+        // The store retains the failed page and exposes the retry state.
+      }
+      await this.$nextTick();
+      if (this.generation !== generation || !this.paging) return;
+      this.observeNextPage();
     },
+    observeNextPage() {
+      if (this.observer) this.observer.disconnect();
+      if (!this.paging || !this.paging.next || this.paging.error || !("IntersectionObserver" in window)) return;
+      if (!this.observer) {
+        this.observer = new IntersectionObserver(entries => {
+          if (entries.some(entry => entry.isIntersecting)) this.requestPage();
+        }, {
+          rootMargin: "200px 0px"
+        });
+      }
+      // Re-observe after rendering so short pages can fill the viewport.
+      this.observer.observe(this.$refs.sentinel);
+    }
+  }
 };
 </script>

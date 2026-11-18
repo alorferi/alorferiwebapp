@@ -87,21 +87,28 @@
 import LanguageToggleButton from "@/components/LanguageToggleButton";
 import { companyLinks } from "@/config/company";
 export default {
-    name: "GuestNav",
-    components: {
-        LanguageToggleButton,
-    },
-    data() {
-        return { companyLinks, navOpen: false };
-    },
-    computed: {
-        myCart() {
-            return this.$store.getters.myCart;
-        },
-    },
-    async mounted() {},
-    methods: {},
-    watch: { $route() { this.navOpen = false; } },
+  name: "GuestNav",
+  components: {
+    LanguageToggleButton
+  },
+  data() {
+    return {
+      companyLinks,
+      navOpen: false
+    };
+  },
+  computed: {
+    myCart() {
+      return this.$stores.myCart.myCart;
+    }
+  },
+  async mounted() {},
+  methods: {},
+  watch: {
+    $route() {
+      this.navOpen = false;
+    }
+  }
 };
 </script>
 

@@ -41,30 +41,30 @@ import CreateOrEditPostModal from "@/views/post/CreateOrEditPostModal.vue";
 // import ImageUploader from "vue-image-upload-resize";
 
 export default {
-    name: "CreateUserPost",
-    components: {
-        UserPhoto,
-        // ImageUploader,
-        CreateOrEditPostModal,
-    },
-    computed: {
-        activeUser() {
-            return this.$store.getters.activeUser;
-        },
-    },
-    data() {
-        return {
-            title: "",
-            body: "",
-            bodyState: null,
-            imgUrl: null,
-            imgFile: null,
-            hasImage: false,
-            showCreateUserPostModel: false,
-            // image: null
-        };
-    },
-    methods: {},
+  name: "CreateUserPost",
+  components: {
+    UserPhoto,
+    // ImageUploader,
+    CreateOrEditPostModal
+  },
+  computed: {
+    activeUser() {
+      return this.$stores.user.activeUser;
+    }
+  },
+  data() {
+    return {
+      title: "",
+      body: "",
+      bodyState: null,
+      imgUrl: null,
+      imgFile: null,
+      hasImage: false,
+      showCreateUserPostModel: false
+      // image: null
+    };
+  },
+  methods: {}
 };
 </script>
 

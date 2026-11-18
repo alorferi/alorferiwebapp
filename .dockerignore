@@ -1,0 +1,7 @@
+node_modules
+dist
+dist-browser
+coverage
+.git
+.env*
+!.env.example

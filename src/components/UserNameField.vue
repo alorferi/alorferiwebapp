@@ -33,91 +33,87 @@
 
 <script>
 export default {
-    name: "UserNameField",
-    props: ["name", "label", "placeholder", "errors", "data", "icon"],
-    async mounted() {},
-    data: function() {
-        return {
-            countryCode: "+880",
-            username: ""
-        };
+  emits: ["update:field"],
+  name: "UserNameField",
+  props: ["name", "label", "placeholder", "errors", "data", "icon"],
+  async mounted() {},
+  data: function () {
+    return {
+      countryCode: "+880",
+      username: ""
+    };
+  },
+  computed: {
+    getFormattedUserName() {
+      if (this.isNumber(this.username, "-", " ", ",", "+")) {
+        return this.formatBdMobileNumber(this.username);
+      } else if (this.isValidEmail(this.username)) {
+        return this.username;
+      } else {
+        return this.username;
+      }
     },
-    computed: {
-        getFormattedUserName() {
-            if (this.isNumber(this.username,"-"," ",",","+")) {
-                 return this.formatBdMobileNumber(this.username);
-            } else if (this.isValidEmail(this.username)) {
-                return this.username;
-            } else {
-                return this.username;
-            }
-        },
-        usernameWithCountryCode() {
-            return this.countryCode + this.username;
-        },
-
-        hasError: function() {
-            return (
-                this.errors &&
-                this.errors[this.name] &&
-                this.errors[this.name].length > 0
-            );
-        }
+    usernameWithCountryCode() {
+      return this.countryCode + this.username;
     },
-    methods: {
-        updateField: function() {
-            this.clearErrors(this.name);
-            this.$emit("update:field", this.getFormattedUserName);
-        },
-        errorMessage: function() {
-            if (this.hasError) {
-                return this.errors[this.name][0];
-            }
-        },
-        clearErrors: function() {
-            if (this.hasError) {
-                this.errors[this.name] = null;
-            }
-        },
-        errorClassObject: function() {
-            return {
-                "error-field": this.hasError
-            };
-        },
-        onBlurUserName(e) {
-            // console.log("blur", e.target.value);
-
-            console.log("Mobile", this.formatBdMobileNumber(e.target.value));
-
-            // if (e.target.value.startsWith("0", 0)) {
-            //     this.username = e.target.value.substring(1);
-            //     this.updateField();
-            // }
-
-            // var value = parseInt(e.target.value, 10);
-            // if (isNaN(value) == false) {
-            //    this.username = value;
-            //    this.updateField()
-            // }
-        }
-
-    },
-
-    watch: {
-        data: {
-            // the callback will be called immediately after the start of the observation
-            immediate: true,
-            handler(newVal, oldVal) {
-                if (newVal != oldVal) {
-                    this.username = newVal;
-                }
-            }
-        }
+    hasError: function () {
+      return this.errors && this.errors[this.name] && this.errors[this.name].length > 0;
     }
+  },
+  methods: {
+    updateField: function () {
+      this.clearErrors(this.name);
+      this.$emit("update:field", this.getFormattedUserName);
+    },
+    errorMessage: function () {
+      if (this.hasError) {
+        return this.errors[this.name][0];
+      }
+    },
+    clearErrors: function () {
+      if (this.hasError) {
+        this.errors[this.name] = null;
+      }
+    },
+    errorClassObject: function () {
+      return {
+        "error-field": this.hasError
+      };
+    },
+    onBlurUserName(e) {
+      // console.log("blur", e.target.value);
+
+      console.log("Mobile", this.formatBdMobileNumber(e.target.value));
+
+      // if (e.target.value.startsWith("0", 0)) {
+      //     this.username = e.target.value.substring(1);
+      //     this.updateField();
+      // }
+
+      // var value = parseInt(e.target.value, 10);
+      // if (isNaN(value) == false) {
+      //    this.username = value;
+      //    this.updateField()
+      // }
+    }
+  },
+  watch: {
+    data: {
+      // the callback will be called immediately after the start of the observation
+      immediate: true,
+      handler(newVal, oldVal) {
+        if (newVal != oldVal) {
+          this.username = newVal;
+        }
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
+@reference "@/styles/tailwind.css";
+
 .error-field {
     @apply border border-danger border-t-0 border-l-0 border-r-0;
 }

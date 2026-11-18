@@ -5,5 +5,7 @@
     </section>
 </template>
 <script>
-export default { name: "UserAbout" };
+export default {
+  name: "UserAbout"
+};
 </script>

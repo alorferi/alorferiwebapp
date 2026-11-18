@@ -186,29 +186,33 @@
 
 <script>
 import readerAuth from "@/views/auth/readerAuth";
-
 export default {
-    name: "Welcome",
-    mixins: [readerAuth],
-    data() {
-        return { login: { username: "", password: "" } };
+  name: "Welcome",
+  mixins: [readerAuth],
+  data() {
+    return {
+      login: {
+        username: "",
+        password: ""
+      }
+    };
+  },
+  methods: {
+    clearSecrets() {
+      this.login.password = "";
     },
-    methods: {
-        clearSecrets() {
-            this.login.password = "";
-        },
-        async submitLogin() {
-            if (this.busy) return;
-            this.beginRequest();
-            try {
-                await this.authenticate(this.login.username, this.login.password);
-            } catch (error) {
-                this.showError(error);
-            } finally {
-                this.busy = false;
-                this._readerCancel = null;
-            }
-        },
-    },
+    async submitLogin() {
+      if (this.busy) return;
+      this.beginRequest();
+      try {
+        await this.authenticate(this.login.username, this.login.password);
+      } catch (error) {
+        this.showError(error);
+      } finally {
+        this.busy = false;
+        this._readerCancel = null;
+      }
+    }
+  }
 };
 </script>

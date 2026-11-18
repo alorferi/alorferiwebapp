@@ -3,7 +3,7 @@
         <div class="min-w-0 flex-1">
             <form ref="form" @submit.stop.prevent="handleSubmit">
                 <div class="flex items-center">
-                    <UserPhoto :user="this.$store.getters.activeUser" size="24"></UserPhoto>
+                    <UserPhoto :user="this.$stores.user.activeUser" size="24"></UserPhoto>
 
                     <input
                         :aria-label="$t('social.writeComment')"
@@ -23,58 +23,56 @@
 
 <script>
 import UserPhoto from "../user/UserPhoto";
-
 export default {
-    name: "CreatePostComment",
-    props: ["post"],
-    components: { UserPhoto },
-    data() {
-        return {
-            body: "",
-            bodyState: null,
-            isSubmitting: false,
-            requestError: false,
-        };
+  name: "CreatePostComment",
+  props: ["post"],
+  components: {
+    UserPhoto
+  },
+  data() {
+    return {
+      body: "",
+      bodyState: null,
+      isSubmitting: false,
+      requestError: false
+    };
+  },
+  methods: {
+    focusInput() {
+      this.$refs.input.focus();
+      this.$refs.input.scrollIntoView({
+        block: "nearest",
+        behavior: "auto"
+      });
     },
-    methods: {
-        focusInput() {
-            this.$refs.input.focus();
-            this.$refs.input.scrollIntoView({ block: "nearest", behavior: "auto" });
+    storePostCommenAction() {
+      let packet = {
+        overhead: {
+          post: this.post
         },
-        storePostCommenAction() {
-            let packet = {
-                overhead: {
-                    post: this.post,
-                },
-                payload: {
-                    body: this.body,
-                },
-            };
-
-            this.$store
-                .dispatch("storePostComment", packet)
-                .then(() => {
-                    this.body = "";
-                })
-                .catch(() => {
-                    this.requestError = true;
-                })
-                .finally(() => {
-                    this.isSubmitting = false;
-                });
-        },
-
-        checkFormValidity() {
-            const valid = this.$refs.form.checkValidity();
-            this.bodyState = valid;
-            return valid;
-        },
-        handleSubmit() {
-            if (this.isSubmitting || !this.body.trim() || !this.checkFormValidity()) return;
-            this.isSubmitting = true;
-            this.requestError = false;
-            this.storePostCommenAction();
-        },
+        payload: {
+          body: this.body
+        }
+      };
+      this.$stores.comment.storePostComment(packet).then(() => {
+        this.body = "";
+      }).catch(() => {
+        this.requestError = true;
+      }).finally(() => {
+        this.isSubmitting = false;
+      });
     },
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity();
+      this.bodyState = valid;
+      return valid;
+    },
+    handleSubmit() {
+      if (this.isSubmitting || !this.body.trim() || !this.checkFormValidity()) return;
+      this.isSubmitting = true;
+      this.requestError = false;
+      this.storePostCommenAction();
+    }
+  }
 };
 </script>

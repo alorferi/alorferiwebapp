@@ -16,11 +16,11 @@
 
 <script>
 export default {
-    name: "Research",
-    components: {},
-    mounted: function() {},
-    computed: {},
-    props: {}
+  name: "Research",
+  components: {},
+  mounted: function () {},
+  computed: {},
+  props: {}
 };
 </script>
 

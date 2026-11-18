@@ -12,5 +12,11 @@
 </template>
 <script>
 import UserPhoto from "./UserPhoto";
-export default { name: "UserListItem", props: ["item"], components: { UserPhoto } };
+export default {
+  name: "UserListItem",
+  props: ["item"],
+  components: {
+    UserPhoto
+  }
+};
 </script>

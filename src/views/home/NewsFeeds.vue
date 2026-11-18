@@ -13,7 +13,12 @@ import CreateUserPost from "@/views/user/CreateUserPost";
 import FeedLibraries from "@/components/social/FeedLibraries";
 import BottomBar from "@/views/navbars/BottomBar";
 export default {
-    name: "NewsFeeds",
-    components: { ShowPosts, CreateUserPost, FeedLibraries, BottomBar },
+  name: "NewsFeeds",
+  components: {
+    ShowPosts,
+    CreateUserPost,
+    FeedLibraries,
+    BottomBar
+  }
 };
 </script>

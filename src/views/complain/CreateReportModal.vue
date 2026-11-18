@@ -60,140 +60,124 @@
 <script>
 // import UserPhoto from "../user/UserPhoto";
 import Loading from "@/components/Loading";
-
 export default {
-    name: "CreateReportModal",
-    components: {
-        // UserPhoto,
-        Loading
+  emits: ["updateVisibleState"],
+  name: "CreateReportModal",
+  components: {
+    // UserPhoto,
+    Loading
+  },
+  async mounted() {},
+  props: ["show", "complainable_type", "complainable_id", "user"],
+  computed: {
+    activeUser() {
+      return this.$stores.user.activeUser;
     },
-    async mounted() {},
-    props: ["show", "complainable_type", "complainable_id", "user"],
-    computed: {
-        activeUser() {
-            return this.$store.getters.activeUser;
-        },
-        showLocal: {
-            get: function() {
-                return this.show;
-            },
-            set: function(value) {
-                this.$emit("updateVisibleState", value);
-            }
-        },
-        options() {
-            var options = [];
-
-            options.push({ value: null, text: "Please select an option" });
-
-            this.$store.getters.complainTypesResponse.data.forEach(function(
-                item
-            ) {
-                options.push({ value: item, text: item });
-            });
-
-            return options;
-        }
+    showLocal: {
+      get: function () {
+        return this.show;
+      },
+      set: function (value) {
+        this.$emit("updateVisibleState", value);
+      }
     },
-    data() {
-        return {
-            dataModel: {
-                subject: null,
-                body: null,
-                complainable_id: null,
-                complainable_type: null
-            },
-            subjectState: null,
-            bodyState: null,
-
-            is_loading: false,
-            modalTile: "Report!",
-            errorMessage: null
-        };
-    },
-    methods: {
-        fetchComplainTypesAction() {
-            const self = this;
-            self.$store
-                .dispatch("fetchComplainTypes", self.complainable_type)
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {
-                    self.is_loading = false;
-                });
-        },
-        createReportAction() {
-            const self = this;
-
-            self.is_loading = true;
-
-            self.dataModel.complainable_type = self.complainable_type;
-
-            self.dataModel.complainable_id = self.complainable_id;
-
-            console.log("dataModel", self.dataModel);
-
-            self.$store
-                .dispatch("createReport", self.dataModel)
-                .then(() => {
-                    self.hidePostModal();
-                })
-                .catch(errors => {
-                    try {
-                        if (errors.response.data) {
-                            self.errorMessage = errors.response.data.message;
-                        }
-                    } catch (err) {
-                        self.errorMessage = err;
-                    }
-                })
-                .finally(() => {
-                    self.is_loading = false;
-                });
-        },
-
-        checkFormValidity() {
-            const valid = this.$refs.form.checkValidity();
-            this.subjectState = valid;
-            this.bodyState = valid;
-
-            return valid;
-        },
-        showModal() {
-            this.fetchComplainTypesAction();
-        },
-        hideModal() {
-            this.clearData();
-        },
-        clearData() {
-            this.dataModel.subject = "";
-            this.dataModel.body = "";
-            this.subjectState = null;
-            this.bodyState = null;
-            this.errorMessage = null;
-        },
-        handleOk() {
-            // Prevent modal from closing
-            // Trigger submit handler
-            this.handleSubmit();
-        },
-        handleSubmit() {
-            if (this.is_loading) return;
-            // Exit when the form isn't valid
-            if (!this.checkFormValidity()) {
-                return;
-            }
-            // Subit data to backend server
-            this.createReportAction();
-        },
-
-        hidePostModal() {
-            // Hide the modal manually
-            this.$nextTick(() => {
-                this.showLocal = false;
-            });
-        }
+    options() {
+      var options = [];
+      options.push({
+        value: null,
+        text: "Please select an option"
+      });
+      this.$stores.complain.complainTypesResponse.data.forEach(function (item) {
+        options.push({
+          value: item,
+          text: item
+        });
+      });
+      return options;
     }
+  },
+  data() {
+    return {
+      dataModel: {
+        subject: null,
+        body: null,
+        complainable_id: null,
+        complainable_type: null
+      },
+      subjectState: null,
+      bodyState: null,
+      is_loading: false,
+      modalTile: "Report!",
+      errorMessage: null
+    };
+  },
+  methods: {
+    fetchComplainTypesAction() {
+      const self = this;
+      self.$stores.complain.fetchComplainTypes(self.complainable_type).then(() => {}).catch(() => {}).finally(() => {
+        self.is_loading = false;
+      });
+    },
+    createReportAction() {
+      const self = this;
+      self.is_loading = true;
+      self.dataModel.complainable_type = self.complainable_type;
+      self.dataModel.complainable_id = self.complainable_id;
+      console.log("dataModel", self.dataModel);
+      self.$stores.complain.createReport(self.dataModel).then(() => {
+        self.hidePostModal();
+      }).catch(errors => {
+        try {
+          if (errors.response.data) {
+            self.errorMessage = errors.response.data.message;
+          }
+        } catch (err) {
+          self.errorMessage = err;
+        }
+      }).finally(() => {
+        self.is_loading = false;
+      });
+    },
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity();
+      this.subjectState = valid;
+      this.bodyState = valid;
+      return valid;
+    },
+    showModal() {
+      this.fetchComplainTypesAction();
+    },
+    hideModal() {
+      this.clearData();
+    },
+    clearData() {
+      this.dataModel.subject = "";
+      this.dataModel.body = "";
+      this.subjectState = null;
+      this.bodyState = null;
+      this.errorMessage = null;
+    },
+    handleOk() {
+      // Prevent modal from closing
+      // Trigger submit handler
+      this.handleSubmit();
+    },
+    handleSubmit() {
+      if (this.is_loading) return;
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return;
+      }
+      // Subit data to backend server
+      this.createReportAction();
+    },
+    hidePostModal() {
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.showLocal = false;
+      });
+    }
+  }
 };
 </script>
 

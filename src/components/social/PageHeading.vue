@@ -9,5 +9,11 @@
     </header>
 </template>
 <script>
-export default { name: "PageHeading", props: { title: String, description: String } };
+export default {
+  name: "PageHeading",
+  props: {
+    title: String,
+    description: String
+  }
+};
 </script>

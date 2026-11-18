@@ -14,16 +14,16 @@
 </template>
 <script>
 export default {
-    computed: {
-        activeLanguage() {
-            return this.$store.getters.activeLanguage;
-        },
-    },
-    methods: {
-        setLanguage(lang) {
-            this.$i18n.locale = lang;
-            this.$store.dispatch("setActiveLanguage", lang);
-        },
-    },
+  computed: {
+    activeLanguage() {
+      return this.$stores.language.activeLanguage;
+    }
+  },
+  methods: {
+    setLanguage(lang) {
+      this.$i18n.locale = lang;
+      this.$stores.language.setActiveLanguage(lang);
+    }
+  }
 };
 </script>

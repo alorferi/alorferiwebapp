@@ -38,25 +38,19 @@
 <script>
 // import LibraryLogo from "./LibraryLogo";
 import moment from "moment";
-
 export default {
-    name: "LibraryBookListItem",
-    props: ["item"],
-    components: {
-        // LibraryLogo
-    },
-    computed:{
-        isCollected(){
-            var date = moment(this.item.collected_at);
-          return  date.isValid()
-        }
-    },
-    methods: {
-
-    },
-
-    directives: {
-
+  name: "LibraryBookListItem",
+  props: ["item"],
+  components: {
+    // LibraryLogo
+  },
+  computed: {
+    isCollected() {
+      var date = moment(this.item.collected_at);
+      return date.isValid();
     }
+  },
+  methods: {},
+  directives: {}
 };
 </script>

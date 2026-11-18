@@ -13,19 +13,19 @@
 
 <script>
 import UserPhoto from "@/views/user/UserPhoto";
-
 export default {
-    name: "UserFollowerListItem",
-    props: ["user"],
-    components: { UserPhoto },
-    data() {
-        return {
-            body: "",
-            bodyState: null
-        };
-    },
-    methods: {},
-    computed: {
-    }
+  name: "UserFollowerListItem",
+  props: ["user"],
+  components: {
+    UserPhoto
+  },
+  data() {
+    return {
+      body: "",
+      bodyState: null
+    };
+  },
+  methods: {},
+  computed: {}
 };
 </script>

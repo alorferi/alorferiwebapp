@@ -1,29 +1,20 @@
-const state = {
+import { defineStore } from "pinia";
+import { useStores } from "./registry";
+export const useLanguageStore = defineStore("language", {
+  state: () => ({
     activeLanguage: localStorage.getItem("lang") || "en"
-};
-const getters = {
-    activeLanguage: state => {
-        return state.activeLanguage;
+  }),
+  getters: {},
+  actions: {
+    applySetActiveLanguage(newLanguage) {
+      const state = this;
+      state.activeLanguage = newLanguage;
+    },
+    setActiveLanguage(activeLanguage) {
+      const appStores = useStores();
+      localStorage.setItem("lang", activeLanguage);
+      appStores.language.applySetActiveLanguage(activeLanguage);
     }
-};
-
-const mutations = {
-    setActiveLanguage: (state, newLanguage) => {
-        state.activeLanguage = newLanguage
-    }
-};
-
-
-const actions = {
-    setActiveLanguage({ commit }, activeLanguage) {
-        localStorage.setItem("lang", activeLanguage);
-        commit("setActiveLanguage", activeLanguage);
-    }
-};
-
-export default {
-    state,
-    getters,
-    mutations,
-    actions,
-};
+  }
+});
+export default useLanguageStore;

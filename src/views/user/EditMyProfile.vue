@@ -68,45 +68,51 @@
 import EditTextField from "@/components/EditTextField";
 import GenderInputField from "@/components/GenderInputField";
 export default {
-    name: "EditMyProfile",
-    components: { EditTextField, GenderInputField },
-    data() {
-        const user = this.$store.getters.activeUser;
-        return {
-            userData: {
-                first_name: user.first_name || "",
-                surname: user.surname || "",
-                mobile: user.mobile || "",
-                email: user.email || "",
-                dob: user.dob ? user.dob.slice(0, 10) : "",
-                gender: user.gender || "",
-            },
-            errors: {},
-            saving: false,
-            saveError: false,
-        };
-    },
-    methods: {
-        async submitForm() {
-            if (this.saving) return;
-            this.saving = true;
-            this.saveError = false;
-            this.errors = {};
-            try {
-                await this.$store.dispatch("updateMe", { formData: this.userData });
-                if (!this._isDestroyed) await this.$router.push({ name: "users.me" });
-            } catch (error) {
-                this.errors = (error.response && error.response.data && error.response.data.errors) || {};
-                this.saveError = true;
-                this.$nextTick(() => {
-                    const target =
-                        this.$refs.form && this.$refs.form.querySelector('[aria-invalid="true"], [role="alert"]');
-                    if (target) target.focus();
-                });
-            } finally {
-                this.saving = false;
-            }
-        },
-    },
+  name: "EditMyProfile",
+  components: {
+    EditTextField,
+    GenderInputField
+  },
+  data() {
+    const user = this.$stores.user.activeUser;
+    return {
+      userData: {
+        first_name: user.first_name || "",
+        surname: user.surname || "",
+        mobile: user.mobile || "",
+        email: user.email || "",
+        dob: user.dob ? user.dob.slice(0, 10) : "",
+        gender: user.gender || ""
+      },
+      errors: {},
+      saving: false,
+      saveError: false
+    };
+  },
+  methods: {
+    async submitForm() {
+      if (this.saving) return;
+      this.saving = true;
+      this.saveError = false;
+      this.errors = {};
+      try {
+        await this.$stores.user.updateMe({
+          formData: this.userData
+        });
+        if (!this.componentLeaving) await this.$router.push({
+          name: "users.me"
+        });
+      } catch (error) {
+        this.errors = error.response && error.response.data && error.response.data.errors || {};
+        this.saveError = true;
+        this.$nextTick(() => {
+          const target = this.$refs.form && this.$refs.form.querySelector('[aria-invalid="true"], [role="alert"]');
+          if (target) target.focus();
+        });
+      } finally {
+        this.saving = false;
+      }
+    }
+  }
 };
 </script>

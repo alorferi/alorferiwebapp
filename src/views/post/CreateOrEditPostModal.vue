@@ -58,198 +58,176 @@ import Loading from "@/components/Loading";
 // import ImageUploader from "vue-image-upload-resize";
 
 export default {
-    name: "CreateOrEditPostModal",
-    components: {
-        UserPhoto,
-        // ImageUploader,
-        Loading
+  emits: ["updateVisibleState"],
+  name: "CreateOrEditPostModal",
+  components: {
+    UserPhoto,
+    // ImageUploader,
+    Loading
+  },
+  beforeUnmount() {
+    if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
+  },
+  mounted: function () {},
+  props: ["show", "post", "postable_type", "postable_id"],
+  computed: {
+    activeUser() {
+      return this.$stores.user.activeUser;
     },
-    beforeDestroy() { if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl); },
-    mounted: function() {},
-    props: ["show", "post", "postable_type", "postable_id"],
-    computed: {
-        activeUser() {
-            return this.$store.getters.activeUser;
-        },
-        showLocal: {
-            get: function() {
-                return this.show;
-            },
-            set: function(value) {
-                this.$emit("updateVisibleState", value);
-            }
-        }
-    },
-    data() {
-        return {
-            title:
-                this.post == null || this.post.title == null
-                    ? ""
-                    : this.post.title,
-            body:
-                this.post == null || this.post.body == null
-                    ? ""
-                    : this.post.body,
-            bodyState: null,
-            imgUrl: null,
-            imgFile: null,
-            hasImage: false,
-            requestError: "",
-            is_loading: false,
-            modalTile:
-                this.post == null ? this.$t('write_a_discussion') : this.$t('edit_a_discussion')
-        };
-    },
-    methods: {
-        onFileChange(file) {
-            if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
-            this.imgFile = file;
-            this.imgUrl = file ? URL.createObjectURL(file) : null;
-        },
-        processUserPost(packet) {
-            const self = this;
-
-            if (self.post) {
-                self.$store
-                    .dispatch("updateUserPost", packet)
-                    .then(() => {
-                        self.hidePostModal();
-                    })
-                    .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
-                    .finally(() => {
-                        self.is_loading = false;
-                    });
-            } else {
-                self.$store
-                    .dispatch("storeUserPost", packet)
-                    .then(() => {
-                        self.hidePostModal();
-                    })
-                    .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
-                    .finally(() => {
-                        self.is_loading = false;
-                    });
-            }
-        },
-
-        processLibraryPost(packet) {
-            const self = this;
-            if (self.post) {
-                self.$store
-                    .dispatch("updateLibraryPost", packet)
-                    .then(() => {
-                        self.hidePostModal();
-                    })
-                    .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
-                    .finally(() => {
-                        self.is_loading = false;
-                    });
-            } else {
-                self.$store
-                    .dispatch("storeLibraryPost", packet)
-                    .then(() => {
-                        self.hidePostModal();
-                    })
-                    .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
-                    .finally(() => {
-                        self.is_loading = false;
-                    });
-            }
-        },
-        createOrUpdatePostAction() {
-            const self = this;
-
-            let formData = new FormData();
-
-            if (self.imgFile) {
-                formData.append("image", self.imgFile);
-            }
-
-            formData.append("title", self.title == null ? "" : self.title);
-            formData.append("body", self.body == null ? "" : self.body);
-
-            console.log("formData",  self.title, self.body);
-            console.log("self.postable_type", self.postable_type);
-
-            self.requestError = "";
-            self.is_loading = true;
-            switch (self.postable_type) {
-                case "user":
-                case "User":
-                case "App\\Models\\User":
-                    var packet = {
-                        overhead: { post: self.post },
-                        formData: formData
-                    };
-                    this.processUserPost(packet);
-                    break;
-                case "library":
-                case "Library":
-                case "App\\Models\\Library":
-                    packet = {
-                        overhead: {
-                            postable_id: self.postable_id,
-                            post: self.post
-                        },
-                        formData: formData
-                    };
-
-                    this.processLibraryPost(packet);
-
-                    break;
-            }
-        },
-
-        checkFormValidity() {
-            const valid = this.$refs.form.checkValidity();
-            this.bodyState = valid;
-            return valid;
-        },
-        showModal() {
-            if (this.post) {
-                this.showData();
-            }
-        },
-        hideModal() {
-            this.clearData();
-        },
-        clearData() {
-            this.requestError = "";
-            if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
-            this.title = "";
-            this.body = "";
-            this.imgUrl = null;
-            this.imgFile = null;
-            this.bodyState = null;
-        },
-        showData() {
-            (this.body = this.post.body),
-                (this.imgUrl = this.getApiUrl(this.post.image_url));
-            this.imgFile = null;
-            this.bodyState = null;
-        },
-        handleOk() {
-            // Prevent modal from closing
-            // Trigger submit handler
-            this.handleSubmit();
-        },
-        handleSubmit() {
-            if (this.is_loading) return;
-            // Exit when the form isn't valid
-            if (!this.checkFormValidity()) {
-                return;
-            }
-            // Subit data to backend server
-            this.createOrUpdatePostAction();
-        },
-
-        hidePostModal() {
-            // Hide the modal manually
-            this.$nextTick(() => {
-                this.showLocal = false;
-            });
-        }
+    showLocal: {
+      get: function () {
+        return this.show;
+      },
+      set: function (value) {
+        this.$emit("updateVisibleState", value);
+      }
     }
+  },
+  data() {
+    return {
+      title: this.post == null || this.post.title == null ? "" : this.post.title,
+      body: this.post == null || this.post.body == null ? "" : this.post.body,
+      bodyState: null,
+      imgUrl: null,
+      imgFile: null,
+      hasImage: false,
+      requestError: "",
+      is_loading: false,
+      modalTile: this.post == null ? this.$t('write_a_discussion') : this.$t('edit_a_discussion')
+    };
+  },
+  methods: {
+    onFileChange(file) {
+      if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
+      this.imgFile = file;
+      this.imgUrl = file ? URL.createObjectURL(file) : null;
+    },
+    processUserPost(packet) {
+      const self = this;
+      if (self.post) {
+        self.$stores.userPost.updateUserPost(packet).then(() => {
+          self.hidePostModal();
+        }).catch(error => {
+          self.requestError = requestErrorMessage(error, self.$stores.language.activeLanguage);
+        }).finally(() => {
+          self.is_loading = false;
+        });
+      } else {
+        self.$stores.userPost.storeUserPost(packet).then(() => {
+          self.hidePostModal();
+        }).catch(error => {
+          self.requestError = requestErrorMessage(error, self.$stores.language.activeLanguage);
+        }).finally(() => {
+          self.is_loading = false;
+        });
+      }
+    },
+    processLibraryPost(packet) {
+      const self = this;
+      if (self.post) {
+        self.$stores.libraryPost.updateLibraryPost(packet).then(() => {
+          self.hidePostModal();
+        }).catch(error => {
+          self.requestError = requestErrorMessage(error, self.$stores.language.activeLanguage);
+        }).finally(() => {
+          self.is_loading = false;
+        });
+      } else {
+        self.$stores.libraryPost.storeLibraryPost(packet).then(() => {
+          self.hidePostModal();
+        }).catch(error => {
+          self.requestError = requestErrorMessage(error, self.$stores.language.activeLanguage);
+        }).finally(() => {
+          self.is_loading = false;
+        });
+      }
+    },
+    createOrUpdatePostAction() {
+      const self = this;
+      let formData = new FormData();
+      if (self.imgFile) {
+        formData.append("image", self.imgFile);
+      }
+      formData.append("title", self.title == null ? "" : self.title);
+      formData.append("body", self.body == null ? "" : self.body);
+      console.log("formData", self.title, self.body);
+      console.log("self.postable_type", self.postable_type);
+      self.requestError = "";
+      self.is_loading = true;
+      switch (self.postable_type) {
+        case "user":
+        case "User":
+        case "App\\Models\\User":
+          var packet = {
+            overhead: {
+              post: self.post
+            },
+            formData: formData
+          };
+          this.processUserPost(packet);
+          break;
+        case "library":
+        case "Library":
+        case "App\\Models\\Library":
+          packet = {
+            overhead: {
+              postable_id: self.postable_id,
+              post: self.post
+            },
+            formData: formData
+          };
+          this.processLibraryPost(packet);
+          break;
+      }
+    },
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity();
+      this.bodyState = valid;
+      return valid;
+    },
+    showModal() {
+      if (this.post) {
+        this.showData();
+      }
+    },
+    hideModal() {
+      this.clearData();
+    },
+    clearData() {
+      this.requestError = "";
+      if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
+      this.title = "";
+      this.body = "";
+      this.imgUrl = null;
+      this.imgFile = null;
+      this.bodyState = null;
+    },
+    showData() {
+      this.body = this.post.body, this.imgUrl = this.getApiUrl(this.post.image_url);
+      this.imgFile = null;
+      this.bodyState = null;
+    },
+    handleOk() {
+      // Prevent modal from closing
+      // Trigger submit handler
+      this.handleSubmit();
+    },
+    handleSubmit() {
+      if (this.is_loading) return;
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return;
+      }
+      // Subit data to backend server
+      this.createOrUpdatePostAction();
+    },
+    hidePostModal() {
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.showLocal = false;
+      });
+    }
+  }
 };
 </script>
 

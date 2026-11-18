@@ -15,22 +15,23 @@
 
 <script>
 import UserPhoto from "@/views/user/UserPhoto";
-
 export default {
-    name: "likeListItem",
-    props: ["like", "post"],
-    components: { UserPhoto },
-    data() {
-        return {
-            body: "",
-            bodyState: null
-        };
-    },
-    methods: {},
-    computed: {
-        isMylike() {
-            return this.like.user.id == this.$store.getters.activeUser.id;
-        }
+  name: "likeListItem",
+  props: ["like", "post"],
+  components: {
+    UserPhoto
+  },
+  data() {
+    return {
+      body: "",
+      bodyState: null
+    };
+  },
+  methods: {},
+  computed: {
+    isMylike() {
+      return this.like.user.id == this.$stores.user.activeUser.id;
     }
+  }
 };
 </script>

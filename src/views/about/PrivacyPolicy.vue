@@ -11,21 +11,15 @@
 
 <script>
 export default {
-    name: "PrivacyPolicy",
-    components: {},
-    mounted: function() {},
-    computed: {
-
-    },
-    props: {},
-    data() {
-        return {
-
-        };
-    },
-    methods:{
-
-    }
+  name: "PrivacyPolicy",
+  components: {},
+  mounted: function () {},
+  computed: {},
+  props: {},
+  data() {
+    return {};
+  },
+  methods: {}
 };
 </script>
 

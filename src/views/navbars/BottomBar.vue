@@ -164,19 +164,20 @@
 
 <script>
 import { companyLinks } from "@/config/company";
-
 export default {
-    name: "Login",
-    props: {
-        msg: String,
-        compact: Boolean,
-    },
-    components: {},
-    mounted: function () {},
-    data() {
-        return { companyLinks };
-    },
-    methods: {},
+  name: "Login",
+  props: {
+    msg: String,
+    compact: Boolean
+  },
+  components: {},
+  mounted: function () {},
+  data() {
+    return {
+      companyLinks
+    };
+  },
+  methods: {}
 };
 </script>
 

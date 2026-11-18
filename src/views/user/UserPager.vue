@@ -133,191 +133,170 @@
 </template>
 
 <script>
+import { markRaw } from "vue";
 import UserPhotoWithUpload from "@/views/user/UserPhotoWithUpload";
 import UserTimeline from "@/views/user/UserTimeline";
 import UserAbout from "@/views/user/UserAbout";
-
 import UserFollowersModal from "@/views/follower/UserFollowersModal.vue";
 import UserFollowingListModal from "@/views/follower/UserFollowingListModal.vue";
 import UserCoverPhotoWithUpload from "@/views/user/UserCoverPhotoWithUpload.vue";
 import CreateReportModal from "@/views/complain/CreateReportModal.vue";
 import CreateBlockModal from "@/views/complain/CreateBlockModal.vue";
 export default {
-    name: "UserPager",
-    props: ["user"],
-    components: {
-        UserPhotoWithUpload,
-        UserTimeline,
-        UserAbout,
-        UserFollowersModal,
-        UserFollowingListModal,
-        UserCoverPhotoWithUpload,
-        CreateReportModal,
-        CreateBlockModal,
+  name: "UserPager",
+  props: ["user"],
+  components: {
+    UserPhotoWithUpload,
+    UserTimeline,
+    UserAbout,
+    UserFollowersModal,
+    UserFollowingListModal,
+    UserCoverPhotoWithUpload,
+    CreateReportModal,
+    CreateBlockModal
+  },
+  async mounted() {
+    const self = this;
+    self.fetchUserFollowersAction();
+    self.fetchUserFollowingAction();
+    self.fetchUserFollowingByMeAction();
+    self.initTabItems();
+    self.$stores.pageTitle.setPageTitle(self.user.first_name);
+  },
+  computed: {
+    isFollowingByMe() {
+      return this.$stores.follower.followingSource === "user:" + this.user.id && this.$stores.follower.followingByMe != null;
     },
-    async mounted() {
-        const self = this;
-
-        self.fetchUserFollowersAction();
-        self.fetchUserFollowingAction();
-        self.fetchUserFollowingByMeAction();
-        self.initTabItems();
-        self.$store.dispatch("setPageTitle", self.user.first_name);
+    getTabs() {
+      return this.tabs;
     },
-
-    computed: {
-        isFollowingByMe() {
-            return (
-                this.$store.getters.followingSource === "user:" + this.user.id &&
-                this.$store.getters.followingByMe != null
-            );
-        },
-        getTabs() {
-            return this.tabs;
-        },
-        tabBody() {
-            return this.activeTab.tabBody;
-        },
-        totalFollowers() {
-            var total = 0;
-            if (this.$store.getters.followersResponse.meta) {
-                total = this.$store.getters.followersResponse.meta.total;
-            }
-
-            return this.$t("social.followers") + " (" + total + ")";
-        },
-        totalFollowings() {
-            var total = 0;
-            if (this.$store.getters.userFollowingsResponse.meta) {
-                total = this.$store.getters.userFollowingsResponse.meta.total;
-            }
-
-            return this.$t("social.following") + " (" + total + ")";
-        },
+    tabBody() {
+      return this.activeTab.tabBody;
     },
-    methods: {
-        tabLabel(tab) {
-            const key =
-                { TimeLine: "timeline", Timeline: "timeline", About: "about" }[tab.title] ||
-                (tab.title.startsWith("Books") ? "books" : tab.title.startsWith("Members") ? "members" : null);
-            const count = tab.title.match(/\(.*\)/);
-            return key ? this.$t("social." + key) + (count ? " " + count[0] : "") : tab.title;
-        },
-        async toggleFollow() {
-            if (this.followBusy || !this.followReady) return;
-            this.followBusy = true;
-            this.followError = false;
-            try {
-                await this.$store.dispatch(this.isFollowingByMe ? "unFollowUserByMe" : "followUserByMe", {
-                    user_id: this.user.id,
-                });
-            } catch (error) {
-                this.followError = true;
-            } finally {
-                this.followBusy = false;
-            }
-        },
-        initTabItems() {
-            this.tabs.push({
-                title: "TimeLine",
-                tabBody: UserTimeline,
-                active: true,
-            });
-
-            this.tabs.push({
-                title: "About",
-                tabBody: UserAbout,
-                active: false,
-            });
-
-            this.activeTab = this.tabs[0];
-        },
-
-        isActive: function (item) {
-            return {
-                active: item.active,
-            };
-        },
-        clickTabItem(tab) {
-            if (tab != this.activeTab) {
-                tab.active = true;
-                this.activeTab.active = false;
-                this.activeTab = tab;
-            }
-        },
-        fetchUserFollowersAction() {
-            const self = this;
-
-            this.$store
-                .dispatch("fetchUserFollowers", { user_id: self.user.id })
-                .then(() => {
-                    console.log("fetchUserFollowers", this.$store.getters.followersResponse.meta.total);
-                })
-                .catch(() => {})
-                .finally(() => {});
-        },
-        fetchUserFollowingAction() {
-            const self = this;
-
-            this.$store
-                .dispatch("fetchUserFollowings", { user_id: self.user.id })
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {});
-        },
-        followUserByMeAction() {
-            const self = this;
-
-            this.$store
-                .dispatch("followUserByMe", { user_id: self.user.id })
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {});
-        },
-        unFollowUserByMeAction() {
-            const self = this;
-
-            this.$store
-                .dispatch("unFollowUserByMe", { user_id: self.user.id })
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {});
-        },
-        fetchUserFollowingByMeAction() {
-            const self = this;
-            self.followReady = false;
-
-            this.$store
-                .dispatch("fetchUserFollowingByMe", { user_id: self.user.id })
-                .then(() => {
-                    self.followReady = true;
-                    self.followError = false;
-                })
-                .catch((error) => {
-                    if (error.response && error.response.status === 404) self.followReady = true;
-                    else self.followError = true;
-                });
-        },
-        didFinishBlockingUser() {
-            this.$store.dispatch("removePostsOfUser", this.user);
-            this.$router.push({ name: "home" });
-        },
+    totalFollowers() {
+      var total = 0;
+      if (this.$stores.follower.followersResponse.meta) {
+        total = this.$stores.follower.followersResponse.meta.total;
+      }
+      return this.$t("social.followers") + " (" + total + ")";
     },
-    data: function () {
-        return {
-            tabs: [],
-            activeTab: {},
-            followBusy: false,
-            followReady: false,
-            followError: false,
-            showUploadMyCoverModal: false,
-            showUserFollowers: false,
-            showUserFollowings: false,
-            showCreateReportModel: false,
-            showCreateBlockModel: false,
-            is_loading: false,
-        };
+    totalFollowings() {
+      var total = 0;
+      if (this.$stores.userFollowing.userFollowingsResponse.meta) {
+        total = this.$stores.userFollowing.userFollowingsResponse.meta.total;
+      }
+      return this.$t("social.following") + " (" + total + ")";
+    }
+  },
+  methods: {
+    tabLabel(tab) {
+      const key = {
+        TimeLine: "timeline",
+        Timeline: "timeline",
+        About: "about"
+      }[tab.title] || (tab.title.startsWith("Books") ? "books" : tab.title.startsWith("Members") ? "members" : null);
+      const count = tab.title.match(/\(.*\)/);
+      return key ? this.$t("social." + key) + (count ? " " + count[0] : "") : tab.title;
     },
+    async toggleFollow() {
+      if (this.followBusy || !this.followReady) return;
+      this.followBusy = true;
+      this.followError = false;
+      try {
+        await this.$actions[this.isFollowingByMe ? "unFollowUserByMe" : "followUserByMe"]({
+          user_id: this.user.id
+        });
+      } catch (error) {
+        this.followError = true;
+      } finally {
+        this.followBusy = false;
+      }
+    },
+    initTabItems() {
+      this.tabs.push({
+        title: "TimeLine",
+        tabBody: markRaw(UserTimeline),
+        active: true
+      });
+      this.tabs.push({
+        title: "About",
+        tabBody: markRaw(UserAbout),
+        active: false
+      });
+      this.activeTab = this.tabs[0];
+    },
+    isActive: function (item) {
+      return {
+        active: item.active
+      };
+    },
+    clickTabItem(tab) {
+      if (tab != this.activeTab) {
+        tab.active = true;
+        this.activeTab.active = false;
+        this.activeTab = tab;
+      }
+    },
+    fetchUserFollowersAction() {
+      const self = this;
+      this.$stores.userFollower.fetchUserFollowers({
+        user_id: self.user.id
+      }).then(() => {
+        console.log("fetchUserFollowers", this.$stores.follower.followersResponse.meta.total);
+      }).catch(() => {}).finally(() => {});
+    },
+    fetchUserFollowingAction() {
+      const self = this;
+      this.$stores.userFollowing.fetchUserFollowings({
+        user_id: self.user.id
+      }).then(() => {}).catch(() => {}).finally(() => {});
+    },
+    followUserByMeAction() {
+      const self = this;
+      this.$stores.userFollower.followUserByMe({
+        user_id: self.user.id
+      }).then(() => {}).catch(() => {}).finally(() => {});
+    },
+    unFollowUserByMeAction() {
+      const self = this;
+      this.$stores.userFollower.unFollowUserByMe({
+        user_id: self.user.id
+      }).then(() => {}).catch(() => {}).finally(() => {});
+    },
+    fetchUserFollowingByMeAction() {
+      const self = this;
+      self.followReady = false;
+      this.$stores.userFollower.fetchUserFollowingByMe({
+        user_id: self.user.id
+      }).then(() => {
+        self.followReady = true;
+        self.followError = false;
+      }).catch(error => {
+        if (error.response && error.response.status === 404) self.followReady = true;else self.followError = true;
+      });
+    },
+    didFinishBlockingUser() {
+      this.$stores.post.removePostsOfUser(this.user);
+      this.$router.push({
+        name: "home"
+      });
+    }
+  },
+  data: function () {
+    return {
+      tabs: [],
+      activeTab: {},
+      followBusy: false,
+      followReady: false,
+      followError: false,
+      showUploadMyCoverModal: false,
+      showUserFollowers: false,
+      showUserFollowings: false,
+      showCreateReportModel: false,
+      showCreateBlockModel: false,
+      is_loading: false
+    };
+  }
 };
 </script>
 

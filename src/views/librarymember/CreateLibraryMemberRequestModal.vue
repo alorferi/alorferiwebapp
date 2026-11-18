@@ -62,97 +62,93 @@
 
 <script>
 import LibraryLogo from "../library/LibraryLogo.vue";
-
 export default {
-    name: "CreateLibraryMemberRequestModal",
-    props: ["showMemberRequestModal", "library"],
-    components: {
-        LibraryLogo
-    },
-    computed: {
-        showMemberRequestModalLocal: {
-            get: function() {
-                return this.showMemberRequestModal;
-            },
-            set: function(value) {
-                this.emitShowMemberRequestModal(value);
-            }
-        }
-    },
-    mounted: function() {},
-    data() {
-        return {
-            is_loading: false,
-            otCodeState: null,
-            hideHeader: true,
-            iAgree: false,
-            errors: null,
-            is_error: false,
-            error_message: null,
-            myLibraryMemberRequest: null
-        };
-    },
-    methods: {
-        emitOkClick: function() {
-            this.$emit("onClickOk", this.myLibraryMemberRequest);
-        },
-        emitCancelClick: function() {
-            this.$emit("onClickCancel");
-        },
-        emitShowMemberRequestModal: function(isShowModal) {
-            this.$emit("onUpdateVisibleState", isShowModal);
-        },
-        hideModal() {
-            this.otCodeState = null;
-            this.emitShowMemberRequestModal(false);
-        },
-        initModal() {
-            this.otCodeState = null;
-            this.iAgree = false;
-            this.error_message = null;
-        },
-        handleOk() {
-            const self = this;
-
-            // Prevent modal from closing
-            if (self.is_loading) return;
-            if (!self.iAgree) {
-                self.error_message = "Please accept the library terms first.";
-                return;
-            }
-
-            self.is_loading = true;
-            self.error_message = null;
-            const payload = { library_id: self.library.id };
-
-            self.$store
-                .dispatch("createLibraryMemberRequest", payload)
-                .then(response => {
-                    console.log(response);
-                    self.myLibraryMemberRequest =
-                        self.$store.getters.myLibraryMemberRequest;
-
-                    this.emitOkClick();
-                    this.$nextTick(() => {
-                        this.showMemberRequestModalLocal = false;
-                    });
-                })
-                .catch(errors => {
-                    self.error_message = errors.response && errors.response.data && errors.response.data.message || "Unable to send your request. Please try again.";
-                })
-                .finally(() => { self.is_loading = false; });
-        },
-        handleCancel() {
-            // Prevent modal from closing
-            // Trigger submit handler
-            this.emitCancelClick();
-            // Push the name to submitted names
-            // Hide the modal manually
-            this.$nextTick(() => {
-                this.showMemberRequestModalLocal = false;
-            });
-        }
+  emits: ["onClickCancel", "onClickOk", "onUpdateVisibleState"],
+  name: "CreateLibraryMemberRequestModal",
+  props: ["showMemberRequestModal", "library"],
+  components: {
+    LibraryLogo
+  },
+  computed: {
+    showMemberRequestModalLocal: {
+      get: function () {
+        return this.showMemberRequestModal;
+      },
+      set: function (value) {
+        this.emitShowMemberRequestModal(value);
+      }
     }
+  },
+  mounted: function () {},
+  data() {
+    return {
+      is_loading: false,
+      otCodeState: null,
+      hideHeader: true,
+      iAgree: false,
+      errors: null,
+      is_error: false,
+      error_message: null,
+      myLibraryMemberRequest: null
+    };
+  },
+  methods: {
+    emitOkClick: function () {
+      this.$emit("onClickOk", this.myLibraryMemberRequest);
+    },
+    emitCancelClick: function () {
+      this.$emit("onClickCancel");
+    },
+    emitShowMemberRequestModal: function (isShowModal) {
+      this.$emit("onUpdateVisibleState", isShowModal);
+    },
+    hideModal() {
+      this.otCodeState = null;
+      this.emitShowMemberRequestModal(false);
+    },
+    initModal() {
+      this.otCodeState = null;
+      this.iAgree = false;
+      this.error_message = null;
+    },
+    handleOk() {
+      const self = this;
+
+      // Prevent modal from closing
+      if (self.is_loading) return;
+      if (!self.iAgree) {
+        self.error_message = "Please accept the library terms first.";
+        return;
+      }
+      self.is_loading = true;
+      self.error_message = null;
+      const payload = {
+        library_id: self.library.id
+      };
+      self.$stores.libraryMemberRequest.createLibraryMemberRequest(payload).then(response => {
+        console.log(response);
+        self.myLibraryMemberRequest = self.$stores.libraryMemberRequest.myLibraryMemberRequest;
+        this.emitOkClick();
+        this.$nextTick(() => {
+          this.showMemberRequestModalLocal = false;
+        });
+      }).catch(errors => {
+        self.error_message = errors.response && errors.response.data && errors.response.data.message || "Unable to send your request. Please try again.";
+      }).finally(() => {
+        self.is_loading = false;
+      });
+    },
+    handleCancel() {
+      // Prevent modal from closing
+      // Trigger submit handler
+      this.emitCancelClick();
+      // Push the name to submitted names
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.showMemberRequestModalLocal = false;
+      });
+    }
+  }
 };
 </script>
 

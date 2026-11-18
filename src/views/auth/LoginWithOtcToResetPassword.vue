@@ -44,91 +44,79 @@
 <script>
 import UserNameField from "../../components/UserNameField";
 import AskForOtcModal from "../../components/AskForOtcModal";
-
 import LoadingModal from "@/components/LoadingModal";
-
 export default {
-    name: "LoginWithOtcToResetPassword",
-    components: {
-        UserNameField,
-        AskForOtcModal,
-        LoadingModal
+  name: "LoginWithOtcToResetPassword",
+  components: {
+    UserNameField,
+    AskForOtcModal,
+    LoadingModal
+  },
+  data() {
+    return {
+      resetPasswordModel: {
+        otc_type_name: "RESET_PASSWORD",
+        username: ""
+      },
+      ot_code: "",
+      durationInSeconds: 0,
+      showOtcModal: false,
+      showAlertModal: true,
+      showLoadingModal: false,
+      errors: null,
+      error_message: null
+    };
+  },
+  methods: {
+    updateOtc(value) {
+      this.ot_code = value;
+      this.submitForm();
     },
-    data() {
-        return {
-            resetPasswordModel: {
-                otc_type_name: "RESET_PASSWORD",
-                username: ""
-            },
-            ot_code: "",
-            durationInSeconds: 0,
-            showOtcModal: false,
-            showAlertModal: true,
-            showLoadingModal: false,
-            errors: null,
-            error_message: null
-        };
-    },
-
-    methods: {
-        updateOtc(value) {
-            this.ot_code = value;
-            this.submitForm();
-        },
-        submitForm: function() {
-            console.log(this.resetPasswordModel);
-            const self = this;
-
-            const headers = {
-                "ot-code": self.ot_code,
-                "Content-Type": "application/json"
-            };
-
-            self.showLoadingModal = true;
-            this.$store
-                .dispatch("loginWithOtc", {
-                    headers: headers,
-                    data: this.resetPasswordModel
-                })
-                .then(response => {
-                    self.showLoadingModal = false;
-                    console.log(response.data.data);
-
-                    switch (response.data.status) {
-                        case "OK":
-                        self.ot_code = ""
-                            self.$router.replace({ name: "reset-password" });
-                            break;
-                        case "OTC_GENERATED":
-                        case "OTC_REJECTED":
-                            var otc_expired_after_in_seconds =
-                                response.data.data.otc_expired_after_in_seconds;
-                            self.durationInSeconds = otc_expired_after_in_seconds;
-                            self.showOtcModal = true;
-
-                            break;
-                    }
-
-                    self.ot_code = ""
-                })
-                .catch(errors => {
-                    self.showLoadingModal = false;
-                    self.ot_code = ""
-                    console.log(errors);
-
-                    try {
-                        if (errors.response.data.errors) {
-                            self.errors = errors.response.data.errors;
-                        } else if (errors.response.data.message) {
-                            this.error_message = errors.response.data.message;
-                        }
-                    } catch (err) {
-                        self.errors = err;
-                    }
-
-                    self.ot_code = null;
-                });
+    submitForm: function () {
+      console.log(this.resetPasswordModel);
+      const self = this;
+      const headers = {
+        "ot-code": self.ot_code,
+        "Content-Type": "application/json"
+      };
+      self.showLoadingModal = true;
+      this.$stores.auth.loginWithOtc({
+        headers: headers,
+        data: this.resetPasswordModel
+      }).then(response => {
+        self.showLoadingModal = false;
+        console.log(response.data.data);
+        switch (response.data.status) {
+          case "OK":
+            self.ot_code = "";
+            self.$router.replace({
+              name: "reset-password"
+            });
+            break;
+          case "OTC_GENERATED":
+          case "OTC_REJECTED":
+            var otc_expired_after_in_seconds = response.data.data.otc_expired_after_in_seconds;
+            self.durationInSeconds = otc_expired_after_in_seconds;
+            self.showOtcModal = true;
+            break;
         }
+        self.ot_code = "";
+      }).catch(errors => {
+        self.showLoadingModal = false;
+        self.ot_code = "";
+        console.log(errors);
+        try {
+          if (errors.response.data.errors) {
+            self.errors = errors.response.data.errors;
+          } else if (errors.response.data.message) {
+            this.error_message = errors.response.data.message;
+          }
+        } catch (err) {
+          self.errors = err;
+        }
+        self.ot_code = null;
+      });
     }
+  }
 };
 </script>

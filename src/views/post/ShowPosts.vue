@@ -4,9 +4,10 @@
 
 <script>
 import PostFeed from "./PostFeed";
-
 export default {
-    name: "ShowPosts",
-    components: { PostFeed },
+  name: "ShowPosts",
+  components: {
+    PostFeed
+  }
 };
 </script>

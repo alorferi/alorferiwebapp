@@ -29,75 +29,63 @@
 <script>
 import UserFollowerListItem from "@/views/follower/UserFollowerListItem";
 import Loading from "@/components/Loading";
-
 export default {
-    name: "UserFollowersModal",
-    props: ["user", "show"],
-    components: {
-        UserFollowerListItem,
-        Loading
+  emits: ["updateVisibleState"],
+  name: "UserFollowersModal",
+  props: ["user", "show"],
+  components: {
+    UserFollowerListItem,
+    Loading
+  },
+  data() {
+    return {
+      is_loading: false,
+      scrolledToBottom: false
+    };
+  },
+  computed: {
+    followers() {
+      return this.$stores.follower.followersResponse.data;
     },
-    data() {
-        return {
-            is_loading: false,
-            scrolledToBottom: false
-        };
+    showLocal: {
+      get: function () {
+        return this.show;
+      },
+      set: function (value) {
+        this.$emit("updateVisibleState", value);
+      }
     },
-    computed: {
-        followers() {
-            return this.$store.getters.followersResponse.data;
-        },
-        showLocal: {
-            get: function() {
-                return this.show;
-            },
-            set: function(value) {
-                this.$emit("updateVisibleState", value);
-            }
-        },
-
-        totalFollowers() {
-
-            if(this.$store.getters.followersResponse.meta){
-                return this.$store.getters.followersResponse.meta.total;
-            }else{
-                return 0;
-            }
-
-        },
-
-        titleTotalFollowers() {
-            return (
-                "Followers (" +
-                this.totalFollowers +
-                ")"
-            );
-        },
-
-        myLike() {
-            return this.user.my_like;
-        }
+    totalFollowers() {
+      if (this.$stores.follower.followersResponse.meta) {
+        return this.$stores.follower.followersResponse.meta.total;
+      } else {
+        return 0;
+      }
     },
-    async mounted() {},
-
-    methods: {
-        handleOk() {},
-        showModal() {
-            // this.fetchFollowerFeedAction();
-        },
-        hideModal() {},
-        fetchFollowerFeedAction() {
-            const self = this;
-            self.is_loading = true;
-            this.$store
-                .dispatch("fetchUserFollowers", { user_id: this.user.id })
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {
-                    this.is_loading = false;
-                    this.scrolledToBottom = false;
-                });
-        }
+    titleTotalFollowers() {
+      return "Followers (" + this.totalFollowers + ")";
+    },
+    myLike() {
+      return this.user.my_like;
     }
+  },
+  async mounted() {},
+  methods: {
+    handleOk() {},
+    showModal() {
+      // this.fetchFollowerFeedAction();
+    },
+    hideModal() {},
+    fetchFollowerFeedAction() {
+      const self = this;
+      self.is_loading = true;
+      this.$stores.userFollower.fetchUserFollowers({
+        user_id: this.user.id
+      }).then(() => {}).catch(() => {}).finally(() => {
+        this.is_loading = false;
+        this.scrolledToBottom = false;
+      });
+    }
+  }
 };
 </script>

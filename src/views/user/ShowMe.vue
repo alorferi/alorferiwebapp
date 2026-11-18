@@ -14,31 +14,37 @@
 import Loading from "@/components/Loading";
 import UserPager from "./UserPager";
 export default {
-    name: "ShowMe",
-    components: { Loading, UserPager },
-    data() {
-        return { loading: true, error: false };
-    },
-    computed: {
-        user() {
-            return this.$store.getters.activeUser;
-        },
-    },
-    mounted() {
-        this.load();
-    },
-    methods: {
-        async load() {
-            this.loading = true;
-            this.error = false;
-            try {
-                await this.$store.dispatch("fetchMe");
-            } catch (error) {
-                this.error = true;
-            } finally {
-                this.loading = false;
-            }
-        },
-    },
+  name: "ShowMe",
+  components: {
+    Loading,
+    UserPager
+  },
+  data() {
+    return {
+      loading: true,
+      error: false
+    };
+  },
+  computed: {
+    user() {
+      return this.$stores.user.activeUser;
+    }
+  },
+  mounted() {
+    this.load();
+  },
+  methods: {
+    async load() {
+      this.loading = true;
+      this.error = false;
+      try {
+        await this.$stores.user.fetchMe();
+      } catch (error) {
+        this.error = true;
+      } finally {
+        this.loading = false;
+      }
+    }
+  }
 };
 </script>
