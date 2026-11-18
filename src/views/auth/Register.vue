@@ -1,20 +1,21 @@
 <template>
-    <div class="reader-welcome reader-page reader-register-page">
-        <a class="reader-skip" href="#reader-auth">{{ copy.skipSignup }}</a>
-        <header class="reader-header reader-container">
-            <router-link class="reader-brand" :to="homeLocation" :aria-label="copy.homeLabel">
-                <img src="@/assets/images/defaults/alorferi_logo_brand.png" alt="" width="44" height="44" />
-                <span>Alor Feri<small>{{ copy.brandCaption }}</small></span>
-            </router-link>
-            <div class="reader-language" role="group" :aria-label="copy.language">
-                <button type="button" lang="en" :aria-pressed="language === 'en' ? 'true' : 'false'" @click="setLanguage('en')">EN</button>
-                <span aria-hidden="true"></span>
-                <button type="button" lang="bn" :aria-pressed="language === 'bn' ? 'true' : 'false'" @click="setLanguage('bn')">বাংলা</button>
-            </div>
-        </header>
-        <main class="reader-register-main reader-container">
-            <section id="reader-auth" class="reader-card reader-register-card" aria-labelledby="reader-signup-title" tabindex="-1">
-                <div class="reader-card-intro reader-register-intro"><h1 id="reader-signup-title">{{ copy.signupTitle }}</h1><p>{{ copy.signupDescription }}</p></div>
+    <ReaderAuthLayout
+        mode="register"
+        :copy="copy"
+        :language="language"
+        :home-location="homeLocation"
+        :company-links="companyLinks"
+        :year="year"
+        @language-change="setLanguage"
+        @navigate="goTo"
+    >
+        <section id="reader-auth" class="reader-auth-area" aria-labelledby="reader-signup-title" tabindex="-1">
+            <div class="reader-card reader-register-card">
+                <div class="reader-card-intro">
+                    <span>{{ copy.signupEyebrow }}</span>
+                    <h1 id="reader-signup-title">{{ copy.signupTitle }}</h1>
+                    <p>{{ copy.signupDescription }}</p>
+                </div>
                 <form ref="authForm" class="reader-form" aria-labelledby="reader-signup-title" :aria-busy="busy ? 'true' : 'false'" @submit.prevent="submitSignup()">
                     <p v-if="accountCreated" class="reader-notice" role="status">{{ copy.accountCreated }}</p>
                     <template v-else-if="verifying">
@@ -47,26 +48,18 @@
                     <button v-if="verifying && !accountCreated" class="reader-edit-details reader-text-button" type="button" :disabled="busy" @click="editDetails">{{ copy.editDetails }}</button>
                     <p v-if="!verifying && !accountCreated" class="reader-privacy-note">{{ copy.privacyIntro }} <a :href="$router.resolve({ name: 'privacy-policy' }).href" target="_blank" rel="noopener noreferrer">{{ copy.privacyLink }}</a></p>
                 </form>
-                <p class="reader-account-link"><router-link :to="homeLocation">{{ copy.existingAccount }}</router-link></p>
-            </section>
-        </main>
-        <footer class="reader-footer reader-container">
-            <p>© {{ year }} Alor Feri<span aria-hidden="true">·</span>{{ copy.footerTagline }}</p>
-            <nav :aria-label="copy.footerNavigation">
-                <a :href="companyLinks.about" target="_blank" rel="noopener noreferrer">{{ copy.about }}</a>
-                <a :href="companyLinks.careers" target="_blank" rel="noopener noreferrer">{{ copy.careers }}</a>
-                <a :href="companyLinks.contact" target="_blank" rel="noopener noreferrer">{{ copy.contact }}</a>
-                <a :href="$router.resolve({ name: 'help' }).href" @click.prevent="goTo('help')">{{ copy.help }}</a>
-                <a :href="$router.resolve({ name: 'privacy-policy' }).href" @click.prevent="goTo('privacy-policy')">{{ copy.privacy }}</a>
-            </nav>
-        </footer>
-    </div>
+                <p class="reader-account-link"><router-link class="reader-create-button" :to="homeLocation">{{ copy.existingAccount }}</router-link></p>
+            </div>
+        </section>
+    </ReaderAuthLayout>
 </template>
 
 <script>
 import readerAuth from "./readerAuth";
+import ReaderAuthLayout from "./ReaderAuthLayout.vue";
 export default {
   name: "Register",
+  components: { ReaderAuthLayout },
   mixins: [readerAuth],
   data() {
     return {

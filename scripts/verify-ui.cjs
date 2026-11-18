@@ -796,6 +796,62 @@ async function main() {
             await waitFor("document.querySelector('.reader-login-card')", "back to login");
             await screenshot("mobile-login");
         });
+        await check("public auth: centered hero and matching signup panels in English and Bengali", async () => {
+            for (const language of ["en", "bn"]) {
+                await evaluate("document.querySelector('.reader-language [lang=" + language + "]').click()");
+                await waitFor("document.documentElement.lang === " + JSON.stringify(language), "auth layout language");
+                for (const width of [320, 360, 390, 768, 959, 960, 1024, 1366, 1440, 1920]) {
+                    await resize(width, width === 1366 ? 768 : width < 960 ? 844 : 900);
+                    const layouts = [];
+                    for (const route of ["/", "/register"]) {
+                        await evaluate("void " + app + ".$router.push(" + JSON.stringify(route) + ")");
+                        await waitFor("document.querySelector(" + JSON.stringify(route === "/" ? ".reader-login-card" : ".reader-register-card") + ")", "shared auth page");
+                        await waitFor("document.querySelector('.reader-illustration')?.naturalWidth > 0", "shared auth illustration");
+                        await evaluate("window.scrollTo(0, 0)");
+                        const layout = await evaluate(`(() => {
+                            const rect = selector => {
+                                const r = document.querySelector(selector).getBoundingClientRect();
+                                return {x:r.x,y:r.y,width:r.width,right:r.right,bottom:r.bottom,center:r.x+r.width/2};
+                            };
+                            return {
+                                main:rect('.reader-main'), hero:rect('.reader-story'), title:rect('.reader-hero-title'),
+                                description:rect('.reader-description'), values:rect('.reader-values'),
+                                art:rect('.reader-illustration'), caption:rect('.reader-art p'),
+                                panel:rect('.reader-auth-panel'), card:rect('.reader-card'),
+                                brand:rect('.reader-brand'), button:rect('.reader-submit'), secondary:rect('.reader-create-button'),
+                                h1:document.querySelectorAll('.reader-page h1').length,
+                                heading:document.querySelector('.reader-card-intro').style.textAlign || getComputedStyle(document.querySelector('.reader-card-intro')).textAlign,
+                                alignment:getComputedStyle(document.querySelector('.reader-story')).textAlign,
+                                overflow:document.documentElement.scrollWidth-innerWidth,
+                            };
+                        })()`);
+                        const label = `${language}/${width}/${route}`;
+                        assert(layout.overflow <= 1, label + " horizontal overflow");
+                        assert.equal(layout.h1, 1, label + " one page heading");
+                        assert.equal(layout.alignment, "center", label + " centered story");
+                        assert.equal(layout.heading, "left", label + " readable form introduction");
+                        for (const element of ["title", "description", "values", "art", "caption"])
+                            assert(Math.abs(layout[element].center-layout.hero.center) <= 1, label + " centered " + element);
+                        assert(Math.abs(layout.button.width-layout.secondary.width) <= 1, label + " full-width secondary action");
+                        if (width >= 960) {
+                            assert(layout.hero.right <= layout.panel.x + 1, label + " split columns");
+                            assert(layout.art.width <= 601 && layout.art.bottom-layout.art.y <= 321, label + " balanced illustration");
+                            if (route === "/" && width === 1366) assert(layout.button.bottom < 768, label + " visible login action");
+                        } else {
+                            assert(layout.card.y >= layout.hero.bottom, label + " form follows introduction");
+                            assert(layout.art.y >= layout.card.bottom, label + " art follows form");
+                        }
+                        layouts.push(layout);
+                        if ([390, 1440].includes(width)) await screenshot(`auth-layout-${language}-${route === "/" ? "home" : "signup"}-${width}`);
+                    }
+                    for (const element of ["panel", "card", "brand"])
+                        for (const key of ["x", "width"])
+                            assert(Math.abs(layouts[0][element][key]-layouts[1][element][key]) <= 1, `${language}/${width} matching ${element} ${key}`);
+                }
+            }
+            await evaluate("document.querySelector('.reader-language [lang=en]').click()");
+            await waitFor("document.documentElement.lang === 'en'", "restore English auth");
+        });
         await check("signup navigation, direct refresh, browser back and keyboard controls work", async () => {
             await reset({}, "?from=%2Fcourses");
             await evaluate("document.querySelector('.reader-create-button').focus()");
