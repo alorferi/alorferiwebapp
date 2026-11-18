@@ -1,17 +1,15 @@
 <template>
-    <div class="form-group">
+    <div class="mb-4">
         <label :for="name" class="text-primary">{{ label }}</label>
 
-        <div class="input-group mb-3 border">
-
-            <div class="input-group-prepend">
-                    <span class="input-group-text">
-                              <i class="fas fa-venus-mars"></i>
-                    </span>
+        <div class="flex w-full flex-wrap items-center mb-4 rounded-lg border bg-white">
+            <div class="flex">
+                <span class="ui-input-addon">
+                    <i class="fas fa-venus-mars"></i>
+                </span>
             </div>
 
-
-            <label class="radio-inline pl-2  pt-2">
+            <label class="mr-3 mb-0 inline-flex min-h-[44px] items-center gap-2 px-2 py-2">
                 <input
                     type="radio"
                     :name="name"
@@ -21,9 +19,9 @@
                     :class="errorClassObject()"
                     @change="updateField()"
                 />
-                {{ $t('male') }}
+                {{ $t("male") }}
             </label>
-            <label class="radio-inline  pl-2  pt-2">
+            <label class="mr-3 mb-0 inline-flex min-h-[44px] items-center gap-2 px-2 py-2">
                 <input
                     type="radio"
                     :name="name"
@@ -33,9 +31,9 @@
                     :class="errorClassObject()"
                     @change="updateField()"
                 />
-                {{ $t('female') }}
+                {{ $t("female") }}
             </label>
-            <label class="radio-inline  pl-2  pt-2">
+            <label class="mr-3 mb-0 inline-flex min-h-[44px] items-center gap-2 px-2 py-2">
                 <input
                     type="radio"
                     :name="name"
@@ -46,7 +44,7 @@
                     @change="updateField()"
                 />
 
-                {{ $t('other') }}
+                {{ $t("other") }}
             </label>
         </div>
 
@@ -111,6 +109,6 @@ export default {
 
 <style scoped>
 .error-field {
-    @apply .border .border-danger .border-top-0 .border-left-0 .border-right-0;
+    @apply border border-danger border-t-0 border-l-0 border-r-0;
 }
 </style>

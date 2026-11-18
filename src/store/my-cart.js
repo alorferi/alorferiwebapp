@@ -3,25 +3,27 @@
 // import mixin from "../mixin";
 
 const state = {
-    myCart: JSON.parse(localStorage.getItem("myCart") || null),
+    myCart: JSON.parse(localStorage.getItem("myCart") || null) || [] ,
 
-    myCartsResponse: null,
 };
 
 const getters = {
     myCart: state => state.myCart,
-    myCartsResponse: state => state.myCartsResponse,
+
 
 };
 
 const mutations = {
 
-    setMyCart(state, myCart) {
-        state.myCart = myCart;
-    },
+    addProductToCart(state, product) {
 
-    setMyCartsResponse(state, myCartsResponse) {
-        state.myCartsResponse = myCartsResponse;
+     const filterItems = state.myCart.filter(item => item.id == product.id);
+
+       if(filterItems.length == 0){
+        state.myCart.push(product);
+       }
+
+
     },
 
 
@@ -29,6 +31,11 @@ const mutations = {
 
 const actions = {
 
+    addProductToCart(context, prodcut) {
+
+        context.commit("addProductToCart", prodcut);
+
+    },
 
 
 };

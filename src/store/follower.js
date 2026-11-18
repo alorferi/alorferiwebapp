@@ -1,14 +1,15 @@
-
 const state = {
     followersResponse: { data: [], links: null, meta: null },
     follower: null,
-    followingByMe: null
+    followingByMe: null,
+    followingSource: null,
 };
 
 const getters = {
-    follower: state => state.follower,
-    followersResponse: state => state.followersResponse,
-    followingByMe: state => state.followingByMe
+    follower: (state) => state.follower,
+    followersResponse: (state) => state.followersResponse,
+    followingByMe: (state) => state.followingByMe,
+    followingSource: (state) => state.followingSource,
 };
 
 const mutations = {
@@ -16,7 +17,7 @@ const mutations = {
         if (state.followersResponse.data.length == 0) {
             state.followersResponse.data = newFollowersResponse.data;
         } else {
-            newFollowersResponse.data.forEach(function(item) {
+            newFollowersResponse.data.forEach(function (item) {
                 state.followersResponse.data.push(item);
             });
         }
@@ -29,43 +30,41 @@ const mutations = {
 
     insertFollower(state, followerData) {
         state.followersResponse.data.splice(0, 0, followerData);
-        state.followersResponse.meta.total =
-            state.followersResponse.meta.total + 1;
+        if (!state.followersResponse.meta) state.followersResponse.meta = { total: 0 };
+        state.followersResponse.meta.total++;
     },
 
     removeMeFromFollowers(state) {
         var activeUserId = this.getters.activeUser.id;
 
-        state.followersResponse.data.forEach(function(
-            followerItem,
-            index,
-            arr
-        ) {
+        state.followersResponse.data.forEach(function (followerItem, index, arr) {
             if (followerItem.attributes.user.id == activeUserId) {
                 arr.splice(index, 1);
             }
         });
 
-        state.followersResponse.meta.total =
-            state.followersResponse.meta.total - 1;
+        if (state.followersResponse.meta)
+            state.followersResponse.meta.total = Math.max(0, state.followersResponse.meta.total - 1);
     },
 
+    setFollowingSource(state, source) {
+        if (state.followingSource !== source) state.followingByMe = null;
+        state.followingSource = source;
+    },
     setFollowingByMe(state, newFollowingByMe) {
         state.followingByMe = newFollowingByMe;
     },
 
     clearFollowingByMe(state) {
         state.followingByMe = null;
-    }
+    },
 };
 
-const actions = {
-
-};
+const actions = {};
 
 export default {
     state,
     getters,
     mutations,
-    actions
+    actions,
 };

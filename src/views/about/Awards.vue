@@ -2,7 +2,7 @@
     <div class="">
         <h2>{{ $t("district_champion_title") }}</h2>
         <img
-            class="rounded mx-auto my-auto d-block img-fluid m-4"
+            class="rounded mx-auto my-auto block h-auto max-w-full m-6"
             src="@/assets/images/awards/award_patuakkhali_16x9.png"
             alt="Alor Feri logo"
         />
@@ -14,7 +14,7 @@
 
         <h2>{{ $t("prothom_alo_honor_title") }}</h2>
         <img
-            class="rounded mx-auto my-auto d-block img-fluid m-4"
+            class="rounded mx-auto my-auto block h-auto max-w-full m-6"
             src="@/assets/images/awards/award_prothom_alo_16x9.png"
             alt="Alor Feri logo"
         />

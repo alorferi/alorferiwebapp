@@ -1,171 +1,69 @@
 <template>
-    <div class="">
-
-
-        <div class="card mb-4" data-container="body">
-
-
-            <img class="rounded img-fluid" :src="imageUrl()" alt="Course Thumb">
-
-            <!-- <div class="card-body" :style="{ background: item.color_background }">
-
-
-                <h4 :style="{ color: item.color_title }">
-                    {{ item . title }}
-                </h4>
-
-
-                <div class="d-flex justify-content-between mt-3">
-
-                    <div>
-                        <h6> Starts at: {{ this . formatDate(item . starts_at) }}</h6>
-                    </div>
-
-                    <div>
-
-
-                        {{ this . momentFromNow(item . starts_at) }}
-
-
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="d-flex justify-content-between mt-3">
-
-                    <div>
-
-                        <div class="d-flex">
-                            <h5 :style="{ color: item.color_title }">
-                                ৳{{ item . actual_fee }}.0
-                            </h5>
-                            &nbsp;
-                            <del :style="{ color: item.color_subtitle }"> <strong>৳{{ item . list_fee }}</strong> </del>
-                        </div>
-
-                    </div>
-
-
-                    <div>
-
-
-
-                        <h6 :style="{ color: item.color_title }"> {{ item . duration }}
-                            Hours
-                        </h6>
-
-                    </div>
-
-                </div>
-
-
-
-            </div> -->
-
-
-            <!-- <router-link class="stretched-link"
-                :to="{
-
-                    name: 'courses.show',
-                    params: { slug: item.slug }
-
-                }"></router-link> -->
-
-            <div class="card-body">
-
-
-                <div class="d-flex justify-content-between">
-
-                    <!-- <router-link class="btn btn-small btn-info"
-                    :to="{
-
-                        name: 'courses.show',
-                        params: { slug: item.slug }
-
-                    }">Show</router-link> -->
-
-                <!-- <router-link class="btn btn-small btn-success"
-                    v-if="showApplyButton"
-                    :to="{
-
-                        name: 'courses.apply',
-                        params: { id: item.id }
-
-                    }">Apply
-                    now</router-link> -->
-
-                    <a class="btn btn-small btn-danger">
-                            Wishlist
-                    </a>
-
-                    <button type="button" class="btn btn-success btn-small"> <i class="fas fa-cart-plus" ></i>&nbsp; Add to cart</button>
-
-
-                </div>
-
-
-                  <div>{{ msg_text }}</div>
-
+    <article class="ui-card social-course-card">
+        <CourseImage :src="item.image_url" :title="item.title" class="rounded-t-2xl rounded-b-none" />
+        <div class="social-course-body">
+            <h2>
+                <router-link :to="{ name: 'courses.show', params: { slug: item.slug } }">{{ item.title }}</router-link>
+            </h2>
+            <div class="social-course-meta">
+                <span v-if="item.duration"
+                    ><i class="far fa-clock" aria-hidden="true"></i> {{ item.duration }} {{ $t("social.hours") }}</span
+                ><span v-if="item.starts_at">{{ formatDate(item.starts_at) }}</span>
             </div>
-
-
-
+            <div v-if="item.actual_fee != null" class="social-course-fee">
+                ৳{{ item.actual_fee }}
+                <del v-if="item.list_fee > item.actual_fee" class="text-sm text-secondary font-normal"
+                    >৳{{ item.list_fee }}</del
+                >
+            </div>
+            <p v-if="msg_text" class="social-course-message">{{ msg_text }}</p>
+            <div class="social-course-actions">
+                <router-link
+                    class="ui-button ui-button-light"
+                    :to="{ name: 'courses.show', params: { slug: item.slug } }"
+                    >{{ $t("social.viewCourse") }}</router-link
+                >
+                <button
+                    type="button"
+                    class="ui-button ui-button-primary"
+                    :disabled="isProductAdded"
+                    @click="addToCart(item)"
+                >
+                    {{ $t(isProductAdded ? "social.added" : "social.addCart") }}
+                </button>
+            </div>
         </div>
-    </div>
+    </article>
 </template>
-
 <script>
-    export default {
-        name: "CourseCardItem",
-        props: ["item"],
-        components: {
-
-
-
+import CourseImage from "./CourseImage";
+export default {
+    name: "CourseCardItem",
+    props: ["item"],
+    components: { CourseImage },
+    data() {
+        return { msg_text: "" };
+    },
+    computed: {
+        isProductAdded() {
+            return this.$store.getters.myCart.some((c) => c.id === this.item.id);
         },
-        mounted: function() {
-            this.fetchMyOrder();
-        },
-        computed: {
-
-        },
-
-        data: function(){
-            return {
-                showApplyButton: false,
-                msg_text: "",
+    },
+    mounted() {
+        if (this.$store.getters.isLoggedIn) this.fetchMyOrder();
+    },
+    methods: {
+        async fetchMyOrder() {
+            try {
+                const r = await this.$store.dispatch("fetchMyCourseOrder", this.item.id);
+                this.msg_text = r.data.message || "";
+            } catch (error) {
+                this.msg_text = "";
             }
         },
-
-        methods: {
-
-            imageUrl() {
-                return this.getApiUrl(this.item.image_url)
-            },
-
-            fetchMyOrder() {
-
-                let self = this;
-
-                self.$store
-                    .dispatch("fetchMyCourseOrder", self.item.id)
-                    .then((response) => {
-                        self.showApplyButton = false;
-                        self.msg_text = response.data.message;
-                    })
-                    .catch(() => {
-                        self.showApplyButton = true;
-                    });
-
-            }
-
-        }
-
-    };
+        addToCart(item) {
+            this.$store.dispatch("addProductToCart", item);
+        },
+    },
+};
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>

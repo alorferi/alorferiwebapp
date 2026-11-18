@@ -1,17 +1,18 @@
 <template>
     <div>
         <!-- <div class="card"> -->
-        <b-modal
+        <UiModal
+            :busy="is_loading"
             ref="modal"
             :title="modalTile"
             v-model="showLocal"
-            @show="showModal"
-            @hidden="hideModal"
+            @opened="showModal"
+            @closed="hideModal"
             ok-title="Post"
-            @ok="handleOk"
+            @confirm="handleOk"
             centered
         >
-            <div class="d-flex align-items-center mb-3">
+            <div class="flex items-center mb-4">
                 <UserPhoto :user="activeUser" size="16"></UserPhoto>
 
                 <div class="ml-2">
@@ -20,61 +21,50 @@
                 </div>
             </div>
             <form ref="form" @submit.stop.prevent="handleSubmit" class="mb-2">
-                <!-- <b-form-input
-                    class="form-control mb-2"
-                    v-model="title"
-                    placeholder="What is the title of your discussion?"
-                ></b-form-input> -->
-
-                <b-form-textarea
+                <textarea
+                    aria-label="Discussion"
+                    class="ui-field"
                     id="textarea"
                     v-model="body"
                     placeholder="What do you want to discussion about?"
-                    rows="4s"
-                    max-rows="6"
-                    :state="bodyState"
+                    rows="4"
+                    :aria-invalid="bodyState === false ? 'true' : undefined"
                     required
                 >
-                </b-form-textarea>
+                </textarea>
 
                 <Loading v-if="is_loading"></Loading>
-                <div class="d-flex justify-content-center m-2">
-                    <img
-                        v-if="imgUrl"
-                        :src="imgUrl"
-                        style="max-width:460px; max-height:320px"
-                    />
+                <div class="flex justify-center m-2">
+                    <img v-if="imgUrl" :src="imgUrl" style="max-width: 460px; max-height: 320px" />
                 </div>
 
-                <!-- <ImageAutoResize @update:field="imgFile = $event" /> -->
-
-                <b-form-file
+                <UiFileInput
                     v-model="imgFile"
                     accept="image/*"
                     placeholder="Choose an image or drop it here..."
-                    drop-placeholder="Drop image here..."
                     @change="onFileChange"
-                ></b-form-file>
+                ></UiFileInput>
             </form>
-        </b-modal>
+            <p v-if="requestError" role="alert" class="mt-3 text-danger">{{ requestError }}</p>
+        </UiModal>
         <!-- </div> -->
     </div>
 </template>
 
 <script>
+import { requestErrorMessage } from "@/components/ui/requestError";
 import UserPhoto from "../user/UserPhoto";
 import Loading from "@/components/Loading";
 // import ImageUploader from "vue-image-upload-resize";
-// import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
     name: "CreateOrEditPostModal",
     components: {
         UserPhoto,
-        // ImageAutoResize
         // ImageUploader,
         Loading
     },
+    beforeDestroy() { if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl); },
     mounted: function() {},
     props: ["show", "post", "postable_type", "postable_id"],
     computed: {
@@ -104,15 +94,17 @@ export default {
             imgUrl: null,
             imgFile: null,
             hasImage: false,
+            requestError: "",
             is_loading: false,
             modalTile:
                 this.post == null ? this.$t('write_a_discussion') : this.$t('edit_a_discussion')
         };
     },
     methods: {
-        onFileChange(e) {
-            const file = e.target.files[0];
-            this.imgUrl = URL.createObjectURL(file);
+        onFileChange(file) {
+            if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
+            this.imgFile = file;
+            this.imgUrl = file ? URL.createObjectURL(file) : null;
         },
         processUserPost(packet) {
             const self = this;
@@ -123,7 +115,7 @@ export default {
                     .then(() => {
                         self.hidePostModal();
                     })
-                    .catch(() => {})
+                    .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
                     .finally(() => {
                         self.is_loading = false;
                     });
@@ -133,7 +125,7 @@ export default {
                     .then(() => {
                         self.hidePostModal();
                     })
-                    .catch(() => {})
+                    .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
                     .finally(() => {
                         self.is_loading = false;
                     });
@@ -148,7 +140,7 @@ export default {
                     .then(() => {
                         self.hidePostModal();
                     })
-                    .catch(() => {})
+                    .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
                     .finally(() => {
                         self.is_loading = false;
                     });
@@ -158,7 +150,7 @@ export default {
                     .then(() => {
                         self.hidePostModal();
                     })
-                    .catch(() => {})
+                    .catch(error => { self.requestError = requestErrorMessage(error, self.$store.getters.activeLanguage); })
                     .finally(() => {
                         self.is_loading = false;
                     });
@@ -179,6 +171,7 @@ export default {
             console.log("formData",  self.title, self.body);
             console.log("self.postable_type", self.postable_type);
 
+            self.requestError = "";
             self.is_loading = true;
             switch (self.postable_type) {
                 case "user":
@@ -221,6 +214,8 @@ export default {
             this.clearData();
         },
         clearData() {
+            this.requestError = "";
+            if (this.imgUrl && this.imgUrl.startsWith("blob:")) URL.revokeObjectURL(this.imgUrl);
             this.title = "";
             this.body = "";
             this.imgUrl = null;
@@ -233,13 +228,13 @@ export default {
             this.imgFile = null;
             this.bodyState = null;
         },
-        handleOk(bvModalEvt) {
+        handleOk() {
             // Prevent modal from closing
-            bvModalEvt.preventDefault();
             // Trigger submit handler
             this.handleSubmit();
         },
         handleSubmit() {
+            if (this.is_loading) return;
             // Exit when the form isn't valid
             if (!this.checkFormValidity()) {
                 return;
@@ -275,7 +270,7 @@ li {
     margin: 0 10px;
 }
 a {
-    color: #42b983;
+    color: var(--color-primary);
 }
 .my-8 {
     margin-top: 4rem;

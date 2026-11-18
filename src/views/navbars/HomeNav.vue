@@ -1,167 +1,72 @@
 <template>
-    <div class="container-fluid">
-        <!-- <router-link :to="{ name: 'home' }" class="navbar-brand"    @click="reload">
-            <img
-                src="@/assets/images/defaults/alorferi_logo_brand.png"
-                height="24px"
-                alt="Alor Feri logo"
-            />
-        </router-link> -->
-
-        <a href="/" class="navbar-brand" @click="reload">
-            <img
-                src="@/assets/images/defaults/alorferi_logo_brand.png"
-                height="24px"
-                alt="Alor Feri logo"
-            />
-        </a>
-
-
-        <!-- Toggler/collapsibe Button -->
+    <div class="social-topbar-inner">
         <button
-            class="navbar-toggler"
             type="button"
-            data-toggle="collapse"
-            data-target="#collapsibleNavbar"
+            class="social-menu-toggle ui-button ui-button-light"
+            :aria-label="$t('social.navigation')"
+            :aria-expanded="menuOpen ? 'true' : 'false'"
+            @click="$emit('menu')"
         >
-            <span class="navbar-toggler-icon"></span>
+            <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
-
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="nav navbar-nav">
-
-                <li class="pl-2 pr-1">
-                    <a href="/" class="nav-link" @click="reload">
-                    <i class="fas fa-home"></i> <span class="pl-1"> {{ $t('home') }} </span>
-                    </a>
-                </li>
-                <li class="pl-1 pr-1">
-                    <a href="/courses" class="nav-link" @click="reload">
-                        Training
-                    </a>
-                </li>
-                <li class="pl-1 pr-1">
-                    <a href="/libraries" class="nav-link" @click="reload">
-                        {{ $t('libraries') }}
-                    </a>
-                </li>
-
-
-
-                <li class="pl-1 pr-1">
-                    <a href="/users" class="nav-link" @click="reload">
-                       {{ $t('users') }}
-                    </a>
-                </li>
-
-
-            </ul>
-            <!-- <NavBarSearch class="ml-4"/> -->
-            <ul class="nav navbar-nav ml-auto">
-
-                <li class="nav-item">
-                    <LanguageToggleButton/>
-                </li>
-
-                <li class="nav-item" style="margin-left: 5px;margin-right: 5px;">
-                    <a href="" class="nav-link"> <i class="fas fa-shopping-cart"></i> My Cart</a>
-                </li>
-
-                <!-- Dropdown -->
-                <li class="nav-item dropdown">
-                    <a
-                        id="navbarDropdown"
-                        class="nav-link dropdown-toggle "
-                        href="#"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        <UserPhoto :user="activeUser" size="12" />
-
-                        {{ activeUser.first_name }}
-                    </a>
-                    <div
-                        class="dropdown-menu dropdown-menu-right"
-                        aria-labelledby="navbarDropdown"
-                    >
-                        <router-link
-                            class="dropdown-item"
-                            :to="{ name: 'users.me' }"
-                        >
-                        {{ $t('profile') }}
-                        </router-link>
-
-                        <div class="dropdown-divider"></div>
-
-                        <router-link
-                            class="dropdown-item"
-                            :to="{ name: 'my-courses' }"
-                        >
-                        {{ $t('my-courses') }}
-                        </router-link>
-
-                        <div class="dropdown-divider"></div>
-
-
-
-                        <a
-                            class="dropdown-item"
-                            href="#"
-                            @click="logoutMe"
-                            v-if="this.$store.getters.isLoggedIn"
-                            > {{ $t('logout') }}</a
-                        >
-                    </div>
-                </li>
-            </ul>
+        <router-link class="social-brand" :to="{ name: 'home' }"
+            ><img src="@/assets/images/defaults/alorferi_logo_brand.png" alt="" width="40" height="40" /><span
+                >Alor Feri<small>{{ $t("social.community") }}</small></span
+            ></router-link
+        >
+        <div class="social-topbar-actions">
+            <LanguageToggleButton />
+            <span
+                class="social-cart"
+                role="status"
+                :aria-label="$t('social.cart') + ': ' + $store.getters.myCart.length"
+                ><i class="fas fa-shopping-bag" aria-hidden="true"></i
+                ><span>{{ $store.getters.myCart.length }}</span></span
+            >
+            <UiDropdown
+                trigger-id="navbarDropdown"
+                trigger-class="social-account-trigger"
+                :label="$t('social.account')"
+            >
+                <template #trigger
+                    ><UserPhoto :user="activeUser" size="32" /><span class="social-account-name">{{
+                        activeUser.first_name
+                    }}</span></template
+                >
+                <router-link class="ui-menu-item social-account-item" :to="{ name: 'users.me' }">
+                    <i class="far fa-user" aria-hidden="true"></i><span>{{ $t("social.profile") }}</span>
+                </router-link>
+                <router-link class="ui-menu-item social-account-item" :to="{ name: 'my-libraries' }">
+                    <i class="fas fa-book-open" aria-hidden="true"></i><span>{{ $t("social.myLibraries") }}</span>
+                </router-link>
+                <router-link class="ui-menu-item social-account-item" :to="{ name: 'my-courses' }">
+                    <i class="fas fa-graduation-cap" aria-hidden="true"></i><span>{{ $t("social.myCourses") }}</span>
+                </router-link>
+                <div class="ui-menu-separator"></div>
+                <button type="button" class="ui-menu-item social-account-item" @click="logoutMe">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i><span>{{ $t("logout") }}</span>
+                </button>
+            </UiDropdown>
         </div>
     </div>
 </template>
-
 <script>
-  import $ from 'jquery';
-// import Logout from './Logout'
-// import { mapGetters } from "vuex";
 import UserPhoto from "@/views/user/UserPhoto";
 import LanguageToggleButton from "@/components/LanguageToggleButton";
-// import NavBarSearch from '@/views/navbars/NavBarSearch.vue';
 export default {
     name: "HomeNav",
-    components: {
-        UserPhoto,
-        // NavBarSearch
-        LanguageToggleButton
-    },
-    data() {
-        return {};
-    },
+    components: { UserPhoto, LanguageToggleButton },
+    props: { menuOpen: Boolean },
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
-        }
+        },
     },
-    async mounted() {},
     methods: {
-        logoutMe: function() {
-            this.$store.dispatch("logout").then(() => {
-                this.$router.push({ name: "home" }).catch(() => {});
-            });
+        async logoutMe() {
+            await this.$store.dispatch("logout");
+            this.$router.push({ name: "home" }).catch(() => {});
         },
-        reload: function() {
-            this.$router.go(this.$router.currentRoute);
-        }
     },
-    watch: {
-            $route() {
-                $(".nav-link").click(function() {
-                    $('.navbar-toggler').click();
-                });
-            }
-        },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style></style>

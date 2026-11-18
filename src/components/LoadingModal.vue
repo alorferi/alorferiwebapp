@@ -1,22 +1,20 @@
 <template>
     <div>
-        <b-modal
-            id="modal-prevent-closing"
+        <UiModal
             ref="modal"
-            @hidden="resetModal"
+            @closed="resetModal"
             v-model="showLoadingModalLocal"
             :hide-header="hideHeader"
             :hide-footer="hideFooter"
             centered
-            data-keyboard="false"
-            data-backdrop="static"
+            persistent
         >
-            <div class="d-flex justify-content-center pt-3">
-                <div class="spinner-border  text-success" role="status">
+            <div class="flex justify-center pt-4">
+                <div class="ui-spinner text-success" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-        </b-modal>
+        </UiModal>
     </div>
 </template>
 

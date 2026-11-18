@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="card">
-            <div class="card-body d-flex  align-items-center">
+        <div class="ui-card social-composer">
+            <div class="social-composer-row">
                 <router-link
                     :to="{
                         name: 'users.show',
-                        params: { user_id: this.activeUser.id }
+                        params: { user_id: this.activeUser.id },
                     }"
                 >
                     <UserPhoto :user="activeUser" size="32"> </UserPhoto>
@@ -13,13 +13,14 @@
 
                 <button
                     type="button"
-                    class="ml-3 form-control btn btn-outline-info"
+                    class="social-composer-prompt"
                     @click="showCreateUserPostModel = !showCreateUserPostModel"
                 >
-                     {{ $t('start_a_discussion') }}
+                    {{ $t("social.startDiscussion") }}
                 </button>
             </div>
 
+            <p class="social-composer-hint">{{ $t("social.discussionHint") }}</p>
             <CreateOrEditPostModal
                 :show="showCreateUserPostModel"
                 @updateVisibleState="showCreateUserPostModel = $event"
@@ -27,9 +28,9 @@
             />
 
             <!-- <EditPostModal :show="showEditPostModal"
-            :post="post"
-             @updateVisibleState="showEditPostModal = $event"
-             /> -->
+        :post="post"
+         @updateVisibleState="showEditPostModal = $event"
+         /> -->
         </div>
     </div>
 </template>
@@ -38,20 +39,18 @@
 import UserPhoto from "@/views/user/UserPhoto";
 import CreateOrEditPostModal from "@/views/post/CreateOrEditPostModal.vue";
 // import ImageUploader from "vue-image-upload-resize";
-// import ImageAutoResize from "../../components/ImageAutoResize";
 
 export default {
     name: "CreateUserPost",
     components: {
         UserPhoto,
-        // ImageAutoResize
         // ImageUploader,
-        CreateOrEditPostModal
+        CreateOrEditPostModal,
     },
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
-        }
+        },
     },
     data() {
         return {
@@ -61,11 +60,11 @@ export default {
             imgUrl: null,
             imgFile: null,
             hasImage: false,
-            showCreateUserPostModel: false
+            showCreateUserPostModel: false,
             // image: null
         };
     },
-    methods: {}
+    methods: {},
 };
 </script>
 
@@ -86,7 +85,7 @@ li {
     margin: 0 10px;
 }
 a {
-    color: #42b983;
+    color: var(--color-primary);
 }
 .my-8 {
     margin-top: 4rem;

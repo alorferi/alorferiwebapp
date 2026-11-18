@@ -1,46 +1,35 @@
 <template>
     <div>
-        <b-modal
-            id="modal-prevent-closing"
+        <UiModal
+            :busy="is_loading"
             ref="modal"
             title="Send member request"
-            @show="initModal"
-            @hidden="hideModal"
+            @opened="initModal"
+            @closed="hideModal"
             ok-title="Send"
             cancel-title="Cancel"
             v-model="showMemberRequestModalLocal"
             :hide-header="hideHeader"
-            @ok="handleOk"
+            @confirm="handleOk"
             @cancel="handleCancel"
             centered
-            data-keyboard="false"
-            data-backdrop="static"
+            persistent
         >
-            <div class="modal-header">
-                <div class="d-flex">
+            <div class="mb-4 flex items-center justify-between">
+                <div class="flex">
                     <div class="p-2">
                         <LibraryLogo :library="library" size="48" />
                     </div>
 
-                    <div class="flex-grow-1 p-2">
+                    <div class="grow p-2">
                         <h4 class="text-success">{{ library.name }}</h4>
 
                         <h6>
-                            <span
-                                v-if="
-                                    library.address.house != null &&
-                                        library.address.house.length != 0
-                                "
-                            >
+                            <span v-if="library.address.house != null && library.address.house.length != 0">
                                 {{ library.address.house }},
                             </span>
 
-                            <span
-                                v-if="
-                                    library.address.village != null &&
-                                        library.address.village.length != 0
-                                "
-                            >
+                            <span v-if="library.address.village != null && library.address.village.length != 0">
                                 {{ library.address.village }},
                             </span>
 
@@ -52,30 +41,22 @@
                                 {{ library.address.district.name }}
                             </span>
 
-                            <span v-if="library.address.post_code != null">
-                                - {{ library.address.post_code }}
-                            </span>
+                            <span v-if="library.address.post_code != null"> - {{ library.address.post_code }} </span>
                         </h6>
                     </div>
                 </div>
             </div>
 
-            <div class="modal-body text-center text-success">
-                <h4 class="modal-title text-primary">সদস্য অনুরোধ পাঠান</h4>
+            <div class="p-4 text-center text-success">
+                <h4 class="m-0 text-xl font-medium text-primary">সদস্য অনুরোধ পাঠান</h4>
                 <!-- <h6>Privacy Policy here</h6> -->
-<br>
-                <input
-                    type="checkbox"
-                    id="iAgreeCheckbox"
-                    name="iAgreeCheckbox"
-                    @click="iAgree = !iAgree"
-                />
-                &nbsp;   &nbsp;
-                <label for="iAgreeCheckbox">
-                   আমি এই পাঠাগারের শর্তাবলী মেনে সদস্য হতে রাজি।</label
-                >
+                <br />
+                <input type="checkbox" id="iAgreeCheckbox" name="iAgreeCheckbox" @click="iAgree = !iAgree" />
+                &nbsp; &nbsp;
+                <label for="iAgreeCheckbox"> আমি এই পাঠাগারের শর্তাবলী মেনে সদস্য হতে রাজি।</label>
             </div>
-        </b-modal>
+            <p v-if="error_message" role="alert" class="mt-3 text-danger">{{ error_message }}</p>
+        </UiModal>
     </div>
 </template>
 
@@ -101,6 +82,7 @@ export default {
     mounted: function() {},
     data() {
         return {
+            is_loading: false,
             otCodeState: null,
             hideHeader: true,
             iAgree: false,
@@ -123,22 +105,24 @@ export default {
         hideModal() {
             this.otCodeState = null;
             this.emitShowMemberRequestModal(false);
-            this.emitCancelClick();
         },
         initModal() {
             this.otCodeState = null;
             this.iAgree = false;
+            this.error_message = null;
         },
-        handleOk(bvModalEvt) {
+        handleOk() {
             const self = this;
 
             // Prevent modal from closing
-            bvModalEvt.preventDefault();
-
+            if (self.is_loading) return;
             if (!self.iAgree) {
+                self.error_message = "Please accept the library terms first.";
                 return;
             }
 
+            self.is_loading = true;
+            self.error_message = null;
             const payload = { library_id: self.library.id };
 
             self.$store
@@ -150,27 +134,22 @@ export default {
 
                     this.emitOkClick();
                     this.$nextTick(() => {
-                        this.$bvModal.hide("modal-prevent-closing");
+                        this.showMemberRequestModalLocal = false;
                     });
                 })
                 .catch(errors => {
-                    console.log(errors);
-
-                    this.emitOkClick();
-                    this.$nextTick(() => {
-                        this.$bvModal.hide("modal-prevent-closing");
-                    });
-                });
+                    self.error_message = errors.response && errors.response.data && errors.response.data.message || "Unable to send your request. Please try again.";
+                })
+                .finally(() => { self.is_loading = false; });
         },
-        handleCancel(bvModalEvt) {
+        handleCancel() {
             // Prevent modal from closing
-            bvModalEvt.preventDefault();
             // Trigger submit handler
-            this.hideModal();
+            this.emitCancelClick();
             // Push the name to submitted names
             // Hide the modal manually
             this.$nextTick(() => {
-                this.$bvModal.hide("modal-prevent-closing");
+                this.showMemberRequestModalLocal = false;
             });
         }
     }

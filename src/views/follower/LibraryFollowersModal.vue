@@ -1,15 +1,17 @@
 <template>
     <div>
-        <b-modal
+        <UiModal
+            :busy="is_loading"
             ref="modal"
             :title="titleTotalFollowers"
             v-model="showLocal"
             ok-only
+            close-on-confirm
             centered
-            @show="showModal"
-            @hidden="hideModal"
+            @opened="showModal"
+            @closed="hideModal"
             ok-title="OK"
-            @ok="handleOk"
+            @confirm="handleOk"
         >
             <Loading v-if="is_loading"></Loading>
             <UserFollowerListItem
@@ -20,7 +22,7 @@
             />
 
             <!-- <div class=" text-right">Total: {{ totalFollowers }}</div> -->
-        </b-modal>
+        </UiModal>
     </div>
 </template>
 

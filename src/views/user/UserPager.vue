@@ -2,14 +2,14 @@
     <div>
         <UserCoverPhotoWithUpload :user="user" />
 
-        <div class="bg-light">
-            <div class="d-flex  border-left border-right">
-                <div class="pl-3 pt-2 pb-2 text-center">
+        <div class="ui-card social-identity-card">
+            <div class="social-identity">
+                <div class="shrink-0">
                     <UserPhotoWithUpload :user="user" size="96" />
                 </div>
 
-                <div class="flex-grow-1 p-2">
-                    <h2 class="text-dark m-2">
+                <div class="social-identity-info min-w-0 grow">
+                    <h2 class="break-words">
                         {{ user.first_name }} {{ user.surname }}
                         {{ user.nickname }}
                     </h2>
@@ -26,100 +26,85 @@
                         :user="user"
                     />
 
-                    <div class="btn-group">
+                    <div class="social-identity-actions">
                         <button
-                            class="btn btn-sm btn-link  mt-1 mb-1 mr-1"
+                            v-if="!isItMe(user)"
+                            class="ui-button ui-button-primary"
+                            type="button"
+                            :disabled="followBusy || !followReady"
+                            @click="toggleFollow"
+                        >
+                            {{ $t(isFollowingByMe ? "social.unfollow" : "social.follow") }}
+                        </button>
+                        <router-link v-else class="ui-button ui-button-light" :to="{ name: 'users.edit-me' }">{{
+                            $t("social.editProfile")
+                        }}</router-link>
+                        <div v-if="followError" class="text-danger text-sm w-full">
+                            <span role="alert">{{ $t("social.followError") }}</span
+                            ><button type="button" class="social-read-more ml-2" @click="fetchUserFollowingByMeAction">
+                                {{ $t("social.retry") }}
+                            </button>
+                        </div>
+                        <button
+                            class="ui-button ui-button-small ui-button-link mt-1 mb-1 mr-1"
                             @click="showUserFollowings = !showUserFollowings"
                         >
                             {{ totalFollowings }}
                         </button>
 
                         <button
-                            class="btn btn-sm btn-link   mt-1 mb-1  mr-1"
+                            class="ui-button ui-button-small ui-button-link mt-1 mb-1 mr-1"
                             @click="showUserFollowers = !showUserFollowers"
                         >
                             {{ totalFollowers }}
                         </button>
 
-                        <button
-                            type="button"
-                            class="dropdown-toggle dropdown-toggle-split btn btn-sm btn-link mt-1 mb-1
-                        border-top border-left border-right border-bottom
-                        "
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                        >
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a
-                                class="dropdown-item"
-                                href="#"
-                                v-if="!isItMe(user) && !isFollowingByMe"
-                                @click="followUserByMeAction()"
-                                >Follow</a
-                            >
+                        <UiDropdown
+                            trigger-class="ui-button ui-button-small ui-button-link mt-1 mb-1 border-t border-l border-r border-b"
+                            :label="$t('social.actions')"
+                            ><template #trigger>
+                                <i class="fas fa-ellipsis-h" aria-hidden="true"></i>
+                            </template>
 
-                            <a
-                                class="dropdown-item"
-                                v-if="!isItMe(user) && isFollowingByMe"
-                                href="#"
-                                @click="unFollowUserByMeAction()"
-                                >Unfollow</a
-                            >
-
-                            <router-link
-                                class="dropdown-item"
-                                v-if="isItMe(user)"
-                                :to="{ name: 'users.edit-me' }"
-                            >
-                                Edit My Profile
+                            <router-link class="ui-menu-item" v-if="isItMe(user)" :to="{ name: 'users.edit-me' }">
+                                {{ $t("social.editProfile") }}
                             </router-link>
-                            <div class="dropdown-divider"></div>
+                            <div class="ui-menu-separator"></div>
                             <a
-                                class="dropdown-item text-danger"
+                                class="ui-menu-item text-danger"
                                 href="#"
                                 v-if="!isItMe(user)"
-                                @click="
-                                    showCreateReportModel = !showCreateReportModel
-                                "
+                                @click.prevent="showCreateReportModel = !showCreateReportModel"
                             >
                                 <i class="fas fa-exclamation-triangle"></i>
-                                Report this user</a
+                                {{ $t("social.report") }}</a
                             >
 
                             <a
-                                class="dropdown-item text-danger"
+                                class="ui-menu-item text-danger"
                                 href="#"
                                 v-if="!isItMe(user)"
-                                @click="
-                                    showCreateBlockModel = !showCreateBlockModel
-                                "
+                                @click.prevent="showCreateBlockModel = !showCreateBlockModel"
                             >
                                 <i class="fas fa-exclamation-triangle"></i>
-                                Block this user</a
+                                {{ $t("social.block") }}</a
                             >
-                        </div>
+                        </UiDropdown>
                     </div>
 
                     <div></div>
                 </div>
             </div>
 
-            <div class="pt-1">
-                <ul class="nav nav-tabs nav-justified">
-                    <li
-                        class="nav-item"
-                        v-for="(tab, index) in getTabs"
-                        v-bind:key="index"
-                    >
+            <div class="social-profile-tabs">
+                <ul class="flex flex-wrap ui-tabs [&>li]:flex-1 [&>li]:text-center">
+                    <li class="" v-for="(tab, index) in getTabs" v-bind:key="index">
                         <a
-                            class="nav-link"
+                            class="ui-nav-link"
                             href="#"
-                            :class="{ active: tab.active }"
-                            @click="clickTabItem(tab)"
-                            >{{ tab.title }}</a
+                            :class="{ 'ui-selected': tab.active }"
+                            @click.prevent="clickTabItem(tab)"
+                            >{{ tabLabel(tab) }}</a
                         >
                     </li>
                 </ul>
@@ -168,7 +153,7 @@ export default {
         UserFollowingListModal,
         UserCoverPhotoWithUpload,
         CreateReportModal,
-        CreateBlockModal
+        CreateBlockModal,
     },
     async mounted() {
         const self = this;
@@ -182,7 +167,10 @@ export default {
 
     computed: {
         isFollowingByMe() {
-            return this.$store.getters.followingByMe != null;
+            return (
+                this.$store.getters.followingSource === "user:" + this.user.id &&
+                this.$store.getters.followingByMe != null
+            );
         },
         getTabs() {
             return this.tabs;
@@ -196,7 +184,7 @@ export default {
                 total = this.$store.getters.followersResponse.meta.total;
             }
 
-            return "Followers (" + total + ")";
+            return this.$t("social.followers") + " (" + total + ")";
         },
         totalFollowings() {
             var total = 0;
@@ -204,29 +192,50 @@ export default {
                 total = this.$store.getters.userFollowingsResponse.meta.total;
             }
 
-            return "Following (" + total + ")";
-        }
+            return this.$t("social.following") + " (" + total + ")";
+        },
     },
     methods: {
+        tabLabel(tab) {
+            const key =
+                { TimeLine: "timeline", Timeline: "timeline", About: "about" }[tab.title] ||
+                (tab.title.startsWith("Books") ? "books" : tab.title.startsWith("Members") ? "members" : null);
+            const count = tab.title.match(/\(.*\)/);
+            return key ? this.$t("social." + key) + (count ? " " + count[0] : "") : tab.title;
+        },
+        async toggleFollow() {
+            if (this.followBusy || !this.followReady) return;
+            this.followBusy = true;
+            this.followError = false;
+            try {
+                await this.$store.dispatch(this.isFollowingByMe ? "unFollowUserByMe" : "followUserByMe", {
+                    user_id: this.user.id,
+                });
+            } catch (error) {
+                this.followError = true;
+            } finally {
+                this.followBusy = false;
+            }
+        },
         initTabItems() {
             this.tabs.push({
                 title: "TimeLine",
                 tabBody: UserTimeline,
-                active: true
+                active: true,
             });
 
             this.tabs.push({
                 title: "About",
                 tabBody: UserAbout,
-                active: false
+                active: false,
             });
 
             this.activeTab = this.tabs[0];
         },
 
-        isActive: function(item) {
+        isActive: function (item) {
             return {
-                active: item.active
+                active: item.active,
             };
         },
         clickTabItem(tab) {
@@ -242,10 +251,7 @@ export default {
             this.$store
                 .dispatch("fetchUserFollowers", { user_id: self.user.id })
                 .then(() => {
-                    console.log(
-                        "fetchUserFollowers",
-                        this.$store.getters.followersResponse.meta.total
-                    );
+                    console.log("fetchUserFollowers", this.$store.getters.followersResponse.meta.total);
                 })
                 .catch(() => {})
                 .finally(() => {});
@@ -269,7 +275,6 @@ export default {
                 .finally(() => {});
         },
         unFollowUserByMeAction() {
-
             const self = this;
 
             this.$store
@@ -280,30 +285,39 @@ export default {
         },
         fetchUserFollowingByMeAction() {
             const self = this;
+            self.followReady = false;
 
             this.$store
                 .dispatch("fetchUserFollowingByMe", { user_id: self.user.id })
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {});
+                .then(() => {
+                    self.followReady = true;
+                    self.followError = false;
+                })
+                .catch((error) => {
+                    if (error.response && error.response.status === 404) self.followReady = true;
+                    else self.followError = true;
+                });
         },
         didFinishBlockingUser() {
             this.$store.dispatch("removePostsOfUser", this.user);
             this.$router.push({ name: "home" });
-        }
+        },
     },
-    data: function() {
+    data: function () {
         return {
             tabs: [],
             activeTab: {},
+            followBusy: false,
+            followReady: false,
+            followError: false,
             showUploadMyCoverModal: false,
             showUserFollowers: false,
             showUserFollowings: false,
             showCreateReportModel: false,
             showCreateBlockModel: false,
-            is_loading: false
+            is_loading: false,
         };
-    }
+    },
 };
 </script>
 

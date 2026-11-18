@@ -1,49 +1,56 @@
 <template>
-    <div class="card card-default">
+    <div class="ui-card">
         <!-- <div class="card-header">Login</div> -->
-        <div class="card-body mt-3">
+        <div class="p-5 mt-4">
             <form @submit.prevent="login">
-                <div class="form-group">
-                    <UserNameField name="username" :placeholder="$t('email_or_mobile')" icon="fas fa-user-alt"
-                        :errors="errors" @update:field="username = $event" />
+                <div class="mb-4">
+                    <UserNameField
+                        name="username"
+                        :placeholder="$t('email_or_mobile')"
+                        icon="fas fa-user-alt"
+                        :errors="errors"
+                        @update:field="username = $event"
+                    />
                 </div>
 
-                <div class="form-group pt-1">
-                    <PasswordField name="password" :placeholder="$t('password')" icon="fas fa-key" :errors="errors"
-                        @update:field="password = $event" />
+                <div class="mb-4 pt-1">
+                    <PasswordField
+                        name="password"
+                        :placeholder="$t('password')"
+                        icon="fas fa-key"
+                        :errors="errors"
+                        @update:field="password = $event"
+                    />
                 </div>
 
                 <div class="text-center text-danger mb-2" v-if="error_message">
                     {{ error_message }}
                 </div>
-                <div class="form-group">
+                <div class="mb-4">
                     <input type="checkbox" name="remember" />
-                    {{ $t('remember_me') }}
+                    {{ $t("remember_me") }}
                 </div>
 
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success" style="width:100%">
-                        {{ $t('login') }}
+                <div class="mb-4">
+                    <button type="submit" class="ui-button ui-button-success" style="width: 100%">
+                        {{ $t("login") }}
                     </button>
 
                     <div class="text-center">
-                        <router-link class="btn btn-link" :to="{ name: 'login-with-otc-to-reset-password' }">
-
-                            {{ $t('forgot_password') }}
+                        <router-link
+                            class="ui-button ui-button-link"
+                            :to="{ name: 'login-with-otc-to-reset-password' }"
+                        >
+                            {{ $t("forgot_password") }}
                         </router-link>
                     </div>
 
-                    <hr>
+                    <hr />
 
-
-                    <router-link class="btn btn-primary" :to="{ name: 'register' }" style="width:100%">
-
-                        {{ $t('create_new_account') }}
+                    <router-link class="ui-button ui-button-primary" :to="{ name: 'register' }" style="width: 100%">
+                        {{ $t("create_new_account") }}
                     </router-link>
-
                 </div>
-
-
             </form>
         </div>
     </div>

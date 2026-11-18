@@ -1,22 +1,22 @@
 <template>
-    <div class="media p-3" >
+    <div class="social-comment-form">
+        <div class="min-w-0 flex-1">
+            <form ref="form" @submit.stop.prevent="handleSubmit">
+                <div class="flex items-center">
+                    <UserPhoto :user="this.$store.getters.activeUser" size="24"></UserPhoto>
 
-            <div class="media-body">
-        <form ref="form" @submit.stop.prevent="handleSubmit">
-            <div class="form-group d-flex">
-                <UserPhoto
-                    :user="this.$store.getters.activeUser"
-                    size="24"
-                ></UserPhoto>
-
-                <b-form-input
-                    class="form-control ml-2"
-                    v-model="body"
-                    placeholder="Type your comment here"
-                    v-on:keyup="handleSubmit"
-                ></b-form-input>
-            </div>
-        </form>
+                    <input
+                        :aria-label="$t('social.writeComment')"
+                        ref="input"
+                        class="ui-field ml-2"
+                        v-model="body"
+                        :placeholder="$t('social.commentPlaceholder')"
+                        required
+                        :disabled="isSubmitting"
+                    />
+                </div>
+            </form>
+            <p v-if="requestError" class="text-sm text-danger mt-2" role="alert">{{ $t("social.requestError") }}</p>
         </div>
     </div>
 </template>
@@ -31,29 +31,37 @@ export default {
     data() {
         return {
             body: "",
-            bodyState: null
+            bodyState: null,
+            isSubmitting: false,
+            requestError: false,
         };
     },
     methods: {
+        focusInput() {
+            this.$refs.input.focus();
+            this.$refs.input.scrollIntoView({ block: "nearest", behavior: "auto" });
+        },
         storePostCommenAction() {
-
             let packet = {
                 overhead: {
-                    post: this.post
+                    post: this.post,
                 },
                 payload: {
-                    body: this.body
-                }
+                    body: this.body,
+                },
             };
 
             this.$store
                 .dispatch("storePostComment", packet)
                 .then(() => {
-                     this.body = ""
+                    this.body = "";
                 })
                 .catch(() => {
+                    this.requestError = true;
                 })
-                .finally();
+                .finally(() => {
+                    this.isSubmitting = false;
+                });
         },
 
         checkFormValidity() {
@@ -61,26 +69,12 @@ export default {
             this.bodyState = valid;
             return valid;
         },
-        resetModal() {
-            this.body = "";
-            this.bodyState = null;
+        handleSubmit() {
+            if (this.isSubmitting || !this.body.trim() || !this.checkFormValidity()) return;
+            this.isSubmitting = true;
+            this.requestError = false;
+            this.storePostCommenAction();
         },
-        handleOk(bvModalEvt) {
-            // Prevent modal from closing
-            bvModalEvt.preventDefault();
-            // Trigger submit handler
-            this.handleSubmit();
-        },
-        handleSubmit(e) {
-            if (e.keyCode === 13) {
-                // Exit when the form isn't valid
-                if (!this.checkFormValidity()) {
-                    return;
-                }
-                // Subit data to backend server
-                this.storePostCommenAction();
-            }
-        }
-    }
+    },
 };
 </script>

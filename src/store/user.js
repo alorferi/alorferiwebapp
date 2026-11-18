@@ -1,21 +1,21 @@
 import axios from "axios";
 import mixin from "../mixin";
 
+let detailRequest = 0;
+
 const state = {
     user: JSON.parse(localStorage.getItem("user") || null),
     activeUser: JSON.parse(localStorage.getItem("activeUser") || null),
-    activeUserCoverUrl: JSON.parse(
-        localStorage.getItem("activeUserCoverUrl") || null
-    ),
+    activeUserCoverUrl: JSON.parse(localStorage.getItem("activeUserCoverUrl") || null),
     usersResponse: null,
-    userStatus: null
+    userStatus: null,
 };
 
 const getters = {
-    user: state => state.user,
-    activeUser: state => state.activeUser,
-    activeUserCoverUrl: state => state.activeUserCoverUrl,
-    usersResponse: state => state.usersResponse
+    user: (state) => state.user,
+    activeUser: (state) => state.activeUser,
+    activeUserCoverUrl: (state) => state.activeUserCoverUrl,
+    usersResponse: (state) => state.usersResponse,
 };
 
 const mutations = {
@@ -34,33 +34,28 @@ const mutations = {
     setActiveUserCoverUrl(state, newCoverUrl) {
         state.activeUserCoverUrl = newCoverUrl;
         localStorage.setItem("activeUserCoverUrl", JSON.stringify(newCoverUrl));
-    }
+    },
 };
 
 const actions = {
     searchUsers(context, payload) {
         var endpoint = "/api/users";
         return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl(
-                endpoint,
-                payload.term,
-                payload.page
-            );
-
+            var url = mixin.methods.getApiUrl(endpoint, payload.term, payload.page);
 
             const headers = mixin.methods.getAuthorizationBearerToken();
 
             axios({
                 url: url,
                 headers: headers,
-                method: "GET"
+                method: "GET",
             })
-                .then(response => {
+                .then((response) => {
                     const usersResponse = response.data;
                     context.commit("setUsersResponse", usersResponse);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -74,14 +69,14 @@ const actions = {
             axios({
                 url: url,
                 headers: headers,
-                method: "GET"
+                method: "GET",
             })
-                .then(response => {
+                .then((response) => {
                     const user = response.data.data.attributes;
                     context.commit("setActiveUser", user);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -89,9 +84,7 @@ const actions = {
     },
     updateMe(context, packet) {
         return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl(
-                "/api/users/" + this.getters.activeUser.id + "?_method=PUT"
-            );
+            var url = mixin.methods.getApiUrl("/api/users/" + this.getters.activeUser.id + "?_method=PUT");
 
             const headers = mixin.methods.getAuthorizationBearerToken();
 
@@ -101,14 +94,14 @@ const actions = {
                 url: url,
                 headers: headers,
                 method: "POST",
-                data: formData
+                data: formData,
             })
-                .then(response => {
+                .then((response) => {
                     const user = response.data.data.attributes;
                     context.commit("setActiveUser", user);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -129,11 +122,10 @@ const actions = {
                 url: url,
                 headers: headers,
                 method: "POST",
-                data: formData
+                data: formData,
             })
-                .then(response => {
-                    const photo_url =
-                        response.data.data + "?tick=" + Date.now();
+                .then((response) => {
+                    const photo_url = response.data.data + "?tick=" + Date.now();
 
                     const user = self.getters.activeUser;
                     user.photo_url = photo_url;
@@ -143,7 +135,7 @@ const actions = {
 
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -151,9 +143,7 @@ const actions = {
     },
     uploadMyCoverPhoto(context, packet) {
         return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl(
-                "/api/users/upload-my-cover-photo"
-            );
+            var url = mixin.methods.getApiUrl("/api/users/upload-my-cover-photo");
 
             const headers = mixin.methods.getAuthorizationBearerToken();
             headers["Content-Type"] = "multipart/form-data";
@@ -164,22 +154,23 @@ const actions = {
                 url: url,
                 headers: headers,
                 method: "POST",
-                data: formData
+                data: formData,
             })
-                .then(response => {
-                    const cover_url =
-                        response.data.data + "?tick=" + Date.now();
+                .then((response) => {
+                    const cover_url = response.data.data + "?tick=" + Date.now();
 
                     context.commit("setActiveUserCoverUrl", cover_url);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
         });
     },
     fetchUser(context, userId) {
+        const request = ++detailRequest;
+        const token = context.rootGetters.access_token;
         return new Promise((resolve, reject) => {
             var url = mixin.methods.getApiUrl("/api/users/" + userId);
             const headers = mixin.methods.getAuthorizationBearerToken();
@@ -187,24 +178,25 @@ const actions = {
             axios({
                 url: url,
                 headers: headers,
-                method: "GET"
+                method: "GET",
             })
-                .then(response => {
+                .then((response) => {
                     const user = response.data.data.attributes;
-                    context.commit("setUser", user);
+                    if (request === detailRequest && context.rootGetters.access_token === token)
+                        context.commit("setUser", user);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
         });
-    }
+    },
 };
 
 export default {
     state,
     getters,
     mutations,
-    actions
+    actions,
 };

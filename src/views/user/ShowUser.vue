@@ -1,50 +1,44 @@
 <template>
-    <div class="">
-        <Loading v-if="is_loading" />
-        <div v-else>
-            <UserPager :user="user" />
+    <section :aria-busy="loading ? 'true' : 'false'">
+        <Loading v-if="loading" />
+        <div v-else-if="error" class="ui-empty-state ui-card">
+            <p role="alert" class="text-danger">{{ $t("social.requestError") }}</p>
+            <button type="button" class="ui-button ui-button-outline-primary" @click="load">
+                {{ $t("social.retry") }}
+            </button>
         </div>
-    </div>
+        <UserPager v-else :user="user" />
+    </section>
 </template>
-
 <script>
-import Loading from "../../components/Loading";
+import Loading from "@/components/Loading";
 import UserPager from "./UserPager";
-
 export default {
     name: "ShowUser",
-    components: {
-        Loading,
-        UserPager
+    components: { Loading, UserPager },
+    data() {
+        return { loading: true, error: false };
     },
-    async mounted() {
-        this.fetchUser();
-    },
-
     computed: {
         user() {
             return this.$store.getters.user;
-        }
+        },
     },
-    data: function() {
-        return {
-            is_loading: true,
-        };
+    mounted() {
+        this.load();
     },
     methods: {
-        fetchUser() {
-            const self = this;
-            self.is_loading = true;
-            this.$store
-                .dispatch("fetchUser", this.$route.params.user_id)
-                .then(() => {})
-                .catch(() => {
-                    self.$router.push({ name: "home" });
-                })
-                .finally(() => {
-                    self.is_loading = false;
-                });
-        }
-    }
+        async load() {
+            this.loading = true;
+            this.error = false;
+            try {
+                await this.$store.dispatch("fetchUser", this.$route.params.user_id);
+            } catch (error) {
+                this.error = true;
+            } finally {
+                this.loading = false;
+            }
+        },
+    },
 };
 </script>

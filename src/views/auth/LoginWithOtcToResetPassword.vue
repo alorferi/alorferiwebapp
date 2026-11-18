@@ -1,17 +1,13 @@
 <template>
     <div>
-        <div class="row pt-5">
-            <div class=" col-sm-4"></div>
+        <div class="-mx-[15px] flex flex-wrap pt-12">
+            <div class="relative w-full px-[15px] sm:w-1/3"></div>
 
-            <div class=" col-sm-4 text-center card">
+            <div class="relative w-full px-[15px] sm:w-1/3 text-center ui-card">
                 <h4>Reset Password</h4>
 
-                <form
-                    id="loginWithOtcForm"
-                    class="otc_enabled_form"
-                    @submit.prevent="submitForm"
-                >
-                    <div class="form-group mt-4 mb-4">
+                <form id="loginWithOtcForm" class="otc_enabled_form" @submit.prevent="submitForm">
+                    <div class="mb-4 mt-6 mb-6">
                         <UserNameField
                             name="username"
                             label=""
@@ -22,10 +18,7 @@
                         />
                     </div>
 
-                    <div
-                        class="text-center text-danger mb-2"
-                        v-if="error_message"
-                    >
+                    <div class="text-center text-danger mb-2" v-if="error_message">
                         {{ error_message }}
                     </div>
 
@@ -36,19 +29,14 @@
                         @onUpdateVisibleState="showOtcModal = $event"
                     />
 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-block">
-                            Submit
-                        </button>
+                    <div class="mb-4">
+                        <button type="submit" class="ui-button ui-button-success w-full">Submit</button>
                     </div>
                 </form>
             </div>
 
-            <LoadingModal
-                :showLoadingModal="showLoadingModal"
-                @onUpdateVisibleState="showLoadingModal = $event"
-            />
-            <div class=" col-sm-4"></div>
+            <LoadingModal :showLoadingModal="showLoadingModal" @onUpdateVisibleState="showLoadingModal = $event" />
+            <div class="relative w-full px-[15px] sm:w-1/3"></div>
         </div>
     </div>
 </template>

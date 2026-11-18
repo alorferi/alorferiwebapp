@@ -1,52 +1,44 @@
 <template>
-    <div class="">
+    <section :aria-busy="loading ? 'true' : 'false'">
         <Loading v-if="loading" />
-        <div v-else>
-
-            <UserPager :user="user" />
+        <div v-else-if="error" class="ui-empty-state ui-card">
+            <p role="alert" class="text-danger">{{ $t("social.requestError") }}</p>
+            <button type="button" class="ui-button ui-button-outline-primary" @click="load">
+                {{ $t("social.retry") }}
+            </button>
         </div>
-    </div>
+        <UserPager v-else :user="user" />
+    </section>
 </template>
-
 <script>
-import Loading from "../../components/Loading";
-import UserPager from "./UserPager"
-
-
+import Loading from "@/components/Loading";
+import UserPager from "./UserPager";
 export default {
     name: "ShowMe",
-    components: {
-        Loading, UserPager
+    components: { Loading, UserPager },
+    data() {
+        return { loading: true, error: false };
     },
-  async mounted(){
-        this.fetchMe()
-    },
-
     computed: {
-        user(){
-           return this.$store.getters.activeUser;
+        user() {
+            return this.$store.getters.activeUser;
         },
-
     },
-    data: function() {
-        return {
-            loading: true,
-            delete_modal: false,
-        };
+    mounted() {
+        this.load();
     },
     methods: {
-        fetchMe(){
-                this.$store
-                .dispatch("fetchMe")
-                .then(() => {
-                    this.loading = false;
-                })
-                .catch(() => {
-                    this.loading = false;
-                });
-
+        async load() {
+            this.loading = true;
+            this.error = false;
+            try {
+                await this.$store.dispatch("fetchMe");
+            } catch (error) {
+                this.error = true;
+            } finally {
+                this.loading = false;
+            }
         },
-
-    }
+    },
 };
 </script>

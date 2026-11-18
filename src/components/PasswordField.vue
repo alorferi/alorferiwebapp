@@ -1,12 +1,11 @@
 <template>
-    <div class="form-group">
-
+    <div class="mb-4">
         <label :for="name" v-if="label" class="text-primary">
             {{ label }}
         </label>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text" v-if="icon">
+        <div class="flex w-full items-stretch">
+            <div class="flex">
+                <span class="ui-input-addon" v-if="icon">
                     <i class="fas fa-key"></i>
                 </span>
             </div>
@@ -14,7 +13,7 @@
             <input
                 type="text"
                 :id="name"
-                class="form-control"
+                class="ui-field"
                 v-model="password"
                 size="30"
                 maxlength="330"
@@ -26,7 +25,7 @@
             <input
                 type="password"
                 :id="name"
-                class="form-control"
+                class="ui-field"
                 v-model="password"
                 size="30"
                 maxlength="330"
@@ -36,17 +35,14 @@
                 v-else
             />
 
-
-            <div class="input-group-prepend"  @click="toggleShowPassword">
-
-                <span class="input-group-text"  v-if="showPassword">
+            <div class="flex" @click="toggleShowPassword">
+                <span class="ui-input-addon" v-if="showPassword">
                     <i class="fas fa-eye-slash"></i>
                 </span>
 
-                <div class="input-group-text" v-else>
+                <div class="ui-input-addon" v-else>
                     <i class="fas fa-eye"></i>
                 </div>
-
             </div>
         </div>
         <p class="text-danger" v-text="errorMessage()"></p>
@@ -115,6 +111,6 @@ export default {
 
 <style scoped>
 .error-field {
-    @apply .border .border-danger .border-top-0 .border-left-0 .border-right-0;
+    @apply border border-danger border-t-0 border-l-0 border-r-0;
 }
 </style>

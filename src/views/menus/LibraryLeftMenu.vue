@@ -1,21 +1,19 @@
 <template>
-    <div class="list-group mt-2">
-        <div class="list-group-item list-group-item-action">
-            <router-link
-                class="list-group-item-action"
-                :to="{ name: 'library-books', params: this.$route.params.id }"
-                >Books</router-link
-            >
-        </div>
+    <div class="flex flex-col mt-2">
+        <router-link
+            class="ui-list-item hover:bg-light focus:bg-light"
+            :to="{ name: 'library-books', params: this.$route.params.id }"
+            >Books</router-link
+        >
 
         <router-link
-            class="list-group-item list-group-item-action"
+            class="ui-list-item hover:bg-light focus:bg-light"
             :to="{ name: 'library-members', params: this.$route.params.id }"
             >Members</router-link
         >
 
         <router-link
-            class="list-group-item list-group-item-action"
+            class="ui-list-item hover:bg-light focus:bg-light"
             :to="{ name: 'library-about', params: this.$route.params.id }"
             >About</router-link
         >

@@ -1,10 +1,10 @@
 <template>
-    <div class>
+    <div class="">
         <div
-            class="border border-light  rounded-circle d-flex justify-content-center align-items-center bg-primary text-white"
+            class="border border-light rounded-full flex justify-center items-center bg-primary text-white"
             :style="style"
         >
-            <span class=" justify-content-center">
+            <span class="justify-center">
                 {{ shortName }}
             </span>
         </div>
@@ -14,14 +14,17 @@
 <script>
 export default {
     name: "NameCircle",
-    props: ["name",'size'],
+    props: ["name", "size"],
     computed: {
-        shortName: function() {
+        shortName: function () {
             // var matches = this.name.match(/[A-Z]/g);
             // var matches = this.name.match(/\b(\w)/g); // ['J','S','O','N']
-            var matches = this.name.split(" ").map(function(item) {
-                return item[0];
-            });
+            var matches = String(this.name || "?")
+                .split(" ")
+                .filter(Boolean)
+                .map(function (item) {
+                    return item[0];
+                });
 
             if (matches == null) {
                 return "";
@@ -29,12 +32,15 @@ export default {
                 return matches.slice(0, 2).join("");
             }
         },
-        style () {
-        return "width:" + this.size + "px; height:" + this.size + "px;";
-      }
+        style() {
+            return {
+                width: this.size + "px",
+                height: this.size + "px",
+                fontSize: Math.max(10, parseInt(this.size) * 0.36) + "px",
+                fontWeight: 600,
+            };
+        },
     },
-  async mounted(){
-        console.log("Component mounted.");
-    }
+    async mounted() {},
 };
 </script>

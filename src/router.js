@@ -3,19 +3,16 @@ import Router from "vue-router";
 import store from "@/store";
 import Home from "@/views/home/Home.vue";
 import SearchShow from "@/views/home/SearchShow.vue";
-import About from "@/views/about/About.vue";
-import Products from "@/views/about/Products.vue";
+import { companyLinks } from "@/config/company";
 import Research from "@/views/about/Research.vue";
 import Awards from "@/views/about/Awards.vue";
 import Advertisers from "@/views/about/Advertisers.vue";
-import Careers from "@/views/about/Careers.vue";
 
 import ApiOverview from "@/views/developer/ApiOverview.vue";
 
 import Pricing from "@/views/about/Pricing.vue";
 import Help from "@/views/about/Help.vue";
 import PrivacyPolicy from "@/views/about/PrivacyPolicy.vue";
-import ContactUs from "@/views/about/ContactUs.vue";
 // import Login from "@/views/auth/Login.vue";
 import LoginContainer from "@/views/auth/LoginContainer.vue";
 import Register from "@/views/auth/Register.vue";
@@ -33,7 +30,6 @@ import EditMyProfile from "@/views/user/EditMyProfile";
 import HomeLeftMenu from "@/views/menus/HomeLeftMenu";
 import LibraryLeftMenu from "@/views/menus/LibraryLeftMenu";
 import LibraryBadge from "@/views/badges/LibraryBadge";
-// import UserBadge from "@/views/badges/UserBadge";
 import LoginWithOtcToResetPassword from "@/views/auth/LoginWithOtcToResetPassword";
 import ResetPassword from "@/views/auth/ResetPassword";
 import AwardsAndAchievements from "@/views/welcome/AwardsAndAchievements";
@@ -44,6 +40,12 @@ import MyCourses from "@/views/courses/MyCourses";
 // import i18n from "./i18n";
 
 Vue.use(Router);
+
+function redirectToCompany(url) {
+    return () => {
+        window.location.replace(url);
+    };
+}
 
 let router = new Router({
     mode: "history",
@@ -102,7 +104,7 @@ let router = new Router({
         {
             path: "/about",
             name: "about",
-            component: About,
+            beforeEnter: redirectToCompany(companyLinks.about),
             meta: { title: "About" }
         },
         {
@@ -120,7 +122,7 @@ let router = new Router({
         {
             path: "/products",
             name: "products",
-            component: Products,
+            beforeEnter: redirectToCompany(companyLinks.products),
             meta: { title: "Products" }
         },
         {
@@ -162,7 +164,7 @@ let router = new Router({
         {
             path: "/careers",
             name: "careers",
-            component: Careers,
+            beforeEnter: redirectToCompany(companyLinks.careers),
             meta: { title: "Careers" }
         },
         {
@@ -180,7 +182,7 @@ let router = new Router({
         {
             path: "/contact-us",
             name: "contact-us",
-            component: ContactUs,
+            beforeEnter: redirectToCompany(companyLinks.contact),
             meta: { title: "Contact Us" }
         },
         {

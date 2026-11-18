@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-modal ref="modal" title="Likes" v-model="showLocal" ok-only centered>
+        <UiModal :busy="is_loading" ref="modal" title="Likes" v-model="showLocal" ok-only close-on-confirm centered>
             <Loading v-if="is_loading"></Loading>
 
             <LikeListItem
@@ -11,8 +11,8 @@
                 v-bind:key="like.attributes.id"
             />
 
-            <div class=" text-right">Total: {{ totalLikes }}</div>
-        </b-modal>
+            <div class="text-right">Total: {{ totalLikes }}</div>
+        </UiModal>
     </div>
 </template>
 

@@ -6,16 +6,15 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
+    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\"",
+    "test:browser": "node scripts/verify-ui.cjs"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "bootstrap": "^4.5.0",
-    "bootstrap-vue": "^2.16.0",
+    "axios": "0.35.0",
     "core-js": "^3.6.5",
-    "moment": "^2.29.1",
+    "moment": "2.31.0",
     "portal-vue": "^2.1.7",
-    "vue": "^2.6.11",
+    "vue": "2.7.16",
     "vue-axios": "^2.1.5",
     "vue-headful": "^2.1.0",
     "vue-i18n": "^8.26.3",
@@ -30,13 +29,16 @@
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-eslint": "~4.4.0",
     "@vue/cli-service": "^4.5.12",
+    "@vue/compiler-sfc": "3.4.19",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "jquery": "^3.5.1",
-    "popper.js": "^1.16.1",
     "vue-cli-plugin-i18n": "~2.3.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "2.7.16",
+    "tailwindcss": "3.4.17",
+    "postcss": "^8.5.33",
+    "autoprefixer": "^10.4.21",
+    "postcss-loader": "4.3.0"
   },
   "eslintConfig": {
     "root": true,
@@ -56,5 +58,10 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "overrides": {
+    "@vue/cli-shared-utils": {
+      "@achrinza/node-ipc": "9.2.10"
+    }
+  }
 }

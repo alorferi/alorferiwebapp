@@ -1,28 +1,17 @@
 <template>
     <div class="about">
-
         <h1 class="text-center">Pricing</h1>
 
         <br />
 
-        <table class="table table-bordered">
+        <table class="ui-table ui-table-bordered">
             <thead>
-                <th class="text-center">
-                    Features
-                </th>
+                <th class="text-center">Features</th>
 
-                <th class="text-center">
-                    Package 0
-                </th>
-                <th class="text-center">
-                    Package 1
-                </th>
-                <th class="text-center">
-                    Package 2
-                </th>
-                <th>
-                    Package 3
-                </th>
+                <th class="text-center">Package 0</th>
+                <th class="text-center">Package 1</th>
+                <th class="text-center">Package 2</th>
+                <th>Package 3</th>
             </thead>
 
             <tbody>
@@ -31,28 +20,10 @@
                         {{ item.name }}
                     </td>
 
-                    <td
-                        class="text-center"
-                        :class="item.pac0.color"
-                        v-html="item.pac0.text"
-                    >
-
-                    </td>
-                    <td
-                        class="text-center"
-                        :class="item.pac1.color"
-                        v-html="item.pac1.text"
-                    ></td>
-                    <td
-                        class="text-center"
-                        :class="item.pac2.color"
-                        v-html="item.pac2.text"
-                    ></td>
-                    <td
-                        class="text-center"
-                        :class="item.pac3.color"
-                        v-html="item.pac3.text"
-                    ></td>
+                    <td class="text-center" :class="item.pac0.color" v-html="item.pac0.text"></td>
+                    <td class="text-center" :class="item.pac1.color" v-html="item.pac1.text"></td>
+                    <td class="text-center" :class="item.pac2.color" v-html="item.pac2.text"></td>
+                    <td class="text-center" :class="item.pac3.color" v-html="item.pac3.text"></td>
                 </tr>
             </tbody>
 
@@ -68,7 +39,6 @@
                 </tr>
             </tfoot>
         </table>
-
     </div>
 </template>
 

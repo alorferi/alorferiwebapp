@@ -1,72 +1,63 @@
 <template>
-    <div class="border-left border-right border-bottom round">
-        <!-- <p class="pt-6 text-gray-600 font-bold uppercase text-sm">Mobile</p>
-            <p class="pl-2 text-blue-400">{{ library.mobile }}</p>
-            <p class="pt-6 text-gray-600 font-bold uppercase text-sm">Email</p>
-            <p class="pl-2 text-blue-400">{{ library.email }}</p>
-            <p class="pt-6 text-gray-600 font-bold uppercase text-sm">
-                Founded at
-            </p>
-            <p class="pl-2 text-blue-400">{{ library.founded_at }}</p> -->
-
-        <div class="p-2 m-3 ">
-            <!-- @if(ValidX::canAccessLibrary($library,"library_edit")==null) -->
-            <div class=" text-right">
-                <!-- <a href="#" class="btn btn-primary">Edit</a> -->
-            </div>
-
-            <!-- @endif -->
-
-            <!-- @if(library.about) -->
-            <div class="form-group" style="text-align: justify">
-                <!-- {{ str_replace("\n","<br/>",library.about) }} -->
-
-                {{ library.about }}
-            </div>
-            <!-- @endif -->
-
-            <div class="form-group">Email : {{ library.email }}</div>
-
-            <div class="form-group">
-                Founded At : {{ this.formatDate(library.founded_at) }}
-            </div>
-
-            <div class="form-group">
-                Govt Reg No : {{ library.govt_reg_no }}
-            </div>
-
-            <div class="form-group">Phone : {{ library.phone }}</div>
-
-            <div class="form-group">Mobile : {{ library.mobile }}</div>
-
-            <div class="form-group">Post Code : {{ library.post_code }}</div>
-
-            <div class="form-group">
-                Total Reqular News Papers :
-                {{ library.total_regular_news_papers }}
-            </div>
-
-            <div class="form-group">
-                Total Reqular Magazines : {{ library.total_regular_magazines }}
-            </div>
-
-            <div class="form-group">
-                Opening Time :
-
-                {{ library.opening_time_at }}
-            </div>
-
-            <div class="form-group">
-                Closing Time :
-                {{ library.closing_time_at }}
-            </div>
-
-            <div class="form-group">Off Days {{ offDayname }},</div>
+    <section class="ui-card social-detail-card">
+        <Loading v-if="loading" />
+        <div v-else-if="error">
+            <p role="alert">{{ $t("social.requestError") }}</p>
+            <button type="button" class="ui-button ui-button-light" @click="load">{{ $t("social.retry") }}</button>
         </div>
-    </div>
+        <template v-else-if="record">
+            <h2 class="text-xl font-semibold">{{ $t("social.about") }}</h2>
+            <p v-if="record.about" class="leading-relaxed text-secondary whitespace-pre-line">{{ record.about }}</p>
+            <dl class="social-details-grid">
+                <template v-for="field in fields"
+                    ><div v-if="record[field.key] != null && record[field.key] !== ''" :key="field.key">
+                        <dt>{{ $t("social." + field.label) }}</dt>
+                        <dd>{{ field.key === "founded_at" ? formatDate(record[field.key]) : record[field.key] }}</dd>
+                    </div></template
+                >
+            </dl>
+        </template>
+    </section>
 </template>
 <script>
+import Loading from "@/components/Loading";
 export default {
-    props: ["library"]
+    name: "LibraryAbout",
+    components: { Loading },
+    props: { library: Object },
+    data() {
+        return { loading: !this.library, error: false };
+    },
+    computed: {
+        record() {
+            return this.library || this.$store.getters.library;
+        },
+        fields() {
+            return [
+                { key: "email", label: "email" },
+                { key: "mobile", label: "mobile" },
+                { key: "founded_at", label: "foundedAt" },
+                { key: "govt_reg_no", label: "registrationNumber" },
+                { key: "opening_time_at", label: "openingTime" },
+                { key: "closing_time_at", label: "closingTime" },
+            ];
+        },
+    },
+    mounted() {
+        if (!this.library) this.load();
+    },
+    methods: {
+        async load() {
+            this.loading = true;
+            this.error = false;
+            try {
+                await this.$store.dispatch("fetchLibrary", this.$route.params.id);
+            } catch (error) {
+                this.error = true;
+            } finally {
+                this.loading = false;
+            }
+        },
+    },
 };
 </script>

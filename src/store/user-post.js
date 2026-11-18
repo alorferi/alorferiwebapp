@@ -17,30 +17,10 @@ const actions = {
 
 
     fetchUserPosts(context, payload) {
-        return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl(
-                "/api/users/" + payload.user_id + "/posts"
-            );
-
-            const headers = mixin.methods.getAuthorizationBearerToken();
-
-            axios({
-                url: url,
-                headers: headers,
-                method: "GET"
-            })
-                .then(response => {
-                    context.commit("clearPostsResponse");
-                    context.commit("setPostsResponse", response.data);
-                    resolve(response);
-                })
-                .catch(err => {
-                    console.log("err:", err);
-                    reject(err);
-                });
+        return context.dispatch("fetchPostsPage", {
+            ...payload, source: "/api/users/" + payload.user_id + "/posts"
         });
     },
-
 
     storeUserPost(context, packet) {
         return new Promise((resolve, reject) => {

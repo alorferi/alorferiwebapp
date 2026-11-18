@@ -1,22 +1,19 @@
 <template>
     <div>
         <form v-on:submit.prevent="updateTerm">
-            <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text bg-light text-secondary border-right-0">
-                         <i class="fas fa-search"></i
-                        >
+            <div class="flex w-full items-stretch">
+                <div class="flex">
+                    <span class="ui-input-addon bg-light text-secondary border-r-0">
+                        <i class="fas fa-search"></i>
                     </span>
                 </div>
                 <input
                     type="text"
                     v-model="term"
                     v-on:change="textChange"
-                    class="form-control border-left-0"
+                    class="ui-field border-l-0"
                     placeholder="Search"
                 />
-
-
             </div>
         </form>
     </div>

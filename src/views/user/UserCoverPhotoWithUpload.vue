@@ -1,25 +1,23 @@
 <template>
     <div>
         <div
-            class="d-flex pt-2 pl-2 pr-2 pb-2 rounded bg-secondary border-top border-right border-left border-bottom"
-            style="height: 312px;"
+            class="social-cover flex p-3"
             :style="{
                 'background-image': 'url(' + this.userCoverUrl + ')',
-                'background-size': 'cover'
+                'background-size': 'cover',
             }"
         >
-            <a
-                class="text-danger bg-white pl-1 pr-1 rounded ml-auto mt-auto"
+            <button
+                type="button"
+                :aria-label="$t('social.changeCover')"
+                class="ui-button ui-button-light ml-auto mt-auto"
                 v-if="this.isItMe(this.user)"
                 @click="showUploadMyCoverModal = !showUploadMyCoverModal"
             >
                 <i class="fa fa-camera"></i>
-            </a>
+            </button>
 
-            <UploadMyCoverModal
-                :show="showUploadMyCoverModal"
-                @updateVisibleState="showUploadMyCoverModal = $event"
-            />
+            <UploadMyCoverModal :show="showUploadMyCoverModal" @updateVisibleState="showUploadMyCoverModal = $event" />
         </div>
     </div>
 </template>
@@ -46,14 +44,14 @@ export default {
             }
 
             return this.getApiUrl(coverUrl);
-        }
+        },
     },
     methods: {},
-    data: function() {
+    data: function () {
         return {
             showUploadMyCoverModal: false,
         };
-    }
+    },
 };
 </script>
 

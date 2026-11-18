@@ -2,13 +2,13 @@
     <div>
         <br />
         <br />
-        <div class="row mt-6">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-6 card mt-6">
+        <div class="-mx-[15px] flex flex-wrap mt-6">
+            <div class="relative w-full px-[15px] sm:w-1/4"></div>
+            <div class="relative w-full px-[15px] sm:w-1/2 ui-card mt-6">
                 <h4 class="text-center mt-2">Reset password</h4>
-                <form class="card-body" @submit.prevent="submitForm">
-                    <div class="col-md-12">
-                        <div class="form-group">
+                <form class="p-5" @submit.prevent="submitForm">
+                    <div class="relative w-full px-[15px] md:w-full">
+                        <div class="mb-4">
                             <EditTextField
                                 type="password"
                                 name="new_password"
@@ -20,7 +20,7 @@
                             />
                         </div>
 
-                        <div class="form-group">
+                        <div class="mb-4">
                             <EditTextField
                                 type="password"
                                 name="confirm_new_password"
@@ -28,25 +28,16 @@
                                 placeholder="Type confirm password here"
                                 icon="fas fa-key"
                                 :errors="errors"
-                                @update:field="
-                                    dataModel.confirm_new_password = $event
-                                "
+                                @update:field="dataModel.confirm_new_password = $event"
                             />
                         </div>
 
-                        <div
-                            class="text-center text-danger mb-2"
-                            v-if="error_message"
-                        >
+                        <div class="text-center text-danger mb-2" v-if="error_message">
                             {{ error_message }}
                         </div>
 
-                        <div class="form-group">
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                                style="width:100%"
-                            >
+                        <div class="mb-4">
+                            <button type="submit" class="ui-button ui-button-primary" style="width: 100%">
                                 Submit
                             </button>
                         </div>
@@ -54,16 +45,15 @@
                 </form>
 
                 <AlertMessageModal
-                :alertMessageTitle="alertMessageTitle"
-                :alertMessageBody="alertMessageBody"
-                :isSuccessfulMessage="isSuccessfulMessage"
-                :showAlertModal="showAlertModal"
-                @onClickOk="onClickOkButton"
-                @onClickCancel="onClickCancelButton"
-            />
-
+                    :alertMessageTitle="alertMessageTitle"
+                    :alertMessageBody="alertMessageBody"
+                    :isSuccessfulMessage="isSuccessfulMessage"
+                    :showAlertModal="showAlertModal"
+                    @onClickOk="onClickOkButton"
+                    @onClickCancel="onClickCancelButton"
+                />
             </div>
-            <div class="col-sm-3"></div>
+            <div class="relative w-full px-[15px] sm:w-1/4"></div>
         </div>
     </div>
 </template>
