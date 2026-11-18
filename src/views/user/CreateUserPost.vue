@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="ui-card">
-            <div class="p-5 flex items-center">
+        <div class="ui-card social-composer">
+            <div class="social-composer-row">
                 <router-link
                     :to="{
                         name: 'users.show',
@@ -13,13 +13,14 @@
 
                 <button
                     type="button"
-                    class="ml-4 w-full min-w-0 ui-button ui-button-outline-primary"
+                    class="social-composer-prompt"
                     @click="showCreateUserPostModel = !showCreateUserPostModel"
                 >
-                    {{ $t("start_a_discussion") }}
+                    {{ $t("social.startDiscussion") }}
                 </button>
             </div>
 
+            <p class="social-composer-hint">{{ $t("social.discussionHint") }}</p>
             <CreateOrEditPostModal
                 :show="showCreateUserPostModel"
                 @updateVisibleState="showCreateUserPostModel = $event"
@@ -44,12 +45,12 @@ export default {
     components: {
         UserPhoto,
         // ImageUploader,
-        CreateOrEditPostModal
+        CreateOrEditPostModal,
     },
     computed: {
         activeUser() {
             return this.$store.getters.activeUser;
-        }
+        },
     },
     data() {
         return {
@@ -59,11 +60,11 @@ export default {
             imgUrl: null,
             imgFile: null,
             hasImage: false,
-            showCreateUserPostModel: false
+            showCreateUserPostModel: false,
             // image: null
         };
     },
-    methods: {}
+    methods: {},
 };
 </script>
 

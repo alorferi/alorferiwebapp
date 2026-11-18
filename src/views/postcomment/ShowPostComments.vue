@@ -1,265 +1,127 @@
 <template>
     <div>
-        <div class="flex justify-between">
-            <div>
-                <div v-if="likes.length == 1" class="p-1">
-                    <a class="ui-button ui-button-link" @click="showLikesModal = !showLikesModal">
-                        <i class="far fa-thumbs-up text-primary"></i>
-
-                        <span v-if="myLike != null"> You </span>
-
-                        <span v-else>
-                            {{ likes[0].attributes.user.first_name }}
-                        </span>
-                    </a>
-                </div>
-
-                <div v-else-if="likes.length == 2" class="p-1">
-                    <a class="ui-button ui-button-link" @click="showLikesModal = !showLikesModal">
-                        <i class="far fa-thumbs-up text-primary"></i>
-
-                        {{ textForTwoLikes }}
-                    </a>
-                </div>
-
-                <div v-else-if="likes.length >= 3" class="p-1">
-                    <a class="ui-button ui-button-link" @click="showLikesModal = !showLikesModal">
-                        <i class="far fa-thumbs-up text-primary"></i>
-
-                        {{ textForGreatterThanOrEqualThreeLikes }}
-                    </a>
-                </div>
-
-                <div v-else></div>
-            </div>
-
-            <div>
-                <div v-if="comments.length > 0" class="p-1">
-                    <i class="far fa-comment-dots"></i>
-                    {{ comments.length }} comments
-                </div>
-            </div>
+        <div class="social-engagement">
+            <button v-if="likeCount" type="button" @click="showLikesModal = true">
+                <i class="far fa-thumbs-up" aria-hidden="true"></i> <span v-if="myLike">{{ $t("social.you") }} · </span
+                >{{ likeCount }} {{ $t("social.likes") }}</button
+            ><span v-else></span>
+            <button v-if="commentCount" type="button" @click="focusComment">
+                {{ commentCount }} {{ $t("social.comments") }}
+            </button>
         </div>
-
-        <div class="flex justify-between border border-l-0 border-r-0 border-b-0 pt-1">
-            <div>
-                <button
-                    class="ui-button"
-                    type="button"
-                    @click="onClikcLike"
-                    v-bind:class="{
-                        'ui-button-light': !myLike,
-                        'ui-button-outline-primary': myLike,
-                        'border-b-0': myLike,
-                        'border-t-0': myLike,
-                        'border-l-0': myLike,
-                        'border-r-0': myLike,
-                    }"
-                >
-                    <i class="far fa-thumbs-up"></i> Like
-                </button>
-            </div>
-
-            <a class="ui-button ui-button-light"> <i class="far fa-comment-dots"></i> Comment</a>
+        <div class="social-post-actions">
+            <button
+                type="button"
+                class="ui-button ui-button-link"
+                :disabled="likeBusy || !likeReady"
+                :aria-pressed="myLike ? 'true' : 'false'"
+                @click="onClikcLike"
+            >
+                <i class="far fa-thumbs-up" aria-hidden="true"></i>{{ $t(myLike ? "social.liked" : "social.like") }}
+            </button>
+            <button type="button" class="ui-button ui-button-link" @click="focusComment">
+                <i class="far fa-comment" aria-hidden="true"></i>{{ $t("social.comment") }}
+            </button>
         </div>
-
-        <Loading v-if="is_loading"></Loading>
-
-        <CommentListItem
-            v-else
-            v-for="comment in comments"
-            :comment="comment.attributes"
-            :post="post"
-            v-bind:key="comment.attributes.id"
-        />
-
-        <CreatePostComment :post="post" />
-
+        <p v-if="actionError" role="alert" class="social-inline-error">{{ $t("social.requestError") }}</p>
+        <Loading v-if="is_loading" />
+        <div v-else-if="loadError" class="social-inline-error">
+            <p role="alert">{{ $t("social.requestError") }}</p>
+            <button type="button" class="social-read-more" @click="loadDetails">{{ $t("social.retry") }}</button>
+        </div>
+        <div v-else class="social-comments">
+            <CommentListItem
+                v-for="comment in comments"
+                :key="comment.attributes.id"
+                :comment="comment.attributes"
+                :post="post"
+            />
+        </div>
+        <CreatePostComment ref="comment" :post="post" />
         <PostLikesModal :show="showLikesModal" :post="post" @updateVisibleState="showLikesModal = $event" />
     </div>
 </template>
-
 <script>
-import CreatePostComment from "../postcomment/CreatePostComment";
-import CommentListItem from "../postcomment/CommentListItem";
+import CreatePostComment from "./CreatePostComment";
+import CommentListItem from "./CommentListItem";
 import Loading from "@/components/Loading";
 import PostLikesModal from "../postlike/PostLikesModal";
-
 export default {
     name: "ShowPostComments",
     props: ["post"],
-    components: {
-        CreatePostComment,
-        CommentListItem,
-        Loading,
-        PostLikesModal
-    },
+    components: { CreatePostComment, CommentListItem, Loading, PostLikesModal },
     data() {
         return {
             is_loading: true,
-            showLikesModal: false
+            showLikesModal: false,
+            likeBusy: false,
+            likeReady: false,
+            actionError: false,
+            loadError: false,
         };
     },
     computed: {
-
         comments() {
-            return this.post.comments_data == null ? [] : this.post.comments_data.data;
+            return (this.post.comments_data && this.post.comments_data.data) || [];
         },
         likes() {
-            return this.post.likes_data == null ? [] : this.post.likes_data.data;
+            return (this.post.likes_data && this.post.likes_data.data) || [];
         },
         myLike() {
             return this.post.my_like;
         },
-        twoOtherLikes() {
-            var collectedLikes = [];
-
-            if (this.my_like == null) {
-                for (let like of this.likes) {
-                    collectedLikes.push(like);
-                    if (collectedLikes.length == 2) {
-                        break;
-                    }
-                }
-            } else {
-                for (let like of this.likes) {
-                    if (like.attributes.id != this.my_like.id) {
-                        collectedLikes.push(like);
-                    }
-                    if (collectedLikes.length == 2) {
-                        break;
-                    }
-                }
-            }
-
-            return collectedLikes;
+        likeCount() {
+            return (
+                (this.post.likes_data && this.post.likes_data.meta && this.post.likes_data.meta.total) ||
+                this.likes.length
+            );
         },
-        textForTwoLikes() {
-            var text = "";
-
-            if (this.myLike != null) {
-                text = "You and ";
-
-                if (this.likes[0].attributes.user.id != this.myLike.user.id) {
-                    text = text + this.likes[0].attributes.user.first_name;
-                } else {
-                    text = text + this.likes[1].attributes.user.first_name;
-                }
-            } else {
-                text =
-                    this.likes[0].attributes.user.first_name +
-                    " and " +
-                    this.likes[1].attributes.user.first_name;
-            }
-
-            return text;
+        commentCount() {
+            return (
+                (this.post.comments_data && this.post.comments_data.meta && this.post.comments_data.meta.total) ||
+                this.comments.length
+            );
         },
-        textForGreatterThanOrEqualThreeLikes() {
-            var text = "";
-
-            if (this.myLike != null) {
-                text = "You, ";
-
-                if (this.likes[0].attributes.user.id != this.myLike.user.id) {
-                    text = text + this.likes[0].attributes.user.first_name;
-                } else {
-                    text = text + this.likes[2].attributes.user.first_name;
-                }
-            } else {
-                text =
-                    this.likes[0].attributes.user.first_name +
-                    ", " +
-                    this.likes[1].attributes.user.first_name;
-            }
-
-            if (this.likes.length == 3) {
-                text = text + " and 1 other";
-            } else if (this.likes.length > 3) {
-                text = text + " and " + (this.likes.length - 2 ).toString()+ " others";
-            }
-
-            return text;
-        }
     },
-  async mounted(){
-        this.fetchPostCommentsAction();
-        this.fetchPostLikesAction();
-        this.fetchPostMyLikeAction();
+    mounted() {
+        this.loadDetails();
     },
-
     methods: {
-        fetchPostCommentsAction() {
+        async loadDetails() {
+            if (this._detailsLoading) return;
+            this._detailsLoading = true;
             this.is_loading = true;
-            this.$store
-                .dispatch("fetchPostComments", this.post)
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {
-                    this.is_loading = false;
-                });
+            this.loadError = false;
+            const results = await Promise.allSettled(
+                ["fetchPostComments", "fetchPostLikes", "fetchPostMyLike"].map((action) =>
+                    this.$store.dispatch(action, this.post)
+                )
+            );
+            this.likeReady =
+                results[2].status === "fulfilled" ||
+                (results[2].reason && results[2].reason.response && results[2].reason.response.status === 404);
+            this.loadError = results.slice(0, 2).some((r) => r.status === "rejected") || !this.likeReady;
+            this.is_loading = false;
+            this._detailsLoading = false;
         },
-        fetchPostLikesAction() {
-            // this.is_loading = true;
-            this.$store
-                .dispatch("fetchPostLikes", this.post)
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {
-                    this.is_loading = false;
-                });
+        focusComment() {
+            this.$refs.comment.focusInput();
         },
-        fetchPostMyLikeAction() {
-            this.is_loading = true;
-            this.$store
-                .dispatch("fetchPostMyLike", this.post)
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {
-                    // this.is_loading = false;
+        async onClikcLike() {
+            if (this.likeBusy || !this.likeReady) return;
+            this.likeBusy = true;
+            this.actionError = false;
+            try {
+                await this.$store.dispatch(this.myLike ? "deletePostLike" : "storePostLike", {
+                    overhead: { post: this.post },
+                    payload: { emoji_html_code: "&#x1F44D;" },
                 });
-        },
-        onClikcLike() {
-            if (this.post.my_like == null) {
-                this.storeLikeAction();
-            } else {
-                this.removeLikeAction();
+            } catch (error) {
+                this.actionError = true;
+            } finally {
+                this.likeBusy = false;
             }
         },
-        storeLikeAction() {
-            //Create Like
-            const packet = {
-                overhead: {
-                    post: this.post
-                },
-                payload: {
-                    emoji_html_code: "&#x1F44D;"
-                }
-            };
-
-            this.$store
-                .dispatch("storePostLike", packet)
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {});
-        },
-
-        removeLikeAction() {
-            //Create Like
-            const packet = {
-                overhead: {
-                    post: this.post
-                },
-                payload: {
-                    emoji_html_code: "&#x1F44D;"
-                }
-            };
-
-            this.$store
-                .dispatch("deletePostLike", packet)
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {});
-        }
-    }
+    },
 };
 </script>

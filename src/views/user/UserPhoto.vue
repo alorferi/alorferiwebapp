@@ -1,45 +1,40 @@
 <template>
-    <span>
+    <span class="social-user-photo" :style="dimensions">
         <img
-            class="inline-block rounded-full"
-            loading="lazy"
+            v-if="source && !failed"
+            :key="source"
+            :src="source"
+            :alt="user.first_name || ''"
+            :style="dimensions"
+            class="rounded-full object-cover"
             decoding="async"
-            v-if="this.user.photo_url"
-            :src="this.getApiUrl(this.user.photo_url)"
-            :style="imgStyle"
+            @error="failed = true"
         />
-
-        <NameCircle v-else :name="user.first_name" :size="this.size" />
+        <NameCircle v-else :name="user.first_name || user.name || '?'" :size="size" />
     </span>
 </template>
 <script>
-import NameCircle from "../../components/NameCircle";
-
+import NameCircle from "@/components/NameCircle";
 export default {
     name: "UserPhoto",
-    props: ["user", "size"],
+    props: { user: Object, size: { default: 32 } },
+    components: { NameCircle },
+    data() {
+        return { failed: false };
+    },
     computed: {
-        imgStyle() {
-            var width = parseInt(this.size) + 12;
-            var height = parseInt(this.size) + 12;
-            return "width:" + width + "px; height:" + height + "px;";
-        }
-    },
-    components: {
-        NameCircle
-    },
-    methods: {
-        sizeOfImg() {
-            return this.size;
+        source() {
+            const p = this.user && this.user.photo_url;
+            return p && (/^https?:\/\//i.test(p) ? p : this.getApiUrl(p));
         },
-
-        sizeOfNameCircle() {
-            return this.size;
+        dimensions() {
+            return { width: parseInt(this.size) + "px", height: parseInt(this.size) + "px" };
         },
-
-        photoUrl() {
-            return this.getApiUrl(this.user.photo_url);
-        }
-    }
+    },
+    watch: {
+        source() {
+            this.failed = false;
+        },
+    },
 };
 </script>

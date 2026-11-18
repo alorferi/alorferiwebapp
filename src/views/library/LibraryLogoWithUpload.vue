@@ -1,76 +1,31 @@
 <template>
-    <div>
-        <div
-            class="rounded flex justify-center"
-            :style="{
-                'background-image': 'url(' + this.logoUrl + ')',
-                'background-position': 'center',
-                width: width + 'px',
-                height: height + 'px',
-            }"
+    <div class="social-avatar-edit">
+        <LibraryLogo :library="library" :size="size" />
+        <button
+            v-if="hasMemberPermission('library_edit')"
+            type="button"
+            :aria-label="$t('social.changeLogo')"
+            class="ui-button ui-button-light"
+            @click="showUploadLogoModal = true"
         >
-            <button
-                type="button"
-                aria-label="Change library logo"
-                class="ui-button ui-button-light mt-auto"
-                @click="showUploadLogoModal = !showUploadLogoModal"
-                v-if="this.hasMemberPermission('library_edit')"
-            >
-                <i class="fa fa-camera"></i>
-            </button>
-
-            <UploadLibraryLogoModal
-                :show="showUploadLogoModal"
-                :library="library"
-                @updateVisibleState="showUploadLogoModal = $event"
-            />
-        </div>
+            <i class="fa fa-camera" aria-hidden="true"></i>
+        </button>
+        <UploadLibraryLogoModal
+            :show="showUploadLogoModal"
+            :library="library"
+            @updateVisibleState="showUploadLogoModal = $event"
+        />
     </div>
 </template>
 <script>
-// import NameCircle from "@/components/NameCircle";
-import UploadLibraryLogoModal from "@/views/library/UploadLibraryLogoModal";
-
+import LibraryLogo from "./LibraryLogo";
+import UploadLibraryLogoModal from "./UploadLibraryLogoModal";
 export default {
     name: "LibraryLogoWithUpload",
+    components: { LibraryLogo, UploadLibraryLogoModal },
     props: ["library", "size"],
-    computed: {
-        width() {
-            return parseInt(this.size) + 12;
-        },
-
-        height() {
-            return parseInt(this.size) + 12;
-        },
-
-        logoUrl() {
-            if (this.library.logo_url == null) {
-                return "";
-            } else {
-                return this.getApiUrl(this.library.logo_url);
-            }
-        }
+    data() {
+        return { showUploadLogoModal: false };
     },
-    components: {
-        // NameCircle
-        UploadLibraryLogoModal
-    },
-
-    data(){
-        return {
-            showUploadLogoModal: false
-        }
-    },
-    methods: {
-        sizeOfImg() {
-            return this.size;
-        },
-
-        sizeOfNameCircle() {
-            return this.size;
-        },
-
-
-    }
 };
 </script>

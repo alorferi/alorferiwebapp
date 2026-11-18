@@ -5,10 +5,11 @@
                 <!-- <LibraryLogo :item ="item" size="72"/> -->
 
                 <img
-                    class="inline-block p-2"
+                    class="social-book-cover"
                     loading="lazy"
                     decoding="async"
                     :src="this.getApiUrl(item.book.cover_url)"
+                    :alt="item.book.title"
                 />
 
                 <div>
@@ -23,7 +24,7 @@
                     <div class="flex">
                         <div v-for="(author, index) in item.book.authors" v-bind:key="index">
                             {{ author.name }}
-                            <span v-if="index < item.book.authors - 1">|</span>
+                            <span v-if="index < item.book.authors.length - 1">|</span>
                         </div>
                     </div>
                 </div>
@@ -44,7 +45,7 @@ export default {
     methods: {
         coverUrl() {
             return this.getApiUrl(this.item.book.cover_url);
-        }
-    }
+        },
+    },
 };
 </script>

@@ -1,16 +1,17 @@
 import axios from "axios";
+import Vue from "vue";
 import mixin from "@/mixin";
 
 const state = {
     postsResponse: { data: [], links: null, meta: null },
     post: null,
-    postsPaging: { source: null, generation: 0, loading: false, loaded: false, next: null, error: false }
+    postsPaging: { source: null, generation: 0, loading: false, loaded: false, next: null, error: false },
 };
 
 const getters = {
-    post: state => state.post,
-    postsResponse: state => state.postsResponse,
-    postsPaging: state => state.postsPaging
+    post: (state) => state.post,
+    postsResponse: (state) => state.postsResponse,
+    postsPaging: (state) => state.postsPaging,
 };
 
 function resetFeed(state, source = null) {
@@ -45,27 +46,25 @@ const mutations = {
 
     insertPostToFeed(state, newPost) {
         const id = String(newPost.attributes.id);
-        state.postsResponse.data = state.postsResponse.data.filter(post => String(post.attributes.id) !== id);
+        state.postsResponse.data = state.postsResponse.data.filter((post) => String(post.attributes.id) !== id);
         state.postsResponse.data.unshift(newPost);
     },
 
     updatePostToFeed(state, updatedPost) {
-        state.postsResponse.data.forEach(function(postItem) {
+        state.postsResponse.data.forEach(function (postItem) {
             if (postItem.attributes.id == updatedPost.attributes.id) {
                 postItem.attributes.title = updatedPost.attributes.title;
                 postItem.attributes.body = updatedPost.attributes.body;
                 postItem.attributes.image_url =
                     updatedPost.attributes.image_url == null
                         ? null
-                        : updatedPost.attributes.image_url +
-                          "?rand=" +
-                          Date.now();
+                        : updatedPost.attributes.image_url + "?rand=" + Date.now();
             }
         });
     },
 
     removePost(state, post) {
-        state.postsResponse.data.forEach(function(postItem, index, arr) {
+        state.postsResponse.data.forEach(function (postItem, index, arr) {
             if (postItem.attributes.id == post.id) {
                 arr.splice(index, 1);
             }
@@ -92,12 +91,12 @@ const mutations = {
     setUserPostsResponse: appendPosts,
 
     pushPostComments(state, payload) {
-        state.postsResponse.data.forEach(function(post) {
+        state.postsResponse.data.forEach(function (post) {
             if (post.attributes.id == payload.post.id) {
                 if (post.attributes.comments_data == null) {
-                    post.attributes.comments_data = payload.data;
+                    Vue.set(post.attributes, "comments_data", payload.data);
                 } else {
-                    payload.data.data.forEach(function(comment) {
+                    payload.data.data.forEach(function (comment) {
                         post.attributes.comments_data.data.push(comment);
                         post.attributes.comments_data.meta.total++;
                     });
@@ -107,12 +106,12 @@ const mutations = {
     },
 
     pushPostLikes(state, payload) {
-        state.postsResponse.data.forEach(function(post) {
+        state.postsResponse.data.forEach(function (post) {
             if (post.attributes.id == payload.post.id) {
                 if (post.attributes.likes_data == null) {
-                    post.attributes.likes_data = payload.data;
+                    Vue.set(post.attributes, "likes_data", payload.data);
                 } else {
-                    payload.data.data.forEach(function(like) {
+                    payload.data.data.forEach(function (like) {
                         post.attributes.likes_data.data.push(like);
                         post.attributes.likes_data.meta.total++;
                     });
@@ -121,26 +120,20 @@ const mutations = {
         });
     },
     pushMyLikeOnPost(state, payload) {
-        state.postsResponse.data.forEach(function(post) {
+        state.postsResponse.data.forEach(function (post) {
             if (post.attributes.id == payload.post.id) {
                 if (post.attributes.my_like == null) {
-                    post.attributes.my_like = payload.my_like;
+                    Vue.set(post.attributes, "my_like", payload.my_like);
                 }
             }
         });
     },
     removeMyLikeFromPost(state, packet) {
-        state.postsResponse.data.forEach(function(post) {
+        state.postsResponse.data.forEach(function (post) {
             if (post.attributes.id == packet.overhead.post.id) {
                 if (post.attributes.my_like != null) {
-                    post.attributes.likes_data.data.forEach(function(
-                        likeItem,
-                        index,
-                        arr
-                    ) {
-                        if (
-                            likeItem.attributes.id == post.attributes.my_like.id
-                        ) {
+                    post.attributes.likes_data.data.forEach(function (likeItem, index, arr) {
+                        if (likeItem.attributes.id == post.attributes.my_like.id) {
                             arr.splice(index, 1);
                         }
                     });
@@ -152,22 +145,16 @@ const mutations = {
     },
 
     removePostComment(state, packet) {
-        state.postsResponse.data.forEach(function(postItem) {
+        state.postsResponse.data.forEach(function (postItem) {
             if (postItem.attributes.id == packet.overhead.post.id) {
-                postItem.attributes.comments_data.data.forEach(function(
-                    commentItem,
-                    index,
-                    arr
-                ) {
-                    if (
-                        commentItem.attributes.id == packet.overhead.comment.id
-                    ) {
+                postItem.attributes.comments_data.data.forEach(function (commentItem, index, arr) {
+                    if (commentItem.attributes.id == packet.overhead.comment.id) {
                         arr.splice(index, 1);
                     }
                 });
             }
         });
-    }
+    },
 };
 
 const actions = {
@@ -218,5 +205,5 @@ export default {
     state,
     getters,
     mutations,
-    actions
+    actions,
 };

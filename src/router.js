@@ -4,7 +4,6 @@ import store from "@/store";
 import Home from "@/views/home/Home.vue";
 import SearchShow from "@/views/home/SearchShow.vue";
 import { companyLinks } from "@/config/company";
-import Products from "@/views/about/Products.vue";
 import Research from "@/views/about/Research.vue";
 import Awards from "@/views/about/Awards.vue";
 import Advertisers from "@/views/about/Advertisers.vue";
@@ -123,7 +122,7 @@ let router = new Router({
         {
             path: "/products",
             name: "products",
-            component: Products,
+            beforeEnter: redirectToCompany(companyLinks.products),
             meta: { title: "Products" }
         },
         {

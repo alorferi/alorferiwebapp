@@ -2,6 +2,7 @@ export const companyLinks = Object.freeze({
     about: "https://about.alorferi.com/",
     careers: "https://about.alorferi.com/careers",
     contact: "https://about.alorferi.com/contact",
+    products: "https://about.alorferi.com/products",
     facebook: "https://www.facebook.com/alorferi",
     youtube: "https://www.youtube.com/@AlorFeri"
 });

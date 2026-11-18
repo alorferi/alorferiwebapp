@@ -9,6 +9,7 @@ import ImageUploader from "vue-image-upload-resize";
 Vue.use(ImageUploader);
 
 import "@/styles/tailwind.css";
+import "@/styles/social.css";
 import UiModal from "@/components/ui/UiModal.vue";
 import UiDropdown from "@/components/ui/UiDropdown.vue";
 import UiFileInput from "@/components/ui/UiFileInput.vue";
@@ -19,9 +20,7 @@ Vue.component("UiFileInput", UiFileInput);
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 
-
 import PortalVue from "portal-vue";
-
 
 import mixin from "./mixin";
 
@@ -45,13 +44,11 @@ Vue.prototype.$apiClientSecret = process.env.VUE_APP_API_SERVER_CLIENT_SECRET;
 // console.log("apiClientId", Vue.prototype.$apiClientId);
 // console.log("apiClientSecret", Vue.prototype.$apiClientSecret);
 
-
 //  Vue.prototype.$http = axios;
 
 const access_token = JSON.parse(localStorage.getItem("otc_token") || null);
 if (access_token) {
-    Vue.prototype.$http.defaults.headers.common["Authorization"] =
-        "Bearer " + access_token;
+    Vue.prototype.$http.defaults.headers.common["Authorization"] = "Bearer " + access_token;
 }
 
 Vue.config.productionTip = false;
@@ -67,7 +64,6 @@ Vue.config.productionTip = false;
 
 //     i18n.locale = language;
 
-
 //     next();
 // });
 
@@ -75,5 +71,5 @@ new Vue({
     router,
     store,
     i18n,
-    render: h => h(App)
+    render: (h) => h(App),
 }).$mount("#app");

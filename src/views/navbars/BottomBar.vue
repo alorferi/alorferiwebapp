@@ -1,5 +1,23 @@
 <template>
-    <div class="app-footer border-t p-2">
+    <footer v-if="compact" class="social-footer">
+        <span>© {{ new Date().getFullYear() }} Alor Feri</span>
+        <nav :aria-label="$t('social.navigation')">
+            <a :href="companyLinks.about" target="_blank" rel="noopener noreferrer">{{ $t("about") }}</a>
+            <router-link :to="{ name: 'help' }">{{ $t("help") }}</router-link>
+            <router-link :to="{ name: 'privacy-policy' }">{{ $t("privacy_policy") }}</router-link>
+            <a :href="companyLinks.contact" target="_blank" rel="noopener noreferrer">{{ $t("social.contact") }}</a>
+            <a :href="companyLinks.careers" target="_blank" rel="noopener noreferrer">{{ $t("social.careers") }}</a>
+            <a :href="companyLinks.facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a :href="companyLinks.youtube" target="_blank" rel="noopener noreferrer">YouTube</a>
+            <a
+                href="https://play.google.com/store/apps/details?id=com.provatsoft.alorferi"
+                target="_blank"
+                rel="noopener noreferrer"
+                >{{ $t("social.app") }}</a
+            >
+        </nav>
+    </footer>
+    <div v-else class="app-footer border-t p-2">
         <div id="bars" class="flex flex-row justify-between">
             <div class="text-center p-4 port-item">
                 <router-link :to="{ name: 'home' }">
@@ -15,12 +33,6 @@
                 <div>
                     <a :href="companyLinks.about" target="_blank" rel="noopener noreferrer">{{ $t("about") }}</a>
                 </div>
-
-                <!-- <div>
-                <router-link :to="{ name: 'products' }"
-                    >{{ $t('services') }}</router-link
-                >
-            </div> -->
 
                 <div>
                     <router-link :to="{ name: 'awards' }">{{ $t("awards") }}</router-link>
@@ -156,27 +168,26 @@ import { companyLinks } from "@/config/company";
 export default {
     name: "Login",
     props: {
-        msg: String
+        msg: String,
+        compact: Boolean,
     },
-    components: {
-    },
-    mounted: function() {},
+    components: {},
+    mounted: function () {},
     data() {
         return { companyLinks };
     },
-    methods: {}
+    methods: {},
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 @media screen and (max-width: 768px) {
-  #bars {
-    flex-direction: column !important;
-  }
-  .port-item {
-    width: 100%;
-  }
+    #bars {
+        flex-direction: column !important;
+    }
+    .port-item {
+        width: 100%;
+    }
 }
 </style>

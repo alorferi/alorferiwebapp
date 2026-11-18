@@ -1,40 +1,29 @@
 <template>
-    <div>
-        <ul class="flex list-none rounded p-0 justify-center mb-0">
-            <li
-                aria-label="English"
-                class="ui-page-item"
-                :class="{ 'ui-selected': activeLanguage == 'en' }"
-                @click="setLanguage('en')"
-            >
-                <a role="button" class="ui-page-link"
-                    ><span aria-hidden="true">EN</span><span class="sr-only">English</span></a
-                >
-            </li>
-
-            <li class="ui-page-item" :class="{ 'ui-selected': activeLanguage == 'bn' }" @click="setLanguage('bn')">
-                <a role="button" aria-label="Bangla" class="ui-page-link"
-                    ><span aria-hidden="true">বাং</span><span class="sr-only">Bangla</span></a
-                >
-            </li>
-        </ul>
+    <div class="social-language" role="group" :aria-label="$t('social.language')">
+        <button
+            v-for="lang in ['en', 'bn']"
+            :key="lang"
+            type="button"
+            :lang="lang"
+            :aria-pressed="activeLanguage === lang ? 'true' : 'false'"
+            @click="setLanguage(lang)"
+        >
+            {{ lang === "en" ? "EN" : "বাং" }}
+        </button>
     </div>
 </template>
-
 <script>
 export default {
     computed: {
         activeLanguage() {
             return this.$store.getters.activeLanguage;
-        }
+        },
     },
     methods: {
         setLanguage(lang) {
             this.$i18n.locale = lang;
             this.$store.dispatch("setActiveLanguage", lang);
-        }
-    }
+        },
+    },
 };
 </script>
-
-<style></style>

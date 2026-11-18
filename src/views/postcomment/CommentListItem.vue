@@ -1,90 +1,66 @@
 <template>
-    <div class="flex items-start p-2">
-        <UserPhoto :user="comment.user" size="24" class="mr-4 mt-4"></UserPhoto>
-
-        <div class="min-w-0 flex-1 border border-l-0 border-r-0 border-t-0">
-            <div class="flex justify-between">
-                <h6>
-                    {{ comment.user.first_name }} {{ comment.user.surname }}
-                    <small
-                        ><i class="text-secondary"> {{ this.momentFromNow(comment.created_at) }}</i></small
+    <div class="flex items-start gap-3 p-2">
+        <UserPhoto :user="comment.user" size="28" />
+        <div class="min-w-0 flex-1 social-comment-bubble">
+            <div class="flex justify-between gap-2">
+                <div class="min-w-0">
+                    <router-link
+                        class="font-semibold text-sm break-words"
+                        :to="{ name: 'users.show', params: { user_id: comment.user.id } }"
+                        >{{ comment.user.first_name }} {{ comment.user.surname }}</router-link
                     >
-                </h6>
-
-                <div>
-                    <div class="relative">
-                        <UiDropdown trigger-id="dropdownMenuLink" trigger-class="" label="Actions"
-                            ><template #trigger>
-                                <!-- <i class="fas fa-ellipsis-v"></i> -->
-                            </template>
-                            <a class="ui-menu-item text-primary" role="button" v-if="isAbleToEditComment"
-                                ><i class="far fa-edit"></i> Edit this comment</a
-                            >
-                            <a
-                                class="ui-menu-item text-danger"
-                                v-if="isAbletoDeleteComment"
-                                role="button"
-                                @click="deleteComment(comment)"
-                                ><i class="far fa-trash-alt"></i> Delete this comment</a
-                            >
-                        </UiDropdown>
-                    </div>
+                    <time class="block text-xs text-secondary" :datetime="comment.created_at">{{
+                        momentFromNow(comment.created_at)
+                    }}</time>
                 </div>
+                <UiDropdown
+                    v-if="isAbletoDeleteComment"
+                    trigger-class="ui-button ui-button-link"
+                    :label="$t('social.commentActions')"
+                >
+                    <template #trigger><i class="fas fa-ellipsis-h" aria-hidden="true"></i></template>
+                    <button type="button" class="ui-menu-item text-danger" :disabled="deleting" @click="deleteComment">
+                        {{ $t("social.deleteComment") }}
+                    </button>
+                </UiDropdown>
             </div>
-
-            <p>
-                {{ comment.body }}
-            </p>
+            <p class="whitespace-pre-line break-words text-sm mb-0 mt-2">{{ comment.body }}</p>
+            <p v-if="failed" role="alert" class="text-sm text-danger mt-2 mb-0">{{ $t("social.requestError") }}</p>
         </div>
     </div>
 </template>
-
 <script>
 import UserPhoto from "../user/UserPhoto";
-
 export default {
     name: "CommentListItem",
-    props: ["comment",'post'],
+    props: ["comment", "post"],
     components: { UserPhoto },
     data() {
-        return {
-            body: "",
-            bodyState: null
-        };
+        return { deleting: false, failed: false };
+    },
+    computed: {
+        isAbletoDeleteComment() {
+            return (
+                this.comment.user.id === this.$store.getters.activeUser.id ||
+                this.post.user.id === this.$store.getters.activeUser.id
+            );
+        },
     },
     methods: {
-
-        deleteComment(comment){
-
-            const packet = {
-                overhead:{
-                    post:this.post,
-                    comment:comment
-                }
+        async deleteComment() {
+            if (this.deleting) return;
+            this.deleting = true;
+            this.failed = false;
+            try {
+                await this.$store.dispatch("deletePostComment", {
+                    overhead: { post: this.post, comment: this.comment },
+                });
+            } catch (error) {
+                this.failed = true;
+            } finally {
+                this.deleting = false;
             }
-
-               this.$store
-                .dispatch("deletePostComment", packet)
-                .then(() => {
-                })
-                .catch(() => {
-                })
-                .finally();
-
-        }
-
-    },computed:{
-        isMyComment() {
-
-            return this.comment.user.id == this.$store.getters.activeUser.id;
         },
-        isAbleToEditComment() {
-            return this.comment.user.id == this.$store.getters.activeUser.id;
-        },
-        isAbletoDeleteComment() {
-
-            return (this.comment.user.id == this.$store.getters.activeUser.id) || (this.post.user.id == this.$store.getters.activeUser.id);
-        },
-    }
+    },
 };
 </script>

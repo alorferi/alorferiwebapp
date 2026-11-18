@@ -21,6 +21,9 @@
             </button>
         </div>
 
+        <p v-if="paging && paging.loaded && !paging.next && posts.length && !paging.error" class="social-feed-end">
+            {{ $t("social.allCaughtUp") }}
+        </p>
         <div ref="sentinel" class="post-feed-sentinel h-px" aria-hidden="true"></div>
         <div
             v-if="paging && paging.loaded && paging.next && !paging.error"

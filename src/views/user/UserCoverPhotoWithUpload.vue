@@ -1,8 +1,7 @@
 <template>
     <div>
         <div
-            class="flex pt-2 pl-2 pr-2 pb-2 rounded-2xl bg-primary-soft border"
-            style="height: 312px"
+            class="social-cover flex p-3"
             :style="{
                 'background-image': 'url(' + this.userCoverUrl + ')',
                 'background-size': 'cover',
@@ -10,7 +9,7 @@
         >
             <button
                 type="button"
-                aria-label="Change cover photo"
+                :aria-label="$t('social.changeCover')"
                 class="ui-button ui-button-light ml-auto mt-auto"
                 v-if="this.isItMe(this.user)"
                 @click="showUploadMyCoverModal = !showUploadMyCoverModal"
@@ -45,14 +44,14 @@ export default {
             }
 
             return this.getApiUrl(coverUrl);
-        }
+        },
     },
     methods: {},
-    data: function() {
+    data: function () {
         return {
             showUploadMyCoverModal: false,
         };
-    }
+    },
 };
 </script>
 

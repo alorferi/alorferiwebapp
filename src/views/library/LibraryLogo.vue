@@ -1,50 +1,39 @@
 <template>
-    <div>
+    <span class="social-user-photo" :style="{ width: size + 'px', height: size + 'px' }">
         <img
-            class="inline-block rounded-full p-2"
+            v-if="library.logo_url && !failed"
+            :src="logoUrl"
+            :alt="library.name"
+            :width="size"
+            :height="size"
+            class="rounded-full object-cover"
             loading="lazy"
             decoding="async"
-            v-if="this.library.logo_url != null"
-            :src="this.logoUrl()"
-            :style="imgStyle"
+            @error="failed = true"
         />
-
-        <NameCircle v-else :name="library.name" :size="this.size" class="p-2" />
-    </div>
+        <NameCircle v-else :name="library.name" :size="size" />
+    </span>
 </template>
 <script>
-import NameCircle from "../../components/NameCircle";
-
+import NameCircle from "@/components/NameCircle";
 export default {
     name: "LibraryLogo",
-    props: ["library", "size"],
+    components: { NameCircle },
+    props: { library: Object, size: { type: [String, Number], default: 48 } },
+    data() {
+        return { failed: false };
+    },
     computed: {
-        imgStyle() {
-            var width = parseInt(this.size) + 12;
-            var height = parseInt(this.size) + 12;
-            return "width:" + width + "px; height:" + height + "px;";
-        }
-    },
-    components: {
-        NameCircle
-    },
-    methods: {
-        sizeOfImg() {
-            return this.size;
-        },
-
-        sizeOfNameCircle() {
-            return this.size;
-        },
-
         logoUrl() {
-            if(this.library.logo_url==null){
-                return ""
-            }else{
-                return this.getApiUrl(this.library.logo_url);
-            }
-
-        }
-    }
+            return /^https?:\/\//i.test(this.library.logo_url)
+                ? this.library.logo_url
+                : this.getApiUrl(this.library.logo_url);
+        },
+    },
+    watch: {
+        "library.logo_url"() {
+            this.failed = false;
+        },
+    },
 };
 </script>

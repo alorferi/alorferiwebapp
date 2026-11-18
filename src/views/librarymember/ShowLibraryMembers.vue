@@ -6,13 +6,13 @@
         <div v-else>
             <Paginator :meta="meta" @update:page="page = $event" />
 
-              <WrapperListView :dataWrapperList="libraryMemberWrappers" :listItemComponent="itemComponent" />
-
-            <Paginator
-                :meta="meta"
-                @update:page="page = $event"
+            <WrapperListView
+                :emptyListMessage="$t('social.emptyMembers')"
+                :dataWrapperList="libraryMemberWrappers"
+                :listItemComponent="itemComponent"
             />
 
+            <Paginator :meta="meta" @update:page="page = $event" />
         </div>
     </div>
 </template>
@@ -27,16 +27,17 @@ import WrapperListView from "../../components/WrapperListView";
 
 export default {
     name: "ShowLibraryMembers",
-     props:["library"],
+    props: ["library"],
     components: {
         Loading,
         SearchTextField,
-        Paginator,WrapperListView
+        Paginator,
+        WrapperListView,
     },
-  async mounted(){
+    async mounted() {
         this.fetchLibraryMembers();
     },
-    data: function() {
+    data: function () {
         return {
             show_loading: true,
             term: null,
@@ -55,14 +56,14 @@ export default {
             return this.$store.getters.libraryMembersResponse == null
                 ? null
                 : this.$store.getters.libraryMembersResponse.meta;
-        }
+        },
     },
     methods: {
-        fetchLibraryMembers: function(pTerm = null, pPage = null) {
+        fetchLibraryMembers: function (pTerm = null, pPage = null) {
             var payload = {
                 term: pTerm,
                 page: pPage,
-                library_id: this.library.id
+                library_id: this.library.id,
             };
 
             this.$store
@@ -73,7 +74,7 @@ export default {
                 .catch(() => {
                     this.show_loading = false;
                 });
-        }
+        },
     },
 
     watch: {
@@ -84,7 +85,7 @@ export default {
                 if (newVal != oldVal) {
                     this.fetchLibraryMembers(this.term, this.page);
                 }
-            }
+            },
         },
 
         term: {
@@ -94,8 +95,8 @@ export default {
                 if (newVal != oldVal) {
                     this.fetchLibraryMembers(this.term, this.page);
                 }
-            }
-        }
-    }
+            },
+        },
+    },
 };
 </script>

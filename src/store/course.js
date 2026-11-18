@@ -2,6 +2,8 @@
 import axios from "axios";
 import mixin from "../mixin";
 
+let detailRequest = 0;
+
 const state = {
     course: JSON.parse(localStorage.getItem("course") || null),
 
@@ -10,18 +12,15 @@ const state = {
     // ),
 
     coursesResponse: null,
-
 };
 
 const getters = {
-    course: state => state.course,
+    course: (state) => state.course,
     // courses: state => state.courses,
-    coursesResponse: state => state.coursesResponse,
-
+    coursesResponse: (state) => state.coursesResponse,
 };
 
 const mutations = {
-
     setCourse(state, course) {
         state.course = course;
     },
@@ -29,24 +28,26 @@ const mutations = {
     setCoursesResponse(state, coursesResponse) {
         state.coursesResponse = coursesResponse;
     },
-
 };
 
 const actions = {
     fetchCourse(context, courseId) {
+        const request = ++detailRequest;
+        const token = context.rootGetters.access_token;
         var url = mixin.methods.getApiUrl("/api/courses/" + courseId);
         return new Promise((resolve, reject) => {
             axios
                 .get(url)
-                .then(response => {
+                .then((response) => {
                     const course = response.data.data;
 
                     // console.log(course)
 
-                    context.commit("setCourse", course);
+                    if (request === detailRequest && context.rootGetters.access_token === token)
+                        context.commit("setCourse", course);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -54,19 +55,22 @@ const actions = {
     },
 
     fetchCourseBySlug(context, slug) {
+        const request = ++detailRequest;
+        const token = context.rootGetters.access_token;
         var url = mixin.methods.getApiUrl("/api/courses/" + slug + "/slug");
         return new Promise((resolve, reject) => {
             axios
                 .get(url)
-                .then(response => {
+                .then((response) => {
                     const course = response.data.data;
 
                     // console.log(course)
 
-                    context.commit("setCourse", course);
+                    if (request === detailRequest && context.rootGetters.access_token === token)
+                        context.commit("setCourse", course);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -75,43 +79,33 @@ const actions = {
 
     fetchCourses(context, payload) {
         return new Promise((resolve, reject) => {
-            const endPoint =
-                "/api/courses";
+            const endPoint = "/api/courses";
 
-            var url = mixin.methods.getApiUrl(
-                endPoint,
-                payload.term,
-                payload.page
-            );
+            var url = mixin.methods.getApiUrl(endPoint, payload.term, payload.page);
 
             axios({
                 url: url,
-                method: "GET"
+                method: "GET",
             })
-                .then(response => {
+                .then((response) => {
                     const coursesResponse = response.data;
 
                     // console.log(coursesResponse);
 
-                    context.commit(
-                        "setCoursesResponse",
-                        coursesResponse
-                    );
+                    context.commit("setCoursesResponse", coursesResponse);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
         });
     },
-
-
 };
 
 export default {
     state,
     getters,
     mutations,
-    actions
+    actions,
 };

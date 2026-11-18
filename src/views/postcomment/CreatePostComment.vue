@@ -1,19 +1,22 @@
 <template>
-    <div class="flex items-start p-4">
+    <div class="social-comment-form">
         <div class="min-w-0 flex-1">
             <form ref="form" @submit.stop.prevent="handleSubmit">
-                <div class="mb-4 flex">
+                <div class="flex items-center">
                     <UserPhoto :user="this.$store.getters.activeUser" size="24"></UserPhoto>
 
                     <input
-                        aria-label="Write a comment"
+                        :aria-label="$t('social.writeComment')"
+                        ref="input"
                         class="ui-field ml-2"
                         v-model="body"
-                        placeholder="Type your comment here"
-                        required :disabled="isSubmitting"
+                        :placeholder="$t('social.commentPlaceholder')"
+                        required
+                        :disabled="isSubmitting"
                     />
                 </div>
             </form>
+            <p v-if="requestError" class="text-sm text-danger mt-2" role="alert">{{ $t("social.requestError") }}</p>
         </div>
     </div>
 </template>
@@ -29,29 +32,36 @@ export default {
         return {
             body: "",
             bodyState: null,
-            isSubmitting: false
+            isSubmitting: false,
+            requestError: false,
         };
     },
     methods: {
+        focusInput() {
+            this.$refs.input.focus();
+            this.$refs.input.scrollIntoView({ block: "nearest", behavior: "auto" });
+        },
         storePostCommenAction() {
-
             let packet = {
                 overhead: {
-                    post: this.post
+                    post: this.post,
                 },
                 payload: {
-                    body: this.body
-                }
+                    body: this.body,
+                },
             };
 
             this.$store
                 .dispatch("storePostComment", packet)
                 .then(() => {
-                     this.body = ""
+                    this.body = "";
                 })
                 .catch(() => {
+                    this.requestError = true;
                 })
-                .finally(() => { this.isSubmitting = false; });
+                .finally(() => {
+                    this.isSubmitting = false;
+                });
         },
 
         checkFormValidity() {
@@ -62,8 +72,9 @@ export default {
         handleSubmit() {
             if (this.isSubmitting || !this.body.trim() || !this.checkFormValidity()) return;
             this.isSubmitting = true;
+            this.requestError = false;
             this.storePostCommenAction();
-        }
-    }
+        },
+    },
 };
 </script>

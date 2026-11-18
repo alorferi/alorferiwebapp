@@ -2,6 +2,8 @@
 import axios from "axios";
 import mixin from "../mixin";
 
+let detailRequest = 0;
+
 const state = {
     library: JSON.parse(localStorage.getItem("library") || null),
     myLibrariesResponse: null,
@@ -10,9 +12,9 @@ const state = {
 };
 
 const getters = {
-    library: state => state.library,
-    myLibrariesResponse: state => state.myLibrariesResponse,
-    libraryCoverUrl: state => state.libraryCoverUrl,
+    library: (state) => state.library,
+    myLibrariesResponse: (state) => state.myLibrariesResponse,
+    libraryCoverUrl: (state) => state.libraryCoverUrl,
 };
 
 const mutations = {
@@ -29,19 +31,22 @@ const mutations = {
 
 const actions = {
     fetchLibrary(context, library_id) {
+        const request = ++detailRequest;
+        const token = context.rootGetters.access_token;
         var url = mixin.methods.getApiUrl("/api/libraries/" + library_id);
         var headers = mixin.methods.getHeaderWithAuthorizationBearerToken();
 
         return new Promise((resolve, reject) => {
             axios
                 .get(url, headers)
-                .then(response => {
+                .then((response) => {
                     const library = response.data.data.attributes;
 
-                    context.commit("setLibrary", library);
+                    if (request === detailRequest && context.rootGetters.access_token === token)
+                        context.commit("setLibrary", library);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -49,19 +54,22 @@ const actions = {
     },
 
     fetchSearchLibrary(context, username) {
+        const request = ++detailRequest;
+        const token = context.rootGetters.access_token;
         var url = mixin.methods.getApiUrl("/api/searches/" + username);
         var headers = mixin.methods.getHeaderWithAuthorizationBearerToken();
 
         return new Promise((resolve, reject) => {
             axios
                 .get(url, headers)
-                .then(response => {
+                .then((response) => {
                     const library = response.data.data.attributes;
 
-                    context.commit("setLibrary", library);
+                    if (request === detailRequest && context.rootGetters.access_token === token)
+                        context.commit("setLibrary", library);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -69,62 +77,46 @@ const actions = {
     },
 
     fetchMyLibraries(context, payload) {
-        var endpoint =
-            "/api/users/" + this.getters.activeUser.id + "/libraries";
+        var endpoint = "/api/users/" + this.getters.activeUser.id + "/libraries";
         return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl(
-                endpoint,
-                payload.term,
-                payload.page
-            );
+            var url = mixin.methods.getApiUrl(endpoint, payload.term, payload.page);
 
             const headers = mixin.methods.getAuthorizationBearerToken();
 
             axios({
                 url: url,
                 headers: headers,
-                method: "GET"
+                method: "GET",
             })
-                .then(response => {
+                .then((response) => {
                     const myLibrariesResponse = response.data;
-                    context.commit(
-                        "setMyLibrariesResponse",
-                        myLibrariesResponse
-                    );
+                    context.commit("setMyLibrariesResponse", myLibrariesResponse);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
         });
     },
     fetchAllLibraries(context, payload) {
-        var endpoint =
-            "/api/libraries";
+        var endpoint = "/api/libraries";
         return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl(
-                endpoint,
-                payload.term,
-                payload.page
-            );
+            var url = mixin.methods.getApiUrl(endpoint, payload.term, payload.page);
 
             const headers = mixin.methods.getAuthorizationBearerToken();
 
             axios({
                 url: url,
                 headers: headers,
-                method: "GET"
+                method: "GET",
             })
-                .then(response => {
+                .then((response) => {
                     const myLibrariesResponse = response.data;
-                    context.commit(
-                        "setMyLibrariesResponse",
-                        myLibrariesResponse
-                    );
+                    context.commit("setMyLibrariesResponse", myLibrariesResponse);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -132,9 +124,7 @@ const actions = {
     },
     uploadLibraryCoverPhoto(context, packet) {
         return new Promise((resolve, reject) => {
-            var url = mixin.methods.getApiUrl(
-                "/api/libraries/" + packet.library_id + "/upload-cover-photo"
-            );
+            var url = mixin.methods.getApiUrl("/api/libraries/" + packet.library_id + "/upload-cover-photo");
 
             const headers = mixin.methods.getAuthorizationBearerToken();
             headers["Content-Type"] = "multipart/form-data";
@@ -145,15 +135,14 @@ const actions = {
                 url: url,
                 headers: headers,
                 method: "POST",
-                data: formData
+                data: formData,
             })
-                .then(response => {
-                    const cover_url =
-                        response.data.data + "?tick=" + Date.now();
+                .then((response) => {
+                    const cover_url = response.data.data + "?tick=" + Date.now();
                     context.commit("setLibraryCoverUrl", cover_url);
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -163,7 +152,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             const self = this;
 
-            var url = mixin.methods.getApiUrl("/api/libraries/"+packet.library_id+"/upload-logo");
+            var url = mixin.methods.getApiUrl("/api/libraries/" + packet.library_id + "/upload-logo");
 
             const headers = mixin.methods.getAuthorizationBearerToken();
             headers["Content-Type"] = "multipart/form-data";
@@ -174,12 +163,10 @@ const actions = {
                 url: url,
                 headers: headers,
                 method: "POST",
-                data: formData
+                data: formData,
             })
-                .then(response => {
-
-                    const logo_url =
-                        response.data.data + "?tick=" + Date.now();
+                .then((response) => {
+                    const logo_url = response.data.data + "?tick=" + Date.now();
 
                     const library = self.getters.library;
                     library.logo_url = logo_url;
@@ -188,7 +175,7 @@ const actions = {
 
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("err:", err);
                     reject(err);
                 });
@@ -200,5 +187,5 @@ export default {
     state,
     getters,
     mutations,
-    actions
+    actions,
 };

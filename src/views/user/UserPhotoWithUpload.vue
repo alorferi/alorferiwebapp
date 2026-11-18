@@ -1,86 +1,32 @@
 <template>
-    <div class="">
-        <div
-            class="rounded-full flex justify-center"
-            :style="{
-                'background-image': 'url(' + this.photoUrl + ')',
-                // 'background-repeat': 'no-repeat',
-                'background-position': 'center',
-                // 'background-position': '50px 50px 50px 50px',
-                width: width + 'px',
-                height: height + 'px',
-            }"
+    <div class="social-avatar-edit">
+        <UserPhoto :user="currentUser" :size="size" />
+        <button
+            v-if="isItMe(currentUser)"
+            type="button"
+            class="ui-button ui-button-light"
+            :aria-label="$t('social.changePhoto')"
+            @click="showUploadMyPhotoModal = true"
         >
-            <button
-                type="button"
-                aria-label="Change profile photo"
-                class="ui-button ui-button-light mt-auto"
-                v-if="this.isItMe(this.currentUser)"
-                @click="showUploadMyPhotoModal = !showUploadMyPhotoModal"
-            >
-                <i class="fa fa-camera"></i>
-            </button>
-
-            <UploadMyPhotoModal :show="showUploadMyPhotoModal" @updateVisibleState="showUploadMyPhotoModal = $event" />
-        </div>
-
-        <!-- <div class="" v-else>
-        <NameCircle :name="this.currentUser.first_name" :size="this.size" />
-    </div> -->
+            <i class="fa fa-camera" aria-hidden="true"></i>
+        </button>
+        <UploadMyPhotoModal :show="showUploadMyPhotoModal" @updateVisibleState="showUploadMyPhotoModal = $event" />
     </div>
 </template>
 <script>
-// import NameCircle from "../../components/NameCircle";
-import UploadMyPhotoModal from "@/views/user/UploadMyPhotoModal.vue";
+import UserPhoto from "./UserPhoto";
+import UploadMyPhotoModal from "./UploadMyPhotoModal";
 export default {
     name: "UserPhotoWithUpload",
     props: ["user", "size"],
+    components: { UserPhoto, UploadMyPhotoModal },
+    data() {
+        return { showUploadMyPhotoModal: false };
+    },
     computed: {
         currentUser() {
-            if (this.isItMe(this.user)) {
-                return this.activeUser;
-            } else {
-                return this.user;
-            }
+            return this.isItMe(this.user) ? this.$store.getters.activeUser : this.user;
         },
-
-        activeUser() {
-            return this.$store.getters.activeUser;
-        },
-        photoUrl() {
-            return this.getApiUrl(this.currentUser.photo_url);
-        },
-        width() {
-            return parseInt(this.size) + 12;
-        },
-
-        height() {
-            return parseInt(this.size) + 12;
-        },
-        imgStyle() {
-            var width = parseInt(this.size) + 12;
-            var height = parseInt(this.size) + 12;
-            return "width:" + width + "px; height:" + height + "px;";
-        }
     },
-    components: {
-        // NameCircle,
-        UploadMyPhotoModal
-    },
-    data: function() {
-        return {
-            showUploadMyPhotoModal: false,
-            imgUrl: null
-        };
-    },
-    methods: {
-        sizeOfImg() {
-            return this.size;
-        },
-
-        sizeOfNameCircle() {
-            return this.size;
-        }
-    }
 };
 </script>

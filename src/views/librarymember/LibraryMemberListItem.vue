@@ -4,10 +4,13 @@
             <div class="p-5 flex items-center">
                 <LibraryMemberPhoto :member="item" size="64" />
 
-                <div class="ml-4">
+                <div class="ml-4 min-w-0">
                     <div>{{ item.member_code }}</div>
                     <h6>{{ item.first_name }} {{ item.surname }} {{ item.nickname }}</h6>
-                    <div>Reading: {{ item.total_reading_books }}, Has read: {{ item.total_has_read_books }}</div>
+                    <div>
+                        {{ $t("social.reading") }}: {{ item.total_reading_books }} · {{ $t("social.hasRead") }}:
+                        {{ item.total_has_read_books }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -16,14 +19,14 @@
 
 <script>
 // import LibraryLogo from "./LibraryLogo";
-import LibraryMemberPhoto from "../librarymember/LibraryMemberPhoto"
+import LibraryMemberPhoto from "../librarymember/LibraryMemberPhoto";
 
 export default {
     name: "LibraryMemberListItem",
     props: ["item"],
     components: {
-        LibraryMemberPhoto
+        LibraryMemberPhoto,
     },
-    methods: {}
+    methods: {},
 };
 </script>

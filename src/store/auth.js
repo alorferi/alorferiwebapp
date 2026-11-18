@@ -3,16 +3,16 @@ import axios from "axios";
 
 const state = {
     token: JSON.parse(localStorage.getItem("token") || null),
-    otc_token: JSON.parse(localStorage.getItem("otc_token") || null)
+    otc_token: JSON.parse(localStorage.getItem("otc_token") || null),
 };
 const getters = {
-    access_token: state => {
+    access_token: (state) => {
         return state.token;
     },
-    otc_token: state => {
+    otc_token: (state) => {
         return state.otc_token;
     },
-    isLoggedIn: state => state.token != null
+    isLoggedIn: (state) => state.token != null,
 };
 
 const mutations = {
@@ -24,7 +24,7 @@ const mutations = {
     },
     logout(state) {
         state.token = null;
-    }
+    },
 };
 
 const actions = {
@@ -39,9 +39,9 @@ const actions = {
                 url: login_url,
                 data: loginCredential,
                 method: "POST",
-                headers: { "Content-Type": "application/json" }
+                headers: { "Content-Type": "application/json" },
             })
-                .then(response => {
+                .then((response) => {
                     const token = response.data;
                     localStorage.setItem("token", JSON.stringify(token));
                     // Add the following line:
@@ -49,7 +49,7 @@ const actions = {
                     commit("setToken", token);
                     resolve(response);
                 })
-                .catch(error => {
+                .catch((error) => {
                     localStorage.removeItem("token");
 
                     switch (error.response.data.error) {
@@ -75,9 +75,9 @@ const actions = {
                 url: login_url,
                 data: loginCredential,
                 method: "POST",
-                headers: { "Content-Type": "application/json" }
+                headers: { "Content-Type": "application/json" },
             })
-                .then(response => {
+                .then((response) => {
                     const token = response.data.data.token;
                     localStorage.setItem("token", JSON.stringify(token));
                     // Add the following line:
@@ -85,7 +85,7 @@ const actions = {
                     commit("setToken", token);
                     resolve(response);
                 })
-                .catch(error => {
+                .catch((error) => {
                     localStorage.removeItem("token");
 
                     switch (error.response.data.error) {
@@ -106,23 +106,19 @@ const actions = {
     },
     loginWithOtc({ commit }, dataModel) {
         return new Promise((resolve, reject) => {
-            let login_url =
-                Vue.prototype.$apiServerBaseUrl + "/api/auth/login-with-otc";
+            let login_url = Vue.prototype.$apiServerBaseUrl + "/api/auth/login-with-otc";
             axios({
                 url: login_url,
                 data: dataModel.data,
                 method: "POST",
-                headers: dataModel.headers
+                headers: dataModel.headers,
             })
-                .then(response => {
+                .then((response) => {
                     switch (response.data.status) {
                         case "OK":
                             var otc_token = response.data.data.token;
 
-                            localStorage.setItem(
-                                "otc_token",
-                                JSON.stringify(otc_token)
-                            );
+                            localStorage.setItem("otc_token", JSON.stringify(otc_token));
 
                             commit("setOtcToken", otc_token);
                             resolve(response);
@@ -133,7 +129,7 @@ const actions = {
                             break;
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     localStorage.removeItem("otc_token");
 
                     switch (error.response.data.error) {
@@ -154,22 +150,21 @@ const actions = {
     },
     resetPassword(context, dataModel) {
         return new Promise((resolve, reject) => {
-            let login_url =
-                Vue.prototype.$apiServerBaseUrl + "/api/auth/reset-password";
+            let login_url = Vue.prototype.$apiServerBaseUrl + "/api/auth/reset-password";
 
-            const otc_token = JSON.parse(localStorage.getItem("otc_token") || null)
+            const otc_token = JSON.parse(localStorage.getItem("otc_token") || null);
 
             let headers = {
-                Authorization: "Bearer " + otc_token
+                Authorization: "Bearer " + otc_token,
             };
 
             axios({
                 url: login_url,
                 data: dataModel,
                 method: "POST",
-                headers: headers
+                headers: headers,
             })
-                .then(response => {
+                .then((response) => {
                     switch (response.data.status) {
                         case "OK":
                             localStorage.removeItem("otc_token");
@@ -177,7 +172,7 @@ const actions = {
                     }
                     resolve(response);
                 })
-                .catch(error => {
+                .catch((error) => {
                     switch (error.response.data.error) {
                         case "invalid_grant":
                             reject("Mobile Number or Password does not match.");
@@ -195,20 +190,21 @@ const actions = {
         });
     },
     logout({ commit }) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             commit("clearPostsResponse");
+            commit("setFollowingSource", null);
             commit("logout");
             localStorage.removeItem("token");
             localStorage.removeItem("otc_token");
             delete axios.defaults.headers.common["Authorization"];
             resolve();
         });
-    }
+    },
 };
 
 export default {
     state,
     getters,
     mutations,
-    actions
+    actions,
 };

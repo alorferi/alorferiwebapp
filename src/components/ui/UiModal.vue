@@ -3,7 +3,7 @@
         <div
             v-if="value"
             class="fixed inset-0 flex overflow-y-auto bg-dark/50 p-4"
-            :class="centered ? 'items-center' : 'items-start pt-8'"
+            :class="sidePanel ? 'ui-drawer-overlay' : centered ? 'items-center' : 'items-start pt-8'"
             :style="{ zIndex: 1050 + layer * 10 }"
             :aria-hidden="top ? undefined : 'true'"
             @mousedown.self="dismiss('backdrop')"
@@ -17,6 +17,7 @@
                 :aria-busy="busy ? 'true' : 'false'"
                 tabindex="-1"
                 class="ui-dialog"
+                :class="{ 'ui-drawer-panel': sidePanel }"
             >
                 <header v-if="!hideHeader" class="ui-dialog-header">
                     <h2 :id="titleId" class="m-0 text-xl font-medium">{{ title }}</h2>
@@ -65,6 +66,7 @@ export default {
         title: { type: String, default: "" },
         busy: Boolean,
         centered: Boolean,
+        sidePanel: Boolean,
         hideHeader: Boolean,
         hideFooter: Boolean,
         okOnly: Boolean,

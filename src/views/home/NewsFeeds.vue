@@ -1,30 +1,15 @@
 <template>
-    <div>
-        <CreateUserPost class="mt-2 mb-4"></CreateUserPost>
-
-        <ShowPosts></ShowPosts>
+    <div class="social-feed-layout">
+        <section class="social-feed-main" :aria-label="$t('social.feed')"><CreateUserPost /><ShowPosts /></section>
+        <aside class="social-feed-aside"><FeedLibraries /></aside>
     </div>
 </template>
-
 <script>
 import ShowPosts from "@/views/post/ShowPosts";
 import CreateUserPost from "@/views/user/CreateUserPost";
-
+import FeedLibraries from "@/components/social/FeedLibraries";
 export default {
     name: "NewsFeeds",
-    computed: {
-    },
-    components: { CreateUserPost, ShowPosts },
-    data: () => {
-        return {
-        };
-    },
-  async mounted(){
-    },
-
-    methods: {}
+    components: { ShowPosts, CreateUserPost, FeedLibraries },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style></style>

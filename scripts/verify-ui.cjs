@@ -46,11 +46,13 @@ const company = {
     about: "https://about.alorferi.com/",
     careers: "https://about.alorferi.com/careers",
     contact: "https://about.alorferi.com/contact",
+    products: "https://about.alorferi.com/products",
 };
 let scenario = { login: "ok", profile: "ok", registration: "ok" };
 let requestStart = 0;
 const heldProfiles = [];
 const heldPostPages = [];
+const heldSocial = [];
 const fixturePassword = "Reader-Test-Only-92";
 const user = {
     surname: "Fixture",
@@ -117,11 +119,11 @@ const fixtureCourse = {
     duration: 1,
 };
 const courseImageSources = [
-    '/course-fixtures/relative.png',
-    'course-fixtures/relative-no-slash.png',
-    'https://media.example.test/course-fixtures/absolute.png',
+    "/course-fixtures/relative.png",
+    "course-fixtures/relative-no-slash.png",
+    "https://media.example.test/course-fixtures/absolute.png",
     null,
-    '/course-fixtures/missing.png'
+    "/course-fixtures/missing.png",
 ];
 const paginated = (data) => ({
     data,
@@ -238,8 +240,12 @@ async function main() {
                     const pathname = new URL(request.url).pathname;
                     const header = (name) =>
                         Object.entries(request.headers).find(([key]) => key.toLowerCase() === name)?.[1];
-                    const data = request.postData && request.method !== "OPTIONS" && (header("content-type") || "").includes("application/json")
-                        ? JSON.parse(request.postData) : null;
+                    const data =
+                        request.postData &&
+                        request.method !== "OPTIONS" &&
+                        (header("content-type") || "").includes("application/json")
+                            ? JSON.parse(request.postData)
+                            : null;
                     requests.push({
                         path: pathname,
                         query: new URL(request.url).search,
@@ -249,37 +255,206 @@ async function main() {
                         authorization: header("authorization"),
                     });
                     if (request.method === "OPTIONS") return await replyApi(requestId, 204, null);
-                    if (scenario.postPages && request.method === 'POST' && /^\/api\/users\/\d+\/posts(?:\/\d+)?$/.test(pathname)) {
-                        const post=postPage('/api/posts',1,new URL(request.url).origin,true).data[0];
-                        const editing=/\/posts\/\d+$/.test(pathname);
-                        post.attributes.id=editing?Number(pathname.split('/').pop()):899001;
-                        post.attributes.title=editing?'Edited paging discussion':'Created paging discussion';
-                        post.attributes.body=post.attributes.title;
-                        return await replyApi(requestId,200,{data:post});
+                    if (request.method === "GET" && pathname === "/api/searches/cleanup-fixture-library")
+                        return await replyApi(requestId, 200, { data: { attributes: fixtureLibrary } });
+                    if (scenario.social) {
+                        const config = scenario.social,
+                            url = new URL(request.url);
+                        if (
+                            config.formLoadFailRemaining > 0 &&
+                            request.method === "GET" &&
+                            pathname === "/api/libraries/" + fixtureLibrary.id
+                        ) {
+                            config.formLoadFailRemaining--;
+                            return await replyApi(requestId, 503, { message: "Fixture load failed." });
+                        }
+                        if (
+                            config.forms &&
+                            ((request.method === "POST" && pathname === "/api/libraries") ||
+                                (request.method === "PUT" && pathname === "/api/libraries/" + fixtureLibrary.id) ||
+                                (request.method === "POST" && pathname === "/api/users/" + user.id))
+                        ) {
+                            if (config.formFailRemaining > 0) {
+                                config.formFailRemaining--;
+                                return await replyApi(requestId, 503, { message: "Fixture save failed." });
+                            }
+                            const record = pathname.includes("/api/users/")
+                                ? { ...user, ...data }
+                                : { ...fixtureLibrary, ...data };
+                            const body = { data: { attributes: record } };
+                            if (config.holdForm) {
+                                heldSocial.push({ requestId, body });
+                                return;
+                            }
+                            return await replyApi(requestId, 200, body);
+                        }
+                        if (request.method === "GET" && config.holdDetail === pathname) {
+                            heldSocial.push({
+                                requestId,
+                                body: {
+                                    data: { attributes: pathname.includes("/users/") ? fixtureReader : fixtureLibrary },
+                                },
+                            });
+                            return;
+                        }
+                        if (
+                            request.method === "GET" &&
+                            /^\/api\/users\/\d+$/.test(pathname) &&
+                            pathname !== "/api/users/" + fixtureReader.id
+                        )
+                            return await replyApi(requestId, 200, {
+                                data: {
+                                    attributes: {
+                                        ...fixtureReader,
+                                        id: Number(pathname.split("/").pop()),
+                                        first_name: "Next",
+                                        surname: "Reader",
+                                    },
+                                },
+                            });
+                        if (
+                            request.method === "GET" &&
+                            /^\/api\/libraries\/\d+$/.test(pathname) &&
+                            pathname !== "/api/libraries/" + fixtureLibrary.id
+                        )
+                            return await replyApi(requestId, 200, {
+                                data: {
+                                    attributes: {
+                                        ...fixtureLibrary,
+                                        id: Number(pathname.split("/").pop()),
+                                        name: "Next Library",
+                                    },
+                                },
+                            });
+                        if (
+                            request.method === "GET" &&
+                            config.discoveryError &&
+                            ["/api/users", "/api/libraries"].includes(pathname)
+                        )
+                            return await replyApi(requestId, 503, { message: "Discovery fixture failure" });
+                        if (request.method === "GET" && config.manyReaders && pathname === "/api/users") {
+                            const page = Number(url.searchParams.get("page") || 1),
+                                reader =
+                                    page === 1
+                                        ? fixtureReader
+                                        : { ...fixtureReader, id: fixtureReader.id + 1, first_name: "Another" };
+                            return await replyApi(requestId, 200, {
+                                ...paginated([{ attributes: reader }]),
+                                meta: { current_page: page, last_page: 2, per_page: 1, total: 2 },
+                            });
+                        }
+                        if (request.method === "GET" && /^\/api\/users\/\d+\/libraries$/.test(pathname)) {
+                            const body = paginated(config.libraryPanelEmpty ? [] : [{ attributes: fixtureLibrary }]);
+                            if (config.holdLibraryPanel) {
+                                heldSocial.push({ requestId, body, kind: "library-panel" });
+                                return;
+                            }
+                            return await replyApi(requestId, 200, body);
+                        }
+                        if (request.method === "GET" && config.manyOrders && pathname === "/api/my-course-orders") {
+                            const page = Number(url.searchParams.get("page") || 1);
+                            return await replyApi(requestId, 200, {
+                                ...paginated([{ ...fixtureCourse, id: fixtureCourse.id + page - 1 }]),
+                                meta: { current_page: page, last_page: 2, per_page: 1, total: 2 },
+                            });
+                        }
+                        if (/^\/api\/(users|libraries)\/\d+\/following-by-me$/.test(pathname)) {
+                            const key = pathname.replace("/following-by-me", "");
+                            return await replyApi(requestId, 200, {
+                                data: { attributes: (config.followed || []).includes(key) ? { id: 991, user } : null },
+                            });
+                        }
+                        if (/^\/api\/(users|libraries)\/\d+\/(unfollow|follow)$/.test(pathname)) {
+                            if (config.followFailRemaining > 0) {
+                                config.followFailRemaining--;
+                                return await replyApi(requestId, 503, { message: "Follow fixture failure" });
+                            }
+                            const key = pathname.replace(/\/(?:unfollow|follow)$/, "");
+                            config.followed = config.followed || [];
+                            if (request.method === "DELETE") config.followed = config.followed.filter((k) => k !== key);
+                            else config.followed.push(key);
+                            const body = { data: { attributes: { id: 991, user } } };
+                            if (config.holdFollow) {
+                                heldSocial.push({ requestId, body });
+                                return;
+                            }
+                            return await replyApi(requestId, 200, body);
+                        }
+                        if (
+                            request.method === "POST" &&
+                            /^\/api\/posts\/\d+\/likes$/.test(pathname) &&
+                            config.holdLike
+                        ) {
+                            heldSocial.push({ requestId, body: { data: { attributes: { id: 899002, user } } } });
+                            return;
+                        }
+                        if (request.method === "POST" && pathname === "/api/my-course-orders") {
+                            if (config.applicationFailRemaining > 0) {
+                                config.applicationFailRemaining--;
+                                return await replyApi(requestId, 503, { message: "Fixture application failed." });
+                            }
+                            if (config.holdApplication) {
+                                heldSocial.push({ requestId, body: { message: "Fixture application accepted." } });
+                                return;
+                            }
+                        }
                     }
-                    if (scenario.postPages && request.method === 'DELETE' && /^\/api\/users\/\d+\/posts\/\d+$/.test(pathname))
-                        return await replyApi(requestId,204,null);
-                    if (scenario.postPages && request.method === 'POST' && /^\/api\/posts\/\d+\/(?:likes|comments)$/.test(pathname)) {
-                        return await replyApi(requestId,200,{data:{attributes:{id:899002,user,
-                            body:data && data.body || 'Paging comment',created_at:'2026-01-01T10:00:00Z'}}});
+                    if (
+                        scenario.postPages &&
+                        request.method === "POST" &&
+                        /^\/api\/users\/\d+\/posts(?:\/\d+)?$/.test(pathname)
+                    ) {
+                        const post = postPage("/api/posts", 1, new URL(request.url).origin, true).data[0];
+                        const editing = /\/posts\/\d+$/.test(pathname);
+                        post.attributes.id = editing ? Number(pathname.split("/").pop()) : 899001;
+                        post.attributes.title = editing ? "Edited paging discussion" : "Created paging discussion";
+                        post.attributes.body = post.attributes.title;
+                        return await replyApi(requestId, 200, { data: post });
                     }
-                    if (scenario.postPages && request.method === 'GET' && /^\/api\/(?:posts|users\/\d+\/posts|libraries\/\d+\/posts)$/.test(pathname)) {
-                        const page = Number(new URL(request.url).searchParams.get('page') || 1);
+                    if (
+                        scenario.postPages &&
+                        request.method === "DELETE" &&
+                        /^\/api\/users\/\d+\/posts\/\d+$/.test(pathname)
+                    )
+                        return await replyApi(requestId, 204, null);
+                    if (
+                        scenario.postPages &&
+                        request.method === "POST" &&
+                        /^\/api\/posts\/\d+\/(?:likes|comments)$/.test(pathname)
+                    ) {
+                        return await replyApi(requestId, 200, {
+                            data: {
+                                attributes: {
+                                    id: 899002,
+                                    user,
+                                    body: (data && data.body) || "Paging comment",
+                                    created_at: "2026-01-01T10:00:00Z",
+                                },
+                            },
+                        });
+                    }
+                    if (
+                        scenario.postPages &&
+                        request.method === "GET" &&
+                        /^\/api\/(?:posts|users\/\d+\/posts|libraries\/\d+\/posts)$/.test(pathname)
+                    ) {
+                        const page = Number(new URL(request.url).searchParams.get("page") || 1);
                         const config = scenario.postPages;
                         const body = postPage(pathname, page, new URL(request.url).origin, config.short);
                         if (config.holdPage === page && (!config.holdSource || config.holdSource === pathname)) {
-                            heldPostPages.push({requestId, body, source: pathname, page});
+                            heldPostPages.push({ requestId, body, source: pathname, page });
                             return;
                         }
                         if (config.failPage === page && config.failRemaining > 0) {
                             config.failRemaining--;
-                            if (config.network) return await send('Fetch.failRequest', {requestId, errorReason:'ConnectionFailed'});
-                            return await replyApi(requestId, 503, {message:'Post page fixture failure'});
+                            if (config.network)
+                                return await send("Fetch.failRequest", { requestId, errorReason: "ConnectionFailed" });
+                            return await replyApi(requestId, 503, { message: "Post page fixture failure" });
                         }
                         return await replyApi(requestId, 200, body);
                     }
-                    if (scenario.postPages && pathname.endsWith('/likes/my-like'))
-                        return await replyApi(requestId, 200, {data:{attributes:null}});
+                    if (scenario.postPages && pathname.endsWith("/likes/my-like"))
+                        return await replyApi(requestId, 200, { data: { attributes: null } });
                     if (pathname.endsWith("/api/auth/login")) {
                         if (scenario.login === "network")
                             return await send("Fetch.failRequest", { requestId, errorReason: "ConnectionFailed" });
@@ -317,13 +492,28 @@ async function main() {
                     }
                     if (scenario.course && pathname === "/api/courses") {
                         const courses = scenario.courseImageVariants
-                            ? courseImageSources.map((image_url, index) => ({...fixtureCourse, id:fixtureCourse.id+index,
-                                title:'Course image '+index, image_url})) : [fixtureCourse];
+                            ? courseImageSources.map((image_url, index) => ({
+                                  ...fixtureCourse,
+                                  id: fixtureCourse.id + index,
+                                  title: "Course image " + index,
+                                  image_url,
+                              }))
+                            : [fixtureCourse];
                         return await replyApi(requestId, 200, paginated(courses));
                     }
-                    if (scenario.course && (pathname === "/api/courses/" + fixtureCourse.id || pathname === "/api/courses/" + fixtureCourse.slug + "/slug"))
-                        return await replyApi(requestId, 200, { data: {...fixtureCourse,
-                            image_url: Object.prototype.hasOwnProperty.call(scenario,'courseImage') ? scenario.courseImage : fixtureCourse.image_url} });
+                    if (
+                        scenario.course &&
+                        (pathname === "/api/courses/" + fixtureCourse.id ||
+                            pathname === "/api/courses/" + fixtureCourse.slug + "/slug")
+                    )
+                        return await replyApi(requestId, 200, {
+                            data: {
+                                ...fixtureCourse,
+                                image_url: Object.prototype.hasOwnProperty.call(scenario, "courseImage")
+                                    ? scenario.courseImage
+                                    : fixtureCourse.image_url,
+                            },
+                        });
                     if (scenario.course && pathname === "/api/my-course-orders/" + fixtureCourse.id)
                         return await replyApi(requestId, 404, { message: "Not enrolled" });
                     if (scenario.course && pathname === "/api/my-course-orders" && request.method === "POST")
@@ -376,12 +566,19 @@ async function main() {
                             paginated([{ id: fixtureReader.id, attributes: fixtureReader }])
                         );
                     return await replyApi(requestId, 200, paginated([]));
-                } else if (resourceType === "Image" && new URL(request.url).pathname.startsWith('/course-fixtures/')) {
+                } else if (resourceType === "Image" && new URL(request.url).pathname.startsWith("/course-fixtures/")) {
                     courseImageRequests.push(request.url);
-                    const found = ['relative.png','relative-no-slash.png','absolute.png','recovered.png'].includes(new URL(request.url).pathname.split('/').pop());
-                    await send('Fetch.fulfillRequest', {requestId, responseCode:found?200:404,
-                        responseHeaders:[{name:'Content-Type',value:found?'image/png':'text/plain'}],
-                        body:found?'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=':Buffer.from('Not found').toString('base64')});
+                    const found = ["relative.png", "relative-no-slash.png", "absolute.png", "recovered.png"].includes(
+                        new URL(request.url).pathname.split("/").pop()
+                    );
+                    await send("Fetch.fulfillRequest", {
+                        requestId,
+                        responseCode: found ? 200 : 404,
+                        responseHeaders: [{ name: "Content-Type", value: found ? "image/png" : "text/plain" }],
+                        body: found
+                            ? "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII="
+                            : Buffer.from("Not found").toString("base64"),
+                    });
                 } else if (resourceType === "Image" && new URL(request.url).origin !== new URL(base).origin) {
                     await send("Fetch.fulfillRequest", {
                         requestId,
@@ -660,7 +857,7 @@ async function main() {
                 "document.documentElement.lang === 'bn' && document.querySelector('.reader-register-card')",
                 "saved Bengali signup"
             );
-            for (const url of Object.values(company)) {
+            for (const url of [company.about, company.careers, company.contact]) {
                 const link = await evaluate(
                     `(() => {const a=[...document.querySelectorAll('.reader-footer a')].find(a=>a.href===${JSON.stringify(
                         url
@@ -878,7 +1075,7 @@ async function main() {
             await waitFor("location.pathname === '/help' && document.querySelector('#bars')", "help route");
             assert.equal(
                 await evaluate("document.querySelector('meta[name=viewport]').content.includes('user-scalable=no')"),
-                true
+                false
             );
             assert.equal(
                 await evaluate("document.querySelector('#app').classList.contains('reader-auth-active')"),
@@ -1028,18 +1225,28 @@ async function main() {
             );
             for (let n = 0; n < 5; n++) await scrollPosts();
             assert.equal(pageCount(feed.source, 2), 1, "One request per pending page");
-            scenario.postPages.holdPage = null;
+            scenario.postPages.holdPage = 3;
             await releasePostPage();
-            await waitPosts(3);
+            await waitFor("document.querySelectorAll('.post-feed [data-post-id]').length===3", "appended page two");
             assert.deepEqual((await postIds()).slice(0, 2), first);
             await scrollPosts();
+            for (let n = 0; n < 100 && !heldPostPages.length; n++) await delay(20);
+            assert(heldPostPages.length, "Third page pending");
+            scenario.postPages.holdPage = null;
+            await releasePostPage();
             await waitPosts(4);
             const ids = await postIds();
             assert.equal(new Set(ids).size, 4);
             assert.deepEqual(ids, [first[0], first[1], first[1] + 1, first[1] + 2]);
             for (let n = 0; n < 3; n++) await scrollPosts();
             await evaluate(
-                "void " + app + ".$store.dispatch(" + JSON.stringify(feed.action) + "," + JSON.stringify(feed.payload) + ")"
+                "void " +
+                    app +
+                    ".$store.dispatch(" +
+                    JSON.stringify(feed.action) +
+                    "," +
+                    JSON.stringify(feed.payload) +
+                    ")"
             );
             assert.equal(pageCount(feed.source, 1), 1);
             assert.equal(pageCount(feed.source, 2), 1);
@@ -1077,35 +1284,46 @@ async function main() {
             assert.match(await evaluate("document.querySelector('.post-feed [role=alert]').innerText"), /পোস্ট/);
             await scrollPosts();
             assert.equal(pageCount(feed.source, 2), 1);
+            config.holdPage = 3;
+            config.holdSource = feed.source;
             await evaluate("document.querySelector('.post-feed-pagination button').focus()");
             await press("Enter");
-            await waitPosts(3);
+            await waitFor("document.querySelectorAll('.post-feed [data-post-id]').length===3", "retried second page");
             assert.deepEqual((await postIds()).slice(0, 2), first);
             assert.equal(pageCount(feed.source, 2), 2);
+            await scrollPosts();
+            for (let n = 0; n < 100 && !heldPostPages.length; n++) await delay(20);
+            config.holdPage = null;
+            await releasePostPage();
+            await waitPosts(4);
         }
     });
-    await check("post paging: short pages fill the viewport and keyboard Load more works without observers", async () => {
-        await pagedLogin({ short: true });
-        await waitPosts(3);
-        await waitFor(app + ".$store.getters.postsPaging.next === null", "short feed end");
-        const script = await send("Page.addScriptToEvaluateOnNewDocument", {
-            source: "delete window.IntersectionObserver;",
-        });
-        try {
+    await check(
+        "post paging: short pages fill the viewport and keyboard Load more works without observers",
+        async () => {
             await pagedLogin({ short: true });
-            await waitPosts(1);
-            await evaluate("document.querySelector('.post-feed-pagination button').focus()");
-            await press("Enter");
-            await waitPosts(2);
-            await evaluate("document.querySelector('.post-feed-pagination button').focus()");
-            await press(" ");
+            await resize(1440, 1400);
             await waitPosts(3);
-            assert.equal(pageCount("/api/posts", 2), 1);
-            assert.equal(pageCount("/api/posts", 3), 1);
-        } finally {
-            await send("Page.removeScriptToEvaluateOnNewDocument", { identifier: script.identifier });
+            await waitFor(app + ".$store.getters.postsPaging.next === null", "short feed end");
+            const script = await send("Page.addScriptToEvaluateOnNewDocument", {
+                source: "delete window.IntersectionObserver;",
+            });
+            try {
+                await pagedLogin({ short: true });
+                await waitPosts(1);
+                await evaluate("document.querySelector('.post-feed-pagination button').focus()");
+                await press("Enter");
+                await waitPosts(2);
+                await evaluate("document.querySelector('.post-feed-pagination button').focus()");
+                await press(" ");
+                await waitPosts(3);
+                assert.equal(pageCount("/api/posts", 2), 1);
+                assert.equal(pageCount("/api/posts", 3), 1);
+            } finally {
+                await send("Page.removeScriptToEvaluateOnNewDocument", { identifier: script.identifier });
+            }
         }
-    });
+    );
     await check("post paging: late responses cannot cross feeds, tabs, owners or logout", async () => {
         await pagedLogin({ holdPage: 1, holdSource: "/api/posts" });
         await waitFor("document.querySelector('.post-feed .ui-spinner')", "held first page");
@@ -1130,7 +1348,7 @@ async function main() {
             "window.scrollTo(0,0);[...document.querySelectorAll('.ui-tabs a')].find(a=>a.innerText==='About').click()"
         );
         await waitFor("!document.querySelector('.post-feed')", "profile tab closed");
-        await evaluate("[...document.querySelectorAll('.ui-tabs a')].find(a=>a.innerText==='TimeLine').click()");
+        await evaluate("[...document.querySelectorAll('.ui-tabs a')].find(a=>a.innerText==='Timeline').click()");
         await waitPosts(2);
         await releasePostPage();
         assert.deepEqual(await postIds(), userIds);
@@ -1166,7 +1384,7 @@ async function main() {
         await scrollPosts();
         await waitPosts(4);
         const original = await postIds();
-        await evaluate("window.scrollTo(0,0);document.querySelector('.app-content .ui-button-outline-primary').click()");
+        await evaluate("window.scrollTo(0,0);document.querySelector('.social-composer-prompt').click()");
         await waitFor("document.querySelector('[role=dialog] textarea')", "new paged discussion");
         const submitDiscussion = async () => {
             await evaluate(
@@ -1207,13 +1425,12 @@ async function main() {
         await waitPosts(4);
         assert.deepEqual(await postIds(), original);
     });
-    await check("active awards, achievements and product pages retain their images and favicon", async () => {
+    await check("active awards and achievements pages retain their images and favicon", async () => {
         await reset();
         await resize(1440, 1000);
         for (const [route, minimum] of [
             ["/awards", 2],
             ["/achievements", 3],
-            ["/products", 3],
         ]) {
             await navigate(base + route);
             await waitFor(
@@ -1228,11 +1445,6 @@ async function main() {
                 "[...document.querySelectorAll('#app > .app-content > div:first-child img')].map(i=>i.src)"
             );
             assert(pageImages.length >= minimum);
-            if (route === "/products")
-                assert(
-                    pageImages.some((src) => src.includes("af_mobile_app")) &&
-                        pageImages.some((src) => src.includes("af_model_car"))
-                );
         }
         await waitFor(
             "[...document.images].some(i=>i.src.includes('google_play_get_on')&&i.naturalWidth>0)",
@@ -1292,7 +1504,7 @@ async function main() {
         );
         await clickTab("About");
         await waitFor(tree + ".some(v=>v.$options.name==='UserAbout')", "profile about component");
-        await clickTab("TimeLine");
+        await clickTab("Timeline");
         await waitFor("document.body.innerText.includes('No available posts.')", "return profile timeline");
         await navigate(base + "/libraries");
         await waitFor("document.body.innerText.includes('Cleanup Fixture Library')", "dynamic library search row");
@@ -1301,10 +1513,12 @@ async function main() {
         await waitFor("document.body.innerText.includes('Cleanup Reader')", "dynamic user search row");
         assert(await evaluate(tree + ".some(v=>v.$options.name==='UserListItem')"));
     });
-    await check("company career/contact redirects still reach their configured destinations", async () => {
+    await check("company career/contact/products redirects reach their configured destinations", async () => {
         for (const [route, expected] of [
             ["/careers", company.careers],
             ["/contact-us", company.contact],
+            ["/products", company.products],
+            ["/products?from=private#private", company.products],
         ]) {
             await send("Page.navigate", { url: base + route });
             await waitFor(
@@ -1343,67 +1557,609 @@ async function main() {
         })()`);
     }
     async function mouseClick(selector, afterPress) {
-        const point=await pointerPosition(selector);
-        await send('Input.dispatchMouseEvent',{type:'mouseMoved',...point});
-        await send('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...point});
-        if(afterPress)await afterPress();
-        await send('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...point});
+        const point = await pointerPosition(selector);
+        await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...point });
+        await send("Input.dispatchMouseEvent", { type: "mousePressed", button: "left", clickCount: 1, ...point });
+        if (afterPress) await afterPress();
+        await send("Input.dispatchMouseEvent", { type: "mouseReleased", button: "left", clickCount: 1, ...point });
     }
     async function touchTap(selector) {
-        const point=await pointerPosition(selector);
-        await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...point,id:1}]});
-        await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+        const point = await pointerPosition(selector);
+        await send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ ...point, id: 1 }] });
+        await send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
     }
     async function logoutSelector() {
-        const menu=await evaluate("document.querySelector('#navbarDropdown').getAttribute('aria-controls')");
-        return '#'+menu+' button.ui-menu-item';
+        const menu = await evaluate("document.querySelector('#navbarDropdown').getAttribute('aria-controls')");
+        return "#" + menu + " button.ui-menu-item";
     }
     async function expectLoggedOut() {
-        await waitFor("document.querySelector('.reader-login-card') && location.pathname==='/'",'visitor homepage after logout');
-        assert.equal(await evaluate(app+'.$store.getters.isLoggedIn'),false);
-        assert.equal(await evaluate("localStorage.getItem('token')"),null);
-        assert.equal(await evaluate("localStorage.getItem('otc_token')"),null);
-        assert.equal(await evaluate('location.hash'),'');
+        await waitFor(
+            "document.querySelector('.reader-login-card') && location.pathname==='/'",
+            "visitor homepage after logout"
+        );
+        assert.equal(await evaluate(app + ".$store.getters.isLoggedIn"), false);
+        assert.equal(await evaluate("localStorage.getItem('token')"), null);
+        assert.equal(await evaluate("localStorage.getItem('otc_token')"), null);
+        assert.equal(await evaluate("location.hash"), "");
         await reloadPage();
-        await waitFor("document.querySelector('.reader-login-card')",'visitor homepage after refresh');
-        assert.equal(await evaluate(app+'.$store.getters.isLoggedIn'),false);
+        await waitFor("document.querySelector('.reader-login-card')", "visitor homepage after refresh");
+        assert.equal(await evaluate(app + ".$store.getters.isLoggedIn"), false);
     }
-    await check('desktop pointer logout survives focusout before mouseup and stays logged out after refresh',async()=>{
-        await reset();await resize(1440,1000);await loginValues();await submitLogin();await waitFeed();
-        await mouseClick('#navbarDropdown');
-        await waitFor("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='true'",'pointer account menu');
-        await mouseClick(await logoutSelector(),async()=>{
-            assert.equal(await evaluate("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')"),'true');
-            assert(await evaluate('!!document.querySelector('+JSON.stringify(await logoutSelector())+')'));
-        });
-        await expectLoggedOut();
-    });
-    await check('mobile touch logout closes the session and stays logged out after refresh',async()=>{
-        await reset();await resize(390,844);await loginValues();await submitLogin();await waitFeed();
-        await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:1});
-        try {
-            await touchTap('[aria-controls=collapsibleNavbar]');
-            await waitFor("document.querySelector('[aria-controls=collapsibleNavbar]').getAttribute('aria-expanded')==='true'",'touch navigation');
-            await touchTap('#navbarDropdown');
-            await waitFor("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='true'",'touch account menu');
-            await touchTap(await logoutSelector());await expectLoggedOut();
-        } finally { await send('Emulation.setTouchEmulationEnabled',{enabled:false}); }
-    });
-    await check('keyboard menu focus, Tab dismissal and Enter/Space logout remain functional',async()=>{
-        for(const key of ['Enter',' ']) {
-            await reset();await resize(1440,1000);await loginValues();await submitLogin();await waitFeed();
-            await evaluate("document.querySelector('#navbarDropdown').focus()");await press('ArrowDown');
-            await waitFor("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='true'",'keyboard account menu');
-            assert(await evaluate("document.activeElement.href.includes('/users/me')"));
-            await press('Tab');await press('Tab');
-            assert.equal(await evaluate('document.activeElement.tagName'),'BUTTON');
-            assert.equal(await evaluate("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')"),'true');
-            await press('Tab');
-            await waitFor("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='false'",'Tab outside closes menu');
-            await evaluate("document.querySelector('#navbarDropdown').focus()");await press('ArrowUp');
-            await waitFor("document.activeElement.matches('button.ui-menu-item')",'keyboard logout button');
-            await press(key);await expectLoggedOut();
+    await check(
+        "desktop pointer logout survives focusout before mouseup and stays logged out after refresh",
+        async () => {
+            await reset();
+            await resize(1440, 1000);
+            await loginValues();
+            await submitLogin();
+            await waitFeed();
+            await mouseClick("#navbarDropdown");
+            await waitFor(
+                "document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='true'",
+                "pointer account menu"
+            );
+            await mouseClick(await logoutSelector(), async () => {
+                assert.equal(
+                    await evaluate("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')"),
+                    "true"
+                );
+                assert(await evaluate("!!document.querySelector(" + JSON.stringify(await logoutSelector()) + ")"));
+            });
+            await expectLoggedOut();
         }
+    );
+    await check("mobile touch logout closes the session and stays logged out after refresh", async () => {
+        await reset();
+        await resize(390, 844);
+        await loginValues();
+        await submitLogin();
+        await waitFeed();
+        await send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 1 });
+        try {
+            await touchTap("#navbarDropdown");
+            await waitFor(
+                "document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='true'",
+                "touch account menu"
+            );
+            await touchTap(await logoutSelector());
+            await expectLoggedOut();
+        } finally {
+            await send("Emulation.setTouchEmulationEnabled", { enabled: false });
+        }
+    });
+    await check("keyboard menu focus, Tab dismissal and Enter/Space logout remain functional", async () => {
+        for (const key of ["Enter", " "]) {
+            await reset();
+            await resize(1440, 1000);
+            await loginValues();
+            await submitLogin();
+            await waitFeed();
+            await evaluate("document.querySelector('#navbarDropdown').focus()");
+            await press("ArrowDown");
+            await waitFor(
+                "document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='true'",
+                "keyboard account menu"
+            );
+            assert(await evaluate("document.activeElement.href.includes('/users/me')"));
+            await press("Tab");
+            await press("Tab");
+            await press("Tab");
+            assert.equal(await evaluate("document.activeElement.tagName"), "BUTTON");
+            assert.equal(
+                await evaluate("document.querySelector('#navbarDropdown').getAttribute('aria-expanded')"),
+                "true"
+            );
+            await press("Tab");
+            await waitFor(
+                "document.querySelector('#navbarDropdown').getAttribute('aria-expanded')==='false'",
+                "Tab outside closes menu"
+            );
+            await evaluate("document.querySelector('#navbarDropdown').focus()");
+            await press("ArrowUp");
+            await waitFor("document.activeElement.matches('button.ui-menu-item')", "keyboard logout button");
+            await press(key);
+            await expectLoggedOut();
+        }
+    });
+    await check("social redesign: full-width Home keeps login visible on wide and compact desktops", async () => {
+        await reset();
+        for (const [width, height] of [
+            [1366, 768],
+            [1440, 900],
+            [1920, 1080],
+            [390, 844],
+        ]) {
+            await resize(width, height);
+            const layout = await evaluate(
+                `(()=>{const r=s=>document.querySelector(s).getBoundingClientRect();return {main:r('.reader-main').width,brand:r('.reader-brand').x,card:r('.reader-login-card').width,buttonBottom:r('.reader-submit').bottom,overflow:document.documentElement.scrollWidth-innerWidth,viewport:document.documentElement.clientWidth}})()`
+            );
+            assert(Math.abs(layout.main - layout.viewport) < 1);
+            assert(layout.overflow <= 1);
+            if (width >= 960) {
+                assert(layout.brand >= 24 && layout.brand <= 49);
+                assert(layout.card <= 441);
+                assert(layout.buttonBottom < height, "Login action visible at " + width);
+            }
+            await screenshot("redesign-home-" + width);
+        }
+    });
+    await check("social redesign: sidebar, bottom tabs, typing and accessible More drawer work", async () => {
+        await reset();
+        await loginValues();
+        await submitLogin();
+        await waitFeed();
+        scenario.social = {};
+        scenario.course = true;
+        await resize(1440, 1000);
+        assert.equal(
+            await evaluate("Math.round(document.querySelector('.social-sidebar').getBoundingClientRect().width)"),
+            232
+        );
+        assert.equal(await evaluate("document.querySelector('.social-sidebar [aria-current=page]').pathname"), "/");
+        await resize(390, 844);
+        assert.equal(await evaluate("getComputedStyle(document.querySelector('.social-bottom-nav')).display"), "grid");
+        await mouseClick(".social-bottom-nav button");
+        await waitFor("document.querySelector('.ui-drawer-panel')?.contains(document.activeElement)", "drawer focus");
+        assert.equal(await evaluate("document.body.style.overflow"), "hidden");
+        await press("Tab");
+        assert(await evaluate("document.querySelector('.ui-drawer-panel').contains(document.activeElement)"));
+        await press("Escape");
+        await waitFor("!document.querySelector('[role=dialog]')", "drawer Escape");
+        assert(await evaluate("document.activeElement.matches('.social-bottom-nav button')"));
+        await mouseClick(".social-bottom-nav button");
+        await evaluate("document.querySelector('[role=dialog] a[href=\"/courses\"]').click()");
+        await waitFor(
+            "location.pathname==='/courses' && !document.querySelector('[role=dialog]')",
+            "drawer navigation"
+        );
+        assert.equal(await evaluate("document.body.style.overflow"), "");
+        await evaluate("void " + app + '.$router.push("/users")');
+        await waitFor("document.querySelector('.social-search input')", "reader search");
+        await evaluate("document.querySelector('.social-search input').focus()");
+        await waitFor(
+            "getComputedStyle(document.querySelector('.social-bottom-nav')).display==='none'",
+            "typing hides tabs"
+        );
+        await evaluate("document.activeElement.blur()");
+        await waitFor("getComputedStyle(document.querySelector('.social-bottom-nav')).display==='grid'", "tabs return");
+        await resize(768, 1000);
+        assert.equal(await evaluate("getComputedStyle(document.querySelector('.social-bottom-nav')).display"), "none");
+        await mouseClick(".social-menu-toggle");
+        await waitFor("document.querySelector('.ui-drawer-panel')", "tablet drawer");
+        await resize(1024, 1000);
+        await waitFor("!document.querySelector('[role=dialog]')", "desktop closes drawer");
+        assert.equal(await evaluate("document.body.style.overflow"), "");
+        await screenshot("redesign-readers-desktop");
+    });
+    await check("account navigation: personal links live in the icon menu on desktop and mobile", async () => {
+        await reset({ social: {}, course: true });
+        await resize(1440, 1000);
+        await loginValues();
+        await submitLogin();
+        await waitFeed();
+        const personal = ["/users/me", "/libraries/my-libraries", "/my-courses"];
+        assert.deepEqual(
+            await evaluate("[...document.querySelectorAll('.social-sidebar .social-nav-item')].map(a=>a.pathname)"),
+            ["/", "/libraries", "/users", "/courses"]
+        );
+        assert(await evaluate("!document.querySelector('.social-sidebar a[href=\"/libraries/create\"]')"));
+        await waitFor("document.querySelector('.social-library-context a[href=\"/libraries/create\"]')",'library creation remains in context panel');
+        for (const [language, width, labels] of [
+            ["en", 1440, ["My profile", "My libraries", "My courses", "Logout"]],
+            ["bn", 390, ["আমার প্রোফাইল", "আমার লাইব্রেরি", "আমার কোর্স", "প্রস্থান"]],
+        ]) {
+            await resize(width, width < 600 ? 844 : 1000);
+            await evaluate(
+                app +
+                    '.$store.dispatch("setActiveLanguage",' +
+                    JSON.stringify(language) +
+                    ");" +
+                    app +
+                    ".$i18n.locale=" +
+                    JSON.stringify(language)
+            );
+            for (const target of personal) {
+                await mouseClick("#navbarDropdown");
+                await waitFor(
+                    "document.querySelectorAll('.social-account-item').length===4 && [...document.querySelectorAll('.social-account-item')].every(e=>e.querySelector('[aria-hidden=true]'))",
+                    "account icons"
+                );
+                assert.deepEqual(
+                    await evaluate("[...document.querySelectorAll('.social-account-item')].map(e=>e.innerText.trim())"),
+                    labels
+                );
+                assert.deepEqual(
+                    await evaluate("[...document.querySelectorAll('.social-account-item[href]')].map(e=>e.pathname)"),
+                    personal
+                );
+                assert(
+                    await evaluate(
+                        "[...document.querySelectorAll('.social-account-item')].every(e=>e.getBoundingClientRect().height>=44 && Math.abs(e.querySelector('[aria-hidden=true]').getBoundingClientRect().width-20)<1)"
+                    )
+                );
+                assert(await evaluate("document.documentElement.scrollWidth<=innerWidth+1"));
+                if (target === personal[0]) {
+                    await evaluate("window.scrollTo(0,0)");
+                    await screenshot("account-menu-" + language);
+                }
+                await evaluate(
+                    "document.querySelector(" +
+                        JSON.stringify('.social-account-item[href="' + target + '"]') +
+                        ").click()"
+                );
+                await waitFor(
+                    "location.pathname===" +
+                        JSON.stringify(target) +
+                        ' && !document.querySelector(".social-account-item")',
+                    "personal destination " + target
+                );
+            }
+        }
+        await mouseClick(".social-bottom-nav button");
+        await waitFor("document.querySelector('.ui-drawer-panel')", "primary mobile links");
+        assert.deepEqual(
+            await evaluate("[...document.querySelectorAll('.ui-drawer-panel .social-nav-item')].map(a=>a.pathname)"),
+            ["/", "/libraries", "/users", "/courses"]
+        );
+        assert(await evaluate("!document.querySelector('.ui-drawer-panel a[href=\"/libraries/create\"]')"));
+        await evaluate("document.querySelector('.ui-drawer-panel a[href=\"/libraries\"]').click()");
+        await waitFor("location.pathname==='/libraries' && document.querySelector('#social-main a[href=\"/libraries/create\"]') && !document.querySelector('[role=dialog]')",'mobile library creation remains on Libraries page');
+    });
+    await check(
+        "feed layout: full-width columns persist through library loading, failure, retry and empty states",
+        async () => {
+            await reset({ social: { holdLibraryPanel: true } });
+            await resize(1920, 1080);
+            await loginValues();
+            await submitLogin();
+            await waitFeed();
+            await waitFor(
+                "document.querySelector('.social-library-context')?.getAttribute('aria-busy')==='true'",
+                "library panel loading"
+            );
+            const geometry = () =>
+                evaluate(
+                    `(()=>{const r=s=>document.querySelector(s).getBoundingClientRect().toJSON();return {main:r('.social-main'),grid:r('.social-feed-layout'),feed:r('.social-feed-main'),aside:r('.social-feed-aside'),display:getComputedStyle(document.querySelector('.social-feed-aside')).display,overflow:document.documentElement.scrollWidth-innerWidth}})()`
+                );
+            const loading = await geometry();
+            assert(Math.abs(loading.aside.right - loading.main.right) < 1);
+            assert(loading.feed.width > 1000);
+            for (let n = 0; n < 50 && !heldSocial.some((x) => x.kind === "library-panel"); n++) await delay(20);
+            const held = heldSocial.splice(
+                heldSocial.findIndex((x) => x.kind === "library-panel"),
+                1
+            )[0];
+            assert(held);
+            scenario.social.holdLibraryPanel = false;
+            await replyApi(held.requestId, 503, { message: "Fixture libraries failed." });
+            await waitFor("document.querySelector('.social-library-context [role=alert]')", "library panel error");
+            const failed = await geometry();
+            assert.equal(failed.feed.width, loading.feed.width);
+            assert.equal(failed.aside.width, loading.aside.width);
+            scenario.social.libraryPanelEmpty = true;
+            await evaluate("document.querySelector('.social-library-context button').click()");
+            await waitFor(
+                "document.querySelector('.social-library-context a[href=\"/libraries/create\"]') && !document.querySelector('.social-library-context [role=alert]')",
+                "empty library retry"
+            );
+            assert.equal(await evaluate("document.querySelectorAll('.social-library-context li').length"), 0);
+            assert.equal((await geometry()).feed.width, loading.feed.width);
+            scenario.social.libraryPanelEmpty = false;
+            scenario.postPages = {};
+            await evaluate("void " + app + '.$router.push("/users")');
+            await waitFor("document.querySelector('.social-search')", "leave feed");
+            await evaluate("void " + app + '.$router.push("/")');
+            await waitFor(
+                "document.querySelector('.social-library-context li') && document.querySelector('.social-post')",
+                "library context loaded"
+            );
+            for (const width of [320, 390, 768, 1024, 1280, 1440, 1920]) {
+                await resize(width, width < 600 ? 844 : 1000);
+                const layout = await geometry();
+                assert(layout.overflow <= 1, "Feed overflow at " + width);
+                assert(Math.abs(layout.grid.width - layout.main.width) < 1);
+                if (width >= 1280) {
+                    assert.notEqual(layout.display, "none");
+                    assert(Math.abs(layout.aside.right - layout.main.right) < 1);
+                    assert(layout.aside.width >= 279 && layout.aside.width <= 321);
+                    assert(Math.abs(layout.aside.left - layout.feed.right - 24) < 1);
+                } else {
+                    assert.equal(layout.display, "none");
+                    assert(Math.abs(layout.feed.width - layout.main.width) < 1);
+                }
+                assert(
+                    await evaluate(
+                        "[...document.querySelectorAll('.social-post-body')].every(e=>{const max=parseFloat(getComputedStyle(e).maxWidth);return Number.isFinite(max)&&e.getBoundingClientRect().width<=max+1})"
+                    )
+                );
+                if ([390, 1280, 1920].includes(width)) {
+                    await evaluate("document.activeElement.blur();window.scrollTo(0,0)");
+                    await screenshot("fluid-feed-" + width);
+                }
+            }
+        }
+    );
+    await check("social redesign: expanded posts, comment focus and Like retries preserve the feed", async () => {
+        await pagedLogin();
+        scenario.social = { holdLike: true };
+        await waitPosts(2);
+        const id = (await postIds())[0],
+            prefix = '[data-post-id="' + id + '"]';
+        await waitFor(
+            "!!document.querySelector(" + JSON.stringify(prefix + " .social-read-more") + ")",
+            "post expansion control"
+        );
+        await evaluate("document.querySelector(" + JSON.stringify(prefix + " .social-read-more") + ").click()");
+        assert.equal(
+            await evaluate(
+                "document.querySelector(" +
+                    JSON.stringify(prefix + " .social-read-more") +
+                    ').getAttribute("aria-expanded")'
+            ),
+            "true"
+        );
+        await evaluate("document.querySelector(" + JSON.stringify(prefix + " .social-read-more") + ").click()");
+        await evaluate(
+            "document.querySelectorAll(" + JSON.stringify(prefix + " .social-post-actions button") + ")[1].click()"
+        );
+        assert(
+            await evaluate("document.activeElement===document.querySelector(" + JSON.stringify(prefix + " input") + ")")
+        );
+        await evaluate("document.activeElement.blur()");
+        const countBefore = requests.filter(
+            (r) => r.method === "POST" && r.path === "/api/posts/" + id + "/likes"
+        ).length;
+        await evaluate(
+            "document.querySelector(" +
+                JSON.stringify(prefix + " .social-post-actions button") +
+                ").click();document.querySelector(" +
+                JSON.stringify(prefix + " .social-post-actions button") +
+                ").click()"
+        );
+        for (let n = 0; n < 50 && !heldSocial.length; n++) await delay(20);
+        assert.equal(
+            requests.filter((r) => r.method === "POST" && r.path === "/api/posts/" + id + "/likes").length -
+                countBefore,
+            1
+        );
+        await replyApi(heldSocial.shift().requestId, 503, { message: "Like fixture failure" });
+        await waitFor("document.querySelector(" + JSON.stringify(prefix + " [role=alert]") + ")", "like failure");
+        assert.equal(
+            await evaluate(
+                "document.querySelector(" +
+                    JSON.stringify(prefix + " .social-post-actions button") +
+                    ').getAttribute("aria-pressed")'
+            ),
+            "false"
+        );
+        scenario.social.holdLike = false;
+        await evaluate(
+            "document.querySelector(" + JSON.stringify(prefix + " .social-post-actions button") + ").click()"
+        );
+        await waitFor(
+            "document.querySelector(" +
+                JSON.stringify(prefix + " .social-post-actions button") +
+                ').getAttribute("aria-pressed")==="true"',
+            "like retry"
+        );
+        assert.deepEqual((await postIds()).slice(0, 2), [id, id + 1]);
+        await screenshot("redesign-post-interactions");
+    });
+    await check("social redesign: Follow retries and stale owner details remain isolated", async () => {
+        await reset();
+        await loginValues();
+        await submitLogin();
+        await waitFeed();
+        scenario.social = { followFailRemaining: 1 };
+        await spaTo("/users/" + fixtureReader.id, "/api/users/" + fixtureReader.id + "/posts");
+        await waitFor(
+            "document.querySelector('.social-identity-actions .ui-button-primary')?.disabled===false",
+            "follow available"
+        );
+        await evaluate("document.querySelector('.social-identity-actions .ui-button-primary').click()");
+        await waitFor("document.querySelector('.social-identity-actions [role=alert]')", "follow failure");
+        scenario.social.holdFollow = true;
+        await evaluate(
+            "document.querySelector('.social-identity-actions .ui-button-primary').click();document.querySelector('.social-identity-actions .ui-button-primary').click()"
+        );
+        for (let n = 0; n < 50 && !heldSocial.length; n++) await delay(20);
+        assert(await evaluate("document.querySelector('.social-identity-actions .ui-button-primary').disabled"));
+        await replyApi(heldSocial.shift().requestId, 200, { data: { attributes: { id: 991, user } } });
+        await waitFor(
+            "document.querySelector('.social-identity-actions .ui-button-primary').textContent.includes('Following')",
+            "follow confirmed"
+        );
+        scenario.social.holdFollow = false;
+        await evaluate("document.querySelector('.social-identity-actions .ui-button-primary').click()");
+        await waitFor(
+            "document.querySelector('.social-identity-actions .ui-button-primary').textContent.trim()==='Follow'",
+            "unfollow confirmed"
+        );
+        await evaluate("void " + app + '.$router.push("/")');
+        await waitFeed();
+        for (const [kind, owner] of [
+            ["users", fixtureReader.id],
+            ["libraries", fixtureLibrary.id],
+        ]) {
+            scenario.social.holdDetail = "/api/" + kind + "/" + owner;
+            await evaluate("void " + app + ".$router.push(" + JSON.stringify("/" + kind + "/" + owner) + ")");
+            for (let n = 0; n < 100 && !heldSocial.length; n++) await delay(20);
+            assert(heldSocial.length, "Held detail");
+            await evaluate("void " + app + ".$router.push(" + JSON.stringify("/" + kind + "/" + (owner + 1)) + ")");
+            await waitFor(
+                "document.body.innerText.includes(" +
+                    JSON.stringify(kind === "users" ? "Next Reader" : "Next Library") +
+                    ")",
+                "new owner rendered"
+            );
+            const held = heldSocial.shift();
+            await replyApi(held.requestId, 200, held.body);
+            await delay(200);
+            assert.equal(
+                await evaluate(app + ".$store.getters." + (kind === "users" ? "user" : "library") + ".id"),
+                owner + 1
+            );
+            scenario.social.holdDetail = null;
+        }
+    });
+    await check(
+        "social redesign: discovery errors, keyboard pagination and course application retries work",
+        async () => {
+            await reset();
+            await loginValues();
+            await submitLogin();
+            await waitFeed();
+            scenario.social = { discoveryError: true, manyReaders: true, manyOrders: true };
+            scenario.course = true;
+            await evaluate("void " + app + '.$router.push("/users")');
+            await waitFor("document.querySelector('#social-main [role=alert]')", "search failure");
+            scenario.social.discoveryError = false;
+            await evaluate("document.querySelector('#social-main .ui-empty-state button').click()");
+            await waitFor(
+                "document.body.innerText.includes('Cleanup Reader') && document.querySelector('.social-pagination')",
+                "discovery recovery"
+            );
+            await evaluate("document.querySelector('.social-pagination button[aria-label=\"Next page\"]').focus()");
+            await press("Enter");
+            await waitFor("document.body.innerText.includes('Another Reader')", "reader page two");
+            await resize(320, 844);
+            assert(await evaluate("document.documentElement.scrollWidth<=innerWidth+1"), "compact pagination");
+            await evaluate("void " + app + '.$router.push("/my-courses")');
+            await waitFor(
+                "document.querySelector('.social-course-card') && document.querySelector('.social-pagination')",
+                "my course orders"
+            );
+            await evaluate("document.querySelector('.social-pagination button[aria-label=\"Next page\"]').click()");
+            await waitFor(
+                "document.querySelector('.social-pagination [aria-current=page]').textContent.trim()==='2'",
+                "course order page two"
+            );
+            assert(requests.some((r) => r.path === "/api/my-course-orders" && r.query.includes("page=2")));
+            scenario.social.applicationFailRemaining = 1;
+            await evaluate("void " + app + '.$router.push("/courses/' + fixtureCourse.id + '/apply")');
+            await waitFor("document.querySelector('button[type=submit]')", "course application");
+            await evaluate("document.querySelector('button[type=submit]').click()");
+            await waitFor("document.querySelector('#social-main [role=alert]')", "application failure");
+            scenario.social.holdApplication = true;
+            await evaluate(
+                "document.querySelector('button[type=submit]').click();document.querySelector('button[type=submit]').click()"
+            );
+            for (let n = 0; n < 50 && !heldSocial.length; n++) await delay(20);
+            const held = heldSocial.shift();
+            assert(held);
+            await replyApi(held.requestId, 200, held.body);
+            await waitFor("document.body.innerText.includes('Fixture application accepted.')", "application retried");
+        }
+    );
+    await check(
+        "social redesign: library and profile forms preserve input, prevent duplicates and recover from failures",
+        async () => {
+            await reset({ social: { forms: true } });
+            await resize(1440, 1000);
+            await loginValues();
+            await submitLogin();
+            await waitFeed();
+            await evaluate("void " + app + '.$router.push("/libraries/create")');
+            await waitFor('document.querySelector("#name")', "create library form");
+            await evaluate('document.querySelector(".social-form-page button[type=submit]").click()');
+            assert(!requests.some((r) => r.path === "/api/libraries" && r.method === "POST"));
+            const fields = {
+                name: "Reading Room",
+                address: "12 Book Road",
+                mobile: "01700000000",
+                email: "room@example.test",
+                founded_at: "2020-02-03",
+                post_code: "0123",
+            };
+            await setInputs(fields);
+            scenario.social.formFailRemaining = 1;
+            await evaluate('document.querySelector(".social-form-page button[type=submit]").click()');
+            await waitFor('document.querySelector(".social-form-page [role=alert]")', "library save failure");
+            assert.equal(await evaluate('document.querySelector("#name").value'), fields.name);
+            assert.equal(await evaluate('document.querySelector("#founded_at").value'), fields.founded_at);
+            scenario.social.holdForm = true;
+            const before = requests.filter((r) => r.path === "/api/libraries" && r.method === "POST").length;
+            await evaluate(
+                'document.querySelector(".social-form-page button[type=submit]").click();document.querySelector(".social-form-page button[type=submit]").click()'
+            );
+            for (let n = 0; n < 50 && !heldSocial.length; n++) await delay(20);
+            assert.equal(requests.filter((r) => r.path === "/api/libraries" && r.method === "POST").length, before + 1);
+            const create = requests.filter((r) => r.path === "/api/libraries" && r.method === "POST").pop();
+            assert.deepEqual(create.data.address, { house: fields.address, post_code: fields.post_code });
+            assert.equal(create.data.founded_at, fields.founded_at);
+            assert(create.authorization.startsWith("Bearer "));
+            let held = heldSocial.shift();
+            assert(held);
+            scenario.social.holdForm = false;
+            await replyApi(held.requestId, 200, held.body);
+            await waitFor(
+                app +
+                    '.$route.path==="/libraries/' +
+                    fixtureLibrary.id +
+                    '" && document.querySelector(".social-identity")',
+                "created library destination"
+            );
+            scenario.social.formLoadFailRemaining = 1;
+            await evaluate("void " + app + '.$router.push("/libraries/' + fixtureLibrary.id + '/edit")');
+            await waitFor('document.querySelector(".social-form-page [role=alert]")', "edit library load failure");
+            await evaluate('document.querySelector(".social-form-page button").click()');
+            await waitFor(
+                'document.querySelector("#name")?.value===' + JSON.stringify(fixtureLibrary.name),
+                "normalized library attributes"
+            );
+            await setInputs({ mobile: fields.mobile });
+            await evaluate('document.querySelector(".social-form-page button[type=submit]").click()');
+            await waitFor('document.querySelector(".social-identity")', "edited library destination");
+            const update = requests
+                .filter((r) => r.path === "/api/libraries/" + fixtureLibrary.id && r.method === "PUT")
+                .pop();
+            assert.equal(update.data.address.village, fixtureLibrary.address.village);
+            await evaluate("void " + app + '.$router.push("/users/edit-me")');
+            await waitFor('document.querySelector("#surname")', "edit profile form");
+            assert.equal(await evaluate('document.querySelector("#dob").value'), user.dob);
+            assert.equal(await evaluate('document.querySelector("input[name=gender]:checked").value'), user.gender);
+            await setInputs({ surname: "Booklover" });
+            scenario.social.formFailRemaining = 1;
+            await evaluate('document.querySelector(".social-form-page button[type=submit]").click()');
+            await waitFor('document.querySelector(".social-form-page [role=alert]")', "profile save failure");
+            assert.equal(await evaluate('document.querySelector("#surname").value'), "Booklover");
+            scenario.social.holdForm = true;
+            await evaluate(
+                'document.querySelector(".social-form-page button[type=submit]").click();document.querySelector(".social-form-page button[type=submit]").click()'
+            );
+            for (let n = 0; n < 50 && !heldSocial.length; n++) await delay(20);
+            held = heldSocial.shift();
+            assert(held);
+            scenario.social.holdForm = false;
+            await replyApi(held.requestId, 200, held.body);
+            await waitFor(
+                app + '.$route.path==="/users/me" && document.querySelector(".social-identity")',
+                "saved profile destination"
+            );
+            assert.equal(requests.filter((r) => r.path === "/api/users/" + user.id && r.method === "POST").length, 2);
+        }
+    );
+    await check("social redesign: enlarged desktop layout reflows and browser zoom remains enabled", async () => {
+        await send("Emulation.setDeviceMetricsOverride", {
+            width: 683,
+            height: 384,
+            deviceScaleFactor: 2,
+            mobile: false,
+        });
+        await delay(150);
+        assert(await evaluate("document.documentElement.scrollWidth<=innerWidth+1"));
+        assert(await evaluate("!document.querySelector('meta[name=viewport]').content.includes('user-scalable=no')"));
+        assert.equal(await evaluate("getComputedStyle(document.querySelector('.social-sidebar')).display"), "none");
+        await mouseClick(".social-bottom-nav button");
+        await waitFor(
+            "document.querySelector('.ui-drawer-panel')?.contains(document.activeElement)",
+            "enlarged navigation focus"
+        );
+        await press("Escape");
+        await waitFor("!document.querySelector('[role=dialog]')", "enlarged drawer dismissal");
+        await evaluate("window.scrollTo(0,0)");
+        await screenshot("redesign-enlarged-layout");
+        await resize(1440, 1000);
     });
     await check("Vue menus support mobile collapse, keyboard navigation and outside dismissal", async () => {
         await reset();
@@ -1450,7 +2206,7 @@ async function main() {
                 const style = selector => getComputedStyle(document.querySelector(selector));
                 return {background: style('body').backgroundColor, text: style('body').color,
                     card: style('.ui-card').backgroundColor, radius: style('.ui-card').borderRadius,
-                    action: style('.ui-button-outline-primary').color};
+                    action: style('.social-sidebar .social-nav-item.is-current').color};
             })()`);
         assert.deepEqual(styles, {
             background: "rgb(247, 244, 236)",
@@ -1463,6 +2219,11 @@ async function main() {
         const routes = [
             "/",
             "/libraries",
+            "/libraries/my-libraries",
+            "/my-courses",
+            "/users/me",
+            "/cleanup-fixture-library",
+            "/libraries/" + fixtureLibrary.id + "/about",
             "/users",
             "/libraries/" + fixtureLibrary.id,
             "/users/" + fixtureReader.id,
@@ -1486,7 +2247,7 @@ async function main() {
             for (const route of routes) {
                 await navigate(base + route);
                 await waitFor("!document.querySelector('.ui-spinner')", "loaded themed page " + route);
-                for (const width of [320, 390, 768, 1440]) {
+                for (const width of [320, 390, 768, 1024, 1366, 1440, 1920]) {
                     await resize(width, width < 600 ? 844 : 1000);
                     const overflow = await evaluate(`(() => {
                             if (document.documentElement.scrollWidth <= innerWidth + 1) return [];
@@ -1504,11 +2265,14 @@ async function main() {
                     );
                 }
                 if (language === "en") {
+                    await resize(1440, 1000);
                     await screenshot(
                         "theme-" + (route === "/" ? "feed" : route.slice(1).replaceAll("/", "-")) + "-desktop"
                     );
                     await resize(390, 844);
-                    await screenshot("theme-" + (route === "/" ? "feed" : route.slice(1).replaceAll("/", "-")) + "-mobile");
+                    await screenshot(
+                        "theme-" + (route === "/" ? "feed" : route.slice(1).replaceAll("/", "-")) + "-mobile"
+                    );
                 }
             }
         }
@@ -1529,28 +2293,36 @@ async function main() {
         await evaluate("document.querySelector('.ui-field').removeAttribute('aria-invalid')");
         assert.equal(await evaluate("getComputedStyle(document.querySelector('.ui-field')).minHeight"), "44px");
         assert.equal(
-            await evaluate("getComputedStyle(document.querySelector('.ui-button-primary')).backgroundColor"),
+            await evaluate(
+                "getComputedStyle(document.querySelector('.social-form-page .ui-button-primary')).backgroundColor"
+            ),
             "rgb(23, 75, 58)"
         );
-        const actionPoint = await pointerPosition(".ui-button-primary");
+        const actionPoint = await pointerPosition(".social-form-page .ui-button-primary");
         await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...actionPoint });
         await waitFor(
-            "getComputedStyle(document.querySelector('.ui-button-primary')).backgroundColor === 'rgb(16, 61, 46)'",
+            "getComputedStyle(document.querySelector('.social-form-page .ui-button-primary')).backgroundColor === 'rgb(16, 61, 46)'",
             "green button hover"
         );
         await evaluate(
-            "document.querySelector('.ui-button-primary').disabled=true;document.querySelector('.ui-field').disabled=true"
+            "document.querySelector('.social-form-page .ui-button-primary').disabled=true;document.querySelector('.ui-field').disabled=true"
         );
-        assert.equal(await evaluate("getComputedStyle(document.querySelector('.ui-button-primary')).cursor"), "default");
+        assert.equal(
+            await evaluate("getComputedStyle(document.querySelector('.social-form-page .ui-button-primary')).cursor"),
+            "default"
+        );
         await waitFor(
             "getComputedStyle(document.querySelector('.ui-field')).backgroundColor === 'rgb(242, 245, 239)'",
             "muted disabled field"
         );
         await evaluate(app + ".$store.dispatch('setActiveLanguage','en');" + app + ".$i18n.locale='en'");
         await navigate(base + "/");
-        assert.equal(await evaluate("document.querySelector('.app-navbar [aria-current=page]').pathname"), "/");
+        assert.equal(await evaluate("document.querySelector('.social-sidebar [aria-current=page]').pathname"), "/");
         await evaluate("document.querySelector('#navbarDropdown').click()");
-        assert.equal(await evaluate("getComputedStyle(document.querySelector('.ui-dropdown-menu')).borderRadius"), "12px");
+        assert.equal(
+            await evaluate("getComputedStyle(document.querySelector('.ui-dropdown-menu')).borderRadius"),
+            "12px"
+        );
         await press("Escape");
         await send("Emulation.setFocusEmulationEnabled", { enabled: false });
     });
@@ -1589,8 +2361,14 @@ async function main() {
             "modal focus " + name
         );
         assert.equal(await evaluate("document.body.style.overflow"), "hidden");
-        assert.equal(await evaluate("getComputedStyle(document.querySelector('[role=dialog][aria-modal=true]')).borderRadius"), "16px");
-        assert.equal(await evaluate("getComputedStyle(document.querySelector('[role=dialog][aria-modal=true]')).color"), "rgb(36, 52, 44)");
+        assert.equal(
+            await evaluate("getComputedStyle(document.querySelector('[role=dialog][aria-modal=true]')).borderRadius"),
+            "16px"
+        );
+        assert.equal(
+            await evaluate("getComputedStyle(document.querySelector('[role=dialog][aria-modal=true]')).color"),
+            "rgb(36, 52, 44)"
+        );
         assert(
             await evaluate(
                 "!!document.getElementById(document.querySelector('[role=dialog][aria-modal=true]').getAttribute('aria-labelledby'))"
@@ -1638,12 +2416,12 @@ async function main() {
     await check("all 15 dialogs have unique names, trapped focus and reversible scroll locking", async () => {
         for (const [name, props, binding, event] of dialogs) {
             await mountModal(name, props, binding, event);
-            if (name === 'CreateOrEditPostModal' || name === 'UploadMyPhotoModal') {
-                await screenshot('theme-dialog-'+name+'-desktop');
-                await resize(390,844);
-                await screenshot('theme-dialog-'+name+'-mobile');
-                assert(await evaluate('document.documentElement.scrollWidth <= innerWidth + 1'));
-                await resize(1440,1000);
+            if (name === "CreateOrEditPostModal" || name === "UploadMyPhotoModal") {
+                await screenshot("theme-dialog-" + name + "-desktop");
+                await resize(390, 844);
+                await screenshot("theme-dialog-" + name + "-mobile");
+                assert(await evaluate("document.documentElement.scrollWidth <= innerWidth + 1"));
+                await resize(1440, 1000);
             }
             await evaluate("document.querySelector('[role=dialog] footer button:last-child')?.focus()");
             await press("Tab");
@@ -1877,7 +2655,7 @@ async function main() {
                 await evaluate("document.querySelector('.app-navbar a[href=\"/courses\"]').textContent.trim()"),
                 language === "en" ? "Courses" : "কোর্সসমূহ"
             );
-            for (const width of [320, 390, 768, 1440]) {
+            for (const width of [320, 390, 768, 1024, 1366, 1440, 1920]) {
                 await resize(width, width < 600 ? 844 : 1000);
                 assert(
                     await evaluate("document.documentElement.scrollWidth <= innerWidth+1"),
@@ -1886,11 +2664,11 @@ async function main() {
             }
         }
         await evaluate("void (window.recoveredCourseElement=document.querySelectorAll('.course-image')[4])");
-        await evaluate(
-            "(() => {const store=" +
-                app +
-                '.$store,r=store.getters.coursesResponse;store.commit("setCoursesResponse",{...r,data:r.data.map((c,i)=>i===4?{...c,image_url:"/course-fixtures/recovered.png"}:c)})})()'
-        );
+        await evaluate(`(() => {
+            const find=v=>v.$options.name==='CourseCatalog'?v:v.$children.map(find).find(Boolean);
+            const c=find(${app});
+            c.response={...c.response,data:c.response.data.map((item,i)=>i===4?{...item,image_url:'/course-fixtures/recovered.png'}:item)};
+        })()`);
         await waitFor(
             "document.querySelectorAll('.course-image')[4].querySelector('img')?.naturalWidth>0",
             "recovered course source"
@@ -1947,7 +2725,7 @@ async function main() {
                     JSON.stringify(language)
             );
             assert.equal(
-                await evaluate("document.querySelector('.app-navbar a[href=\"/courses\"]').textContent.trim()"),
+                await evaluate("document.querySelector('.social-sidebar a[href=\"/courses\"]').textContent.trim()"),
                 language === "en" ? "Courses" : "কোর্সসমূহ"
             );
         }
@@ -2000,8 +2778,9 @@ async function main() {
     assert.deepEqual(
         warnings.filter(
             (w) =>
-                /Unknown custom element|Error in render|Error in .*hook|Invalid prop|Failed to mount|Duplicate keys detected/.test(w) &&
-                !knownWarnings.includes(w)
+                /Unknown custom element|Error in render|Error in .*hook|Invalid prop|Failed to mount|Duplicate keys detected/.test(
+                    w
+                ) && !knownWarnings.includes(w)
         ),
         [],
         "Unexpected Vue warnings beyond the documented baseline"
